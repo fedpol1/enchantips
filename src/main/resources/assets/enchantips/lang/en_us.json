@@ -1,0 +1,23 @@
+{
+  "enchantips.config.category.colors": "Colors",
+  "enchantips.config.category.miscellaneous": "Miscellaneous",
+  "enchantips.config.enchantment.normal.min": "Low Level Normal Enchantment Color",
+  "enchantips.config.enchantment.normal.max": "High Level Normal Enchantment Color",
+  "enchantips.config.enchantment.treasure.min": "Low Level Treasure Enchantment Color",
+  "enchantips.config.enchantment.treasure.max": "High Level Treasure Enchantment Color",
+  "enchantips.config.enchantment.curse.min": "Low Level Curse Enchantment Color",
+  "enchantips.config.enchantment.curse.max": "High Level Curse Enchantment Color",
+  "enchantips.config.show.enchantability": "Show Enchantability",
+  "enchantips.config.show.enchantability.when.enchanted": "Show Enchantability When Enchanted",
+  "enchantips.config.show.rarity": "Show Rarity",
+  "enchantips.config.show.repaircost": "Show Repair Cost",
+  "enchantips.config.show.repaircost.when.0": "Show Repair Cost When 0",
+  "enchantips.config.rarity.bracket": "Rarity Bracket Color",
+  "enchantips.config.repaircost": "Repair Cost Color",
+  "enchantips.config.repaircost.value": "Repair Cost Value Color",
+  "enchantips.config.enchantability": "Enchantability Color",
+  "enchantips.config.enchantability.value": "Enchantability Value Color",
+  "enchantips.tooltip.rarity": "[×%s]",
+  "enchantips.tooltip.repair_cost": "Repair Cost: %s",
+  "enchantips.tooltip.enchantability": "Enchantability: %s"
+}

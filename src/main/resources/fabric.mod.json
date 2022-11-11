@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "enchantips",
+  "version": "${version}",
+
+  "name": "Enchantips",
+  "description": "Enhances tooltips for enchanting.",
+  "authors": [
+    "FEDPOL1"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "ARR",
+  "icon": "assets/enchantips/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [],
+    "client": [ "com.fedpol1.enchantips.EnchantipsClient" ],
+    "modmenu": [ "com.fedpol1.enchantips.ModMenuEntry" ]
+  },
+  "mixins": [
+    "enchantips.mixins.json"
+  ],
+
+  "depends": {
+    "cloth-config": ">=8.2.88",
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "modmenu": "4.0.6"
+  }
+}
