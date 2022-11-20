@@ -7,3 +7,6 @@ Mod that enhances tooltips related to enchanting or enchantments.
 + enchantment rarity display
 + item enchantability display
 + item anvil penalty display
++ enchantment predictions when enchanting via enchantment table
++ modified enchantment level display when enchanting via enchantment table
+  + modified enchantment level is an internal value used to determine which enchantments are possible to get
