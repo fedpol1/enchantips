@@ -33,7 +33,7 @@ public class EnchantmentMixin implements EnchantmentMixinAccess {
 
         float intensity = Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / t.getMaxLevel()));
         if(level == t.getMaxLevel()) {
-            intensity = 1.0f; // case where enchantment maxes at 1 level
+            intensity = 1.0f; // case where enchantment maxes at 1 level, make it bright instead of dim
         }
         TextColor colorMin = ModConfig.ENCHANTMENT_NORMAL_MIN.getColor();
         TextColor colorMax = ModConfig.ENCHANTMENT_NORMAL_MAX.getColor();

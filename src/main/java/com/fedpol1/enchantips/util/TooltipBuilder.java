@@ -16,6 +16,8 @@ public class TooltipBuilder {
     public static final String REPAIR_COST_TOOLTIP = EnchantipsClient.MODID + ".tooltip.repair_cost";
     public static final String ENCHANTABILITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantability";
     public static final String RARITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.rarity";
+    public static final String MODIFIED_LEVEL_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level";
+    public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment";
 
     public static MutableText buildRarity(int rarity, TextColor numberColor) {
         MutableText rarityText = MutableText.of(new LiteralTextContent(Integer.toString(rarity)));
@@ -23,12 +25,30 @@ public class TooltipBuilder {
         return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(ModConfig.RARITY_BRACKET.getColor()));
     }
 
-    public static Text buildEnchantability(int ench) {
+    public static MutableText buildModifiedLevel(int lower, int upper) {
+        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_ENCHANTMENT_LEVEL.getColor(), ModConfig.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getColor(), MODIFIED_LEVEL_TOOLTIP);
+    }
+
+    // is only responsible for generating the modified level interval prefix
+    public static MutableText buildModifiedLevelForEnchantment(int lower, int upper) {
+        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT.getColor(), ModConfig.MODIFIED_LEVEL_VALUE_FOR_ENCHANTMENT.getColor(), MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP);
+    }
+
+    private static MutableText buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
+        MutableText lowerText = MutableText.of(new LiteralTextContent(Integer.toString(lower)));
+        MutableText upperText = MutableText.of(new LiteralTextContent(Integer.toString(upper)));
+        lowerText.setStyle(Style.EMPTY.withColor(valueColor));
+        upperText.setStyle(Style.EMPTY.withColor(valueColor));
+        return Text.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
+
+    }
+
+    public static MutableText buildEnchantability(int ench) {
         MutableText enchText = MutableText.of(new LiteralTextContent(Integer.toString(ench)));
         enchText.setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY_VALUE.getColor()));
         return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText).setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY.getColor()));
     }
-    public static Text buildRepairCost(int cost) {
+    public static MutableText buildRepairCost(int cost) {
         MutableText costText = MutableText.of(new LiteralTextContent(Integer.toString(cost)));
         costText.setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST_VALUE.getColor()));
         return Text.translatable(REPAIR_COST_TOOLTIP, costText).setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST.getColor()));

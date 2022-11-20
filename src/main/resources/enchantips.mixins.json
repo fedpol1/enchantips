@@ -3,12 +3,12 @@
   "minVersion": "0.8",
   "package": "com.fedpol1.enchantips.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "mixins": [],
+  "client": [
+    "EnchantmentMixin",
+    "EnchantmentScreenMixin",
     "EnchantedBookItemMixin",
     "ItemStackMixin"
-  ],
-  "client": [
-    "EnchantmentMixin"
   ],
   "server": [],
   "injectors": {
