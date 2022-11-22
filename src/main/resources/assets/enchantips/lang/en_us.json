@@ -24,6 +24,7 @@
   "enchantips.config.show.modified.level": "Show Possible Modified Enchantment Levels",
   "enchantips.config.show.extra.enchantments": "Show Possible Enchantments",
   "enchantips.config.show.modified.level.for.enchantments": "Show Modified Level For Possible Enchantments",
+  "enchantips.config.show.bar.protection": "Show Protection Bar",
   "enchantips.tooltip.rarity": "[×%s]",
   "enchantips.tooltip.repair_cost": "Repair Cost: %s",
   "enchantips.tooltip.enchantability": "Enchantability: %s",

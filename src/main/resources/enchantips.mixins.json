@@ -5,9 +5,10 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
+    "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "EnchantmentScreenMixin",
-    "EnchantedBookItemMixin",
+    "InGameHudMixin",
     "ItemStackMixin"
   ],
   "server": [],

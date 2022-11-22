@@ -26,6 +26,7 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_MODIFIED_ENCHANTMENT_LEVEL = new BooleanDataEntry("show_modified_level", true);
     public static BooleanDataEntry SHOW_EXTRA_ENCHANTMENTS = new BooleanDataEntry("show_extra_enchantments", true);
     public static BooleanDataEntry SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS = new BooleanDataEntry("show_modified_level_for_enchantments", false);
+    public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show_bar_protection", false);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color_enchantment_normal_min", 0x7f7f7f);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color_enchantment_normal_max", 0xdfdfdf);
     public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color_enchantment_treasure_min", 0x009f00);
@@ -52,6 +53,7 @@ public class ModConfig {
         bools.put(SHOW_MODIFIED_ENCHANTMENT_LEVEL.key, SHOW_MODIFIED_ENCHANTMENT_LEVEL.data);
         bools.put(SHOW_EXTRA_ENCHANTMENTS.key, SHOW_EXTRA_ENCHANTMENTS.data);
         bools.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS.key, SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS.data);
+        bools.put(SHOW_PROTECTION_BAR.key, SHOW_PROTECTION_BAR.data);
         colors.put(ENCHANTMENT_NORMAL_MIN.key, ENCHANTMENT_NORMAL_MIN.data);
         colors.put(ENCHANTMENT_NORMAL_MAX.key, ENCHANTMENT_NORMAL_MAX.data);
         colors.put(ENCHANTMENT_TREASURE_MIN.key, ENCHANTMENT_TREASURE_MIN.data);
