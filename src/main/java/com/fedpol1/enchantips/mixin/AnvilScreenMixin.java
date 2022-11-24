@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Comparator;
 
 @Mixin(AnvilScreen.class)
-public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> implements ScreenAccessor {
+public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> {
 
     public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
         super(handler, playerInventory, title, texture);
@@ -37,7 +37,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
     protected void enchantipsSetupAddAnvilSwapButton(CallbackInfo ci) {
         if(ModConfig.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) {
-            this.enchantipsAddDrawableChild(new TexturedButtonWidget(
+            this.addDrawableChild(new TexturedButtonWidget(
                     this.x + 152,
                     this.height / 2 - 36,
                     AnvilScreenSwapItemButton.ANVIL_SWAP_ITEM_BUTTON_WIDTH,

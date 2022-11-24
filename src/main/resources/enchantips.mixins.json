@@ -10,8 +10,7 @@
     "EnchantmentMixin",
     "EnchantmentScreenMixin",
     "InGameHudMixin",
-    "ItemStackMixin",
-    "ScreenAccessor"
+    "ItemStackMixin"
   ],
   "server": [],
   "injectors": {
