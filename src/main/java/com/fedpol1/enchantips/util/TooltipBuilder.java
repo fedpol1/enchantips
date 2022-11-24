@@ -31,7 +31,7 @@ public class TooltipBuilder {
 
     // is only responsible for generating the modified level interval prefix
     public static MutableText buildModifiedLevelForEnchantment(int lower, int upper) {
-        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT.getColor(), ModConfig.MODIFIED_LEVEL_VALUE_FOR_ENCHANTMENT.getColor(), MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP);
+        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT.getColor(), ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getColor(), MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP);
     }
 
     private static MutableText buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {

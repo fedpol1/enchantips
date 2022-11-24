@@ -5,11 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
+    "AnvilScreenMixin",
     "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "EnchantmentScreenMixin",
     "InGameHudMixin",
-    "ItemStackMixin"
+    "ItemStackMixin",
+    "ScreenAccessor"
   ],
   "server": [],
   "injectors": {

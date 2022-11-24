@@ -24,15 +24,16 @@ public class ModMenuEntry implements ModMenuApi{
                     .setParentScreen(MinecraftClient.getInstance().currentScreen)
                     .setTitle(Text.translatable(EnchantipsClient.MODID + ".config"));
 
-            ConfigCategory miscellaneous = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.category.miscellaneous"));
-            ConfigCategory colors = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.category.colors"));
+            ConfigCategory miscellaneous = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.miscellaneous"));
+            ConfigCategory colors = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors"));
 
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
             for(Map.Entry<String, BooleanDataEntry.BooleanData> item : ModConfig.bools.entrySet()) {
                 BooleanData value = item.getValue();
                 miscellaneous.addEntry(
-                        entryBuilder.startBooleanToggle(Text.translatable(value.getLang()), value.getValue())
+                        entryBuilder.startBooleanToggle(Text.translatable(value.getTitle()), value.getValue())
+                                .setTooltip(Text.translatable(value.getTooltip()))
                                 .setDefaultValue(value.getDefaultValue())
                                 .setSaveConsumer(newValue -> value.setValue(newValue))
                                 .build()
@@ -42,7 +43,8 @@ public class ModMenuEntry implements ModMenuApi{
             for(Map.Entry<String, ColorDataEntry.ColorData> item : ModConfig.colors.entrySet()) {
                 ColorData value = item.getValue();
                 colors.addEntry(
-                        entryBuilder.startColorField(Text.translatable(value.getLang()), value.getColor())
+                        entryBuilder.startColorField(Text.translatable(value.getTitle()), value.getColor())
+                                .setTooltip(Text.translatable(value.getTooltip()))
                                 .setDefaultValue(value.getDefaultColor())
                                 .setSaveConsumer(newValue -> value.setColor(newValue))
                                 .build()

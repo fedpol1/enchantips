@@ -56,7 +56,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentMixinAccess {
                     int currentUpperBound = EnchantmentFilterer.getUpperBoundForEnchantment(current, z);
                     if (currentUpperBound >= absoluteLowerBound && currentLowerBound <= absoluteUpperBound) {
                         MutableText text = (MutableText) ((EnchantmentMixinAccess) current).enchantipsGetName(z, itemStack.isOf(Items.ENCHANTED_BOOK));
-                        if(ModConfig.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS.getValue()) {
+                        if(ModConfig.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getValue()) {
                             text.append(" ").append(TooltipBuilder.buildModifiedLevelForEnchantment(currentLowerBound, currentUpperBound));
                         }
                         list.add(text);

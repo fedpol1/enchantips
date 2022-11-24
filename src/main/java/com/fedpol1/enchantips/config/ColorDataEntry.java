@@ -11,8 +11,12 @@ public class ColorDataEntry {
     public final ColorData data;
 
     public ColorDataEntry(String key, int defaultColor) {
+        this(key, defaultColor, false);
+    }
+
+    public ColorDataEntry(String key, int defaultColor, boolean hasTooltip) {
         this.key = key;
-        this.data = new ColorData(defaultColor, defaultColor, EnchantipsClient.MODID + ".config." + key.replace('_', '.'));
+        this.data = new ColorData(defaultColor, defaultColor, key, hasTooltip);
     }
 
     public TextColor getColor() {
@@ -22,12 +26,19 @@ public class ColorDataEntry {
     public static class ColorData {
         private TextColor color;
         private final TextColor defaultColor;
-        private final String lang;
+        private final String title;
+        private final String tooltip;
 
-        ColorData(int color, int defaultColor, String  lang) {
+        ColorData(int color, int defaultColor, String key, boolean hasTooltip) {
             this.color = TextColor.fromRgb(color);
             this.defaultColor = TextColor.fromRgb(defaultColor);
-            this.lang = lang;
+            this.title = EnchantipsClient.MODID + ".config.title." + key;
+            if(hasTooltip) {
+                this.tooltip = EnchantipsClient.MODID + ".config.tooltip." + key;
+            }
+            else {
+                this.tooltip = "";
+            }
         }
 
         public void setValueToDefault() {
@@ -36,7 +47,7 @@ public class ColorDataEntry {
 
         public TextColor getColor() {
             if(this.color == null) {
-                EnchantipsClient.LOGGER.warn(lang + " color is null, setting default");
+                EnchantipsClient.LOGGER.warn(title + " color is null, setting default");
                 this.color = this.getDefaultColor();
             }
             return this.color;
@@ -47,9 +58,13 @@ public class ColorDataEntry {
             return this.defaultColor;
         }
 
-        public String getLang() {
+        public String getTitle() {
             // this should never be null
-            return this.lang;
+            return this.title;
+        }
+
+        public String getTooltip() {
+            return this.tooltip;
         }
 
         public void setColor(TextColor c) {

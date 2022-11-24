@@ -18,30 +18,31 @@ public class ModConfig {
     public static TreeMap<String, BooleanDataEntry.BooleanData> bools = new TreeMap<>();
     public static TreeMap<String, ColorDataEntry.ColorData> colors = new TreeMap<>();
 
-    public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show_repaircost", true);
-    public static BooleanDataEntry SHOW_REPAIRCOST_WHEN_0 = new BooleanDataEntry("show_repaircost_when_0", true);
-    public static BooleanDataEntry SHOW_ENCHANTABILITY = new BooleanDataEntry("show_enchantability", true);
-    public static BooleanDataEntry SHOW_ENCHANTABILITY_WHEN_ENCHANTED = new BooleanDataEntry("show_enchantability_when_enchanted", true);
-    public static BooleanDataEntry SHOW_RARITY = new BooleanDataEntry("show_rarity", true);
-    public static BooleanDataEntry SHOW_MODIFIED_ENCHANTMENT_LEVEL = new BooleanDataEntry("show_modified_level", true);
-    public static BooleanDataEntry SHOW_EXTRA_ENCHANTMENTS = new BooleanDataEntry("show_extra_enchantments", true);
-    public static BooleanDataEntry SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS = new BooleanDataEntry("show_modified_level_for_enchantments", false);
-    public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show_bar_protection", false);
-    public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color_enchantment_normal_min", 0x7f7f7f);
-    public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color_enchantment_normal_max", 0xdfdfdf);
-    public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color_enchantment_treasure_min", 0x009f00);
-    public static ColorDataEntry ENCHANTMENT_TREASURE_MAX = new ColorDataEntry("color_enchantment_treasure_max", 0x00df00);
-    public static ColorDataEntry ENCHANTMENT_CURSE_MIN = new ColorDataEntry("color_enchantment_curse_min", 0xbf0000);
-    public static ColorDataEntry ENCHANTMENT_CURSE_MAX = new ColorDataEntry("color_enchantment_curse_max", 0xff0000);
-    public static ColorDataEntry REPAIRCOST = new ColorDataEntry("color_repaircost", 0xffbf00);
-    public static ColorDataEntry REPAIRCOST_VALUE = new ColorDataEntry("color_repaircost_value", 0xff7f00);
-    public static ColorDataEntry ENCHANTABILITY = new ColorDataEntry("color_enchantability", 0xffbf00);
-    public static ColorDataEntry ENCHANTABILITY_VALUE = new ColorDataEntry("color_enchantability_value", 0xff7f00);
-    public static ColorDataEntry RARITY_BRACKET = new ColorDataEntry("color_rarity_bracket", 0x3f3f3f);
-    public static ColorDataEntry MODIFIED_ENCHANTMENT_LEVEL = new ColorDataEntry("color_modified_level", 0xffbf00);
-    public static ColorDataEntry MODIFIED_ENCHANTMENT_LEVEL_VALUE = new ColorDataEntry("color_modified_level_value", 0xff7f00);
-    public static ColorDataEntry MODIFIED_LEVEL_FOR_ENCHANTMENT = new ColorDataEntry("color_modified_level_for_enchantment", 0xdf9f3f);
-    public static ColorDataEntry MODIFIED_LEVEL_VALUE_FOR_ENCHANTMENT = new ColorDataEntry("color_modified_level_value_for_enchantment", 0xdf7f3f);
+    public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show.repair_cost", true);
+    public static BooleanDataEntry SHOW_REPAIRCOST_WHEN_0 = new BooleanDataEntry("show.repair_cost.when_0", true);
+    public static BooleanDataEntry SHOW_ENCHANTABILITY = new BooleanDataEntry("show.enchantability", true);
+    public static BooleanDataEntry SHOW_ENCHANTABILITY_WHEN_ENCHANTED = new BooleanDataEntry("show.enchantability.when_enchanted", true);
+    public static BooleanDataEntry SHOW_RARITY = new BooleanDataEntry("show.rarity", true);
+    public static BooleanDataEntry SHOW_MODIFIED_ENCHANTMENT_LEVEL = new BooleanDataEntry("show.modified_level", true);
+    public static BooleanDataEntry SHOW_EXTRA_ENCHANTMENTS = new BooleanDataEntry("show.extra_enchantments", true);
+    public static BooleanDataEntry SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT = new BooleanDataEntry("show.modified_level.for_enchantment", false);
+    public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show.bar.protection", false);
+    public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", false, true);
+    public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color.enchantment.normal.min", 0x7f7f7f);
+    public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color.enchantment.normal.max", 0xdfdfdf);
+    public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color.enchantment.treasure.min", 0x009f00);
+    public static ColorDataEntry ENCHANTMENT_TREASURE_MAX = new ColorDataEntry("color.enchantment.treasure.max", 0x00df00);
+    public static ColorDataEntry ENCHANTMENT_CURSE_MIN = new ColorDataEntry("color.enchantment.curse.min", 0xbf0000);
+    public static ColorDataEntry ENCHANTMENT_CURSE_MAX = new ColorDataEntry("color.enchantment.curse.max", 0xff0000);
+    public static ColorDataEntry REPAIRCOST = new ColorDataEntry("color.repair_cost", 0xffbf00);
+    public static ColorDataEntry REPAIRCOST_VALUE = new ColorDataEntry("color.repair_cost.value", 0xff7f00);
+    public static ColorDataEntry ENCHANTABILITY = new ColorDataEntry("color.enchantability", 0xffbf00);
+    public static ColorDataEntry ENCHANTABILITY_VALUE = new ColorDataEntry("color.enchantability.value", 0xff7f00);
+    public static ColorDataEntry RARITY_BRACKET = new ColorDataEntry("color.rarity.bracket", 0x3f3f3f);
+    public static ColorDataEntry MODIFIED_ENCHANTMENT_LEVEL = new ColorDataEntry("color.modified_level", 0xffbf00);
+    public static ColorDataEntry MODIFIED_ENCHANTMENT_LEVEL_VALUE = new ColorDataEntry("color.modified_level.value", 0xff7f00);
+    public static ColorDataEntry MODIFIED_LEVEL_FOR_ENCHANTMENT = new ColorDataEntry("color.modified_level.for_enchantment", 0xdf9f3f);
+    public static ColorDataEntry MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE = new ColorDataEntry("color.modified_level.for_enchantment.value", 0xdf7f3f);
 
     public static void registerConfig() {
         EnchantipsClient.LOGGER.info("Initializing configs");
@@ -52,8 +53,9 @@ public class ModConfig {
         bools.put(SHOW_RARITY.key, SHOW_RARITY.data);
         bools.put(SHOW_MODIFIED_ENCHANTMENT_LEVEL.key, SHOW_MODIFIED_ENCHANTMENT_LEVEL.data);
         bools.put(SHOW_EXTRA_ENCHANTMENTS.key, SHOW_EXTRA_ENCHANTMENTS.data);
-        bools.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS.key, SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENTS.data);
+        bools.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.key, SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
         bools.put(SHOW_PROTECTION_BAR.key, SHOW_PROTECTION_BAR.data);
+        bools.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.key, SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
         colors.put(ENCHANTMENT_NORMAL_MIN.key, ENCHANTMENT_NORMAL_MIN.data);
         colors.put(ENCHANTMENT_NORMAL_MAX.key, ENCHANTMENT_NORMAL_MAX.data);
         colors.put(ENCHANTMENT_TREASURE_MIN.key, ENCHANTMENT_TREASURE_MIN.data);
@@ -68,7 +70,7 @@ public class ModConfig {
         colors.put(MODIFIED_ENCHANTMENT_LEVEL.key, MODIFIED_ENCHANTMENT_LEVEL.data);
         colors.put(MODIFIED_ENCHANTMENT_LEVEL_VALUE.key, MODIFIED_ENCHANTMENT_LEVEL_VALUE.data);
         colors.put(MODIFIED_LEVEL_FOR_ENCHANTMENT.key, MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
-        colors.put(MODIFIED_LEVEL_VALUE_FOR_ENCHANTMENT.key, MODIFIED_LEVEL_VALUE_FOR_ENCHANTMENT.data);
+        colors.put(MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.key, MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.data);
         ModConfig.readConfig();
         ModConfig.writeConfig();
     }
