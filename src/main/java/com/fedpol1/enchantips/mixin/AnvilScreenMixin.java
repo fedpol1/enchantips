@@ -68,7 +68,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                 this.handler.updateResult();
 
                 // swap items again, this time notifying the server, and only if it is favorable to do so
-                if (newCost > 0 && originalCost > newCost && EnchantmentListUtil.sameEnchantments(originalEnchants, newEnchants)) {
+                if (newCost > 0 && originalCost > newCost && EnchantmentListUtil.sameEnchantments(originalEnchants, newEnchants, true)) {
                     if (MinecraftClient.getInstance().getNetworkHandler() != null) {
                         for (int i : new int[]{0, 1, 0}) {
                             ClickSlotC2SPacket p = new ClickSlotC2SPacket(

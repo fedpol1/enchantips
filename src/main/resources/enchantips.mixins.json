@@ -9,6 +9,7 @@
     "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "EnchantmentScreenMixin",
+    "HandledScreenMixin",
     "InGameHudMixin",
     "ItemStackMixin"
   ],

@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentMixinAccess;
 import com.fedpol1.enchantips.config.ModConfig;
-import com.fedpol1.enchantips.util.TextColorManager;
+import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
@@ -38,7 +38,12 @@ public class EnchantmentMixin implements EnchantmentMixinAccess {
         TextColor colorMin = ModConfig.ENCHANTMENT_NORMAL_MIN.getColor();
         TextColor colorMax = ModConfig.ENCHANTMENT_NORMAL_MAX.getColor();
 
-        if (((Enchantment)(Object)this).isCursed()) {
+        if (level > t.getMaxLevel() || level < t.getMinLevel()) {
+            colorMin = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
+            colorMax = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
+            intensity = 1.0f;
+        }
+        else if (((Enchantment)(Object)this).isCursed()) {
             colorMin = ModConfig.ENCHANTMENT_CURSE_MIN.getColor();
             colorMax = ModConfig.ENCHANTMENT_CURSE_MAX.getColor();
         }
@@ -47,7 +52,7 @@ public class EnchantmentMixin implements EnchantmentMixinAccess {
             colorMax = ModConfig.ENCHANTMENT_TREASURE_MAX.getColor();
         }
 
-        TextColor colorFinal = TextColorManager.lerpColor(colorMin, colorMax, intensity);
+        TextColor colorFinal = ColorManager.lerpColor(colorMin, colorMax, intensity);
 
         int r;
         switch (t.getRarity()) {

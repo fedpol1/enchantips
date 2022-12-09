@@ -2,7 +2,18 @@ package com.fedpol1.enchantips.util;
 
 import net.minecraft.text.TextColor;
 
-public class TextColorManager {
+public class ColorManager {
+
+    public static float[] intToFloats(int inColor) {
+        float[] outColor = new float[3];
+        int r = (inColor & 0xff0000) >> 16;
+        int g = (inColor & 0xff00) >> 8;
+        int b = (inColor & 0xff);
+        outColor[0] = r / 255.0f;
+        outColor[1] = g / 255.0f;
+        outColor[2] = b / 255.0f;
+        return outColor;
+    }
 
     public static TextColor lerpColor(TextColor min, TextColor max, float intensity) {
         int rgbMin = min.getRgb();
