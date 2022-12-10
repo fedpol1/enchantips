@@ -2,12 +2,9 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.TooltipBuilder;
-import com.terraformersmc.modmenu.util.mod.Mod;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;

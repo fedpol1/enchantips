@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
 public class ColorDataEntry {
