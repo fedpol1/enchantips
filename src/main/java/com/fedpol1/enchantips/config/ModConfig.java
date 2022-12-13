@@ -29,6 +29,7 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show.bar.protection", false);
     public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", false, true);
     public static BooleanDataEntry SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH = new BooleanDataEntry("show.highlights.matching_enchantment", false, true);
+    public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", false, true);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color.enchantment.normal.min", 0x7f7f7f);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color.enchantment.normal.max", 0xdfdfdf);
     public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color.enchantment.treasure.min", 0x009f00);
@@ -61,6 +62,7 @@ public class ModConfig {
         bools.put(SHOW_PROTECTION_BAR.key, SHOW_PROTECTION_BAR.data);
         bools.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.key, SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
         bools.put(SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.key, SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.data);
+        bools.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.key, SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.data);
         colors.put(ENCHANTMENT_NORMAL_MIN.key, ENCHANTMENT_NORMAL_MIN.data);
         colors.put(ENCHANTMENT_NORMAL_MAX.key, ENCHANTMENT_NORMAL_MAX.data);
         colors.put(ENCHANTMENT_TREASURE_MIN.key, ENCHANTMENT_TREASURE_MIN.data);

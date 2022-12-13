@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.mixin;
 import com.fedpol1.enchantips.EnchantmentMixinAccess;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.ColorManager;
+import com.fedpol1.enchantips.util.EnchantmentPriority;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
@@ -21,38 +22,17 @@ public class EnchantmentMixin implements EnchantmentMixinAccess {
 
     /**
      * @author fedpol1
-     * @reason enchantment overhaul, show intensity and treasure status of enchantments in tooltip
+     * @reason overhaul enchantment tooltips
      */
     @Overwrite
     public Text getName(int level) {
-        return enchantipsGetName(level, false);
+        return this.enchantipsGetName(level, false);
     }
 
     public Text enchantipsGetName(int level, boolean modifyRarity) {
         Enchantment t = ((Enchantment)(Object)this);
 
-        float intensity = Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / t.getMaxLevel()));
-        if(level == t.getMaxLevel()) {
-            intensity = 1.0f; // case where enchantment maxes at 1 level, make it bright instead of dim
-        }
-        TextColor colorMin = ModConfig.ENCHANTMENT_NORMAL_MIN.getColor();
-        TextColor colorMax = ModConfig.ENCHANTMENT_NORMAL_MAX.getColor();
-
-        if (level > t.getMaxLevel() || level < t.getMinLevel()) {
-            colorMin = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
-            colorMax = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
-            intensity = 1.0f;
-        }
-        else if (((Enchantment)(Object)this).isCursed()) {
-            colorMin = ModConfig.ENCHANTMENT_CURSE_MIN.getColor();
-            colorMax = ModConfig.ENCHANTMENT_CURSE_MAX.getColor();
-        }
-        else if (((Enchantment)(Object)this).isTreasure()) {
-            colorMin = ModConfig.ENCHANTMENT_TREASURE_MIN.getColor();
-            colorMax = ModConfig.ENCHANTMENT_TREASURE_MAX.getColor();
-        }
-
-        TextColor colorFinal = ColorManager.lerpColor(colorMin, colorMax, intensity);
+        TextColor colorFinal = this.enchantipsGetColor(level);
 
         int r;
         switch (t.getRarity()) {
@@ -78,5 +58,46 @@ public class EnchantmentMixin implements EnchantmentMixinAccess {
             return rarityText;
         }
         return enchantmentText;
+    }
+
+    // intensity dictates how much of a bias there is towards the "high" color
+    public float enchantipsGetIntensity(int level) {
+        Enchantment t = (Enchantment)(Object)this;
+        if(level == t.getMaxLevel()) { return 1.0f; }
+        if(this.enchantipsGetPriority(level) == EnchantmentPriority.OVERLEVELLED) { return 1.0f; }
+        else { return Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / t.getMaxLevel())); }
+    }
+
+    // different priorities have different respective colors
+    // higher priorities take precedence
+    public EnchantmentPriority enchantipsGetPriority(int level) {
+        Enchantment t = (Enchantment)(Object)this;
+        if(level > t.getMaxLevel() || level < t.getMinLevel()) { return EnchantmentPriority.OVERLEVELLED;}
+        if(t.isCursed()) { return EnchantmentPriority.CURSED;}
+        if(t.isTreasure()) { return EnchantmentPriority.TREASURE;}
+        return EnchantmentPriority.NORMAL;
+    }
+
+    public TextColor enchantipsGetColor(int level) {
+        float intensity = this.enchantipsGetIntensity(level);
+        EnchantmentPriority priority = this.enchantipsGetPriority(level);
+
+        TextColor colorMin = ModConfig.ENCHANTMENT_NORMAL_MIN.getColor();
+        TextColor colorMax = ModConfig.ENCHANTMENT_NORMAL_MAX.getColor();
+
+        if (priority == EnchantmentPriority.OVERLEVELLED) {
+            colorMin = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
+            colorMax = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
+        }
+        else if (priority == EnchantmentPriority.CURSED) {
+            colorMin = ModConfig.ENCHANTMENT_CURSE_MIN.getColor();
+            colorMax = ModConfig.ENCHANTMENT_CURSE_MAX.getColor();
+        }
+        else if (priority == EnchantmentPriority.TREASURE) {
+            colorMin = ModConfig.ENCHANTMENT_TREASURE_MIN.getColor();
+            colorMax = ModConfig.ENCHANTMENT_TREASURE_MAX.getColor();
+        }
+
+        return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 }
