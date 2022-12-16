@@ -4,7 +4,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
-public class EnchantmentListUtil {
+public abstract class EnchantmentListUtil {
 
     public static int compareEnchantments(NbtElement a, NbtElement b, boolean compareLevels) {
         int score = 0;

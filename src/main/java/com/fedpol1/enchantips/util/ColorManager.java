@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.util;
 
 import net.minecraft.text.TextColor;
 
-public class ColorManager {
+public abstract class ColorManager {
 
     public static float[] intToFloats(int inColor) {
         float[] outColor = new float[3];

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.EnchantmentMixinAccess;
+import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.EnchantmentPriority;
@@ -10,15 +10,11 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Enchantment.class)
-public class EnchantmentMixin implements EnchantmentMixinAccess {
-
-    @Shadow @Final private Enchantment.Rarity rarity;
+public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     /**
      * @author fedpol1

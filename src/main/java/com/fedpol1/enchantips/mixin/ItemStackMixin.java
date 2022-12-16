@@ -1,25 +1,46 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin {
+public abstract class ItemStackMixin implements ItemStackAccess {
+
+    @Shadow
+    private static boolean isSectionVisible(int flags, ItemStack.TooltipSection tooltipSection) { throw new AssertionError(); }
+
+    @Shadow
+    private int getHideFlags() { throw new AssertionError(); }
+
+    @Shadow
+    private NbtCompound nbt;
+
+    @Final
+    @Shadow
+    private static String UNBREAKABLE_KEY;
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsInjectGetTooltipEnchantability(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    private void enchantipsAddEnchantabilityTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
         if(t.getItem().isEnchantable(t) && ModConfig.SHOW_ENCHANTABILITY.getValue()) {
             if(!(t.hasEnchantments() && !ModConfig.SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getValue())) {
@@ -28,14 +49,44 @@ public class ItemStackMixin {
         }
     }
 
-    @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsInjectGetTooltipRepairCost(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;hasNbt()Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void enchantipsAddRepairCostTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
-        if(!(t.getItem() instanceof EnchantedBookItem) && ModConfig.SHOW_REPAIRCOST.getValue()) {
-            int cost = t.getRepairCost();
-            if(!(cost == 0 && !ModConfig.SHOW_REPAIRCOST_WHEN_0.getValue())) {
-                list.add(TooltipBuilder.buildRepairCost(cost));
-            }
+        int cost = t.getRepairCost();
+        if(!(t.getItem() instanceof EnchantedBookItem) && cost != 0 && ModConfig.SHOW_REPAIRCOST.getValue()) {
+            list.add(TooltipBuilder.buildRepairCost(cost));
         }
+    }
+
+    // these two methods, in conjunction, replace the unbreakable tooltip
+    @Redirect(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isSectionVisible(ILnet/minecraft/item/ItemStack$TooltipSection;)Z"))
+    private boolean enchantipsRemoveOldUnbreakableTooltip(int flags, ItemStack.TooltipSection tooltipSection) {
+        if(tooltipSection == ItemStack.TooltipSection.UNBREAKABLE) { return false; }
+        return ItemStackMixin.isSectionVisible(flags, tooltipSection);
+    }
+
+    @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;hasNbt()Z", ordinal = 1)),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isSectionVisible(ILnet/minecraft/item/ItemStack$TooltipSection;)Z", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void enchantipsAddNewUnbreakableTooltip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText, int i) {
+        if (ItemStackMixin.isSectionVisible(i, ItemStack.TooltipSection.UNBREAKABLE) && this.nbt.getBoolean(UNBREAKABLE_KEY)) {
+            list.add(TooltipBuilder.buildUnbreakable());
+        }
+    }
+
+    @Override
+    public boolean enchantipsIsUnbreakable() {
+        ItemStack t = (ItemStack)(Object)this;
+        NbtCompound n = t.getNbt();
+        return n != null && n.getBoolean(UNBREAKABLE_KEY);
+    }
+
+    public boolean enchantipsUnbreakableVisible() {
+        return ItemStackMixin.isSectionVisible(this.getHideFlags(), ItemStack.TooltipSection.UNBREAKABLE);
+    }
+
+    public boolean enchantipsEnchantmentsVisible() {
+        return ItemStackMixin.isSectionVisible(this.getHideFlags(), ItemStack.TooltipSection.ENCHANTMENTS);
     }
 }

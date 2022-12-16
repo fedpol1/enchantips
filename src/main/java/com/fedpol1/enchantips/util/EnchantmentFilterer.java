@@ -4,7 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class EnchantmentFilterer {
+public abstract class EnchantmentFilterer {
 
     public static int getLowerBound(Enchantment enchantment, int enchantmentLevel, ItemStack itemStack, int tableLevel) {
         double modifiedEnchantmentLevel = (double)(tableLevel + 1) * 0.85;

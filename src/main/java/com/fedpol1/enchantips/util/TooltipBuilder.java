@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.EnchantmentMixinAccess;
+import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfig;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.nbt.NbtCompound;
@@ -11,7 +11,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
-public class TooltipBuilder {
+public abstract class TooltipBuilder {
 
     public static final String REPAIR_COST_TOOLTIP = EnchantipsClient.MODID + ".tooltip.repair_cost";
     public static final String ENCHANTABILITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantability";
@@ -54,12 +54,16 @@ public class TooltipBuilder {
         return Text.translatable(REPAIR_COST_TOOLTIP, costText).setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST.getColor()));
     }
 
+    public static MutableText buildUnbreakable() {
+        return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTMENT_OVERLEVELLED.getColor()));
+    }
+
     // aaaaaaaa
     public static void appendEnchantmentsEbook(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
         for(int i = 0; i < enchantments.size(); ++i) {
             NbtCompound nbtCompound = enchantments.getCompound(i);
             Registry.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent((e) -> {
-                tooltip.add(((EnchantmentMixinAccess)e).enchantipsGetName(EnchantmentHelper.getLevelFromNbt(nbtCompound), modifyRarity));
+                tooltip.add(((EnchantmentAccess)e).enchantipsGetName(EnchantmentHelper.getLevelFromNbt(nbtCompound), modifyRarity));
             });
         }
     }

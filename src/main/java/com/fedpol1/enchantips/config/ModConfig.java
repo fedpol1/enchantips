@@ -18,8 +18,7 @@ public class ModConfig {
     public static TreeMap<String, BooleanDataEntry.BooleanData> bools = new TreeMap<>();
     public static TreeMap<String, ColorDataEntry.ColorData> colors = new TreeMap<>();
 
-    public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show.repair_cost", true);
-    public static BooleanDataEntry SHOW_REPAIRCOST_WHEN_0 = new BooleanDataEntry("show.repair_cost.when_0", true);
+    public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show.repair_cost", true, true);
     public static BooleanDataEntry SHOW_ENCHANTABILITY = new BooleanDataEntry("show.enchantability", true);
     public static BooleanDataEntry SHOW_ENCHANTABILITY_WHEN_ENCHANTED = new BooleanDataEntry("show.enchantability.when_enchanted", true);
     public static BooleanDataEntry SHOW_RARITY = new BooleanDataEntry("show.rarity", true);
@@ -30,6 +29,7 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", false, true);
     public static BooleanDataEntry SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH = new BooleanDataEntry("show.highlights.matching_enchantment", false, true);
     public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", false, true);
+    public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", true);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color.enchantment.normal.min", 0x7f7f7f);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color.enchantment.normal.max", 0xdfdfdf);
     public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color.enchantment.treasure.min", 0x009f00);
@@ -52,7 +52,6 @@ public class ModConfig {
     public static void registerConfig() {
         EnchantipsClient.LOGGER.info("Initializing configs");
         bools.put(SHOW_REPAIRCOST.key, SHOW_REPAIRCOST.data);
-        bools.put(SHOW_REPAIRCOST_WHEN_0.key, SHOW_REPAIRCOST_WHEN_0.data);
         bools.put(SHOW_ENCHANTABILITY.key, SHOW_ENCHANTABILITY.data);
         bools.put(SHOW_ENCHANTABILITY_WHEN_ENCHANTED.key, SHOW_ENCHANTABILITY_WHEN_ENCHANTED.data);
         bools.put(SHOW_RARITY.key, SHOW_RARITY.data);
@@ -63,6 +62,7 @@ public class ModConfig {
         bools.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.key, SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
         bools.put(SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.key, SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.data);
         bools.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.key, SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.data);
+        bools.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.key, HIGHLIGHTS_RESPECT_HIDEFLAGS.data);
         colors.put(ENCHANTMENT_NORMAL_MIN.key, ENCHANTMENT_NORMAL_MIN.data);
         colors.put(ENCHANTMENT_NORMAL_MAX.key, ENCHANTMENT_NORMAL_MAX.data);
         colors.put(ENCHANTMENT_TREASURE_MIN.key, ENCHANTMENT_TREASURE_MIN.data);
