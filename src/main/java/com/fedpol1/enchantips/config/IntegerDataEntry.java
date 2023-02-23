@@ -2,31 +2,31 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 
-public class BooleanDataEntry {
+public class IntegerDataEntry {
 
     public final String key;
-    public final BooleanData data;
+    public final IntegerData data;
 
-    public BooleanDataEntry(String key, boolean defaultValue) {
+    public IntegerDataEntry(String key, int defaultValue) {
         this(key, defaultValue, false);
     }
 
-    public BooleanDataEntry(String key, boolean defaultValue, boolean hasTooltip) {
+    public IntegerDataEntry(String key, int defaultValue, boolean hasTooltip) {
         this.key = key;
-        this.data = new BooleanData(defaultValue, defaultValue, key, hasTooltip);
+        this.data = new IntegerData(defaultValue, defaultValue, key, hasTooltip);
     }
 
-    public boolean getValue() {
+    public int getValue() {
         return this.data.value;
     }
 
-    public static class BooleanData implements Data<Boolean> {
-        private boolean value;
-        private final boolean defaultValue;
+    public static class IntegerData implements Data<Integer> {
+        private int value;
+        private final int defaultValue;
         private final String title;
         private final String tooltip;
 
-        BooleanData(boolean value, boolean defaultValue, String key, boolean hasTooltip) {
+        IntegerData(int value, int defaultValue, String key, boolean hasTooltip) {
             this.value = value;
             this.defaultValue = defaultValue;
             this.title = EnchantipsClient.MODID + ".config.title." + key;
@@ -42,11 +42,11 @@ public class BooleanDataEntry {
             this.value = this.defaultValue;
         }
 
-        public Boolean getValue() {
+        public Integer getValue() {
             return this.value;
         }
 
-        public Boolean getDefaultValue() {
+        public Integer getDefaultValue() {
             return this.defaultValue;
         }
 
@@ -59,7 +59,7 @@ public class BooleanDataEntry {
             return this.tooltip;
         }
 
-        public void setValue(Boolean v) {
+        public void setValue(Integer v) {
             this.value = v;
         }
     }

@@ -1,10 +1,37 @@
 package com.fedpol1.enchantips.util;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
-public abstract class EnchantmentListUtil {
+import java.util.ArrayList;
+
+public abstract class EnchantmentListHelper {
+
+    public static Enchantment getEnchantment(NbtElement e) {
+        if(!(e instanceof NbtCompound c)) { return null; }
+        if(!c.contains("id", NbtElement.STRING_TYPE)) { return null; }
+        if(!c.contains("lvl", NbtElement.NUMBER_TYPE)) { return null; }
+        return Registry.ENCHANTMENT.get(new Identifier(c.getString("id")));
+    }
+
+    public static ArrayList<Enchantment> getAllEnchantments(ItemStack stack) {
+        ArrayList<Enchantment> enchantments = new ArrayList<>();
+        NbtList enchantmentNbt = stack.isOf(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantmentNbt(stack) : stack.getEnchantments();
+        Enchantment current;
+        for(NbtElement e : enchantmentNbt) {
+            current = getEnchantment(e);
+            if(current == null) { continue; }
+            enchantments.add(current);
+        }
+        return enchantments;
+    }
 
     public static int compareEnchantments(NbtElement a, NbtElement b, boolean compareLevels) {
         int score = 0;
@@ -40,7 +67,7 @@ public abstract class EnchantmentListUtil {
         int matches = 0;
         for(int j = 0; j < a.size(); j++) {
             for(int k = 0; k < b.size(); k++) {
-                if(EnchantmentListUtil.compareEnchantments(a.get(j), b.get(k), compareLevels) == 0) {
+                if(EnchantmentListHelper.compareEnchantments(a.get(j), b.get(k), compareLevels) == 0) {
                     matches++;
                     if(matches == a.size() || matches == b.size()) { return matches; }
                 }

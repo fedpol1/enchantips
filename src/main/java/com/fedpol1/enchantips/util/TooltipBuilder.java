@@ -22,16 +22,16 @@ public abstract class TooltipBuilder {
     public static MutableText buildRarity(int rarity, TextColor numberColor) {
         MutableText rarityText = MutableText.of(new LiteralTextContent(Integer.toString(rarity)));
         rarityText.setStyle(Style.EMPTY.withColor(numberColor));
-        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(ModConfig.RARITY_BRACKET.getColor()));
+        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(ModConfig.RARITY_BRACKET.getValue()));
     }
 
     public static MutableText buildModifiedLevel(int lower, int upper) {
-        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_ENCHANTMENT_LEVEL.getColor(), ModConfig.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getColor(), MODIFIED_LEVEL_TOOLTIP);
+        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_ENCHANTMENT_LEVEL.getValue(), ModConfig.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getValue(), MODIFIED_LEVEL_TOOLTIP);
     }
 
     // is only responsible for generating the modified level interval prefix
     public static MutableText buildModifiedLevelForEnchantment(int lower, int upper) {
-        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT.getColor(), ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getColor(), MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP);
+        return buildModifiedLevelGeneric(lower, upper, ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT.getValue(), ModConfig.MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getValue(), MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP);
     }
 
     private static MutableText buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
@@ -45,17 +45,17 @@ public abstract class TooltipBuilder {
 
     public static MutableText buildEnchantability(int ench) {
         MutableText enchText = MutableText.of(new LiteralTextContent(Integer.toString(ench)));
-        enchText.setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY_VALUE.getColor()));
-        return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText).setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY.getColor()));
+        enchText.setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY_VALUE.getValue()));
+        return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText).setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTABILITY.getValue()));
     }
     public static MutableText buildRepairCost(int cost) {
         MutableText costText = MutableText.of(new LiteralTextContent(Integer.toString(cost)));
-        costText.setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST_VALUE.getColor()));
-        return Text.translatable(REPAIR_COST_TOOLTIP, costText).setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST.getColor()));
+        costText.setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST_VALUE.getValue()));
+        return Text.translatable(REPAIR_COST_TOOLTIP, costText).setStyle(Style.EMPTY.withColor(ModConfig.REPAIRCOST.getValue()));
     }
 
     public static MutableText buildUnbreakable() {
-        return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTMENT_OVERLEVELLED.getColor()));
+        return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(ModConfig.ENCHANTMENT_SPECIAL.getValue()));
     }
 
     // aaaaaaaa

@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.util;
 
 public enum EnchantmentPriority {
-    OVERLEVELLED(3),
+    SPECIAL(3),
     CURSED(2),
     TREASURE(1),
     NORMAL(0);

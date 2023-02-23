@@ -1,9 +1,10 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.ItemStackAccess;
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
@@ -17,54 +18,55 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Optional;
+import java.util.*;
 
-public abstract class SlotHighlightHelper {
-
-    private static float[] getSpecialEnchantedSlotColor(ItemStack stack) {
-        NbtList enchantments = stack.getEnchantments();
-        if(stack.isOf(Items.ENCHANTED_BOOK)) { enchantments = EnchantedBookItem.getEnchantmentNbt(stack); }
-
-        TextColor finalColor = null;
-        EnchantmentPriority priority = EnchantmentPriority.NORMAL;
-        float intensity = 0.0f;
-        ItemStackAccess stackAccess = (ItemStackAccess)(Object)stack;
-
-        // treat unbreakable as an overlevelled unbreaking enchantment
-        if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
-            finalColor = ModConfig.ENCHANTMENT_OVERLEVELLED.getColor();
-            priority = EnchantmentPriority.OVERLEVELLED;
-            intensity = 1.0f;
-        }
-
-        if(stackAccess.enchantipsEnchantmentsVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
-            // determine enchantment colour
-            for (int j = 0; j < enchantments.size(); j++) {
-                Optional<Enchantment> enchantment = Registry.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(enchantments.getCompound(j)));
-                int level = EnchantmentHelper.getLevelFromNbt(enchantments.getCompound(j));
-                if (enchantment.isEmpty()) { continue; }
-                EnchantmentAccess e = (EnchantmentAccess) (enchantment.get());
-                EnchantmentPriority currentPriority = e.enchantipsGetPriority(level);
-                float currentIntensity = e.enchantipsGetIntensity(level);
-                if (currentPriority.ge(priority) && currentIntensity >= intensity) {
-                    finalColor = e.enchantipsGetColor(level);
-                    priority = currentPriority;
-                    intensity = currentIntensity;
-                }
-            }
-        }
-        if(finalColor == null) { return null; }
-        return ColorManager.intToFloats(finalColor.getRgb());
-    }
+public abstract class SlotHighlightHelper extends DrawableHelper {
 
     public static void drawSpecialEnchantedItemSlotHighlights(MatrixStack matrices, HandledScreen screen, ScreenHandler handler) {
+        Slot slot;
+        ItemStack slotStack;
+        ArrayList<EnchantmentColorDataEntry> arrayOfEnchantmentData;
+        ArrayList<TextColor> arrayOfColor;
+
         for (int i = 0; i < handler.slots.size(); i++) {
-            Slot slot = handler.slots.get(i);
-            float[] color = SlotHighlightHelper.getSpecialEnchantedSlotColor(slot.getStack());
-            if(color != null) {
-                RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0f);
-                HandledScreen.drawSlotHighlight(matrices, slot.x, slot.y, screen.getZOffset());
+            slot = handler.slots.get(i);
+            slotStack = slot.getStack();
+            if(slotStack.getCount() == 0) { continue; }
+
+            arrayOfEnchantmentData = new ArrayList<>();
+            for(Enchantment e : EnchantmentListHelper.getAllEnchantments(slotStack)) {
+                arrayOfEnchantmentData.add(ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId(e)).toString()));
             }
+            Collections.sort(arrayOfEnchantmentData, null);
+
+            ItemStackAccess stackAccess = (ItemStackAccess)(Object)slotStack;
+            arrayOfColor = new ArrayList<>();
+            if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
+                arrayOfColor.add(ModConfig.ENCHANTMENT_SPECIAL.getValue());
+            }
+            if(stackAccess.enchantipsEnchantmentsVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
+                float intensity;
+                ItemStack tempStack = slotStack;
+                if(slotStack.isOf(Items.ENCHANTED_BOOK)) {
+                    tempStack = slotStack.copy();
+                    tempStack.setSubNbt(ItemStack.ENCHANTMENTS_KEY, EnchantedBookItem.getEnchantmentNbt(slotStack)); // enchanted books store enchantments differently
+                }
+                for (EnchantmentColorDataEntry dataEntry : arrayOfEnchantmentData) {
+                    if (!dataEntry.active  || !dataEntry.showHighlight) { continue; }
+                    intensity = ((EnchantmentAccess) (dataEntry.enchantment)).enchantipsGetIntensity(EnchantmentHelper.getLevel(dataEntry.enchantment, tempStack));
+                    arrayOfColor.add(ColorManager.lerpColor(dataEntry.minColor, dataEntry.maxColor, intensity));
+                }
+            }
+            drawEnchantments(matrices, arrayOfColor, slot.x, slot.y);
+        }
+    }
+
+    public static void drawEnchantments(MatrixStack matrices, ArrayList<TextColor> arrayOfColor, int x, int y) {
+        int limit = Math.min(arrayOfColor.size(), ModConfig.HIGHLIGHT_LIMIT.getValue());
+        float frac = 16.0f / limit;
+        for(int i = 0; i < limit; i++) {
+            HandledScreen.fill(matrices, x + Math.round(i * frac), y, x + Math.round((i+1) * frac), y + 16, 0xff000000 | arrayOfColor.get(i).getRgb());
+            //HandledScreen.fill(matrices, x, y, x + 16, y + 16, 0xff000000 | arrayOfColor.get(i).getRgb());
         }
     }
 
@@ -76,13 +78,11 @@ public abstract class SlotHighlightHelper {
             NbtList slotEnchantments = slotStack.getEnchantments();
             if(slotStack.isOf(Items.ENCHANTED_BOOK)) { slotEnchantments = EnchantedBookItem.getEnchantmentNbt(slotStack); }
 
-            int matches = EnchantmentListUtil.countMatches(offhandEnchantments, slotEnchantments, false);
+            int matches = EnchantmentListHelper.countMatches(offhandEnchantments, slotEnchantments, false);
             if(matches > 0) {
-                float[] color;
-                if(matches == offhandEnchantments.size()) { color = ColorManager.intToFloats(ModConfig.SLOT_HIGHLIGHT_FULL_MATCH.getColor().getRgb()); }
-                else { color = ColorManager.intToFloats(ModConfig.SLOT_HIGHLIGHT_PARTIAL_MATCH.getColor().getRgb()); }
-                RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0f);
-                HandledScreen.drawSlotHighlight(matrices, slot.x, slot.y, screen.getZOffset());
+                int color;
+                color = (matches == offhandEnchantments.size() ? ModConfig.SLOT_HIGHLIGHT_FULL_MATCH : ModConfig.SLOT_HIGHLIGHT_PARTIAL_MATCH).getValue().getRgb();
+                HandledScreen.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, 0xff000000 | color);
             }
         }
     }

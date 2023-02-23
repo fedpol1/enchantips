@@ -8,5 +8,5 @@ public interface EnchantmentAccess {
     Text enchantipsGetName(int level, boolean modifyRarity);
     TextColor enchantipsGetColor(int level);
     float enchantipsGetIntensity(int level);
-    EnchantmentPriority enchantipsGetPriority(int level);
+    EnchantmentPriority enchantipsGetPriority();
 }

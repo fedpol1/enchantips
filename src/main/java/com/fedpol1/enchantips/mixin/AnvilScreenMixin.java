@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.gui.AnvilScreenSwapItemButton;
-import com.fedpol1.enchantips.util.EnchantmentListUtil;
+import com.fedpol1.enchantips.util.EnchantmentListHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
@@ -20,8 +20,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Comparator;
 
 @Mixin(AnvilScreen.class)
 public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> {
@@ -64,7 +62,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                 this.handler.updateResult();
 
                 // swap items again, this time notifying the server, and only if it is favorable to do so
-                if (newCost > 0 && originalCost > newCost && EnchantmentListUtil.sameEnchantments(originalEnchants, newEnchants, true)) {
+                if (newCost > 0 && originalCost > newCost && EnchantmentListHelper.sameEnchantments(originalEnchants, newEnchants, true)) {
                     if (MinecraftClient.getInstance().getNetworkHandler() != null) {
                         for (int i : new int[]{0, 1, 0}) {
                             ClickSlotC2SPacket p = new ClickSlotC2SPacket(

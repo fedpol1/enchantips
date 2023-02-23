@@ -18,11 +18,11 @@ public class ColorDataEntry {
         this.data = new ColorData(defaultColor, defaultColor, key, hasTooltip);
     }
 
-    public TextColor getColor() {
+    public TextColor getValue() {
         return this.data.color;
     }
 
-    public static class ColorData {
+    public static class ColorData implements Data<TextColor> {
         private TextColor color;
         private final TextColor defaultColor;
         private final String title;
@@ -44,15 +44,15 @@ public class ColorDataEntry {
             this.color = this.defaultColor;
         }
 
-        public TextColor getColor() {
+        public TextColor getValue() {
             if(this.color == null) {
                 EnchantipsClient.LOGGER.warn(title + " color is null, setting default");
-                this.color = this.getDefaultColor();
+                this.color = this.getDefaultValue();
             }
             return this.color;
         }
 
-        public TextColor getDefaultColor() {
+        public TextColor getDefaultValue() {
             // this should never be null
             return this.defaultColor;
         }
@@ -66,12 +66,8 @@ public class ColorDataEntry {
             return this.tooltip;
         }
 
-        public void setColor(TextColor c) {
+        public void setValue(TextColor c) {
             this.color = c;
-        }
-
-        public void setColor(int c) {
-            this.setColor(TextColor.fromRgb(c));
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModConfig;
-import com.fedpol1.enchantips.util.ColorManager;
-import com.fedpol1.enchantips.util.EnchantmentListUtil;
 import com.fedpol1.enchantips.util.SlotHighlightHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -13,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +26,9 @@ public abstract class HandledScreenMixin {
         ItemStack offhand = MinecraftClient.getInstance().player.getStackInHand(Hand.OFF_HAND);
         HandledScreen t = (HandledScreen) (Object) this;
         ScreenHandler handler = t.getScreenHandler();
+
+        float[] oldShaderColor = RenderSystem.getShaderColor();
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if(offhand == null || !offhand.isOf(Items.ENCHANTED_BOOK)) {
             if(ModConfig.SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getValue()) {
                 SlotHighlightHelper.drawSpecialEnchantedItemSlotHighlights(matrices, t, handler);
@@ -40,5 +40,6 @@ public abstract class HandledScreenMixin {
                 SlotHighlightHelper.drawEnchantedBookSlotHighlights(matrices, t, handler, offhandEnchantments);
             }
         }
+        RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);
     }
 }
