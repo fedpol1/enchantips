@@ -92,7 +92,7 @@ public class ModConfig {
     }
 
     private static void setDefaultConfig() {
-        for(Map.Entry<String, T> item : configData.entrySet()) {
+        for(Map.Entry<String, Data<?>> item : configData.entrySet()) {
             configData.get(item.getKey()).setValueToDefault();
         }
         setPartialDefaultConfigEnchantments();
