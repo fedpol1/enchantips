@@ -1,19 +1,16 @@
 package com.fedpol1.enchantips.config;
 
-import com.fedpol1.enchantips.EnchantipsClient;
+public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
 
-public class IntegerDataEntry {
-
-    public final String key;
     public final IntegerData data;
 
-    public IntegerDataEntry(String key, int defaultValue) {
-        this(key, defaultValue, false);
+    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue) {
+        this(key, category, defaultValue, false);
     }
 
-    public IntegerDataEntry(String key, int defaultValue, boolean hasTooltip) {
-        this.key = key;
-        this.data = new IntegerData(defaultValue, defaultValue, key, hasTooltip);
+    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, boolean hasTooltip) {
+        super(key, category, hasTooltip);
+        this.data = new IntegerData(this, defaultValue);
     }
 
     public int getValue() {
@@ -21,21 +18,19 @@ public class IntegerDataEntry {
     }
 
     public static class IntegerData implements Data<Integer> {
+
+        private final IntegerDataEntry entry;
         private int value;
         private final int defaultValue;
-        private final String title;
-        private final String tooltip;
 
-        IntegerData(int value, int defaultValue, String key, boolean hasTooltip) {
-            this.value = value;
+        IntegerData(IntegerDataEntry entry, int defaultValue) {
+            this.entry = entry;
+            this.value = defaultValue;
             this.defaultValue = defaultValue;
-            this.title = EnchantipsClient.MODID + ".config.title." + key;
-            if(hasTooltip) {
-                this.tooltip = EnchantipsClient.MODID + ".config.tooltip." + key;
-            }
-            else {
-                this.tooltip = "";
-            }
+        }
+
+        public IntegerDataEntry getEntry() {
+            return this.entry;
         }
 
         public void setValueToDefault() {
@@ -46,21 +41,20 @@ public class IntegerDataEntry {
             return this.value;
         }
 
+        public String getStringValue() {
+            return Integer.toString(this.getValue());
+        }
+
         public Integer getDefaultValue() {
             return this.defaultValue;
         }
 
-        public String getTitle() {
-            // this should never be null
-            return this.title;
-        }
-
-        public String getTooltip() {
-            return this.tooltip;
-        }
-
         public void setValue(Integer v) {
             this.value = v;
+        }
+
+        public void readStringValue(String s) {
+            this.value = Integer.parseInt(s);
         }
     }
 }

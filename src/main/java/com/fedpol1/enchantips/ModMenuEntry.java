@@ -1,16 +1,15 @@
 package com.fedpol1.enchantips;
 
-import com.fedpol1.enchantips.config.BooleanDataEntry;
+import com.fedpol1.enchantips.config.*;
 import com.fedpol1.enchantips.config.BooleanDataEntry.*;
-import com.fedpol1.enchantips.config.ColorDataEntry;
 import com.fedpol1.enchantips.config.ColorDataEntry.*;
-import com.fedpol1.enchantips.config.IntegerDataEntry;
-import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.IntegerDataEntry.*;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.impl.builders.AbstractFieldBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -34,86 +33,43 @@ public class ModMenuEntry implements ModMenuApi {
 
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            // tooltip toggles
-            for(Map.Entry<String, BooleanDataEntry.BooleanData> item : ModConfig.tooltipToggles.entrySet()) {
-                BooleanData value = item.getValue();
-                tooltipToggles.addEntry(
-                        entryBuilder.startBooleanToggle(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(newValue))
-                                .build()
-                );
-            }
+            for(Map.Entry<String, Data<?>> item : ModConfig.configData.entrySet()) {
+                Data<?> value = item.getValue();
 
-            // enchantment colors
-            for(Map.Entry<String, ColorDataEntry.ColorData> item : ModConfig.enchantmentColors.entrySet()) {
-                ColorData value = item.getValue();
-                enchantmentColors.addEntry(
-                        entryBuilder.startColorField(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(TextColor.fromRgb(newValue)))
-                                .build()
-                );
-            }
+                ConfigCategory cat;
+                AbstractFieldBuilder fieldBuilder = null;
+                switch (item.getValue().getEntry().getCategory()) {
+                    case TOOLTIP_TOGGLE -> { cat = tooltipToggles; }
+                    case ENCHANTMENT_GROUP_COLOR -> { cat = enchantmentColors; }
+                    case TOOLTIP_COLOR -> { cat = tooltipColors; }
+                    case SLOT_HIGHLIGHT -> { cat = highlights; }
+                    case MISCELLANEOUS -> { cat = miscellaneous; }
+                    default -> { cat = miscellaneous; }
+                }
 
-            // tooltip colors
-            for(Map.Entry<String, ColorDataEntry.ColorData> item : ModConfig.tooltipColors.entrySet()) {
-                ColorData value = item.getValue();
-                tooltipColors.addEntry(
-                        entryBuilder.startColorField(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(TextColor.fromRgb(newValue)))
-                                .build()
-                );
-            }
-
-            // highlights
-            for(Map.Entry<String, BooleanDataEntry.BooleanData> item : ModConfig.highlightToggles.entrySet()) {
-                BooleanData value = item.getValue();
-                highlights.addEntry(
-                        entryBuilder.startBooleanToggle(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(newValue))
-                                .build()
-                );
-            }
-
-            for(Map.Entry<String, ColorDataEntry.ColorData> item : ModConfig.highlightColors.entrySet()) {
-                ColorData value = item.getValue();
-                highlights.addEntry(
-                        entryBuilder.startColorField(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(TextColor.fromRgb(newValue)))
-                                .build()
-                );
-            }
-
-            // misc
-            for(Map.Entry<String, BooleanDataEntry.BooleanData> item : ModConfig.miscToggles.entrySet()) {
-                BooleanData value = item.getValue();
-                miscellaneous.addEntry(
-                        entryBuilder.startBooleanToggle(Text.translatable(value.getTitle()), value.getValue())
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(newValue))
-                                .build()
-                );
-            }
-
-            for(Map.Entry<String, IntegerDataEntry.IntegerData> item : ModConfig.miscValues.entrySet()) {
-                IntegerDataEntry.IntegerData value = item.getValue();
-                miscellaneous.addEntry(
-                        entryBuilder.startIntSlider(Text.translatable(value.getTitle()), value.getValue(), 1, 16)
-                                .setTooltip(Text.translatable(value.getTooltip()))
-                                .setDefaultValue(value.getDefaultValue())
-                                .setSaveConsumer(newValue -> value.setValue(newValue))
-                                .build()
-                );
+                if(value instanceof ColorData colorValue) {
+                    fieldBuilder = entryBuilder
+                            .startColorField(Text.translatable(colorValue.getEntry().getTitle()), colorValue.getValue())
+                            .setDefaultValue(colorValue.getDefaultValue())
+                            .setSaveConsumer(newValue -> colorValue.setValue(TextColor.fromRgb(newValue)))
+                            .setTooltip(Text.translatable(colorValue.getEntry().getTooltip()));
+                }
+                if(value instanceof BooleanData booleanValue) {
+                    fieldBuilder = entryBuilder
+                            .startBooleanToggle(Text.translatable(booleanValue.getEntry().getTitle()), booleanValue.getValue())
+                            .setDefaultValue(booleanValue.getDefaultValue())
+                            .setSaveConsumer(newValue -> booleanValue.setValue(newValue))
+                            .setTooltip(Text.translatable(booleanValue.getEntry().getTooltip()));
+                }
+                if(value instanceof IntegerData integerValue) {
+                    fieldBuilder = entryBuilder
+                            .startIntSlider(Text.translatable(integerValue.getEntry().getTitle()), integerValue.getValue(), 1, 16)
+                            .setDefaultValue(integerValue.getDefaultValue())
+                            .setSaveConsumer(newValue -> integerValue.setValue(newValue))
+                            .setTooltip(Text.translatable(integerValue.getEntry().getTooltip()));
+                }
+                assert fieldBuilder != null;
+                cat.addEntry(fieldBuilder.build());
             }
 
             // save config
