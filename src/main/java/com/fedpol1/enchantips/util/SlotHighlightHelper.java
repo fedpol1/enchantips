@@ -22,7 +22,7 @@ import java.util.*;
 
 public abstract class SlotHighlightHelper extends DrawableHelper {
 
-    public static void drawSpecialEnchantedItemSlotHighlights(MatrixStack matrices, HandledScreen screen, ScreenHandler handler) {
+    public static void drawSpecialEnchantedItemSlotHighlights(MatrixStack matrices, ScreenHandler handler) {
         Slot slot;
         ItemStack slotStack;
         ArrayList<EnchantmentColorDataEntry> arrayOfEnchantmentData;
@@ -52,7 +52,7 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
                     tempStack.setSubNbt(ItemStack.ENCHANTMENTS_KEY, EnchantedBookItem.getEnchantmentNbt(slotStack)); // enchanted books store enchantments differently
                 }
                 for (EnchantmentColorDataEntry dataEntry : arrayOfEnchantmentData) {
-                    if (!dataEntry.active  || !dataEntry.showHighlight) { continue; }
+                    if (!dataEntry.showHighlight) { continue; }
                     intensity = ((EnchantmentAccess) (dataEntry.enchantment)).enchantipsGetIntensity(EnchantmentHelper.getLevel(dataEntry.enchantment, tempStack));
                     arrayOfColor.add(ColorManager.lerpColor(dataEntry.minColor, dataEntry.maxColor, intensity));
                 }
@@ -66,11 +66,10 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
         float frac = 16.0f / limit;
         for(int i = 0; i < limit; i++) {
             HandledScreen.fill(matrices, x + Math.round(i * frac), y, x + Math.round((i+1) * frac), y + 16, 0xff000000 | arrayOfColor.get(i).getRgb());
-            //HandledScreen.fill(matrices, x, y, x + 16, y + 16, 0xff000000 | arrayOfColor.get(i).getRgb());
         }
     }
 
-    public static void drawEnchantedBookSlotHighlights(MatrixStack matrices, HandledScreen screen, ScreenHandler handler, NbtList offhandEnchantments) {
+    public static void drawEnchantedBookSlotHighlights(MatrixStack matrices, ScreenHandler handler, NbtList offhandEnchantments) {
         for (int i = 0; i < handler.slots.size(); i++) {
             Slot slot = handler.slots.get(i);
             ItemStack slotStack = slot.getStack();

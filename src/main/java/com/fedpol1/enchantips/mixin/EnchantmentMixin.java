@@ -10,8 +10,11 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+
+import java.util.Objects;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin implements EnchantmentAccess {
@@ -75,29 +78,9 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-        EnchantmentPriority priority = this.enchantipsGetPriority();
 
-        TextColor colorMin;
-        TextColor colorMax;
-
-        switch (priority) {
-            case SPECIAL:
-                colorMin = ModConfig.ENCHANTMENT_SPECIAL.getValue();
-                colorMax = ModConfig.ENCHANTMENT_SPECIAL.getValue();
-                break;
-            case CURSED:
-                colorMin = ModConfig.ENCHANTMENT_CURSE_MIN.getValue();
-                colorMax = ModConfig.ENCHANTMENT_CURSE_MAX.getValue();
-                break;
-            case TREASURE:
-                colorMin = ModConfig.ENCHANTMENT_TREASURE_MIN.getValue();
-                colorMax = ModConfig.ENCHANTMENT_TREASURE_MAX.getValue();
-                break;
-            case NORMAL:
-            default:
-                colorMin = ModConfig.ENCHANTMENT_NORMAL_MIN.getValue();
-                colorMax = ModConfig.ENCHANTMENT_NORMAL_MAX.getValue();
-        }
+        TextColor colorMin = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString()).minColor;
+        TextColor colorMax = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString()).maxColor;
 
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }

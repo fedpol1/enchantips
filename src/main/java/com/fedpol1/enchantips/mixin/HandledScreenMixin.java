@@ -24,20 +24,19 @@ public abstract class HandledScreenMixin {
     private void enchantipsInjectRenderDrawHighlights(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if(MinecraftClient.getInstance().player == null) { return; /* short circuit, do nothing */ }
         ItemStack offhand = MinecraftClient.getInstance().player.getStackInHand(Hand.OFF_HAND);
-        HandledScreen t = (HandledScreen) (Object) this;
-        ScreenHandler handler = t.getScreenHandler();
+        ScreenHandler handler = ((HandledScreen<?>) (Object) this).getScreenHandler();
 
         float[] oldShaderColor = RenderSystem.getShaderColor();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if(offhand == null || !offhand.isOf(Items.ENCHANTED_BOOK)) {
             if(ModConfig.SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getValue()) {
-                SlotHighlightHelper.drawSpecialEnchantedItemSlotHighlights(matrices, t, handler);
+                SlotHighlightHelper.drawSpecialEnchantedItemSlotHighlights(matrices, handler);
             }
         }
         else {
             if(ModConfig.SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.getValue()) {
                 NbtList offhandEnchantments = EnchantedBookItem.getEnchantmentNbt(offhand);
-                SlotHighlightHelper.drawEnchantedBookSlotHighlights(matrices, t, handler, offhandEnchantments);
+                SlotHighlightHelper.drawEnchantedBookSlotHighlights(matrices, handler, offhandEnchantments);
             }
         }
         RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);

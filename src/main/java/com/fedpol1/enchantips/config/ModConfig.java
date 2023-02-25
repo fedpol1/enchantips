@@ -100,10 +100,7 @@ public class ModConfig {
 
     private static void setPartialDefaultConfigEnchantments() {
         for(Enchantment current : Registry.ENCHANTMENT) {
-            EnchantmentColorDataEntry dataEntry = new EnchantmentColorDataEntry(current);
-            dataEntry.order = ((EnchantmentAccess)current).enchantipsGetPriority().ordinal();
-            dataEntry.active = true;
-            individualColors.put(Objects.requireNonNull(Registry.ENCHANTMENT.getId(current)).toString(), dataEntry);
+            individualColors.put(Objects.requireNonNull(Registry.ENCHANTMENT.getId(current)).toString(), new EnchantmentColorDataEntry(current));
         }
     }
 
@@ -125,7 +122,7 @@ public class ModConfig {
                     split = line.substring(2).split(": ");
                     if (state.equals("individual_enchantment_setting")) {
                         EnchantmentColorDataEntry entry = Objects.requireNonNull(individualColors.get(line.substring(4, line.length() - 1)));
-                        for (int i = 0; i < 5; i++) {
+                        for (int i = 0; i < 4; i++) {
                             line = sc.nextLine();
                             split = line.substring(4).split(": ");
                             switch (split[0]) {
@@ -133,10 +130,8 @@ public class ModConfig {
                                 case "max_color" -> { entry.maxColor = TextColor.parse(split[1]); }
                                 case "order" -> { entry.order = Integer.parseInt(split[1]); }
                                 case "show_highlight" -> { entry.showHighlight = Boolean.parseBoolean(split[1]); }
-                                case "active" -> { entry.active = Boolean.parseBoolean(split[1]); }
                             }
                         }
-                        entry.active = true;
                         individualColors.put(entry.enchantmentKey, entry);
                     }
                     else {
@@ -181,7 +176,6 @@ public class ModConfig {
             acc.append("    max_color: ").append(item.getValue().maxColor.getHexCode()).append("\n");
             acc.append("    order: ").append(item.getValue().order).append("\n");
             acc.append("    show_highlight: ").append(item.getValue().showHighlight).append("\n");
-            acc.append("    active: ").append(item.getValue().active).append("\n");
         }
 
         try {

@@ -30,6 +30,8 @@ public class ModMenuEntry implements ModMenuApi {
             ConfigCategory tooltipColors = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors_tooltips"));
             ConfigCategory highlights = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.highlights"));
             ConfigCategory miscellaneous = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.miscellaneous"));
+            ConfigCategory individualEnchantmentColors = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.individual_enchantment.colors"));
+            ConfigCategory individualEnchantmentMeta = builder.getOrCreateCategory(Text.translatable(EnchantipsClient.MODID + ".config.title.category.individual_enchantment.meta"));
 
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
@@ -70,6 +72,37 @@ public class ModMenuEntry implements ModMenuApi {
                 }
                 assert fieldBuilder != null;
                 cat.addEntry(fieldBuilder.build());
+            }
+
+            for(Map.Entry<String, EnchantmentColorDataEntry> item : ModConfig.individualColors.entrySet()) {
+                individualEnchantmentColors.addEntry(
+                        entryBuilder
+                                .startColorField(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantment.min_color", item.getValue().enchantmentKey), item.getValue().minColor)
+                                .setDefaultValue(item.getValue().getDefaultMinColor())
+                                .setSaveConsumer(newValue -> item.getValue().minColor = TextColor.fromRgb(newValue))
+                                .build()
+                );
+                individualEnchantmentColors.addEntry(
+                        entryBuilder
+                                .startColorField(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantment.max_color", item.getValue().enchantmentKey), item.getValue().maxColor)
+                                .setDefaultValue(item.getValue().getDefaultMaxColor())
+                                .setSaveConsumer(newValue -> item.getValue().maxColor = TextColor.fromRgb(newValue))
+                                .build()
+                );
+                individualEnchantmentMeta.addEntry(
+                        entryBuilder
+                                .startIntField(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantment.order", item.getValue().enchantmentKey), item.getValue().order)
+                                .setDefaultValue(item.getValue().getDefaultOrder())
+                                .setSaveConsumer(newValue -> item.getValue().order = newValue)
+                                .build()
+                );
+                individualEnchantmentMeta.addEntry(
+                        entryBuilder
+                                .startBooleanToggle(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantment.highlight_visibility", item.getValue().enchantmentKey), item.getValue().showHighlight)
+                                .setDefaultValue(item.getValue().getDefaultHighlightVisibility())
+                                .setSaveConsumer(newValue -> item.getValue().showHighlight = newValue)
+                                .build()
+                );
             }
 
             // save config
