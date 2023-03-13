@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.EnchantmentPriority;
@@ -78,10 +79,9 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-
-        TextColor colorMin = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString()).minColor;
-        TextColor colorMax = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString()).maxColor;
-
+        EnchantmentColorDataEntry colorDataEntry = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
+        TextColor colorMin = colorDataEntry.minColor;
+        TextColor colorMax = colorDataEntry.maxColor;
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 }

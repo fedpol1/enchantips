@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.EnchantmentAccess;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.TextColor;
@@ -29,7 +28,6 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show.bar.protection", ModConfigCategory.MISCELLANEOUS, false);
     public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", ModConfigCategory.MISCELLANEOUS, false, true);
     public static BooleanDataEntry OVERRIDE_INDIVIDUAL_ENCHANTMENTS = new BooleanDataEntry("override.enchantments", ModConfigCategory.MISCELLANEOUS, true, true);
-    public static BooleanDataEntry SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH = new BooleanDataEntry("show.highlights.matching_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false, true);
     public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false, true);
     public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", ModConfigCategory.SLOT_HIGHLIGHT, true, true);
     public static IntegerDataEntry HIGHLIGHT_LIMIT = new IntegerDataEntry("highlights.limit", ModConfigCategory.SLOT_HIGHLIGHT, 4, true);
@@ -65,7 +63,6 @@ public class ModConfig {
         configData.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.getKey(), SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
         configData.put(OVERRIDE_INDIVIDUAL_ENCHANTMENTS.getKey(), OVERRIDE_INDIVIDUAL_ENCHANTMENTS.data);
         configData.put(HIGHLIGHT_LIMIT.getKey(), HIGHLIGHT_LIMIT.data);
-        configData.put(SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.getKey(), SHOW_HIGHLIGHTS_ENCHANTMENT_MATCH.data);
         configData.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getKey(), SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.data);
         configData.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.getKey(), HIGHLIGHTS_RESPECT_HIDEFLAGS.data);
         configData.put(ENCHANTMENT_NORMAL_MIN.getKey(), ENCHANTMENT_NORMAL_MIN.data);
@@ -135,7 +132,12 @@ public class ModConfig {
                         individualColors.put(entry.enchantmentKey, entry);
                     }
                     else {
-                        configData.get(split[0]).readStringValue(split[1]);
+                        try {
+                            configData.get(split[0]).readStringValue(split[1]);
+                        }
+                        catch (NullPointerException e) {
+                            EnchantipsClient.LOGGER.warn("Could not read config option " + split[0] + " with value " + split[1]);
+                        }
                     }
                 }
             }

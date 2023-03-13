@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.mixin;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
+import com.fedpol1.enchantips.util.EnchantmentLevelData;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Mixin(EnchantmentScreen.class)
@@ -38,27 +41,27 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             list.add(TooltipBuilder.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
         }
         if(ModConfig.SHOW_EXTRA_ENCHANTMENTS.getValue() && !itemStack.isOf(Items.BOOK)) {
+            ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
             for (Enchantment current : Registry.ENCHANTMENT) {
-                if (current == enchantment || !current.canCombine(enchantment)) {
-                    continue;
-                }
-                if (!current.type.isAcceptableItem(itemStack.getItem())) {
-                    continue;
-                }
-                if (!current.isAvailableForRandomSelection() || current.isTreasure()) {
-                    continue;
-                }
+                if (current == enchantment || !current.canCombine(enchantment)) { continue; }
+                if (!current.type.isAcceptableItem(itemStack.getItem())) { continue; }
+                if (!current.isAvailableForRandomSelection() || current.isTreasure()) { continue; }
                 for (int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
-                    int currentLowerBound = EnchantmentFilterer.getLowerBoundForEnchantment(current, z);
-                    int currentUpperBound = EnchantmentFilterer.getUpperBoundForEnchantment(current, z);
-                    if (currentUpperBound >= absoluteLowerBound && currentLowerBound <= absoluteUpperBound) {
-                        MutableText text = (MutableText) ((EnchantmentAccess) current).enchantipsGetName(z, itemStack.isOf(Items.ENCHANTED_BOOK));
-                        if(ModConfig.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getValue()) {
-                            text.append(" ").append(TooltipBuilder.buildModifiedLevelForEnchantment(currentLowerBound, currentUpperBound));
-                        }
-                        list.add(text);
+                    EnchantmentLevelData enchLevel = EnchantmentLevelData.of(current, z);
+                    if (enchLevel.getHighestModifiedLevel() >= absoluteLowerBound && enchLevel.getLowestModifiedLevel() <= absoluteUpperBound) {
+                        enchantmentLevelData.add(EnchantmentLevelData.of(current, z));
                     }
                 }
+            }
+            Collections.sort(enchantmentLevelData);
+            for(EnchantmentLevelData levelData : enchantmentLevelData) {
+                MutableText text = (MutableText) ((EnchantmentAccess) levelData.getEnchantment()).enchantipsGetName(levelData.getLevel(), itemStack.isOf(Items.ENCHANTED_BOOK));
+                if(ModConfig.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getValue()) {
+                    text.append(" ").append(
+                            TooltipBuilder.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
+                    );
+                }
+                list.add(text);
             }
         }
     }

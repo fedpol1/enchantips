@@ -7,18 +7,15 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 
 public abstract class EnchantmentListHelper {
 
     public static Enchantment getEnchantment(NbtElement e) {
-        if(!(e instanceof NbtCompound c)) { return null; }
-        if(!c.contains("id", NbtElement.STRING_TYPE)) { return null; }
-        if(!c.contains("lvl", NbtElement.NUMBER_TYPE)) { return null; }
-        return Registry.ENCHANTMENT.get(new Identifier(c.getString("id")));
+        EnchantmentLevelData ench = EnchantmentLevelData.of(e);
+        if(ench == null) { return null; }
+        return ench.getEnchantment();
     }
 
     public static ArrayList<Enchantment> getAllEnchantments(ItemStack stack) {

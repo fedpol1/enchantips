@@ -1,18 +1,22 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.util.EnchantmentLevelData;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Mixin(ItemStack.class)
@@ -38,6 +44,19 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     @Final
     @Shadow
     private static String UNBREAKABLE_KEY;
+
+    /**
+     * @author fedpol1
+     * @reason add sorting to enchantment tooltips
+     */
+    @Overwrite
+    public static void appendEnchantments(List<Text> tooltip, NbtList enchantments) {
+        ArrayList<EnchantmentLevelData> enchantmentLevelData = EnchantmentLevelData.ofList(enchantments);
+        Collections.sort(enchantmentLevelData);
+        for(EnchantmentLevelData ench : enchantmentLevelData) {
+            tooltip.add(((EnchantmentAccess)ench.getEnchantment()).enchantipsGetName(ench.getLevel(), false));
+        }
+    }
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void enchantipsAddEnchantabilityTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {

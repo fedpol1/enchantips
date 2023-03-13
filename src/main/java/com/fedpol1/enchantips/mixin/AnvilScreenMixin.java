@@ -28,6 +28,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
         super(handler, playerInventory, title, texture);
     }
 
+    // this is nasty
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
     protected void enchantipsSetupAddAnvilSwapButton(CallbackInfo ci) {
         if(ModConfig.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) {

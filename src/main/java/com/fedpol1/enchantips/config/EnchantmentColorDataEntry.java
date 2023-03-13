@@ -1,9 +1,7 @@
 package com.fedpol1.enchantips.config;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -54,10 +52,6 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
 
     public boolean getDefaultHighlightVisibility() {
         return true;
-    }
-
-    public Text getTitle() {
-        return Text.translatable(EnchantipsClient.MODID + ".config.title.");
     }
 
     @Override
