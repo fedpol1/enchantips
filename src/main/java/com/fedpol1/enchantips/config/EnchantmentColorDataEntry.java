@@ -2,8 +2,8 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
 
     public EnchantmentColorDataEntry(Enchantment e) {
         this.enchantment = e;
-        this.enchantmentKey = Objects.requireNonNull(Registry.ENCHANTMENT.getId(e)).toString();
+        this.enchantmentKey = Objects.requireNonNull(Registries.ENCHANTMENT.getId(e)).toString();
         this.minColor = this.getDefaultMinColor();
         this.maxColor = this.getDefaultMaxColor();
         this.order = this.getDefaultOrder();

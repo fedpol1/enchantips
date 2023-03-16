@@ -7,11 +7,11 @@ import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.EnchantmentPriority;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -79,7 +79,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-        EnchantmentColorDataEntry colorDataEntry = ModConfig.individualColors.get(Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
+        EnchantmentColorDataEntry colorDataEntry = ModConfig.individualColors.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
         TextColor colorMin = colorDataEntry.minColor;
         TextColor colorMax = colorDataEntry.maxColor;
         return ColorManager.lerpColor(colorMin, colorMax, intensity);

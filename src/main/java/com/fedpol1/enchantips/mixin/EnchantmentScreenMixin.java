@@ -10,9 +10,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,9 +42,9 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         }
         if(ModConfig.SHOW_EXTRA_ENCHANTMENTS.getValue() && !itemStack.isOf(Items.BOOK)) {
             ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
-            for (Enchantment current : Registry.ENCHANTMENT) {
+            for (Enchantment current : Registries.ENCHANTMENT) {
                 if (current == enchantment || !current.canCombine(enchantment)) { continue; }
-                if (!current.type.isAcceptableItem(itemStack.getItem())) { continue; }
+                if (!current.isAcceptableItem(itemStack)) { continue; }
                 if (!current.isAvailableForRandomSelection() || current.isTreasure()) { continue; }
                 for (int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
                     EnchantmentLevelData enchLevel = EnchantmentLevelData.of(current, z);

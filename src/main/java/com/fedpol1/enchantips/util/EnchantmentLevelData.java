@@ -7,13 +7,14 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
 
@@ -37,7 +38,7 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
     public static EnchantmentLevelData of(NbtCompound c) {
         if(!c.contains("id", NbtElement.STRING_TYPE)) { return null; }
         if(!c.contains("lvl", NbtElement.NUMBER_TYPE)) { return null; }
-        Enchantment ench = Registry.ENCHANTMENT.get(new Identifier(c.getString("id")));
+        Enchantment ench = Registries.ENCHANTMENT.get(new Identifier(c.getString("id")));
         if(ench == null) { return null; }
         return new EnchantmentLevelData(ench, c.getInt("lvl"));
     }
@@ -66,7 +67,7 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
     }
 
     public EnchantmentColorDataEntry getDataEntry() {
-        return ModConfig.individualColors.get(Registry.ENCHANTMENT.getId(this.getEnchantment()).toString());
+        return ModConfig.individualColors.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId(this.getEnchantment())).toString());
     }
 
     public int getLowestModifiedLevel() {

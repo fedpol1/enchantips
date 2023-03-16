@@ -6,8 +6,8 @@ import com.fedpol1.enchantips.config.ModConfig;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.*;
-import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ public abstract class TooltipBuilder {
     public static void appendEnchantmentsEbook(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
         for(int i = 0; i < enchantments.size(); ++i) {
             NbtCompound nbtCompound = enchantments.getCompound(i);
-            Registry.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent((e) -> {
+            Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent((e) -> {
                 tooltip.add(((EnchantmentAccess)e).enchantipsGetName(EnchantmentHelper.getLevelFromNbt(nbtCompound), modifyRarity));
             });
         }

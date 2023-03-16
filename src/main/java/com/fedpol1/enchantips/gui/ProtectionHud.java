@@ -6,7 +6,12 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.explosion.Explosion;
 
@@ -33,11 +38,13 @@ public class ProtectionHud {
         assert client.player != null;
 
         Iterable<ItemStack> armor = client.player.getArmorItems();
-        int genericProt = EnchantmentHelper.getProtectionAmount(armor, DamageSource.MAGIC);
-        int projProt = EnchantmentHelper.getProtectionAmount(armor, new DamageSource("enchantipsDummyProjectile").setProjectile());
-        int fireProt = EnchantmentHelper.getProtectionAmount(armor, DamageSource.ON_FIRE);
-        int blastProt = EnchantmentHelper.getProtectionAmount(armor, DamageSource.explosion((Explosion) null));
-        int fallProt = EnchantmentHelper.getProtectionAmount(armor, DamageSource.FALL);
+        if(MinecraftClient.getInstance().player == null) { return; }
+        DamageSources sources = MinecraftClient.getInstance().player.getDamageSources();
+        int genericProt = EnchantmentHelper.getProtectionAmount(armor, sources.generic());
+        int projProt = EnchantmentHelper.getProtectionAmount(armor, sources.arrow(null, null));
+        int fireProt = EnchantmentHelper.getProtectionAmount(armor, sources.onFire());
+        int blastProt = EnchantmentHelper.getProtectionAmount(armor, sources.explosion(null));
+        int fallProt = EnchantmentHelper.getProtectionAmount(armor, sources.fall());
 
         if(genericProt == 0 && projProt == 0 && fireProt == 0 && blastProt == 0 && fallProt == 0)
             return;

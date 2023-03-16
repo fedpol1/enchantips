@@ -3,8 +3,8 @@ package com.fedpol1.enchantips.config;
 import com.fedpol1.enchantips.EnchantipsClient;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.registry.Registry;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -96,8 +96,8 @@ public class ModConfig {
     }
 
     private static void setPartialDefaultConfigEnchantments() {
-        for(Enchantment current : Registry.ENCHANTMENT) {
-            individualColors.put(Objects.requireNonNull(Registry.ENCHANTMENT.getId(current)).toString(), new EnchantmentColorDataEntry(current));
+        for(Enchantment current : Registries.ENCHANTMENT) {
+            individualColors.put(Objects.requireNonNull(Registries.ENCHANTMENT.getId(current)).toString(), new EnchantmentColorDataEntry(current));
         }
     }
 
