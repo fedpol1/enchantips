@@ -1,11 +1,21 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.util.ColorManager;
+import dev.isxander.yacl.api.ConfigCategory;
+import dev.isxander.yacl.api.Option;
+import dev.isxander.yacl.api.OptionGroup;
+import dev.isxander.yacl.api.YetAnotherConfigLib;
+import dev.isxander.yacl.gui.controllers.ColorController;
+import dev.isxander.yacl.gui.controllers.TickBoxController;
+import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.TextColor;
+import net.minecraft.text.Text;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -123,8 +133,8 @@ public class ModConfig {
                             line = sc.nextLine();
                             split = line.substring(4).split(": ");
                             switch (split[0]) {
-                                case "min_color" -> { entry.minColor = TextColor.parse(split[1]); }
-                                case "max_color" -> { entry.maxColor = TextColor.parse(split[1]); }
+                                case "min_color" -> { entry.minColor = ColorManager.stringToColor(split[1]); }
+                                case "max_color" -> { entry.maxColor = ColorManager.stringToColor(split[1]); }
                                 case "order" -> { entry.order = Integer.parseInt(split[1]); }
                                 case "show_highlight" -> { entry.showHighlight = Boolean.parseBoolean(split[1]); }
                             }
@@ -174,8 +184,8 @@ public class ModConfig {
         acc.append("- individual_enchantment_setting:\n");
         for(Map.Entry<String, EnchantmentColorDataEntry> item : individualColors.entrySet()) { // write specific enchantment settings to file
             acc.append("  - ").append(item.getKey()).append(":\n");
-            acc.append("    min_color: ").append(item.getValue().minColor.getHexCode()).append("\n");
-            acc.append("    max_color: ").append(item.getValue().maxColor.getHexCode()).append("\n");
+            acc.append("    min_color: ").append(ColorManager.colorToString(item.getValue().minColor)).append("\n");
+            acc.append("    max_color: ").append(ColorManager.colorToString(item.getValue().maxColor)).append("\n");
             acc.append("    order: ").append(item.getValue().order).append("\n");
             acc.append("    show_highlight: ").append(item.getValue().showHighlight).append("\n");
         }
@@ -188,5 +198,72 @@ public class ModConfig {
         catch (IOException e) {
             EnchantipsClient.LOGGER.error("Could not write configuration file.\n" + e.getMessage());
         }
+    }
+
+    public static Screen createGui(Screen parent) {
+        ConfigCategory.Builder tooltipToggles =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.toggles_tooltips"));
+        ConfigCategory.Builder enchantmentColors =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors_enchantments"));
+        ConfigCategory.Builder tooltipColors =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors_tooltips"));
+        ConfigCategory.Builder highlights =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.highlights"));
+        ConfigCategory.Builder miscellaneous =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.miscellaneous"));
+        ConfigCategory.Builder individualEnchantments =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.individual_enchantments"));
+
+        OptionGroup.Builder individualEnchantmentColors = OptionGroup.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.individual_enchantments.colors"));
+        OptionGroup.Builder individualEnchantmentMeta = OptionGroup.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.individual_enchantments.meta"));
+
+        for(Map.Entry<String, Data<?>> item : ModConfig.configData.entrySet()) {
+            Option<?> opt = item.getValue().getOption();
+            switch (item.getValue().getEntry().getCategory()) {
+                case TOOLTIP_TOGGLE -> { tooltipToggles = tooltipToggles.option(opt); }
+                case ENCHANTMENT_GROUP_COLOR -> { enchantmentColors = enchantmentColors.option(opt); }
+                case TOOLTIP_COLOR -> { tooltipColors = tooltipColors.option(opt); }
+                case SLOT_HIGHLIGHT -> { highlights = highlights.option(opt); }
+                case MISCELLANEOUS -> { miscellaneous = miscellaneous.option(opt); }
+                default -> { miscellaneous = miscellaneous.option(opt); }
+            }
+        }
+
+        for(Map.Entry<String, EnchantmentColorDataEntry> item : ModConfig.individualColors.entrySet()) {
+            individualEnchantmentColors = individualEnchantmentColors.option(Option.createBuilder(Color.class)
+                    .name(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantments.min_color", Text.translatable(item.getValue().enchantment.getTranslationKey())))
+                    .tooltip(Text.of(item.getValue().enchantmentKey))
+                    .binding(item.getValue().getDefaultMinColor(), () -> item.getValue().minColor, v -> item.getValue().minColor = v)
+                    .controller(ColorController::new)
+                    .build()
+            ).option(Option.createBuilder(Color.class)
+                    .name(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantments.max_color", Text.translatable(item.getValue().enchantment.getTranslationKey())))
+                    .tooltip(Text.of(item.getValue().enchantmentKey))
+                    .binding(item.getValue().getDefaultMaxColor(), () -> item.getValue().maxColor, v -> item.getValue().maxColor = v)
+                    .controller(ColorController::new)
+                    .build()
+            );
+            individualEnchantmentMeta = individualEnchantmentMeta.option(Option.createBuilder(Integer.class)
+                    .name(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantments.order", Text.translatable(item.getValue().enchantment.getTranslationKey())))
+                    .tooltip(Text.of(item.getValue().enchantmentKey))
+                    .binding(item.getValue().getDefaultOrder(), () -> item.getValue().order, v -> item.getValue().order = v)
+                    .controller(IntegerFieldController::new)
+                    .build()
+            ).option(Option.createBuilder(Boolean.class)
+                    .name(Text.translatable(EnchantipsClient.MODID + ".config.title.individual_enchantments.highlight_visibility", Text.translatable(item.getValue().enchantment.getTranslationKey())))
+                    .tooltip(Text.of(item.getValue().enchantmentKey))
+                    .binding(item.getValue().getDefaultHighlightVisibility(), () -> item.getValue().showHighlight, v -> item.getValue().showHighlight = v)
+                    .controller(TickBoxController::new)
+                    .build()
+            );
+        }
+
+        return YetAnotherConfigLib.createBuilder()
+                .title(Text.translatable(EnchantipsClient.MODID + ".config"))
+                .save(ModConfig::writeConfig)
+                .category(tooltipToggles.build())
+                .category(enchantmentColors.build())
+                .category(tooltipColors.build())
+                .category(highlights.build())
+                .category(miscellaneous.build())
+                .category(individualEnchantments
+                        .group(individualEnchantmentColors.collapsed(true).build())
+                        .group(individualEnchantmentMeta.collapsed(true).build())
+                        .build())
+                .build().generateScreen(parent);
     }
 }

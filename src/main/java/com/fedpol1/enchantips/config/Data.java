@@ -1,5 +1,7 @@
 package com.fedpol1.enchantips.config;
 
+import dev.isxander.yacl.api.Option;
+
 public interface Data<T> {
 
         DataEntry getEntry();
@@ -15,4 +17,6 @@ public interface Data<T> {
         void setValue(T c);
 
         void readStringValue(String c);
+
+        Option<T> getOption();
 }

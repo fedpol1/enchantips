@@ -1,5 +1,9 @@
 package com.fedpol1.enchantips.config;
 
+import dev.isxander.yacl.api.Option;
+import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
+import net.minecraft.text.Text;
+
 public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
 
     public final IntegerData data;
@@ -55,6 +59,15 @@ public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
 
         public void readStringValue(String s) {
             this.value = Integer.parseInt(s);
+        }
+
+        public Option<Integer> getOption() {
+            return Option.createBuilder(Integer.class)
+                    .name(Text.translatable(this.getEntry().getTitle()))
+                    .tooltip(Text.translatable(this.getEntry().getTooltip()))
+                    .binding(this.getDefaultValue(), this::getValue, this::setValue)
+                    .controller(o -> new IntegerSliderController(o, 0, 16, 1))
+                    .build();
         }
     }
 }

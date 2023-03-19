@@ -1,6 +1,10 @@
 package com.fedpol1.enchantips.config;
 
-import net.minecraft.text.TextColor;
+import com.fedpol1.enchantips.util.ColorManager;
+import dev.isxander.yacl.api.Option;
+import dev.isxander.yacl.gui.controllers.ColorController;
+import net.minecraft.text.Text;
+import java.awt.Color;
 
 public class ColorDataEntry extends AbstractDataEntry implements DataEntry {
 
@@ -15,27 +19,27 @@ public class ColorDataEntry extends AbstractDataEntry implements DataEntry {
         this.data = new ColorData(this, defaultColor);
     }
 
-    public TextColor getValue() {
+    public Color getValue() {
         return this.data.color;
     }
 
-    public static class ColorData implements Data<TextColor> {
+    public static class ColorData implements Data<Color> {
 
         private final ColorDataEntry entry;
-        private TextColor color;
-        private final TextColor defaultColor;
+        private Color color;
+        private final Color defaultColor;
 
         ColorData(ColorDataEntry entry, int defaultColor) {
             this.entry = entry;
-            this.color = TextColor.fromRgb(defaultColor);
-            this.defaultColor = TextColor.fromRgb(defaultColor);
+            this.color = new Color(defaultColor);
+            this.defaultColor = new Color(defaultColor);
         }
 
         public void setValueToDefault() {
             this.color = this.defaultColor;
         }
 
-        public TextColor getValue() {
+        public Color getValue() {
             return this.color == null ? this.getDefaultValue() : this.color;
         }
 
@@ -44,20 +48,30 @@ public class ColorDataEntry extends AbstractDataEntry implements DataEntry {
         }
 
         public String getStringValue() {
-            return this.getValue().getHexCode();
+            return ColorManager.colorToString(this.getValue());
         }
 
-        public TextColor getDefaultValue() {
+        public Color getDefaultValue() {
             // this should never be null
             return this.defaultColor;
         }
 
-        public void setValue(TextColor c) {
+        public void setValue(Color c) {
             this.color = c;
         }
 
         public void readStringValue(String s) {
-            this.color = TextColor.parse(s);
+            this.color = ColorManager.stringToColor(s);
         }
+
+        public Option<Color> getOption() {
+            return Option.createBuilder(Color.class)
+                    .name(Text.translatable(this.getEntry().getTitle()))
+                    .tooltip(Text.translatable(this.getEntry().getTooltip()))
+                    .binding(this.getDefaultValue(), this::getValue, this::setValue)
+                    .controller(ColorController::new)
+                    .build();
+        }
+
     }
 }

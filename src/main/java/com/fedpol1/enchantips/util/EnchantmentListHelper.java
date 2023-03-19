@@ -7,7 +7,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-
 import java.util.ArrayList;
 
 public abstract class EnchantmentListHelper {

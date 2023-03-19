@@ -1,8 +1,18 @@
 package com.fedpol1.enchantips.util;
 
 import net.minecraft.text.TextColor;
+import java.awt.Color;
+import java.util.Locale;
 
 public abstract class ColorManager {
+
+    public static Color stringToColor(String s) {
+        return new Color(Integer.parseInt(s.substring(1), 16));
+    }
+
+    public static String colorToString(Color c) {
+        return String.format(Locale.ROOT, "#%06X", c.getRGB());
+    }
 
     public static TextColor lerpColor(TextColor min, TextColor max, float intensity) {
         int rgbMin = min.getRgb();

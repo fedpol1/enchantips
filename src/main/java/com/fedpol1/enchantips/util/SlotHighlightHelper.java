@@ -11,8 +11,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.TextColor;
-
+import java.awt.Color;
 import java.util.*;
 
 public abstract class SlotHighlightHelper extends DrawableHelper {
@@ -21,7 +20,7 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
         Slot slot;
         ItemStack slotStack;
         ArrayList<EnchantmentLevelData> arrayOfEnchLevel;
-        ArrayList<TextColor> arrayOfColor;
+        ArrayList<Color> arrayOfColor;
         NbtList enchNbt;
 
         for (int i = 0; i < handler.slots.size(); i++) {
@@ -48,11 +47,11 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
         }
     }
 
-    public static void drawEnchantments(MatrixStack matrices, ArrayList<TextColor> arrayOfColor, int x, int y) {
+    public static void drawEnchantments(MatrixStack matrices, ArrayList<Color> arrayOfColor, int x, int y) {
         int limit = Math.min(arrayOfColor.size(), ModConfig.HIGHLIGHT_LIMIT.getValue());
         float frac = 16.0f / limit;
         for(int i = 0; i < limit; i++) {
-            HandledScreen.fill(matrices, x + Math.round(i * frac), y, x + Math.round((i+1) * frac), y + 16, 0xff000000 | arrayOfColor.get(i).getRgb());
+            HandledScreen.fill(matrices, x + Math.round(i * frac), y, x + Math.round((i+1) * frac), y + 16, 0xff000000 | arrayOfColor.get(i).getRGB());
         }
     }
 }

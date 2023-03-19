@@ -3,17 +3,16 @@ package com.fedpol1.enchantips.config;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.TextColor;
-import org.jetbrains.annotations.NotNull;
 
+import java.awt.Color;
 import java.util.Objects;
 
 public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDataEntry> {
 
     public Enchantment enchantment;
     public String enchantmentKey;
-    public TextColor minColor;
-    public TextColor maxColor;
+    public Color minColor;
+    public Color maxColor;
     public int order; // lower order = higher priority
     public boolean showHighlight;
 
@@ -26,7 +25,7 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
         this.showHighlight = this.getDefaultHighlightVisibility();
     }
 
-    public TextColor getDefaultMinColor() {
+    public Color getDefaultMinColor() {
         switch (((EnchantmentAccess)this.enchantment).enchantipsGetPriority()) {
             case SPECIAL -> { return ModConfig.ENCHANTMENT_SPECIAL.getValue(); }
             case CURSED -> { return ModConfig.ENCHANTMENT_CURSE_MIN.getValue(); }
@@ -36,7 +35,7 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
         return ModConfig.ENCHANTMENT_NORMAL_MIN.getValue();
     }
 
-    public TextColor getDefaultMaxColor() {
+    public Color getDefaultMaxColor() {
         switch (((EnchantmentAccess)this.enchantment).enchantipsGetPriority()) {
             case SPECIAL -> { return ModConfig.ENCHANTMENT_SPECIAL.getValue(); }
             case CURSED -> { return ModConfig.ENCHANTMENT_CURSE_MAX.getValue(); }
@@ -55,7 +54,7 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
     }
 
     @Override
-    public int compareTo(@NotNull EnchantmentColorDataEntry o) {
+    public int compareTo(EnchantmentColorDataEntry o) {
         return this.order - o.order;
     }
 }

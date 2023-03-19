@@ -11,8 +11,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -62,8 +62,8 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
         return this.level;
     }
 
-    public TextColor getColor() {
-        return ((EnchantmentAccess)this.getEnchantment()).enchantipsGetColor(this.getLevel());
+    public Color getColor() {
+        return new Color(((EnchantmentAccess)this.getEnchantment()).enchantipsGetColor(this.getLevel()).getRgb());
     }
 
     public EnchantmentColorDataEntry getDataEntry() {
@@ -81,7 +81,7 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
         return this.getEnchantment().getMaxPower(this.getLevel());
     }
 
-    public int compareTo(@NotNull EnchantmentLevelData other) {
+    public int compareTo(EnchantmentLevelData other) {
         // first compare order from enchantmentcolordata
         int comparison = this.getDataEntry().order - other.getDataEntry().order;
         if(comparison != 0) { return comparison; }

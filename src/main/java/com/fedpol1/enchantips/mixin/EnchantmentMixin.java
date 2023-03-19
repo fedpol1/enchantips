@@ -14,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-
 import java.util.Objects;
 
 @Mixin(Enchantment.class)
@@ -80,8 +79,8 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
         EnchantmentColorDataEntry colorDataEntry = ModConfig.individualColors.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
-        TextColor colorMin = colorDataEntry.minColor;
-        TextColor colorMax = colorDataEntry.maxColor;
+        TextColor colorMin = TextColor.fromRgb(colorDataEntry.minColor.getRGB());
+        TextColor colorMax = TextColor.fromRgb(colorDataEntry.maxColor.getRGB());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 }
