@@ -11,7 +11,7 @@ public abstract class ColorManager {
     }
 
     public static String colorToString(Color c) {
-        return String.format(Locale.ROOT, "#%06X", c.getRGB());
+        return String.format(Locale.ROOT, "#%06X", c.getRGB() & 0xffffff); // discard alpha
     }
 
     public static TextColor lerpColor(TextColor min, TextColor max, float intensity) {

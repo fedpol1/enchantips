@@ -4,10 +4,9 @@ import java.util.Locale;
 
 public enum ModConfigCategory {
     TOOLTIP_TOGGLE(0),
-    ENCHANTMENT_GROUP_COLOR(1),
-    TOOLTIP_COLOR(2),
-    SLOT_HIGHLIGHT(3),
-    MISCELLANEOUS(4);
+    TOOLTIP_COLOR(1),
+    SLOT_HIGHLIGHT(2),
+    MISCELLANEOUS(3);
 
     private final int ordinal;
 

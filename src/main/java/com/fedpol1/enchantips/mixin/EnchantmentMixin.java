@@ -63,7 +63,6 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     public float enchantipsGetIntensity(int level) {
         Enchantment t = (Enchantment)(Object)this;
         if(level == t.getMaxLevel()) { return 1.0f; }
-        if(this.enchantipsGetPriority() == EnchantmentPriority.SPECIAL) { return 1.0f; }
         else { return Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / (t.getMaxLevel() - t.getMinLevel()))); }
     }
 

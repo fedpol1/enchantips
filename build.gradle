@@ -31,7 +31,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "dev.isxander:yet-another-config-lib:2.3.0"
-	modApi "com.terraformersmc:modmenu:6.1.0-rc.1"
+	modApi "com.terraformersmc:modmenu:6.1.0-rc.4"
 }
 
 processResources {

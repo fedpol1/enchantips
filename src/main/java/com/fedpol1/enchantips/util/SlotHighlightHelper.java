@@ -35,7 +35,7 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
             ItemStackAccess stackAccess = (ItemStackAccess)(Object)slotStack;
             arrayOfColor = new ArrayList<>();
             if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
-                arrayOfColor.add(ModConfig.ENCHANTMENT_SPECIAL.getValue());
+                arrayOfColor.add(ModConfig.UNBREAKABLE_COLOR.getValue());
             }
             if(stackAccess.enchantipsEnchantmentsVisible() || !ModConfig.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
                 for (EnchantmentLevelData levelData : arrayOfEnchLevel) {

@@ -25,7 +25,7 @@ public class ModConfig {
 
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".properties").toFile();
 
-    public static TreeMap<String, Data<?>> configData = new TreeMap<>();
+    public static LinkedHashMap<String, Data<?>> configData = new LinkedHashMap<>();
     public static TreeMap<String, EnchantmentColorDataEntry> individualColors = new TreeMap<>();
 
     public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show.repair_cost", ModConfigCategory.TOOLTIP_TOGGLE, true, true);
@@ -37,17 +37,10 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT = new BooleanDataEntry("show.modified_level.for_enchantment", ModConfigCategory.TOOLTIP_TOGGLE, false);
     public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show.bar.protection", ModConfigCategory.MISCELLANEOUS, false);
     public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", ModConfigCategory.MISCELLANEOUS, false, true);
-    public static BooleanDataEntry OVERRIDE_INDIVIDUAL_ENCHANTMENTS = new BooleanDataEntry("override.enchantments", ModConfigCategory.MISCELLANEOUS, true, true);
     public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false);
     public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", ModConfigCategory.SLOT_HIGHLIGHT, true);
     public static IntegerDataEntry HIGHLIGHT_LIMIT = new IntegerDataEntry("highlights.limit", ModConfigCategory.SLOT_HIGHLIGHT, 4, true);
-    public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color.enchantment.normal.min", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0x7f7f7f);
-    public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color.enchantment.normal.max", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0xdfdfdf);
-    public static ColorDataEntry ENCHANTMENT_TREASURE_MIN = new ColorDataEntry("color.enchantment.treasure.min", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0x009f00);
-    public static ColorDataEntry ENCHANTMENT_TREASURE_MAX = new ColorDataEntry("color.enchantment.treasure.max", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0x00df00);
-    public static ColorDataEntry ENCHANTMENT_CURSE_MIN = new ColorDataEntry("color.enchantment.curse.min", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0xbf0000);
-    public static ColorDataEntry ENCHANTMENT_CURSE_MAX = new ColorDataEntry("color.enchantment.curse.max", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0xff0000);
-    public static ColorDataEntry ENCHANTMENT_SPECIAL = new ColorDataEntry("color.enchantment.special", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0x00dfff);
+    public static ColorDataEntry UNBREAKABLE_COLOR = new ColorDataEntry("color.unbreakable", ModConfigCategory.MISCELLANEOUS, 0x00dfff);
     public static ColorDataEntry REPAIRCOST = new ColorDataEntry("color.repair_cost", ModConfigCategory.TOOLTIP_COLOR, 0xffbf00);
     public static ColorDataEntry REPAIRCOST_VALUE = new ColorDataEntry("color.repair_cost.value", ModConfigCategory.TOOLTIP_COLOR, 0xff7f00);
     public static ColorDataEntry ENCHANTABILITY = new ColorDataEntry("color.enchantability", ModConfigCategory.TOOLTIP_COLOR, 0xffbf00);
@@ -69,17 +62,10 @@ public class ModConfig {
         configData.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
         configData.put(SHOW_PROTECTION_BAR.getKey(), SHOW_PROTECTION_BAR.data);
         configData.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.getKey(), SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
-        configData.put(OVERRIDE_INDIVIDUAL_ENCHANTMENTS.getKey(), OVERRIDE_INDIVIDUAL_ENCHANTMENTS.data);
         configData.put(HIGHLIGHT_LIMIT.getKey(), HIGHLIGHT_LIMIT.data);
         configData.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getKey(), SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.data);
         configData.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.getKey(), HIGHLIGHTS_RESPECT_HIDEFLAGS.data);
-        configData.put(ENCHANTMENT_NORMAL_MIN.getKey(), ENCHANTMENT_NORMAL_MIN.data);
-        configData.put(ENCHANTMENT_NORMAL_MAX.getKey(), ENCHANTMENT_NORMAL_MAX.data);
-        configData.put(ENCHANTMENT_TREASURE_MIN.getKey(), ENCHANTMENT_TREASURE_MIN.data);
-        configData.put(ENCHANTMENT_TREASURE_MAX.getKey(), ENCHANTMENT_TREASURE_MAX.data);
-        configData.put(ENCHANTMENT_CURSE_MIN.getKey(), ENCHANTMENT_CURSE_MIN.data);
-        configData.put(ENCHANTMENT_CURSE_MAX.getKey(), ENCHANTMENT_CURSE_MAX.data);
-        configData.put(ENCHANTMENT_SPECIAL.getKey(), ENCHANTMENT_SPECIAL.data);
+        configData.put(UNBREAKABLE_COLOR.getKey(), UNBREAKABLE_COLOR.data);
         configData.put(REPAIRCOST.getKey(), REPAIRCOST.data);
         configData.put(REPAIRCOST_VALUE.getKey(), REPAIRCOST_VALUE.data);
         configData.put(ENCHANTABILITY.getKey(), ENCHANTABILITY.data);
@@ -156,10 +142,6 @@ public class ModConfig {
     }
 
     public static void writeConfig() {
-        if(ModConfig.OVERRIDE_INDIVIDUAL_ENCHANTMENTS.getValue()) {
-            setPartialDefaultConfigEnchantments();
-        }
-
         StringBuilder acc = new StringBuilder();
 
         TreeMap<ModConfigCategory, ArrayList<Data<?>>> data = new TreeMap<>();
@@ -198,7 +180,6 @@ public class ModConfig {
 
     public static Screen createGui(Screen parent) {
         ConfigCategory.Builder tooltipToggles =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.toggles_tooltips"));
-        ConfigCategory.Builder enchantmentColors =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors_enchantments"));
         ConfigCategory.Builder tooltipColors =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.colors_tooltips"));
         ConfigCategory.Builder highlights =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.highlights"));
         ConfigCategory.Builder miscellaneous =  ConfigCategory.createBuilder().name(Text.translatable(EnchantipsClient.MODID + ".config.title.category.miscellaneous"));
@@ -211,7 +192,6 @@ public class ModConfig {
             Option<?> opt = item.getValue().getOption();
             switch (item.getValue().getEntry().getCategory()) {
                 case TOOLTIP_TOGGLE -> { tooltipToggles = tooltipToggles.option(opt); }
-                case ENCHANTMENT_GROUP_COLOR -> { enchantmentColors = enchantmentColors.option(opt); }
                 case TOOLTIP_COLOR -> { tooltipColors = tooltipColors.option(opt); }
                 case SLOT_HIGHLIGHT -> { highlights = highlights.option(opt); }
                 case MISCELLANEOUS -> { miscellaneous = miscellaneous.option(opt); }
@@ -252,7 +232,6 @@ public class ModConfig {
                 .title(Text.translatable(EnchantipsClient.MODID + ".config"))
                 .save(ModConfig::writeConfig)
                 .category(tooltipToggles.build())
-                .category(enchantmentColors.build())
                 .category(tooltipColors.build())
                 .category(highlights.build())
                 .category(miscellaneous.build())

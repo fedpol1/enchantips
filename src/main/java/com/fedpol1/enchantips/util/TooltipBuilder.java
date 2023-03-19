@@ -55,7 +55,7 @@ public abstract class TooltipBuilder {
     }
 
     public static MutableText buildUnbreakable() {
-        return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModConfig.ENCHANTMENT_SPECIAL.getValue().getRGB())));
+        return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModConfig.UNBREAKABLE_COLOR.getValue().getRGB())));
     }
 
     // aaaaaaaa

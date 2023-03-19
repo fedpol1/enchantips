@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.config;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 
 import java.awt.Color;
 import java.util.Objects;
@@ -27,22 +28,20 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
 
     public Color getDefaultMinColor() {
         switch (((EnchantmentAccess)this.enchantment).enchantipsGetPriority()) {
-            case SPECIAL -> { return ModConfig.ENCHANTMENT_SPECIAL.getValue(); }
-            case CURSED -> { return ModConfig.ENCHANTMENT_CURSE_MIN.getValue(); }
-            case TREASURE -> { return ModConfig.ENCHANTMENT_TREASURE_MIN.getValue(); }
-            case NORMAL -> { return ModConfig.ENCHANTMENT_NORMAL_MIN.getValue(); }
+            case CURSED -> { return new Color(0xbf0000); }
+            case TREASURE -> { return new Color(0x009f00); }
+            case NORMAL -> { return new Color(0x9f7f7f); }
         }
-        return ModConfig.ENCHANTMENT_NORMAL_MIN.getValue();
+        return new Color(0x9f7f7f);
     }
 
     public Color getDefaultMaxColor() {
         switch (((EnchantmentAccess)this.enchantment).enchantipsGetPriority()) {
-            case SPECIAL -> { return ModConfig.ENCHANTMENT_SPECIAL.getValue(); }
-            case CURSED -> { return ModConfig.ENCHANTMENT_CURSE_MAX.getValue(); }
-            case TREASURE -> { return ModConfig.ENCHANTMENT_TREASURE_MAX.getValue(); }
-            case NORMAL -> { return ModConfig.ENCHANTMENT_NORMAL_MAX.getValue(); }
+            case CURSED -> { return new Color(0xff0000); }
+            case TREASURE -> { return new Color(0x00df00); }
+            case NORMAL -> { return new Color(0xffdfdf); }
         }
-        return ModConfig.ENCHANTMENT_NORMAL_MAX.getValue();
+        return new Color(0xffdfdf);
     }
 
     public int getDefaultOrder() {
@@ -54,7 +53,7 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
     }
 
     @Override
-    public int compareTo(EnchantmentColorDataEntry o) {
-        return this.order - o.order;
+    public int compareTo(EnchantmentColorDataEntry other) {
+        return this.order - other.order;
     }
 }
