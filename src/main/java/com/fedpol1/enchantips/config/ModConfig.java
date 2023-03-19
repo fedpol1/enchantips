@@ -38,8 +38,8 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_PROTECTION_BAR = new BooleanDataEntry("show.bar.protection", ModConfigCategory.MISCELLANEOUS, false);
     public static BooleanDataEntry SHOW_ANVIL_ITEM_SWAP_BUTTON = new BooleanDataEntry("show.button.anvil_item_swap", ModConfigCategory.MISCELLANEOUS, false, true);
     public static BooleanDataEntry OVERRIDE_INDIVIDUAL_ENCHANTMENTS = new BooleanDataEntry("override.enchantments", ModConfigCategory.MISCELLANEOUS, true, true);
-    public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false, true);
-    public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", ModConfigCategory.SLOT_HIGHLIGHT, true, true);
+    public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false);
+    public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", ModConfigCategory.SLOT_HIGHLIGHT, true);
     public static IntegerDataEntry HIGHLIGHT_LIMIT = new IntegerDataEntry("highlights.limit", ModConfigCategory.SLOT_HIGHLIGHT, 4, true);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MIN = new ColorDataEntry("color.enchantment.normal.min", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0x7f7f7f);
     public static ColorDataEntry ENCHANTMENT_NORMAL_MAX = new ColorDataEntry("color.enchantment.normal.max", ModConfigCategory.ENCHANTMENT_GROUP_COLOR, 0xdfdfdf);
@@ -57,8 +57,6 @@ public class ModConfig {
     public static ColorDataEntry MODIFIED_ENCHANTMENT_LEVEL_VALUE = new ColorDataEntry("color.modified_level.value", ModConfigCategory.TOOLTIP_COLOR, 0xff7f00);
     public static ColorDataEntry MODIFIED_LEVEL_FOR_ENCHANTMENT = new ColorDataEntry("color.modified_level.for_enchantment", ModConfigCategory.TOOLTIP_COLOR, 0xdf9f3f);
     public static ColorDataEntry MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE = new ColorDataEntry("color.modified_level.for_enchantment.value", ModConfigCategory.TOOLTIP_COLOR, 0xdf7f3f);
-    public static ColorDataEntry SLOT_HIGHLIGHT_FULL_MATCH = new ColorDataEntry("color.slot_highlight.full_match", ModConfigCategory.SLOT_HIGHLIGHT, 0x3fff3f);
-    public static ColorDataEntry SLOT_HIGHLIGHT_PARTIAL_MATCH = new ColorDataEntry("color.slot_highlight.partial_match", ModConfigCategory.SLOT_HIGHLIGHT, 0xffbf3f);
 
     public static void registerConfig() throws NullPointerException {
         EnchantipsClient.LOGGER.info("Initializing configs");
@@ -91,8 +89,6 @@ public class ModConfig {
         configData.put(MODIFIED_ENCHANTMENT_LEVEL_VALUE.getKey(), MODIFIED_ENCHANTMENT_LEVEL_VALUE.data);
         configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
         configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.data);
-        configData.put(SLOT_HIGHLIGHT_FULL_MATCH.getKey(), SLOT_HIGHLIGHT_FULL_MATCH.data);
-        configData.put(SLOT_HIGHLIGHT_PARTIAL_MATCH.getKey(), SLOT_HIGHLIGHT_PARTIAL_MATCH.data);
         setPartialDefaultConfigEnchantments();
         ModConfig.readConfig();
         ModConfig.writeConfig();
