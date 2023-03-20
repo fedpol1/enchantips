@@ -2,19 +2,20 @@ package com.fedpol1.enchantips.config;
 
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
+import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
 import net.minecraft.text.Text;
 
 public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
 
     public final IntegerData data;
 
-    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue) {
-        this(key, category, defaultValue, false);
+    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, int min, int max, int step) {
+        this(key, category, defaultValue, min, max, step, false);
     }
 
-    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, boolean hasTooltip) {
+    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, int min, int max, int step, boolean hasTooltip) {
         super(key, category, hasTooltip);
-        this.data = new IntegerData(this, defaultValue);
+        this.data = new IntegerData(this, defaultValue, min, max, step);
     }
 
     public int getValue() {
@@ -26,11 +27,17 @@ public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
         private final IntegerDataEntry entry;
         private int value;
         private final int defaultValue;
+        private final int min;
+        private final int max;
+        private final int step;
 
-        IntegerData(IntegerDataEntry entry, int defaultValue) {
+        IntegerData(IntegerDataEntry entry, int defaultValue, int min, int max, int step) {
             this.entry = entry;
             this.value = defaultValue;
             this.defaultValue = defaultValue;
+            this.min = min;
+            this.max = max;
+            this.step = step;
         }
 
         public IntegerDataEntry getEntry() {
@@ -66,7 +73,7 @@ public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
                     .name(Text.translatable(this.getEntry().getTitle()))
                     .tooltip(Text.translatable(this.getEntry().getTooltip()))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(o -> new IntegerSliderController(o, 0, 16, 1))
+                    .controller(o -> this.step == 0 ? new IntegerFieldController(o, this.min, this.max) : new IntegerSliderController(o, this.min, this.max, this.step))
                     .build();
         }
     }
