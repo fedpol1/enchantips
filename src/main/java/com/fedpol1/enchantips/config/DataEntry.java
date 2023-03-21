@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.config;
 
-public interface DataEntry {
+public interface DataEntry<T, U> {
 
     String getKey();
 
@@ -9,4 +9,8 @@ public interface DataEntry {
     String getTooltip();
 
     ModConfigCategory getCategory();
+
+    T getData();
+
+    U getValue();
 }

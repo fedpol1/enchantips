@@ -4,9 +4,9 @@ import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.TickBoxController;
 import net.minecraft.text.Text;
 
-public class BooleanDataEntry extends AbstractDataEntry implements DataEntry {
+public class BooleanDataEntry extends AbstractDataEntry implements DataEntry<BooleanDataEntry.BooleanData, Boolean> {
 
-    public final BooleanData data;
+    private final BooleanData data;
 
     public BooleanDataEntry(String key, ModConfigCategory category, boolean defaultValue) {
         this(key, category, defaultValue, false);
@@ -17,7 +17,11 @@ public class BooleanDataEntry extends AbstractDataEntry implements DataEntry {
         this.data = new BooleanData(this, defaultValue);
     }
 
-    public boolean getValue() {
+    public BooleanData getData() {
+        return this.data;
+    }
+
+    public Boolean getValue() {
         return this.data.value;
     }
 

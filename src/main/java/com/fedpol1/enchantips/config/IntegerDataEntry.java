@@ -5,9 +5,9 @@ import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
 import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
 import net.minecraft.text.Text;
 
-public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
+public class IntegerDataEntry extends AbstractDataEntry implements DataEntry<IntegerDataEntry.IntegerData, Integer> {
 
-    public final IntegerData data;
+    private final IntegerData data;
 
     public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, int min, int max, int step) {
         this(key, category, defaultValue, min, max, step, false);
@@ -18,7 +18,11 @@ public class IntegerDataEntry extends AbstractDataEntry implements DataEntry {
         this.data = new IntegerData(this, defaultValue, min, max, step);
     }
 
-    public int getValue() {
+    public IntegerData getData() {
+        return this.data;
+    }
+
+    public Integer getValue() {
         return this.data.value;
     }
 

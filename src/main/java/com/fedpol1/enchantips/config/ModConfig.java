@@ -28,7 +28,6 @@ public class ModConfig {
 
     public static LinkedHashMap<String, Data<?>> configData = new LinkedHashMap<>();
     public static TreeMap<String, EnchantmentColorDataEntry> individualColors = new TreeMap<>(new Comparator<String>() {
-
         public int compare(String o1, String o2) {
             String s1 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o1)).getTranslationKey()).getString();
             String s2 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o2)).getTranslationKey()).getString();
@@ -62,29 +61,29 @@ public class ModConfig {
 
     public static void registerConfig() throws NullPointerException {
         EnchantipsClient.LOGGER.info("Initializing configs");
-        configData.put(SHOW_REPAIRCOST.getKey(), SHOW_REPAIRCOST.data);
-        configData.put(SHOW_ENCHANTABILITY.getKey(), SHOW_ENCHANTABILITY.data);
-        configData.put(SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getKey(), SHOW_ENCHANTABILITY_WHEN_ENCHANTED.data);
-        configData.put(SHOW_RARITY.getKey(), SHOW_RARITY.data);
-        configData.put(SHOW_MODIFIED_ENCHANTMENT_LEVEL.getKey(), SHOW_MODIFIED_ENCHANTMENT_LEVEL.data);
-        configData.put(SHOW_EXTRA_ENCHANTMENTS.getKey(), SHOW_EXTRA_ENCHANTMENTS.data);
-        configData.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
-        configData.put(SHOW_PROTECTION_BAR.getKey(), SHOW_PROTECTION_BAR.data);
-        configData.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.getKey(), SHOW_ANVIL_ITEM_SWAP_BUTTON.data);
-        configData.put(HIGHLIGHT_LIMIT.getKey(), HIGHLIGHT_LIMIT.data);
-        configData.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getKey(), SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.data);
-        configData.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.getKey(), HIGHLIGHTS_RESPECT_HIDEFLAGS.data);
-        configData.put(HIGHLIGHT_HOTBAR_ALPHA.getKey(), HIGHLIGHT_HOTBAR_ALPHA.data);
-        configData.put(UNBREAKABLE_COLOR.getKey(), UNBREAKABLE_COLOR.data);
-        configData.put(REPAIRCOST.getKey(), REPAIRCOST.data);
-        configData.put(REPAIRCOST_VALUE.getKey(), REPAIRCOST_VALUE.data);
-        configData.put(ENCHANTABILITY.getKey(), ENCHANTABILITY.data);
-        configData.put(ENCHANTABILITY_VALUE.getKey(), ENCHANTABILITY_VALUE.data);
-        configData.put(RARITY_BRACKET.getKey(), RARITY_BRACKET.data);
-        configData.put(MODIFIED_ENCHANTMENT_LEVEL.getKey(), MODIFIED_ENCHANTMENT_LEVEL.data);
-        configData.put(MODIFIED_ENCHANTMENT_LEVEL_VALUE.getKey(), MODIFIED_ENCHANTMENT_LEVEL_VALUE.data);
-        configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT.data);
-        configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.data);
+        configData.put(SHOW_REPAIRCOST.getKey(), SHOW_REPAIRCOST.getData());
+        configData.put(SHOW_ENCHANTABILITY.getKey(), SHOW_ENCHANTABILITY.getData());
+        configData.put(SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getKey(), SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getData());
+        configData.put(SHOW_RARITY.getKey(), SHOW_RARITY.getData());
+        configData.put(SHOW_MODIFIED_ENCHANTMENT_LEVEL.getKey(), SHOW_MODIFIED_ENCHANTMENT_LEVEL.getData());
+        configData.put(SHOW_EXTRA_ENCHANTMENTS.getKey(), SHOW_EXTRA_ENCHANTMENTS.getData());
+        configData.put(SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getData());
+        configData.put(SHOW_PROTECTION_BAR.getKey(), SHOW_PROTECTION_BAR.getData());
+        configData.put(SHOW_ANVIL_ITEM_SWAP_BUTTON.getKey(), SHOW_ANVIL_ITEM_SWAP_BUTTON.getData());
+        configData.put(HIGHLIGHT_LIMIT.getKey(), HIGHLIGHT_LIMIT.getData());
+        configData.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getKey(), SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getData());
+        configData.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.getKey(), HIGHLIGHTS_RESPECT_HIDEFLAGS.getData());
+        configData.put(HIGHLIGHT_HOTBAR_ALPHA.getKey(), HIGHLIGHT_HOTBAR_ALPHA.getData());
+        configData.put(UNBREAKABLE_COLOR.getKey(), UNBREAKABLE_COLOR.getData());
+        configData.put(REPAIRCOST.getKey(), REPAIRCOST.getData());
+        configData.put(REPAIRCOST_VALUE.getKey(), REPAIRCOST_VALUE.getData());
+        configData.put(ENCHANTABILITY.getKey(), ENCHANTABILITY.getData());
+        configData.put(ENCHANTABILITY_VALUE.getKey(), ENCHANTABILITY_VALUE.getData());
+        configData.put(RARITY_BRACKET.getKey(), RARITY_BRACKET.getData());
+        configData.put(MODIFIED_ENCHANTMENT_LEVEL.getKey(), MODIFIED_ENCHANTMENT_LEVEL.getData());
+        configData.put(MODIFIED_ENCHANTMENT_LEVEL_VALUE.getKey(), MODIFIED_ENCHANTMENT_LEVEL_VALUE.getData());
+        configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT.getData());
+        configData.put(MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getKey(), MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getData());
         setPartialDefaultConfigEnchantments();
         ModConfig.readConfig();
         ModConfig.writeConfig();
