@@ -29,6 +29,6 @@ public abstract class EnchantedBookItemMixin {
 
     @Redirect(method = "appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/item/TooltipContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V"))
     private void enchantipsRedirectAppendEnchantments(List<Text> tooltip, NbtList enchantments) {
-        TooltipBuilder.appendEnchantmentsEbook(tooltip, enchantments, true);
+        TooltipBuilder.appendEnchantments(tooltip, enchantments, true);
     }
 }

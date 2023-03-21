@@ -9,6 +9,8 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class TooltipBuilder {
@@ -58,13 +60,11 @@ public abstract class TooltipBuilder {
         return Text.translatable("item.unbreakable").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModConfig.UNBREAKABLE_COLOR.getValue().getRGB())));
     }
 
-    // aaaaaaaa
-    public static void appendEnchantmentsEbook(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
-        for(int i = 0; i < enchantments.size(); ++i) {
-            NbtCompound nbtCompound = enchantments.getCompound(i);
-            Registries.ENCHANTMENT.getOrEmpty(EnchantmentHelper.getIdFromNbt(nbtCompound)).ifPresent((e) -> {
-                tooltip.add(((EnchantmentAccess)e).enchantipsGetName(EnchantmentHelper.getLevelFromNbt(nbtCompound), modifyRarity));
-            });
+    public static void appendEnchantments(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
+        ArrayList<EnchantmentLevelData> enchantmentLevelData = EnchantmentLevelData.ofList(enchantments);
+        Collections.sort(enchantmentLevelData);
+        for(EnchantmentLevelData ench : enchantmentLevelData) {
+            tooltip.add(((EnchantmentAccess)ench.getEnchantment()).enchantipsGetName(ench.getLevel(), modifyRarity));
         }
     }
 }

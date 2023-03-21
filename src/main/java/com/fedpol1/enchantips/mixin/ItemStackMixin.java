@@ -49,11 +49,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
      */
     @Overwrite
     public static void appendEnchantments(List<Text> tooltip, NbtList enchantments) {
-        ArrayList<EnchantmentLevelData> enchantmentLevelData = EnchantmentLevelData.ofList(enchantments);
-        Collections.sort(enchantmentLevelData);
-        for(EnchantmentLevelData ench : enchantmentLevelData) {
-            tooltip.add(((EnchantmentAccess)ench.getEnchantment()).enchantipsGetName(ench.getLevel(), false));
-        }
+        TooltipBuilder.appendEnchantments(tooltip, enchantments, false);
     }
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
