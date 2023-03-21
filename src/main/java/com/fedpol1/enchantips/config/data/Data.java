@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips.config;
+package com.fedpol1.enchantips.config.data;
 
 import dev.isxander.yacl.api.Option;
 

@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.config.data.*;
 import com.fedpol1.enchantips.util.ColorManager;
 import dev.isxander.yacl.api.ConfigCategory;
 import dev.isxander.yacl.api.Option;
