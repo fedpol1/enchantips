@@ -17,18 +17,6 @@ public abstract class EnchantmentListHelper {
         return ench.getEnchantment();
     }
 
-    public static ArrayList<Enchantment> getAllEnchantments(ItemStack stack) {
-        ArrayList<Enchantment> enchantments = new ArrayList<>();
-        NbtList enchantmentNbt = stack.isOf(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantmentNbt(stack) : stack.getEnchantments();
-        Enchantment current;
-        for(NbtElement e : enchantmentNbt) {
-            current = getEnchantment(e);
-            if(current == null) { continue; }
-            enchantments.add(current);
-        }
-        return enchantments;
-    }
-
     public static int compareEnchantments(NbtElement a, NbtElement b, boolean compareLevels) {
         int score = 0;
         int pass = 0;

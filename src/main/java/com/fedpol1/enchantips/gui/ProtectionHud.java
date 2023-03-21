@@ -27,9 +27,7 @@ public class ProtectionHud {
 
     public static void renderWholeProtectionBar(MatrixStack matrixStack, int xpos, int armorHeight) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if(client == null)
-            return;
-        assert client.player != null;
+        if(client == null || client.player == null) { return; }
 
         Iterable<ItemStack> armor = client.player.getArmorItems();
         if(MinecraftClient.getInstance().player == null) { return; }
