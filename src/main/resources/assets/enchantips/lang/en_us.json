@@ -33,6 +33,7 @@
   "enchantips.config.title.show.highlights.special_enchantment": "Highlight Items Based on Enchantments",
   "enchantips.config.title.show.highlights.hideflags": "Highlights Respect HideFlags",
   "enchantips.config.title.highlights.hotbar_alpha": "Hotbar Highlight Strength",
+  "enchantips.config.title.highlights.trading_alpha": "Villager Trade Offer Highlight Strength",
   "enchantips.config.title.override.enchantments": "Override Individual Enchantment Settings",
   "enchantips.config.title.highlights.limit": "Enchantment Highlight Limit",
   "enchantips.config.title.individual_enchantments.min_color": "%s Minimum Color",

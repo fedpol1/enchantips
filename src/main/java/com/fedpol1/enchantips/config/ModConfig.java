@@ -42,6 +42,7 @@ public class ModConfig {
     public static BooleanDataEntry SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED = new BooleanDataEntry("show.highlights.special_enchantment", ModConfigCategory.SLOT_HIGHLIGHT, false);
     public static BooleanDataEntry HIGHLIGHTS_RESPECT_HIDEFLAGS = new BooleanDataEntry("show.highlights.hideflags", ModConfigCategory.SLOT_HIGHLIGHT, true);
     public static IntegerDataEntry HIGHLIGHT_HOTBAR_ALPHA = new IntegerDataEntry("highlights.hotbar_alpha", ModConfigCategory.SLOT_HIGHLIGHT, 127, 0, 255, 0);
+    public static IntegerDataEntry HIGHLIGHT_TRADING_ALPHA = new IntegerDataEntry("highlights.trading_alpha", ModConfigCategory.SLOT_HIGHLIGHT, 127, 0, 255, 0);
     public static IntegerDataEntry HIGHLIGHT_LIMIT = new IntegerDataEntry("highlights.limit", ModConfigCategory.SLOT_HIGHLIGHT, 4, 0, 16, 1, true);
     public static ColorDataEntry UNBREAKABLE_COLOR = new ColorDataEntry("color.unbreakable", ModConfigCategory.MISCELLANEOUS, 0x00dfff);
     public static ColorDataEntry REPAIRCOST = new ColorDataEntry("color.repair_cost", ModConfigCategory.TOOLTIP_COLOR, 0xffbf00);
@@ -69,6 +70,7 @@ public class ModConfig {
         configData.put(SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getKey(), SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getData());
         configData.put(HIGHLIGHTS_RESPECT_HIDEFLAGS.getKey(), HIGHLIGHTS_RESPECT_HIDEFLAGS.getData());
         configData.put(HIGHLIGHT_HOTBAR_ALPHA.getKey(), HIGHLIGHT_HOTBAR_ALPHA.getData());
+        configData.put(HIGHLIGHT_TRADING_ALPHA.getKey(), HIGHLIGHT_TRADING_ALPHA.getData());
         configData.put(UNBREAKABLE_COLOR.getKey(), UNBREAKABLE_COLOR.getData());
         configData.put(REPAIRCOST.getKey(), REPAIRCOST.getData());
         configData.put(REPAIRCOST_VALUE.getKey(), REPAIRCOST_VALUE.getData());
