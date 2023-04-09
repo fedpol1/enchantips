@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.util;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;

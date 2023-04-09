@@ -28,13 +28,7 @@ public class ModConfig {
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".properties").toFile();
 
     public static LinkedHashMap<String, Data<?>> configData = new LinkedHashMap<>();
-    public static TreeMap<String, EnchantmentColorDataEntry> individualColors = new TreeMap<>(new Comparator<String>() {
-        public int compare(String o1, String o2) {
-            String s1 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o1)).getTranslationKey()).getString();
-            String s2 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o2)).getTranslationKey()).getString();
-            return s1.compareTo(s2);
-        }
-    });
+    public static HashMap<String, EnchantmentColorDataEntry> individualColors = new LinkedHashMap<>();
 
     public static BooleanDataEntry SHOW_REPAIRCOST = new BooleanDataEntry("show.repair_cost", ModConfigCategory.TOOLTIP_TOGGLE, true, true);
     public static BooleanDataEntry SHOW_ENCHANTABILITY = new BooleanDataEntry("show.enchantability", ModConfigCategory.TOOLTIP_TOGGLE, true);
@@ -97,9 +91,10 @@ public class ModConfig {
         setPartialDefaultConfigEnchantments();
     }
 
-    private static void setPartialDefaultConfigEnchantments() {
+    // fills individualColors map with enchantment color data, sorted
+    public static void setPartialDefaultConfigEnchantments() {
         for(Enchantment current : Registries.ENCHANTMENT) {
-            individualColors.put(Objects.requireNonNull(Registries.ENCHANTMENT.getId(current)).toString(), new EnchantmentColorDataEntry(current));
+            ModConfig.individualColors.put(Objects.requireNonNull(Registries.ENCHANTMENT.getId(current)).toString(), new EnchantmentColorDataEntry(current));
         }
     }
 
@@ -206,7 +201,18 @@ public class ModConfig {
             }
         }
 
-        for(Map.Entry<String, EnchantmentColorDataEntry> item : ModConfig.individualColors.entrySet()) {
+        // sort enchantments in the screen alphabetically
+        LinkedHashMap<String, EnchantmentColorDataEntry> sortedEnchantments = new LinkedHashMap<>();
+        ModConfig.individualColors.entrySet().stream().sorted(new Comparator<Map.Entry<String, EnchantmentColorDataEntry>>() {
+            @Override
+            public int compare(Map.Entry<String, EnchantmentColorDataEntry> o1, Map.Entry<String, EnchantmentColorDataEntry> o2) {
+                String s1 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o1.getKey())).getTranslationKey()).getString();
+                String s2 = Text.translatable(Registries.ENCHANTMENT.get(new Identifier(o2.getKey())).getTranslationKey()).getString();
+                return s1.compareTo(s2);
+            }
+        }).forEach(e -> sortedEnchantments.put(e.getKey(), e.getValue()));
+
+        for(Map.Entry<String, EnchantmentColorDataEntry> item : sortedEnchantments.entrySet()) {
             Text enchText = Text.translatable(item.getValue().enchantment.getTranslationKey());
             Text enchTooltip = Text.of(item.getValue().enchantmentKey);
             individualEnchantments = individualEnchantments.group(
