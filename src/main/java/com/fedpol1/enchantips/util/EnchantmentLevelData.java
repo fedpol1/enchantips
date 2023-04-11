@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.util;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;
@@ -67,7 +66,7 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
     }
 
     public EnchantmentColorDataEntry getDataEntry() {
-        return ModConfig.individualColors.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId(this.getEnchantment())).toString());
+        return ModConfig.enchantmentData.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId(this.getEnchantment())).toString());
     }
 
     public int getLowestModifiedLevel() {

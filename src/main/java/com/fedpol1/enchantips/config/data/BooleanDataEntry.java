@@ -1,20 +1,16 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModConfigCategory;
+import com.fedpol1.enchantips.config.ModConfig;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.TickBoxController;
 import net.minecraft.text.Text;
 
-public class BooleanDataEntry extends AbstractDataEntry implements DataEntry<BooleanDataEntry.BooleanData, Boolean> {
+public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements DataEntry<BooleanDataEntry.BooleanData, Boolean> {
 
     private final BooleanData data;
 
-    public BooleanDataEntry(String key, ModConfigCategory category, boolean defaultValue) {
-        this(key, category, defaultValue, false);
-    }
-
-    public BooleanDataEntry(String key, ModConfigCategory category, boolean defaultValue, boolean hasTooltip) {
-        super(key, category, hasTooltip);
+    public BooleanDataEntry(String key, boolean defaultValue, boolean hasTooltip) {
+        super(key, hasTooltip);
         this.data = new BooleanData(this, defaultValue);
     }
 
@@ -68,8 +64,8 @@ public class BooleanDataEntry extends AbstractDataEntry implements DataEntry<Boo
 
         public Option<Boolean> getOption() {
             return Option.createBuilder(Boolean.class)
-                    .name(Text.translatable(this.getEntry().getTitle()))
-                    .tooltip(Text.translatable(this.getEntry().getTooltip()))
+                    .name(Text.translatable(this.getEntry().title))
+                    .tooltip(Text.translatable(this.getEntry().tooltip))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
                     .controller(TickBoxController::new)
                     .build();

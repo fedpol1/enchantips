@@ -3,12 +3,11 @@ package com.fedpol1.enchantips.config;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
 
 import java.awt.Color;
 import java.util.Objects;
 
-public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDataEntry> {
+public class EnchantmentColorDataEntry {
 
     public Enchantment enchantment;
     public String enchantmentKey;
@@ -50,10 +49,5 @@ public class EnchantmentColorDataEntry implements Comparable<EnchantmentColorDat
 
     public boolean getDefaultHighlightVisibility() {
         return true;
-    }
-
-    @Override
-    public int compareTo(EnchantmentColorDataEntry other) {
-        return this.order - other.order;
     }
 }

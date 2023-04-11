@@ -3,6 +3,9 @@ package com.fedpol1.enchantips.mixin;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.config.tree.GroupNode;
+import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.EnchantmentPriority;
 import com.fedpol1.enchantips.util.TooltipBuilder;
@@ -14,6 +17,8 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+
+import java.awt.*;
 import java.util.Objects;
 
 @Mixin(Enchantment.class)
@@ -53,7 +58,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
         rarityText.append(" ").append(enchantmentText);
-        if(ModConfig.SHOW_RARITY.getValue()) {
+        if((boolean) ModConfig.data.get(ModOption.SHOW_RARITY).getValue()) {
             return rarityText;
         }
         return enchantmentText;
@@ -77,9 +82,9 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-        EnchantmentColorDataEntry colorDataEntry = ModConfig.individualColors.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
-        TextColor colorMin = TextColor.fromRgb(colorDataEntry.minColor.getRGB());
-        TextColor colorMax = TextColor.fromRgb(colorDataEntry.maxColor.getRGB());
+        GroupNode gn = ModConfig.enchantmentData.get(Objects.requireNonNull((Enchantment) (Object)this));
+        TextColor colorMin = TextColor.fromRgb(((Color) ((OptionNode) (gn.getChild(0))).getValue()).getRGB());
+        TextColor colorMax = TextColor.fromRgb(((Color) ((OptionNode) (gn.getChild(1))).getValue()).getRGB());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 }

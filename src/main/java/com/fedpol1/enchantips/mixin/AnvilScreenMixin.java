@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.AnvilScreenSwapItemButton;
 import com.fedpol1.enchantips.util.EnchantmentListHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
@@ -31,7 +32,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     // this is nasty
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
     protected void enchantipsSetupAddAnvilSwapButton(CallbackInfo ci) {
-        if(ModConfig.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) {
+        if((boolean) ModConfig.data.get(ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON).getValue()) {
             this.addDrawableChild(new TexturedButtonWidget(
                     this.x + 152,
                     this.height / 2 - 36,
