@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
+import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModConfigCategory;
 import com.fedpol1.enchantips.util.ColorManager;
 import dev.isxander.yacl.api.Option;
@@ -7,17 +8,14 @@ import dev.isxander.yacl.gui.controllers.ColorController;
 import net.minecraft.text.Text;
 import java.awt.Color;
 
-public class ColorDataEntry extends AbstractDataEntry implements DataEntry<ColorDataEntry.ColorData, Color> {
+public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntry<ColorDataEntry.ColorData, Color> {
 
     private final ColorData data;
-
-    public ColorDataEntry(String key, ModConfigCategory category, int defaultColor) {
-        this(key, category, defaultColor, false);
-    }
 
     public ColorDataEntry(String key, ModConfigCategory category, int defaultColor, boolean hasTooltip) {
         super(key, category, hasTooltip);
         this.data = new ColorData(this, defaultColor);
+        ModConfig.data.put(key, this.data);
     }
 
     public ColorData getData() {

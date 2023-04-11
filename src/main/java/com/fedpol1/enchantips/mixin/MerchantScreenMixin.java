@@ -19,13 +19,17 @@ public abstract class MerchantScreenMixin {
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/MerchantScreen;renderFirstBuyItem(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;II)V"))
     private void enchantipsHighlightFirstbuyItem(MerchantScreen instance, MatrixStack matrices, ItemStack adjustedFirstBuyItem, ItemStack originalFirstBuyItem, int x, int y) {
+        if(ModConfig.SHOW_HIGHLIGHTS.getValue()) {
         SlotHighlightHelper.highlightSingleSlot(matrices, adjustedFirstBuyItem, x, y, ModConfig.HIGHLIGHT_TRADING_ALPHA.getValue());
+        }
         ((MerchantScreenMixin) (Object) instance).renderFirstBuyItem(matrices, adjustedFirstBuyItem, originalFirstBuyItem, x, y);
     }
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderInGui(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;II)V"))
     private void enchantipsHighlightOtherTradeItems(ItemRenderer instance, MatrixStack matrices, ItemStack stack, int x, int y) {
-        SlotHighlightHelper.highlightSingleSlot(matrices, stack, x, y, ModConfig.HIGHLIGHT_TRADING_ALPHA.getValue());
+        if(ModConfig.SHOW_HIGHLIGHTS.getValue()) {
+            SlotHighlightHelper.highlightSingleSlot(matrices, stack, x, y, ModConfig.HIGHLIGHT_TRADING_ALPHA.getValue());
+        }
         instance.renderInGui(matrices, stack, x, y);
     }
 }

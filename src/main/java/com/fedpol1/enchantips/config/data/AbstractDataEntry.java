@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.config.data;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModConfigCategory;
 
-public abstract class AbstractDataEntry {
+public abstract class AbstractDataEntry<T> {
 
     protected final String key;
     protected final String title;
@@ -20,6 +20,8 @@ public abstract class AbstractDataEntry {
     public String getKey() {
         return this.key;
     }
+
+    public abstract Data<T> getData();
 
     public String getTitle() {
         return this.title;

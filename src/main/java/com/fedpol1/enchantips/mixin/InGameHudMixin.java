@@ -27,7 +27,7 @@ public abstract class InGameHudMixin extends DrawableHelper implements InGameHud
 
     @Inject(method = "renderHotbarItem(Lnet/minecraft/client/util/math/MatrixStack;IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
     private void enchantipsRenderHighlightsInHotbar(MatrixStack matrixStack, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
-        if(ModConfig.SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED.getValue()) {
+        if(ModConfig.SHOW_HIGHLIGHTS.getValue()) {
             SlotHighlightHelper.highlightSingleSlot(matrixStack, itemStack, i, j, ModConfig.HIGHLIGHT_HOTBAR_ALPHA.getValue());
         }
     }
