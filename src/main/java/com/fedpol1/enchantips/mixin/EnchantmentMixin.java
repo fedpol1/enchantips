@@ -58,7 +58,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
         rarityText.append(" ").append(enchantmentText);
-        if((boolean) ModConfig.data.get(ModOption.SHOW_RARITY).getValue()) {
+        if((boolean) ModOption.SHOW_RARITY.getData().getValue()) {
             return rarityText;
         }
         return enchantmentText;
@@ -83,8 +83,34 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
         GroupNode gn = ModConfig.enchantmentData.get(Objects.requireNonNull((Enchantment) (Object)this));
-        TextColor colorMin = TextColor.fromRgb(((Color) ((OptionNode) (gn.getChild(0))).getValue()).getRGB());
-        TextColor colorMax = TextColor.fromRgb(((Color) ((OptionNode) (gn.getChild(1))).getValue()).getRGB());
+        TextColor colorMin = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(0))).getValue()).getRGB());
+        TextColor colorMax = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(1))).getValue()).getRGB());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
+    }
+
+    public Color enchantipsGetDefaultMinColor() {
+        switch (this.enchantipsGetPriority()) {
+            case CURSED -> { return new Color(0xbf0000); }
+            case TREASURE -> { return new Color(0x009f00); }
+            case NORMAL -> { return new Color(0x9f7f7f); }
+        }
+        return new Color(0x9f7f7f);
+    }
+
+    public Color enchantipsGetDefaultMaxColor() {
+        switch (this.enchantipsGetPriority()) {
+            case CURSED -> { return new Color(0xff0000); }
+            case TREASURE -> { return new Color(0x00df00); }
+            case NORMAL -> { return new Color(0xffdfdf); }
+        }
+        return new Color(0xffdfdf);
+    }
+
+    public int enchantipsGetDefaultOrder() {
+        return this.enchantipsGetPriority().ordinal();
+    }
+
+    public boolean enchantipsGetDefaultHighlightVisibility() {
+        return true;
     }
 }

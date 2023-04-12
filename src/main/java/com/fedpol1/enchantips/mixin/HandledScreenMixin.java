@@ -23,7 +23,7 @@ public abstract class HandledScreenMixin {
 
         float[] oldShaderColor = RenderSystem.getShaderColor();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        if((boolean) ModConfig.data.get(ModOption.SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED).getValue()) {
+        if((boolean) ModOption.SHOW_HIGHLIGHTS.getData().getValue()) {
             SlotHighlightHelper.drawEnchantedItemSlotHighlights(matrices, handler, 255);
         }
         RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);

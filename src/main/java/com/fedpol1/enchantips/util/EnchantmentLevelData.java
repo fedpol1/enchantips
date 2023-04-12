@@ -3,6 +3,8 @@ package com.fedpol1.enchantips.util;
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.tree.GroupNode;
+import com.fedpol1.enchantips.config.tree.OptionNode;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -66,7 +68,13 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
     }
 
     public EnchantmentColorDataEntry getDataEntry() {
-        return ModConfig.enchantmentData.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId(this.getEnchantment())).toString());
+        GroupNode gn = ModConfig.enchantmentData.get(this.getEnchantment());
+        EnchantmentColorDataEntry entry = new EnchantmentColorDataEntry(this.getEnchantment());
+        entry.minColor = (Color) ((OptionNode<?>) gn.getChild(0)).getValue();
+        entry.maxColor = (Color) ((OptionNode<?>) gn.getChild(1)).getValue();
+        entry.order = (Integer) ((OptionNode<?>) gn.getChild(2)).getValue();
+        entry.showHighlight = (Boolean) ((OptionNode<?>) gn.getChild(3)).getValue();
+        return entry;
     }
 
     public int getLowestModifiedLevel() {

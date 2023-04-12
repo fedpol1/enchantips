@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.data.AbstractDataEntry;
+import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.DataEntry;
 import com.fedpol1.enchantips.config.tree.visitor.ReadVisitor;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
@@ -16,13 +17,14 @@ public class OptionNode<T> extends AbstractNode{
         this.entry = entry;
     }
 
-    public AbstractDataEntry<T> getEntry() {
-        return this.entry;
+    public Data<T> getData() {
+        return this.entry.getData();
     }
 
     public T getValue() {
         return this.entry.getData().getValue();
     }
+
     public Option<T> getYaclOption() {
         return this.entry.getData().getOption();
     }

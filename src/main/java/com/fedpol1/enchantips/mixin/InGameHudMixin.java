@@ -28,14 +28,14 @@ public abstract class InGameHudMixin extends DrawableHelper implements InGameHud
 
     @Inject(method = "renderHotbarItem(Lnet/minecraft/client/util/math/MatrixStack;IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
     private void enchantipsRenderHighlightsInHotbar(MatrixStack matrixStack, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
-        if((boolean) ModConfig.data.get(ModOption.SHOW_HIGHLIGHTS_SPECIALLY_ENCHANTED).getValue()) {
-            SlotHighlightHelper.highlightSingleSlot(matrixStack, itemStack, i, j, (int) ModConfig.data.get(ModOption.HIGHLIGHT_HOTBAR_ALPHA).getValue());
+        if((boolean) ModOption.SHOW_HIGHLIGHTS.getData().getValue()) {
+            SlotHighlightHelper.highlightSingleSlot(matrixStack, itemStack, i, j, (int) ModOption.HIGHLIGHT_HOTBAR_ALPHA.getData().getValue());
         }
     }
 
     @Inject(method = "renderStatusBars(Lnet/minecraft/client/util/math/MatrixStack;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getProfiler()Lnet/minecraft/util/profiler/Profiler;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
     private void enchantipsStoreStuffFromBarRenderer(MatrixStack matrices, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, HungerManager hungerManager, int k, int m, int n, int o, float f, int p, int q, int r, int s, int t, int u, int v) {
-        if((boolean) ModConfig.data.get(ModOption.SHOW_PROTECTION_BAR).getValue()) {
+        if((boolean) ModOption.SHOW_PROTECTION_BAR.getData().getValue()) {
             RenderSystem.setShaderTexture(0, ProtectionHud.ICONS);
             ProtectionHud.renderWholeProtectionBar(matrices, m, s);
             RenderSystem.setShaderTexture(this.enchantipsPreviousTexture, this.enchantipsPreviousTextureId);

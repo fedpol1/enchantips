@@ -32,7 +32,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     // this is nasty
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
     protected void enchantipsSetupAddAnvilSwapButton(CallbackInfo ci) {
-        if((boolean) ModConfig.data.get(ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON).getValue()) {
+        if((boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getData().getValue()) {
             this.addDrawableChild(new TexturedButtonWidget(
                     this.x + 152,
                     this.height / 2 - 36,

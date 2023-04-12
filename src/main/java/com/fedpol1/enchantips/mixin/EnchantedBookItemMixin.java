@@ -23,7 +23,7 @@ public abstract class EnchantedBookItemMixin {
     @Inject(method = "appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/item/TooltipContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V", ordinal = 0))
     private void enchantipsInjectGetTooltipRepairCost(ItemStack stack, World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         int cost = stack.getRepairCost();
-        if((boolean) ModConfig.data.get(ModOption.SHOW_REPAIRCOST).getValue() && cost != 0) {
+        if((boolean) ModOption.SHOW_REPAIRCOST.getData().getValue() && cost != 0) {
             tooltip.add(TooltipBuilder.buildRepairCost(cost));
         }
     }

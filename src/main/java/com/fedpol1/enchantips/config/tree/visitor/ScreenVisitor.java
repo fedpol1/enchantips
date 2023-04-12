@@ -4,6 +4,7 @@ import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.*;
 import dev.isxander.yacl.api.ConfigCategory;
+import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.api.OptionGroup;
 import dev.isxander.yacl.api.YetAnotherConfigLib;
 import net.minecraft.text.Text;
@@ -23,8 +24,11 @@ public class ScreenVisitor implements Visitor {
     public Object visit(CategoryNode n, Object data) {
         ConfigCategory.Builder categoryBuilder = ConfigCategory.createBuilder()
                 .name(Text.translatable(EnchantipsClient.MODID + ".config.title.category." + n.getName()));
+        Object child;
         for(int i = 0; i < n.getNumChildren(); i++) {
-            categoryBuilder = (ConfigCategory.Builder) n.getChild(i).accept(this, categoryBuilder);
+            child = n.getChild(i).accept(this, categoryBuilder);
+            if(child instanceof Option<?> childOpt) { categoryBuilder = categoryBuilder.option(childOpt); }
+            if(child instanceof OptionGroup childOptGroup) { categoryBuilder = categoryBuilder.group(childOptGroup); }
         }
         return ((YetAnotherConfigLib.Builder)data).category(categoryBuilder.build());
     }
@@ -34,7 +38,7 @@ public class ScreenVisitor implements Visitor {
                 .name(Text.translatable(n.getName()))
                 .collapsed(true);
         for(int i = 0; i < n.getNumChildren(); i++) {
-            groupBuilder = (OptionGroup.Builder) n.getChild(i).accept(this, groupBuilder);
+            groupBuilder = groupBuilder.option((Option<?>) n.getChild(i).accept(this, groupBuilder));
         }
         return ((ConfigCategory.Builder)data).group(groupBuilder.build());
     }
