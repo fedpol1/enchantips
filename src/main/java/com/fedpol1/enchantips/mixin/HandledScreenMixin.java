@@ -1,8 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.util.SlotHighlightHelper;
+import com.fedpol1.enchantips.gui.SlotHighlight;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -24,7 +23,7 @@ public abstract class HandledScreenMixin {
         float[] oldShaderColor = RenderSystem.getShaderColor();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if((boolean) ModOption.SHOW_HIGHLIGHTS.getData().getValue()) {
-            SlotHighlightHelper.drawEnchantedItemSlotHighlights(matrices, handler, 255);
+            SlotHighlight.drawEnchantedItemSlotHighlights(matrices, handler, 255);
         }
         RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);
     }

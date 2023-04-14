@@ -33,8 +33,10 @@ public enum ModOption {
     private final AbstractDataEntry<?> entry;
 
     ModOption(AbstractDataEntry<?> entry, Node parent) {
+        OptionNode<?> o = new OptionNode<>(entry);
         this.entry = entry;
-        parent.addChild(new OptionNode<>(entry));
+        parent.addChild(o);
+        ModConfigData.optionData.put(o.getName(), o);
     }
 
     public Data<?> getData() {

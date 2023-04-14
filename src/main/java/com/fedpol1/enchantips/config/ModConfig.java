@@ -16,13 +16,10 @@ import net.minecraft.registry.Registries;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
 
 public class ModConfig {
 
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".properties").toFile();
-
-    public static HashMap<Enchantment, GroupNode> enchantmentData = new HashMap<>();
 
     public static void registerConfig() {
         EnchantipsClient.LOGGER.info("Initializing configs");
@@ -31,7 +28,7 @@ public class ModConfig {
         GroupNode gn;
         for(Enchantment current : Registries.ENCHANTMENT) {
             gn = (GroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().addChild(new GroupNode(current));
-            ModConfig.enchantmentData.put(current, gn);
+            ModConfigData.enchantmentData.put(current, gn);
             gn.addChild(new OptionNode<>(new ColorDataEntry("min_color", ((EnchantmentAccess)current).enchantipsGetDefaultMinColor().getRGB(), false)));
             gn.addChild(new OptionNode<>(new ColorDataEntry("max_color", ((EnchantmentAccess)current).enchantipsGetDefaultMaxColor().getRGB(), false)));
             gn.addChild(new OptionNode<>(new IntegerDataEntry("order", ((EnchantmentAccess)current).enchantipsGetDefaultOrder(), -2000000000, 2000000000, 0, true)));

@@ -1,12 +1,11 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
-import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.util.ColorManager;
-import com.fedpol1.enchantips.util.EnchantmentPriority;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
@@ -69,43 +68,33 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
         else { return Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / (t.getMaxLevel() - t.getMinLevel()))); }
     }
 
-    // different priorities have different respective colors
-    // higher priorities take precedence
-    public EnchantmentPriority enchantipsGetPriority() {
-        Enchantment t = (Enchantment)(Object)this;
-        if(t.isCursed()) { return EnchantmentPriority.CURSED;}
-        if(t.isTreasure()) { return EnchantmentPriority.TREASURE;}
-        return EnchantmentPriority.NORMAL;
-    }
-
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-        GroupNode gn = ModConfig.enchantmentData.get(Objects.requireNonNull((Enchantment) (Object)this));
+        GroupNode gn = ModConfigData.get(Objects.requireNonNull((Enchantment) (Object)this));
         TextColor colorMin = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(0))).getValue()).getRGB());
         TextColor colorMax = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(1))).getValue()).getRGB());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 
     public Color enchantipsGetDefaultMinColor() {
-        switch (this.enchantipsGetPriority()) {
-            case CURSED -> { return new Color(0xbf0000); }
-            case TREASURE -> { return new Color(0x009f00); }
-            case NORMAL -> { return new Color(0x9f7f7f); }
-        }
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return new Color(0xbf0000); }
+        if(t.isTreasure()) { return new Color(0x009f00); }
         return new Color(0x9f7f7f);
     }
 
     public Color enchantipsGetDefaultMaxColor() {
-        switch (this.enchantipsGetPriority()) {
-            case CURSED -> { return new Color(0xff0000); }
-            case TREASURE -> { return new Color(0x00df00); }
-            case NORMAL -> { return new Color(0xffdfdf); }
-        }
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return new Color(0xff0000); }
+        if(t.isTreasure()) { return new Color(0x00df00); }
         return new Color(0xffdfdf);
     }
 
     public int enchantipsGetDefaultOrder() {
-        return this.enchantipsGetPriority().ordinal();
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return 0; }
+        if(t.isTreasure()) { return 1; }
+        return 2;
     }
 
     public boolean enchantipsGetDefaultHighlightVisibility() {

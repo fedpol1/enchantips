@@ -1,10 +1,9 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.InGameHudAccess;
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.ProtectionHud;
-import com.fedpol1.enchantips.util.SlotHighlightHelper;
+import com.fedpol1.enchantips.gui.SlotHighlight;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -29,7 +28,7 @@ public abstract class InGameHudMixin extends DrawableHelper implements InGameHud
     @Inject(method = "renderHotbarItem(Lnet/minecraft/client/util/math/MatrixStack;IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
     private void enchantipsRenderHighlightsInHotbar(MatrixStack matrixStack, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
         if((boolean) ModOption.SHOW_HIGHLIGHTS.getData().getValue()) {
-            SlotHighlightHelper.highlightSingleSlot(matrixStack, itemStack, i, j, (int) ModOption.HIGHLIGHT_HOTBAR_ALPHA.getData().getValue());
+            SlotHighlight.highlightSingleSlot(matrixStack, itemStack, i, j, (int) ModOption.HIGHLIGHT_HOTBAR_ALPHA.getData().getValue());
         }
     }
 

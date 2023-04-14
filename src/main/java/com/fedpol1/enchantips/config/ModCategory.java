@@ -17,6 +17,7 @@ public enum ModCategory {
     ModCategory(CategoryNode cat, Node parent) {
         this.node = cat;
         parent.addChild(cat);
+        ModConfigData.categoryData.put(cat.getName(), cat);
     }
 
     public CategoryNode getNode() {

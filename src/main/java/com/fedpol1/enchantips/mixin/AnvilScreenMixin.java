@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.AnvilScreenSwapItemButton;
 import com.fedpol1.enchantips.util.EnchantmentListHelper;

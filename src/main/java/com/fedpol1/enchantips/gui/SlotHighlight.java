@@ -1,7 +1,9 @@
-package com.fedpol1.enchantips.util;
+package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.ItemStackAccess;
+import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.util.EnchantmentLevelData;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -14,7 +16,7 @@ import net.minecraft.screen.slot.Slot;
 import java.awt.Color;
 import java.util.*;
 
-public abstract class SlotHighlightHelper extends DrawableHelper {
+public abstract class SlotHighlight extends DrawableHelper {
 
     public static void drawEnchantedItemSlotHighlights(MatrixStack matrices, ScreenHandler handler, int alpha) {
         Slot slot;
@@ -38,7 +40,7 @@ public abstract class SlotHighlightHelper extends DrawableHelper {
         }
         if(stackAccess.enchantipsEnchantmentsVisible() || !(boolean) ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getData().getValue()) {
             for (EnchantmentLevelData levelData : arrayOfEnchLevel) {
-                if (!levelData.getDataEntry().showHighlight) { continue; }
+                if (!ModConfigData.isEnchantmentHighlighted(levelData.getEnchantment())) { continue; }
                 arrayOfColor.add(levelData.getColor());
             }
         }
