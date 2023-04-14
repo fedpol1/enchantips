@@ -18,5 +18,5 @@ public interface Data<T> {
 
         void readStringValue(String c);
 
-        Option<T> getOption();
+        Option.Builder<T> getOptionBuilder();
 }

@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
 import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
@@ -69,13 +68,10 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
             this.value = Integer.parseInt(s);
         }
 
-        public Option<Integer> getOption() {
+        public Option.Builder<Integer> getOptionBuilder() {
             return Option.createBuilder(Integer.class)
-                    .name(Text.translatable(this.getEntry().title))
-                    .tooltip(Text.translatable(this.getEntry().tooltip))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(o -> this.step == 0 ? new IntegerFieldController(o, this.min, this.max) : new IntegerSliderController(o, this.min, this.max, this.step))
-                    .build();
+                    .controller(o -> this.step == 0 ? new IntegerFieldController(o, this.min, this.max) : new IntegerSliderController(o, this.min, this.max, this.step));
         }
     }
 }

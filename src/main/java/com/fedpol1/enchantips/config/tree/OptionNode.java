@@ -2,14 +2,14 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.data.AbstractDataEntry;
 import com.fedpol1.enchantips.config.data.Data;
-import com.fedpol1.enchantips.config.data.DataEntry;
-import com.fedpol1.enchantips.config.tree.visitor.ReadVisitor;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
-import com.fedpol1.enchantips.config.tree.visitor.WriteVisitor;
+import com.google.gson.annotations.Expose;
 import dev.isxander.yacl.api.Option;
+import net.minecraft.text.Text;
 
 public class OptionNode<T> extends AbstractNode{
 
+    @Expose
     private final AbstractDataEntry<T> entry;
 
     public OptionNode(AbstractDataEntry<T> entry) {
@@ -26,18 +26,13 @@ public class OptionNode<T> extends AbstractNode{
     }
 
     public Option<T> getYaclOption() {
-        return this.entry.getData().getOption();
+        return this.entry.getData().getOptionBuilder()
+                .name(Text.translatable(this.getFullName() + ".option_title"))
+                .tooltip(Text.translatable(this.entry.hasTooltip() ? this.getFullName() + ".option_tooltip" : ""))
+                .build();
     }
 
     public Object accept(ScreenVisitor v, Object data) {
-        return v.visit(this, data);
-    }
-
-    public Object accept(ReadVisitor v, Object data) {
-        return v.visit(this, data);
-    }
-
-    public Object accept(WriteVisitor v, Object data) {
         return v.visit(this, data);
     }
 }

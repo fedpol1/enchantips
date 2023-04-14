@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.TickBoxController;
 import net.minecraft.text.Text;
@@ -62,13 +61,10 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
             this.value = Boolean.parseBoolean(s);
         }
 
-        public Option<Boolean> getOption() {
+        public Option.Builder<Boolean> getOptionBuilder() {
             return Option.createBuilder(Boolean.class)
-                    .name(Text.translatable(this.getEntry().title))
-                    .tooltip(Text.translatable(this.getEntry().tooltip))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(TickBoxController::new)
-                    .build();
+                    .controller(TickBoxController::new);
         }
     }
 }

@@ -13,7 +13,7 @@ public class ScreenVisitor implements Visitor {
 
     public Object visit(ConfigTree n, Object data) {
         YetAnotherConfigLib.Builder yaclBuilder = YetAnotherConfigLib.createBuilder()
-                .title(Text.translatable(n.getName()))
+                .title(Text.translatable(n.getFullName()))
                 .save(ModConfig::writeConfig);
         for(int i = 0; i < n.getNumChildren(); i++) {
             yaclBuilder = (YetAnotherConfigLib.Builder) n.getChild(i).accept(this, yaclBuilder);
@@ -23,7 +23,7 @@ public class ScreenVisitor implements Visitor {
 
     public Object visit(CategoryNode n, Object data) {
         ConfigCategory.Builder categoryBuilder = ConfigCategory.createBuilder()
-                .name(Text.translatable(EnchantipsClient.MODID + ".config.title.category." + n.getName()));
+                .name(Text.translatable(n.getFullName()));
         Object child;
         for(int i = 0; i < n.getNumChildren(); i++) {
             child = n.getChild(i).accept(this, categoryBuilder);
@@ -35,7 +35,7 @@ public class ScreenVisitor implements Visitor {
 
     public Object visit(GroupNode n, Object data) {
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Text.translatable(n.getName()))
+                .name(Text.translatable(n.getEnchantment() == null ? n.getFullName() : n.getEnchantment().getTranslationKey()))
                 .collapsed(true);
         for(int i = 0; i < n.getNumChildren(); i++) {
             groupBuilder = groupBuilder.option((Option<?>) n.getChild(i).accept(this, groupBuilder));
@@ -43,7 +43,7 @@ public class ScreenVisitor implements Visitor {
         return ((ConfigCategory.Builder)data).group(groupBuilder.build());
     }
 
-    public Object visit(OptionNode n, Object data) {
+    public Object visit(OptionNode<?> n, Object data) {
         return n.getYaclOption();
     }
 }

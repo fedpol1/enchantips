@@ -5,13 +5,15 @@ import com.fedpol1.enchantips.EnchantipsClient;
 public abstract class AbstractDataEntry<T> {
 
     protected final String key;
-    protected final String title;
-    protected final String tooltip;
+    protected final boolean hasTooltip;
 
     AbstractDataEntry(String key, boolean hasTooltip) {
         this.key = key;
-        this.title = EnchantipsClient.MODID + ".config.title." + key;
-        this.tooltip = hasTooltip ? EnchantipsClient.MODID + ".config.tooltip." + key : "";
+        this.hasTooltip = hasTooltip;
+    }
+
+    public boolean hasTooltip() {
+        return this.hasTooltip;
     }
 
     public abstract Data<T> getData();
