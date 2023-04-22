@@ -16,7 +16,7 @@ public enum ModCategory {
     ModCategory(CategoryNode cat) {
         this.node = cat;
         ConfigTree.root.addChild(cat);
-        ModConfigData.categoryData.put(cat.getName(), cat);
+        ModConfigData.categories.put(cat.getName(), cat);
     }
 
     public CategoryNode getNode() {

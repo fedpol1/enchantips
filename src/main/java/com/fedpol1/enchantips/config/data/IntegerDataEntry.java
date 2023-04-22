@@ -3,7 +3,6 @@ package com.fedpol1.enchantips.config.data;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
 import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
-import net.minecraft.text.Text;
 
 public class IntegerDataEntry extends AbstractDataEntry<Integer> implements DataEntry<IntegerDataEntry.IntegerData, Integer> {
 
@@ -12,7 +11,6 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
     public IntegerDataEntry(String key, int defaultValue, int min, int max, int step, boolean hasTooltip) {
         super(key, hasTooltip);
         this.data = new IntegerData(this, defaultValue, min, max, step);
-        ModConfig.data.put(key, this.data);
     }
 
     public IntegerData getData() {

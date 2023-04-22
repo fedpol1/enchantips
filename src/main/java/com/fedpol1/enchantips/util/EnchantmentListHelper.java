@@ -1,13 +1,9 @@
 package com.fedpol1.enchantips.util;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import java.util.ArrayList;
 
 public abstract class EnchantmentListHelper {
 

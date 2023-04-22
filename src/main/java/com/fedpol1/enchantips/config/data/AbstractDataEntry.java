@@ -1,7 +1,5 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.EnchantipsClient;
-
 public abstract class AbstractDataEntry<T> {
 
     protected final String key;

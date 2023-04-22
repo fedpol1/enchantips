@@ -1,10 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.ItemStackAccess;
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.util.EnchantmentLevelData;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,8 +21,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Mixin(ItemStack.class)

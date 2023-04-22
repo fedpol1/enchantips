@@ -7,7 +7,6 @@ import com.fedpol1.enchantips.config.deserializer.ConfigTreeDeserializer;
 import com.fedpol1.enchantips.config.serializer.ConfigTreeSerializer;
 import com.fedpol1.enchantips.config.tree.*;
 import com.fedpol1.enchantips.config.tree.visitor.*;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.isxander.yacl.api.YetAnotherConfigLib;
 import net.fabricmc.loader.api.FabricLoader;

@@ -36,7 +36,6 @@ public enum ModOption {
         OptionNode<?> o = new OptionNode<>(entry);
         this.entry = entry;
         parent.addChild(o);
-        ModConfigData.optionData.put(o.getName(), o);
     }
 
     public Data<?> getData() {

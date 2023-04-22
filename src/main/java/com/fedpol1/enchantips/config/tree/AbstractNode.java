@@ -10,7 +10,6 @@ public abstract class AbstractNode implements Node {
 
     protected final String name;
     protected String fullName;
-    //protected final ArrayList<Node> children = new ArrayList<>();
     protected final HashMap<String, Node> children = new HashMap<>();
     protected Node parent;
 

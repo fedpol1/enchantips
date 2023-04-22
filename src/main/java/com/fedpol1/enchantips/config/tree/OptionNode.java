@@ -3,13 +3,11 @@ package com.fedpol1.enchantips.config.tree;
 import com.fedpol1.enchantips.config.data.AbstractDataEntry;
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
-import com.google.gson.annotations.Expose;
 import dev.isxander.yacl.api.Option;
 import net.minecraft.text.Text;
 
 public class OptionNode<T> extends AbstractNode{
 
-    @Expose
     private final AbstractDataEntry<T> entry;
 
     public OptionNode(AbstractDataEntry<T> entry) {

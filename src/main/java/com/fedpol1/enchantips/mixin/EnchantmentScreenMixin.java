@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevelData;
