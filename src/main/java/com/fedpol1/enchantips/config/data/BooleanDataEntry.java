@@ -11,6 +11,7 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
     public BooleanDataEntry(String key, boolean defaultValue, boolean hasTooltip) {
         super(key, hasTooltip);
         this.data = new BooleanData(this, defaultValue);
+        ModConfig.data.put(key, this.data);
     }
 
     public BooleanData getData() {

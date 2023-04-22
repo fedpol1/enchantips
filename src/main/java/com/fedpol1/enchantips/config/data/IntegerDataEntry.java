@@ -12,6 +12,7 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
     public IntegerDataEntry(String key, int defaultValue, int min, int max, int step, boolean hasTooltip) {
         super(key, hasTooltip);
         this.data = new IntegerData(this, defaultValue, min, max, step);
+        ModConfig.data.put(key, this.data);
     }
 
     public IntegerData getData() {

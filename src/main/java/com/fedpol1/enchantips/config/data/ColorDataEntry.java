@@ -13,6 +13,7 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
     public ColorDataEntry(String key, int defaultColor, boolean hasTooltip) {
         super(key, hasTooltip);
         this.data = new ColorData(this, defaultColor);
+        ModConfig.data.put(key, this.data);
     }
 
     public ColorData getData() {
