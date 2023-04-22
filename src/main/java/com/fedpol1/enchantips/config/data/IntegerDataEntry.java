@@ -1,7 +1,5 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModConfig;
-import com.fedpol1.enchantips.config.ModConfigCategory;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
 import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
@@ -11,8 +9,8 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
 
     private final IntegerData data;
 
-    public IntegerDataEntry(String key, ModConfigCategory category, int defaultValue, int min, int max, int step, boolean hasTooltip) {
-        super(key, category, hasTooltip);
+    public IntegerDataEntry(String key, int defaultValue, int min, int max, int step, boolean hasTooltip) {
+        super(key, hasTooltip);
         this.data = new IntegerData(this, defaultValue, min, max, step);
         ModConfig.data.put(key, this.data);
     }
@@ -71,13 +69,10 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
             this.value = Integer.parseInt(s);
         }
 
-        public Option<Integer> getOption() {
+        public Option.Builder<Integer> getOptionBuilder() {
             return Option.createBuilder(Integer.class)
-                    .name(Text.translatable(this.getEntry().getTitle()))
-                    .tooltip(Text.translatable(this.getEntry().getTooltip()))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(o -> this.step == 0 ? new IntegerFieldController(o, this.min, this.max) : new IntegerSliderController(o, this.min, this.max, this.step))
-                    .build();
+                    .controller(o -> this.step == 0 ? new IntegerFieldController(o, this.min, this.max) : new IntegerSliderController(o, this.min, this.max, this.step));
         }
     }
 }

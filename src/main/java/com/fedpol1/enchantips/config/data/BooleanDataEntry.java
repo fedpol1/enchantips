@@ -1,7 +1,5 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModConfig;
-import com.fedpol1.enchantips.config.ModConfigCategory;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.TickBoxController;
 import net.minecraft.text.Text;
@@ -10,8 +8,8 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
 
     private final BooleanData data;
 
-    public BooleanDataEntry(String key, ModConfigCategory category, boolean defaultValue, boolean hasTooltip) {
-        super(key, category, hasTooltip);
+    public BooleanDataEntry(String key, boolean defaultValue, boolean hasTooltip) {
+        super(key, hasTooltip);
         this.data = new BooleanData(this, defaultValue);
         ModConfig.data.put(key, this.data);
     }
@@ -64,13 +62,10 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
             this.value = Boolean.parseBoolean(s);
         }
 
-        public Option<Boolean> getOption() {
+        public Option.Builder<Boolean> getOptionBuilder() {
             return Option.createBuilder(Boolean.class)
-                    .name(Text.translatable(this.getEntry().getTitle()))
-                    .tooltip(Text.translatable(this.getEntry().getTooltip()))
                     .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(TickBoxController::new)
-                    .build();
+                    .controller(TickBoxController::new);
         }
     }
 }

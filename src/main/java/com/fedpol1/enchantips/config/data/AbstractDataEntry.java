@@ -1,37 +1,24 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.config.ModConfigCategory;
 
 public abstract class AbstractDataEntry<T> {
 
     protected final String key;
-    protected final String title;
-    protected final String tooltip;
-    protected final ModConfigCategory category;
+    protected final boolean hasTooltip;
 
-    AbstractDataEntry(String key, ModConfigCategory category, boolean hasTooltip) {
+    AbstractDataEntry(String key, boolean hasTooltip) {
         this.key = key;
-        this.title = EnchantipsClient.MODID + ".config.title." + key;
-        this.tooltip = hasTooltip ? EnchantipsClient.MODID + ".config.tooltip." + key : "";
-        this.category = category;
+        this.hasTooltip = hasTooltip;
     }
 
-    public String getKey() {
-        return this.key;
+    public boolean hasTooltip() {
+        return this.hasTooltip;
     }
 
     public abstract Data<T> getData();
 
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getTooltip() {
-        return this.tooltip;
-    }
-
-    public ModConfigCategory getCategory() {
-        return this.category;
+    public String getKey() {
+        return this.key;
     }
 }

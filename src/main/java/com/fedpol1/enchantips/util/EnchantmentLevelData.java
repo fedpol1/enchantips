@@ -1,8 +1,7 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
-import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
-import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModConfigData;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -13,7 +12,6 @@ import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
 
@@ -65,10 +63,6 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
         return new Color(((EnchantmentAccess)this.getEnchantment()).enchantipsGetColor(this.getLevel()).getRgb());
     }
 
-    public EnchantmentColorDataEntry getDataEntry() {
-        return ModConfig.enchantmentData.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId(this.getEnchantment())).toString());
-    }
-
     public int getLowestModifiedLevel() {
         return this.getEnchantment().getMinPower(this.getLevel());
     }
@@ -82,7 +76,7 @@ public class EnchantmentLevelData implements Comparable<EnchantmentLevelData> {
 
     public int compareTo(EnchantmentLevelData other) {
         // first compare order from enchantmentcolordata
-        int comparison = this.getDataEntry().order - other.getDataEntry().order;
+        int comparison = ModConfigData.getEnchantmentOrder(this.getEnchantment()) - ModConfigData.getEnchantmentOrder(other.getEnchantment());
         if(comparison != 0) { return comparison; }
         // then compare translated name
         comparison = Text.translatable(this.getEnchantment().getTranslationKey()).getString().compareTo(Text.translatable(other.getEnchantment().getTranslationKey()).getString());

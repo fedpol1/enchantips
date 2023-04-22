@@ -1,19 +1,21 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
-import com.fedpol1.enchantips.config.EnchantmentColorDataEntry;
-import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModConfigData;
+import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.config.tree.GroupNode;
+import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.util.ColorManager;
-import com.fedpol1.enchantips.util.EnchantmentPriority;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+
+import java.awt.*;
 import java.util.Objects;
 
 @Mixin(Enchantment.class)
@@ -53,7 +55,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
         rarityText.append(" ").append(enchantmentText);
-        if(ModConfig.SHOW_RARITY.getValue()) {
+        if((boolean) ModOption.SHOW_RARITY.getData().getValue()) {
             return rarityText;
         }
         return enchantmentText;
@@ -66,20 +68,36 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
         else { return Math.max(0.0f, Math.min(1.0f, (float)(level - t.getMinLevel()) / (t.getMaxLevel() - t.getMinLevel()))); }
     }
 
-    // different priorities have different respective colors
-    // higher priorities take precedence
-    public EnchantmentPriority enchantipsGetPriority() {
-        Enchantment t = (Enchantment)(Object)this;
-        if(t.isCursed()) { return EnchantmentPriority.CURSED;}
-        if(t.isTreasure()) { return EnchantmentPriority.TREASURE;}
-        return EnchantmentPriority.NORMAL;
-    }
-
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
-        EnchantmentColorDataEntry colorDataEntry = ModConfig.enchantmentData.get(Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object)this)).toString());
-        TextColor colorMin = TextColor.fromRgb(colorDataEntry.minColor.getRGB());
-        TextColor colorMax = TextColor.fromRgb(colorDataEntry.maxColor.getRGB());
+        GroupNode gn = ModConfigData.get(Objects.requireNonNull((Enchantment) (Object)this));
+        Color colorMin = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MIN_COLOR_KEY))).getValue());
+        Color colorMax = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MAX_COLOR_KEY))).getValue());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
+    }
+
+    public Color enchantipsGetDefaultMinColor() {
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return new Color(0xbf0000); }
+        if(t.isTreasure()) { return new Color(0x009f00); }
+        return new Color(0x9f7f7f);
+    }
+
+    public Color enchantipsGetDefaultMaxColor() {
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return new Color(0xff0000); }
+        if(t.isTreasure()) { return new Color(0x00df00); }
+        return new Color(0xffdfdf);
+    }
+
+    public int enchantipsGetDefaultOrder() {
+        Enchantment t = (Enchantment)(Object)this;
+        if(t.isCursed()) { return 0; }
+        if(t.isTreasure()) { return 1; }
+        return 2;
+    }
+
+    public boolean enchantipsGetDefaultHighlightVisibility() {
+        return true;
     }
 }

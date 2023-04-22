@@ -2,6 +2,7 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevelData;
 import com.fedpol1.enchantips.util.TooltipBuilder;
@@ -36,10 +37,10 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         ItemStack itemStack = t.getScreenHandler().getSlot(0).getStack();
         int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchantment, l, itemStack, tableLevel);
         int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchantment, l, itemStack, tableLevel);
-        if(ModConfig.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getValue()) {
+        if((boolean) ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()) {
             list.add(TooltipBuilder.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
         }
-        if(ModConfig.SHOW_EXTRA_ENCHANTMENTS.getValue() && !itemStack.isOf(Items.BOOK)) {
+        if((boolean) ModOption.SHOW_EXTRA_ENCHANTMENTS.getData().getValue() && !itemStack.isOf(Items.BOOK)) {
             ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
             for (Enchantment current : Registries.ENCHANTMENT) {
                 if (current == enchantment || !current.canCombine(enchantment)) { continue; }
@@ -55,7 +56,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             Collections.sort(enchantmentLevelData);
             for(EnchantmentLevelData levelData : enchantmentLevelData) {
                 MutableText text = (MutableText) ((EnchantmentAccess) levelData.getEnchantment()).enchantipsGetName(levelData.getLevel(), itemStack.isOf(Items.ENCHANTED_BOOK));
-                if(ModConfig.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getValue()) {
+                if((boolean) ModOption.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getData().getValue()) {
                     text.append(" ").append(
                             TooltipBuilder.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
                     );
