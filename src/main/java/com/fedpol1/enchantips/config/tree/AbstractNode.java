@@ -2,13 +2,16 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractNode implements Node {
 
     protected final String name;
     protected String fullName;
-    protected final ArrayList<Node> children = new ArrayList<>();
+    //protected final ArrayList<Node> children = new ArrayList<>();
+    protected final HashMap<String, Node> children = new HashMap<>();
     protected Node parent;
 
     public AbstractNode(String name) {
@@ -17,18 +20,18 @@ public abstract class AbstractNode implements Node {
         this.parent = null;
     }
 
-    public int getNumChildren() {
-        return this.children.size();
+    public Node getChild(String s) {
+        return this.children.get(s);
     }
 
-    public Node getChild(int i) {
-        return this.children.get(i);
+    public Set<Map.Entry<String, Node>> getChildren() {
+        return this.children.entrySet();
     }
 
     public Node addChild(AbstractNode c) {
         c.fullName = this.getFullName() + "." + c.getName();
         c.parent = this;
-        this.children.add(c);
+        this.children.put(c.getName(), c);
         return c;
     }
 

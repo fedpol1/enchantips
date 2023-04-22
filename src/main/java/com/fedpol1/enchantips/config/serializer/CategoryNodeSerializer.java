@@ -7,23 +7,26 @@ import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public class CategoryNodeSerializer implements JsonSerializer<CategoryNode> {
 
     public JsonElement serialize(CategoryNode node, Type typeOfNode, JsonSerializationContext context) {
         JsonObject json = new JsonObject();
-        Node child;
-        for(int i = 0; i < node.getNumChildren(); i++) {
-            child = node.getChild(i);
-            if(child instanceof OptionNode<?> opt) {
-                json.addProperty(opt.getName(), opt.getData().getStringValue());
-                continue;
+        JsonArray children = new JsonArray();
+        Gson groupGson = new GsonBuilder().registerTypeAdapter(GroupNode.class, new GroupNodeSerializer()).create();
+        Gson optGson = new GsonBuilder().registerTypeAdapter(OptionNode.class, new OptionNodeSerializer()).create();
+        for(Map.Entry<String, Node> current : node.getChildren()) {
+            Node child = current.getValue();
+            if(child instanceof GroupNode) {
+                children.add(groupGson.toJsonTree(child));
             }
-            if(child instanceof GroupNode group) {
-                Gson gson = new GsonBuilder().registerTypeAdapter(GroupNode.class, new GroupNodeSerializer()).create();
-                json.add(group.getName(), gson.toJsonTree(group));
+            if(child instanceof OptionNode<?>) {
+                children.add(optGson.toJsonTree(child));
             }
         }
+        json.addProperty("name", node.getName());
+        json.add("children", children);
         return json;
     }
 }

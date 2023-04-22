@@ -71,8 +71,8 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
         GroupNode gn = ModConfigData.get(Objects.requireNonNull((Enchantment) (Object)this));
-        TextColor colorMin = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(0))).getValue()).getRGB());
-        TextColor colorMax = TextColor.fromRgb(((Color) ((OptionNode<?>) (gn.getChild(1))).getValue()).getRGB());
+        Color colorMin = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MIN_COLOR_KEY))).getValue());
+        Color colorMax = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MAX_COLOR_KEY))).getValue());
         return ColorManager.lerpColor(colorMin, colorMax, intensity);
     }
 

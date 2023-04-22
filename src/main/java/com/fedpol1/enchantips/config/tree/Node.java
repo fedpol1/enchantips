@@ -2,10 +2,13 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 
+import java.util.Map;
+import java.util.Set;
+
 public interface Node {
 
-    int getNumChildren();
-    Node getChild(int i);
+    Node getChild(String s);
+    Set<Map.Entry<String, Node>> getChildren();
     Node addChild(AbstractNode c);
     String getName() ;
     String getFullName() ;

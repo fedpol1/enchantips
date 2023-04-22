@@ -9,6 +9,11 @@ import java.util.HashMap;
 
 public class ModConfigData {
 
+    public static final String MIN_COLOR_KEY = "min_color";
+    public static final String MAX_COLOR_KEY = "max_color";
+    public static final String ORDER_KEY = "order";
+    public static final String HIGHLIGHT_KEY = "highlight";
+
     protected static HashMap<Enchantment, GroupNode> enchantmentData = new HashMap<>();
 
     // used for reading config file
@@ -20,11 +25,11 @@ public class ModConfigData {
     }
 
     public static boolean isEnchantmentHighlighted(Enchantment e) {
-        return (boolean) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(3)).getValue();
+        return (boolean) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(ModConfigData.HIGHLIGHT_KEY)).getValue();
     }
 
     public static int getEnchantmentOrder(Enchantment e) {
-        return (int) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(2)).getValue();
+        return (int) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(ModConfigData.ORDER_KEY)).getValue();
     }
 
     public static OptionNode<?> getOption(String s) {

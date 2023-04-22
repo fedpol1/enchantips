@@ -4,16 +4,16 @@ import com.fedpol1.enchantips.config.tree.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public class ConfigTreeSerializer implements JsonSerializer<AbstractNode> {
-    @Override
+
     public JsonElement serialize(AbstractNode node, Type typeOfNode, JsonSerializationContext context) {
-        JsonObject json = new JsonObject();
-        for(int i = 0; i < node.getNumChildren(); i++) {
-            CategoryNode child = (CategoryNode) node.getChild(i);
-            Gson gson = new GsonBuilder().registerTypeAdapter(CategoryNode.class, new CategoryNodeSerializer()).create();
-            json.add(child.getName(), gson.toJsonTree(child));
+        JsonArray children = new JsonArray();
+        Gson gson = new GsonBuilder().registerTypeAdapter(CategoryNode.class, new CategoryNodeSerializer()).create();
+        for(Map.Entry<String, Node> current : node.getChildren()) {
+            children.add(gson.toJsonTree(current.getValue()));
         }
-        return json;
+        return children;
     }
 }

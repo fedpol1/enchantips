@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.config.tree.visitor;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.*;
 import dev.isxander.yacl.api.ConfigCategory;
@@ -9,14 +8,16 @@ import dev.isxander.yacl.api.OptionGroup;
 import dev.isxander.yacl.api.YetAnotherConfigLib;
 import net.minecraft.text.Text;
 
+import java.util.Map;
+
 public class ScreenVisitor implements Visitor {
 
     public Object visit(ConfigTree n, Object data) {
         YetAnotherConfigLib.Builder yaclBuilder = YetAnotherConfigLib.createBuilder()
                 .title(Text.translatable(n.getFullName()))
                 .save(ModConfig::writeConfig);
-        for(int i = 0; i < n.getNumChildren(); i++) {
-            yaclBuilder = (YetAnotherConfigLib.Builder) n.getChild(i).accept(this, yaclBuilder);
+        for(Map.Entry<String, Node> current : n.getChildren()) {
+            yaclBuilder = (YetAnotherConfigLib.Builder) current.getValue().accept(this, yaclBuilder);
         }
         return yaclBuilder.build();
     }
@@ -25,8 +26,8 @@ public class ScreenVisitor implements Visitor {
         ConfigCategory.Builder categoryBuilder = ConfigCategory.createBuilder()
                 .name(Text.translatable(n.getFullName()));
         Object child;
-        for(int i = 0; i < n.getNumChildren(); i++) {
-            child = n.getChild(i).accept(this, categoryBuilder);
+        for(Map.Entry<String, Node> current : n.getChildren()) {
+            child = current.getValue().accept(this, categoryBuilder);
             if(child instanceof Option<?> childOpt) { categoryBuilder = categoryBuilder.option(childOpt); }
             if(child instanceof OptionGroup childOptGroup) { categoryBuilder = categoryBuilder.group(childOptGroup); }
         }
@@ -37,8 +38,8 @@ public class ScreenVisitor implements Visitor {
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
                 .name(Text.translatable(n.getEnchantment() == null ? n.getFullName() : n.getEnchantment().getTranslationKey()))
                 .collapsed(true);
-        for(int i = 0; i < n.getNumChildren(); i++) {
-            groupBuilder = groupBuilder.option((Option<?>) n.getChild(i).accept(this, groupBuilder));
+        for(Map.Entry<String, Node> current : n.getChildren()) {
+            groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));
         }
         return ((ConfigCategory.Builder)data).group(groupBuilder.build());
     }

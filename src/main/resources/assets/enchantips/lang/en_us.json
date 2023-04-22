@@ -32,7 +32,7 @@
   "enchantips.config.individual_enchantments.min_color.option_title": "Minimum Color",
   "enchantips.config.individual_enchantments.max_color.option_title": "Maximum Color",
   "enchantips.config.individual_enchantments.order.option_title": "Order",
-  "enchantips.config.individual_enchantments.highlight_visibility.option_title": "Highlight Visible",
+  "enchantips.config.individual_enchantments.highlight.option_title": "Highlight Visible",
 
   "enchantips.config.toggles_tooltips.repair_cost.option_tooltip": "Only shown when not 0",
   "enchantips.config.miscellaneous.show_anvil_swap_button.option_tooltip": "Swaps items only if:\n A: the enchantments on the output stay the same\n B: its cheaper to swap than to not",
