@@ -5,18 +5,16 @@ import com.fedpol1.enchantips.config.tree.ConfigTree;
 
 public enum ModCategory {
 
-    TOOLTIP_TOGGLES(new CategoryNode("toggles_tooltips")),
-    TOOLTIP_COLORS(new CategoryNode("colors_tooltips")),
-    HIGHLIGHTS(new CategoryNode("highlights")),
-    MISCELLANEOUS(new CategoryNode("miscellaneous")),
-    INDIVIDUAL_ENCHANTMENTS(new CategoryNode("individual_enchantments"));
+    TOOLTIP_TOGGLES(ConfigTree.root.addCategory("toggles_tooltips")),
+    TOOLTIP_COLORS(ConfigTree.root.addCategory("colors_tooltips")),
+    HIGHLIGHTS(ConfigTree.root.addCategory("highlights")),
+    MISCELLANEOUS(ConfigTree.root.addCategory("miscellaneous")),
+    INDIVIDUAL_ENCHANTMENTS(ConfigTree.root.addCategory("individual_enchantments"));
 
     private final CategoryNode node;
 
     ModCategory(CategoryNode cat) {
         this.node = cat;
-        ConfigTree.root.addChild(cat);
-        ModConfigData.categories.put(cat.getName(), cat);
     }
 
     public CategoryNode getNode() {

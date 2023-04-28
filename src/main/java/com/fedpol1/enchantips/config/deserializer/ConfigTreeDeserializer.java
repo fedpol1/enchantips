@@ -16,7 +16,7 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
     }
 
     private static void deserializeCategory(JsonObject json) {
-        CategoryNode cat = ModConfigData.getCategory(json.getAsJsonPrimitive("name").getAsString());
+        CategoryNode cat = (CategoryNode) ConfigTree.root.getChild(json.getAsJsonPrimitive("name").getAsString());
         for(JsonElement current : json.getAsJsonArray("children")) {
             JsonObject childObject = (JsonObject) current;
             if(childObject.has("value")) {

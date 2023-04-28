@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class ModConfig {
 
-    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".properties").toFile();
+    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".json").toFile();
 
     public static void registerConfig() {
         EnchantipsClient.LOGGER.info("Initializing configs");

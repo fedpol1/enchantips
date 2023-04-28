@@ -2,15 +2,15 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractNode implements Node {
 
-    protected final String name;
+    private final String name;
     protected String fullName;
-    protected final HashMap<String, Node> children = new HashMap<>();
+    protected final LinkedHashMap<String, Node> children = new LinkedHashMap<>();
     protected Node parent;
 
     public AbstractNode(String name) {

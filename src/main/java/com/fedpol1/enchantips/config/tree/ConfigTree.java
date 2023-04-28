@@ -11,6 +11,10 @@ public class ConfigTree extends AbstractNode {
         super(name);
     }
 
+    public CategoryNode addCategory(String name) {
+        return (CategoryNode) ConfigTree.root.addChild(new CategoryNode(name));
+    }
+
     public Object accept(ScreenVisitor v, Object data) {
         return v.visit(this, data);
     }
