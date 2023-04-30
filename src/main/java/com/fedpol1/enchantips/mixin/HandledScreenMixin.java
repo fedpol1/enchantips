@@ -17,7 +17,6 @@ public abstract class HandledScreenMixin {
 
     @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V", ordinal = 0, shift = At.Shift.AFTER))
     private void enchantipsInjectRenderDrawHighlights(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if(MinecraftClient.getInstance().player == null) { return; /* short circuit, do nothing */ }
         ScreenHandler handler = ((HandledScreen<?>) (Object) this).getScreenHandler();
 
         float[] oldShaderColor = RenderSystem.getShaderColor();

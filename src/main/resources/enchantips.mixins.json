@@ -6,6 +6,7 @@
   "mixins": [],
   "client": [
     "AnvilScreenMixin",
+    "BundleTooltipComponentMixin",
     "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "EnchantmentScreenMixin",
