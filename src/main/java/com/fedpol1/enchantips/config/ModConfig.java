@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.data.*;
 import com.fedpol1.enchantips.config.deserializer.ConfigTreeDeserializer;
 import com.fedpol1.enchantips.config.serializer.ConfigTreeSerializer;

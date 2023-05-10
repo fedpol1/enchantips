@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips;
+package com.fedpol1.enchantips.accessor;
 
 public interface ItemStackAccess {
 

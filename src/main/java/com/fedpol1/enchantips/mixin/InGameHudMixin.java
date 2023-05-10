@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.InGameHudAccess;
+import com.fedpol1.enchantips.accessor.InGameHudAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.ProtectionHud;
 import com.fedpol1.enchantips.gui.SlotHighlight;

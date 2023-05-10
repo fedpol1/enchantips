@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui;
 
-import com.fedpol1.enchantips.ItemStackAccess;
+import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentLevelData;

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.GroupNode;

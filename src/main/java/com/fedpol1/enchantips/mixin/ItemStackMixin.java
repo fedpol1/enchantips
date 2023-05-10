@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.ItemStackAccess;
+import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.client.item.TooltipContext;

@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.*;

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.util;
 
-import com.fedpol1.enchantips.EnchantmentAccess;
+import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModConfigData;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NbtCompound;
