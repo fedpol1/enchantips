@@ -27,6 +27,7 @@ public enum ModOption {
     HIGHLIGHT_HOTBAR_ALPHA(new IntegerDataEntry("hotbar_alpha", 127, 0, 255, 0, false), ModCategory.HIGHLIGHTS),
     HIGHLIGHT_TRADING_ALPHA(new IntegerDataEntry("trading_alpha", 127, 0, 255, 0, false), ModCategory.HIGHLIGHTS),
     SHOW_PROTECTION_BAR(new BooleanDataEntry("show_protection_bar",false, false), ModCategory.MISCELLANEOUS),
+    SHOW_ANVIL_WARNING(new BooleanDataEntry("show_anvil_warning",true, true), ModCategory.MISCELLANEOUS),
     SHOW_ANVIL_ITEM_SWAP_BUTTON(new BooleanDataEntry("show_anvil_swap_button",false, true), ModCategory.MISCELLANEOUS),
     UNBREAKABLE_COLOR(new ColorDataEntry("unbreakable_color", 0x00dfff, false), ModCategory.MISCELLANEOUS);
 

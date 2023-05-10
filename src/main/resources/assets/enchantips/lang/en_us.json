@@ -26,6 +26,7 @@
   "enchantips.config.highlights.trading_alpha.option_title": "Villager Trade Offer Highlight Strength",
   "enchantips.config.miscellaneous": "Miscellaneous",
   "enchantips.config.miscellaneous.show_protection_bar.option_title": "Show Protection Bar",
+  "enchantips.config.miscellaneous.show_anvil_warning.option_title": "Show Anvil Warning",
   "enchantips.config.miscellaneous.show_anvil_swap_button.option_title": "Show Anvil Item Swap Button",
   "enchantips.config.miscellaneous.unbreakable_color.option_title": "Unbreakable Color",
   "enchantips.config.individual_enchantments": "Individual Enchantments",
@@ -35,6 +36,7 @@
   "enchantips.config.individual_enchantments.highlight.option_title": "Highlight Visible",
 
   "enchantips.config.toggles_tooltips.repair_cost.option_tooltip": "Only shown when not 0",
+  "enchantips.config.miscellaneous.show_anvil_warning.option_tooltip": "Indicates whether an anvil operation could be optimized\nusing the rules of the swap button",
   "enchantips.config.miscellaneous.show_anvil_swap_button.option_tooltip": "Swaps items only if:\n A: the enchantments on the output stay the same\n B: its cheaper to swap than to not",
   "enchantips.config.highlights.limit.option_tooltip": "Limits the number of enchantments that\ncan be drawn on an item highlight",
   "enchantips.config.individual_enchantments.order.option_tooltip": "Lower order enchantments are shown first",
