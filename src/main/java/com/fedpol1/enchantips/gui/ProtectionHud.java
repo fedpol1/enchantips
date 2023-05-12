@@ -5,7 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.damage.DamageSources;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
@@ -14,6 +14,9 @@ public class ProtectionHud {
     public static final Identifier ICONS = new Identifier(EnchantipsClient.MODID, "textures/gui/icons.png");
     public static final int ICONS_WIDTH = 32;
     public static final int ICONS_HEIGHT = 32;
+
+    // awful hack to make the protection bar function properly regardless of registered damage types
+    private static ProtectionType forceTrueProtType = ProtectionType.NONE;
 
     private static void renderIndividualProtectionBars(MatrixStack matrixStack, int protAmount, int texHeight, int xpos, int ypos, int v) {
         int u = 0;
@@ -31,12 +34,18 @@ public class ProtectionHud {
 
         Iterable<ItemStack> armor = client.player.getArmorItems();
         if(MinecraftClient.getInstance().player == null) { return; }
-        DamageSources sources = MinecraftClient.getInstance().player.getDamageSources();
-        int genericProt = EnchantmentHelper.getProtectionAmount(armor, sources.generic());
-        int projProt = EnchantmentHelper.getProtectionAmount(armor, sources.arrow(null, null));
-        int fireProt = EnchantmentHelper.getProtectionAmount(armor, sources.onFire());
-        int blastProt = EnchantmentHelper.getProtectionAmount(armor, sources.explosion(null));
-        int fallProt = EnchantmentHelper.getProtectionAmount(armor, sources.fall());
+        DamageSource source = MinecraftClient.getInstance().player.getDamageSources().generic();
+        forceTrueProtType = ProtectionType.NONE;
+        int genericProt = EnchantmentHelper.getProtectionAmount(armor, source);
+        forceTrueProtType = ProtectionType.PROJECTILE;
+        int projProt = EnchantmentHelper.getProtectionAmount(armor, source);
+        forceTrueProtType = ProtectionType.FIRE;
+        int fireProt = EnchantmentHelper.getProtectionAmount(armor, source);
+        forceTrueProtType = ProtectionType.EXPLOSION;
+        int blastProt = EnchantmentHelper.getProtectionAmount(armor, source);
+        forceTrueProtType = ProtectionType.FALL;
+        int fallProt = EnchantmentHelper.getProtectionAmount(armor, source);
+        forceTrueProtType = ProtectionType.NONE;
 
         if(genericProt == 0 && projProt == 0 && fireProt == 0 && blastProt == 0 && fallProt == 0)
             return;
@@ -51,5 +60,9 @@ public class ProtectionHud {
         renderIndividualProtectionBars(matrixStack, blastProt, 3, xpos, ypos+4, 15);
         renderIndividualProtectionBars(matrixStack, fallProt, 3, xpos, ypos+6, 18);
         renderIndividualProtectionBars(matrixStack, genericProt, 9, xpos, ypos, 0);
+    }
+
+    public static ProtectionType getProtectionType() {
+        return forceTrueProtType;
     }
 }

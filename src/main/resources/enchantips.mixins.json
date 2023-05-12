@@ -13,7 +13,8 @@
     "HandledScreenMixin",
     "InGameHudMixin",
     "ItemStackMixin",
-    "MerchantScreenMixin"
+    "MerchantScreenMixin",
+    "ProtectionEnchantmentMixin"
   ],
   "server": [],
   "injectors": {
