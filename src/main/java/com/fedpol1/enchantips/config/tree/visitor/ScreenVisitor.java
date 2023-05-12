@@ -6,9 +6,12 @@ import dev.isxander.yacl.api.ConfigCategory;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.api.OptionGroup;
 import dev.isxander.yacl.api.YetAnotherConfigLib;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class ScreenVisitor implements TreeVisitor {
 
@@ -35,8 +38,11 @@ public class ScreenVisitor implements TreeVisitor {
     }
 
     public Object visit(GroupNode n, Object data) {
+        Enchantment ench = n.getEnchantment();
+
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Text.translatable(n.getEnchantment() == null ? n.getFullName() : n.getEnchantment().getTranslationKey()))
+                .name(Text.translatable(ench == null ? n.getFullName() : ench.getTranslationKey()))
+                .tooltip(Text.translatable(ench == null ? "" : Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
                 .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {
             groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));

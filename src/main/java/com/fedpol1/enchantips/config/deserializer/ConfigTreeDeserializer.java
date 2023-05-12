@@ -30,6 +30,7 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
 
     private static void deserializeGroup(JsonObject json, CategoryNode parent) {
         GroupNode group = (GroupNode) parent.getChild(json.getAsJsonPrimitive("name").getAsString());
+        if(group == null) { return; } // failsafe for when enchantments get removed
         for (JsonElement current : json.getAsJsonArray("children")) {
             ConfigTreeDeserializer.deserializeOption((JsonObject) current, group);
         }
