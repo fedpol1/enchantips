@@ -9,8 +9,8 @@
     "FEDPOL1"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "sources": "https://github.com/fedpol1/enchantips",
+    "issues": "https://github.com/fedpol1/enchantips/issues"
   },
 
   "license": "ARR",
