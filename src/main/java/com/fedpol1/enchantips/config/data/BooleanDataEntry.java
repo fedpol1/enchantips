@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
+import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.TickBoxController;
 
@@ -60,10 +61,8 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
             this.value = Boolean.parseBoolean(s);
         }
 
-        public Option.Builder<Boolean> getOptionBuilder() {
-            return Option.createBuilder(Boolean.class)
-                    .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(TickBoxController::new);
+        public Object accept(DataVisitor v) {
+            return v.visit(this);
         }
     }
 }

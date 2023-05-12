@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 
 import java.util.Map;
 
-public class ScreenVisitor implements Visitor {
+public class ScreenVisitor implements TreeVisitor {
 
     public Object visit(ConfigTree n, Object data) {
         YetAnotherConfigLib.Builder yaclBuilder = YetAnotherConfigLib.createBuilder()

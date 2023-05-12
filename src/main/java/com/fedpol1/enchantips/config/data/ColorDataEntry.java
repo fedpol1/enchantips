@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
+import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
 import com.fedpol1.enchantips.util.ColorManager;
 import dev.isxander.yacl.api.Option;
 import dev.isxander.yacl.gui.controllers.ColorController;
@@ -63,11 +64,8 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
             this.color = ColorManager.stringToColor(s);
         }
 
-        public Option.Builder<Color> getOptionBuilder() {
-            return Option.createBuilder(Color.class)
-                    .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                    .controller(ColorController::new);
+        public Object accept(DataVisitor v) {
+            return v.visit(this);
         }
-
     }
 }

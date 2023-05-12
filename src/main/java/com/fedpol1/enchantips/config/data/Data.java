@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
-import dev.isxander.yacl.api.Option;
+import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
 
 public interface Data<T> {
 
@@ -18,5 +18,5 @@ public interface Data<T> {
 
         void readStringValue(String c);
 
-        Option.Builder<T> getOptionBuilder();
+        Object accept(DataVisitor v);
 }
