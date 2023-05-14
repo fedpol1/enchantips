@@ -5,7 +5,6 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
-import com.fedpol1.enchantips.util.ColorManager;
 import com.fedpol1.enchantips.util.TooltipBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
@@ -71,9 +70,21 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     public TextColor enchantipsGetColor(int level) {
         float intensity = this.enchantipsGetIntensity(level);
         GroupNode gn = ModConfigData.get(Objects.requireNonNull((Enchantment) (Object)this));
-        Color colorMin = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MIN_COLOR_KEY))).getValue());
-        Color colorMax = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MAX_COLOR_KEY))).getValue());
-        return ColorManager.lerpColor(colorMin, colorMax, intensity);
+        int rgbMin = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MIN_COLOR_KEY))).getValue()).getRGB();
+        int rgbMax = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MAX_COLOR_KEY))).getValue()).getRGB();
+
+        int r1 = (rgbMin & 0xff0000) >> 16;
+        int r2 = (rgbMax & 0xff0000) >> 16;
+        int g1 = (rgbMin & 0xff00) >> 8;
+        int g2 = (rgbMax & 0xff00) >> 8;
+        int b1 = (rgbMin & 0xff);
+        int b2 = (rgbMax & 0xff);
+
+        r1 += (r2-r1) * intensity;
+        g1 += (g2-g1) * intensity;
+        b1 += (b2-b1) * intensity;
+
+        return TextColor.fromRgb((r1<<16) + (g1<<8) + b1);
     }
 
     public Color enchantipsGetDefaultMinColor() {

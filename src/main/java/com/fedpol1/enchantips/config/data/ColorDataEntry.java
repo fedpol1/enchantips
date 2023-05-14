@@ -1,10 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
-import com.fedpol1.enchantips.util.ColorManager;
-import dev.isxander.yacl.api.Option;
-import dev.isxander.yacl.gui.controllers.ColorController;
 import java.awt.Color;
+import java.util.Locale;
 
 public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntry<ColorDataEntry.ColorData, Color> {
 
@@ -48,7 +46,7 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
         }
 
         public String getStringValue() {
-            return ColorManager.colorToString(this.getValue());
+            return String.format(Locale.ROOT, "#%06X", this.getValue().getRGB() & 0xffffff); // discard alpha
         }
 
         public Color getDefaultValue() {
@@ -61,7 +59,7 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
         }
 
         public void readStringValue(String s) {
-            this.color = ColorManager.stringToColor(s);
+            this.color = new Color(Integer.parseInt(s.substring(1), 16));
         }
 
         public Object accept(DataVisitor v) {
