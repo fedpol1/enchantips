@@ -42,8 +42,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         if((boolean) ModOption.SHOW_EXTRA_ENCHANTMENTS.getData().getValue() && !itemStack.isOf(Items.BOOK)) {
             ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
             for (Enchantment current : Registries.ENCHANTMENT) {
-                if (current == enchantment || !current.canCombine(enchantment)) { continue; }
-                if (!current.isAcceptableItem(itemStack)) { continue; }
+                if (!current.target.isAcceptableItem(itemStack.getItem()) || !current.canCombine(enchantment)) { continue; }
                 if (!current.isAvailableForRandomSelection() || current.isTreasure()) { continue; }
                 for (int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
                     EnchantmentLevelData enchLevel = EnchantmentLevelData.of(current, z);
