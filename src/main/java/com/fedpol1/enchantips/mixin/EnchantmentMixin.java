@@ -5,7 +5,7 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
-import com.fedpol1.enchantips.util.TooltipBuilder;
+import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -47,7 +47,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             r = Math.max(1, r / 2);
         }
 
-        MutableText rarityText = TooltipBuilder.buildRarity(r, colorFinal);
+        MutableText rarityText = TooltipHelper.buildRarity(r, colorFinal);
         MutableText enchantmentText = Text.translatable(((Enchantment)(Object)this).getTranslationKey());
         enchantmentText.setStyle(Style.EMPTY.withColor(colorFinal));
         if (level != 1 || ((Enchantment)(Object)this).getMaxLevel() != 1) {

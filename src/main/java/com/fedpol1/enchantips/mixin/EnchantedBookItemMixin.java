@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.util.TooltipBuilder;
+import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
@@ -23,12 +23,12 @@ public abstract class EnchantedBookItemMixin {
     private void enchantipsInjectGetTooltipRepairCost(ItemStack stack, World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         int cost = stack.getRepairCost();
         if((boolean) ModOption.SHOW_REPAIRCOST.getData().getValue() && cost != 0) {
-            tooltip.add(TooltipBuilder.buildRepairCost(cost));
+            tooltip.add(TooltipHelper.buildRepairCost(cost));
         }
     }
 
     @Redirect(method = "appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/item/TooltipContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;appendEnchantments(Ljava/util/List;Lnet/minecraft/nbt/NbtList;)V"))
     private void enchantipsRedirectAppendEnchantments(List<Text> tooltip, NbtList enchantments) {
-        TooltipBuilder.appendEnchantments(tooltip, enchantments, true);
+        TooltipHelper.appendEnchantments(tooltip, enchantments, true);
     }
 }

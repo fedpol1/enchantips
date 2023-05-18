@@ -4,7 +4,7 @@ import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevelData;
-import com.fedpol1.enchantips.util.TooltipBuilder;
+import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
@@ -37,7 +37,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchantment, l, itemStack, tableLevel);
         int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchantment, l, itemStack, tableLevel);
         if((boolean) ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()) {
-            list.add(TooltipBuilder.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
+            list.add(TooltipHelper.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
         }
         if((boolean) ModOption.SHOW_EXTRA_ENCHANTMENTS.getData().getValue() && !itemStack.isOf(Items.BOOK)) {
             ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
@@ -57,7 +57,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
                 MutableText text = (MutableText) ((EnchantmentAccess) levelData.getEnchantment()).enchantipsGetName(levelData.getLevel(), itemStack.isOf(Items.ENCHANTED_BOOK));
                 if((boolean) ModOption.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getData().getValue()) {
                     text.append(" ").append(
-                            TooltipBuilder.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
+                            TooltipHelper.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
                     );
                 }
                 list.add(text);

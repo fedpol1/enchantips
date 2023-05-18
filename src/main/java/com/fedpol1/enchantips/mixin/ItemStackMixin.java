@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.util.TooltipBuilder;
+import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
@@ -45,7 +45,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
      */
     @Overwrite
     public static void appendEnchantments(List<Text> tooltip, NbtList enchantments) {
-        TooltipBuilder.appendEnchantments(tooltip, enchantments, false);
+        TooltipHelper.appendEnchantments(tooltip, enchantments, false);
     }
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
@@ -53,7 +53,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         ItemStack t = (ItemStack)(Object)this;
         if(t.getItem().isEnchantable(t) && (boolean) ModOption.SHOW_ENCHANTABILITY.getData().getValue()) {
             if(!(t.hasEnchantments() && !(boolean) ModOption.SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getData().getValue())) {
-                list.add(TooltipBuilder.buildEnchantability(t.getItem().getEnchantability()));
+                list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
             }
         }
     }
@@ -63,7 +63,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         ItemStack t = (ItemStack)(Object)this;
         int cost = t.getRepairCost();
         if(!(t.getItem() instanceof EnchantedBookItem) && cost != 0 && (boolean) ModOption.SHOW_REPAIRCOST.getData().getValue()) {
-            list.add(TooltipBuilder.buildRepairCost(cost));
+            list.add(TooltipHelper.buildRepairCost(cost));
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void enchantipsAddNewUnbreakableTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText, int i) {
         if (ItemStackMixin.isSectionVisible(i, ItemStack.TooltipSection.UNBREAKABLE) && this.nbt.getBoolean(UNBREAKABLE_KEY)) {
-            list.add(TooltipBuilder.buildUnbreakable());
+            list.add(TooltipHelper.buildUnbreakable());
         }
     }
 
