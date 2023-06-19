@@ -39,8 +39,8 @@ public abstract class TooltipHelper {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_LEVEL_FOR_ENCHANTMENT.getData().getValue()).getRGB()),
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_LEVEL_FOR_ENCHANTMENT_VALUE.getData().getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getData().getValue()).getRGB()),
                 MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP
         );
     }

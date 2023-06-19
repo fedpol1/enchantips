@@ -54,7 +54,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             Collections.sort(enchantmentLevelData);
             for(EnchantmentLevelData levelData : enchantmentLevelData) {
                 MutableText text = (MutableText) ((EnchantmentAccess) levelData.getEnchantment()).enchantipsGetName(levelData.getLevel(), itemStack.isOf(Items.ENCHANTED_BOOK));
-                if((boolean) ModOption.SHOW_MODIFIED_LEVEL_FOR_ENCHANTMENT.getData().getValue()) {
+                if((boolean) ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()) {
                     text.append(" ").append(
                             TooltipHelper.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
                     );

@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Enchantips",
-  "description": "Enhances tooltips for enchanting.",
+  "description": "Provides utilities for viewing things related to enchantments.",
   "authors": [
     "FEDPOL1"
   ],
