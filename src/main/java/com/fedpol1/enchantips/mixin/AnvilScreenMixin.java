@@ -5,13 +5,12 @@ import com.fedpol1.enchantips.gui.AnvilScreenWidgets;
 import com.fedpol1.enchantips.util.EnchantmentListHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
 import net.minecraft.client.gui.widget.IconWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtList;
@@ -21,17 +20,12 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AnvilScreen.class)
 public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> {
-
-    @Shadow private TextFieldWidget nameField;
-
-    @Shadow protected abstract void onRenamed(String name);
 
     private boolean enchantipsDisplayWarning;
     private IconWidget ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET;
@@ -63,14 +57,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
         enchantipsHandler = new AnvilScreenHandler(handler.syncId, inventory);
     }
 
-    @Inject(method = "drawForeground(Lnet/minecraft/client/util/math/MatrixStack;II)V", at = @At(value = "RETURN"))
-    private void enchantipsDrawWarning(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci) {
+    @Inject(method = "drawForeground(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "RETURN"))
+    private void enchantipsDrawWarning(DrawContext context, int mouseX, int mouseY, CallbackInfo ci) {
         if(!(boolean) ModOption.SHOW_ANVIL_WARNING.getData().getValue() || !this.enchantipsDisplayWarning) { return; }
         if((boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getData().getValue()) {
-            ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET.renderButton(matrices, mouseX, mouseY, 0.0f);
+            ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET.renderButton(context, mouseX, mouseY, 0.0f);
         }
         else {
-            ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET.renderButton(matrices, mouseX, mouseY, 0.0f);
+            ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET.renderButton(context, mouseX, mouseY, 0.0f);
         }
     }
 

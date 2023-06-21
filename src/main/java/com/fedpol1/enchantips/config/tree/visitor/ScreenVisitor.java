@@ -2,10 +2,7 @@ package com.fedpol1.enchantips.config.tree.visitor;
 
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.*;
-import dev.isxander.yacl.api.ConfigCategory;
-import dev.isxander.yacl.api.Option;
-import dev.isxander.yacl.api.OptionGroup;
-import dev.isxander.yacl.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
@@ -42,7 +39,9 @@ public class ScreenVisitor implements TreeVisitor {
 
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
                 .name(Text.translatable(ench == null ? n.getFullName() : ench.getTranslationKey()))
-                .tooltip(Text.translatable(ench == null ? "" : Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
+                .description(OptionDescription.createBuilder()
+                        .text(Text.translatable(ench == null ? "" : Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
+                        .build())
                 .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {
             groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));

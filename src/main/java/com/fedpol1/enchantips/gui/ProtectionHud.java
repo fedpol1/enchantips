@@ -2,8 +2,7 @@ package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -16,17 +15,17 @@ public class ProtectionHud {
     public static final int ICONS_WIDTH = 32;
     public static final int ICONS_HEIGHT = 32;
 
-    private static void renderIndividualProtectionBars(MatrixStack matrixStack, int protAmount, int texHeight, int xpos, int ypos, int v) {
+    private static void renderIndividualProtectionBars(DrawContext context, int protAmount, int texHeight, int xpos, int ypos, int v) {
         int u = 0;
         for(int i = 0; i < Math.min(20, protAmount); i+=2) {
             if(i + 1 == protAmount) {
                 u = 9;
             }
-            DrawableHelper.drawTexture(matrixStack, xpos + 4 * i, ypos, u, v, 9, texHeight, ICONS_WIDTH, ICONS_HEIGHT);
+            context.drawTexture(ICONS, xpos + 4 * i, ypos, u, v, 9, texHeight, ICONS_WIDTH, ICONS_HEIGHT);
         }
     }
 
-    public static void renderWholeProtectionBar(MatrixStack matrixStack, int xpos, int armorHeight) {
+    public static void renderWholeProtectionBar(DrawContext context, int xpos, int armorHeight) {
         MinecraftClient client = MinecraftClient.getInstance();
         if(client == null || client.player == null) { return; }
 
@@ -44,13 +43,13 @@ public class ProtectionHud {
         int ypos = armorHeight - (client.player.getArmor() == 0 ? 0 : 10);
 
         for(int i = 0; i < 10; i++) {
-                DrawableHelper.drawTexture(matrixStack, xpos + 8 * i, ypos, 18, 0, 9, 9, ICONS_WIDTH, ICONS_HEIGHT);
+                context.drawTexture(ICONS, xpos + 8 * i, ypos, 18, 0, 9, 9, ICONS_WIDTH, ICONS_HEIGHT);
         }
-        renderIndividualProtectionBars(matrixStack, projProt, 3, xpos, ypos, 9);
-        renderIndividualProtectionBars(matrixStack, fireProt, 3, xpos, ypos+2, 12);
-        renderIndividualProtectionBars(matrixStack, blastProt, 3, xpos, ypos+4, 15);
-        renderIndividualProtectionBars(matrixStack, fallProt, 3, xpos, ypos+6, 18);
-        renderIndividualProtectionBars(matrixStack, genericProt, 9, xpos, ypos, 0);
+        renderIndividualProtectionBars(context, projProt, 3, xpos, ypos, 9);
+        renderIndividualProtectionBars(context, fireProt, 3, xpos, ypos+2, 12);
+        renderIndividualProtectionBars(context, blastProt, 3, xpos, ypos+4, 15);
+        renderIndividualProtectionBars(context, fallProt, 3, xpos, ypos+6, 18);
+        renderIndividualProtectionBars(context, genericProt, 9, xpos, ypos, 0);
     }
 
     private static int getProtectionLevel(Iterable<ItemStack> stacks, Enchantment e) {

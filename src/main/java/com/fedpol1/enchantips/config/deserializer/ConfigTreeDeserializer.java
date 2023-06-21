@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.config.deserializer;
 
-import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.tree.*;
 import com.google.gson.*;
 

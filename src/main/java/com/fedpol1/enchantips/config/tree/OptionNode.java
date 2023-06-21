@@ -4,7 +4,8 @@ import com.fedpol1.enchantips.config.data.AbstractDataEntry;
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.visitor.OptionVisitor;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
-import dev.isxander.yacl.api.Option;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
 
 public class OptionNode<T> extends AbstractNode{
@@ -27,7 +28,9 @@ public class OptionNode<T> extends AbstractNode{
     public Option<?> getYaclOption() {
         Option.Builder<?> b = (Option.Builder<?>) this.entry.getData().accept(new OptionVisitor());
         return b.name(Text.translatable(this.getFullName() + ".option_title"))
-                .tooltip(Text.translatable(this.entry.hasTooltip() ? this.getFullName() + ".option_tooltip" : ""))
+                .description(OptionDescription.createBuilder()
+                        .text(Text.translatable(this.entry.hasTooltip() ? this.getFullName() + ".option_tooltip" : ""))
+                        .build())
                 .build();
     }
 

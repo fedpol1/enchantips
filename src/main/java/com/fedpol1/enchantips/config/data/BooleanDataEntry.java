@@ -1,8 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
-import dev.isxander.yacl.api.Option;
-import dev.isxander.yacl.gui.controllers.TickBoxController;
 
 public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements DataEntry<BooleanDataEntry.BooleanData, Boolean> {
 

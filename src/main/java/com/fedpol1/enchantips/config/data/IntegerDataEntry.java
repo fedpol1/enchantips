@@ -1,9 +1,6 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
-import dev.isxander.yacl.api.Option;
-import dev.isxander.yacl.gui.controllers.slider.IntegerSliderController;
-import dev.isxander.yacl.gui.controllers.string.number.IntegerFieldController;
 
 public class IntegerDataEntry extends AbstractDataEntry<Integer> implements DataEntry<IntegerDataEntry.IntegerData, Integer> {
 
