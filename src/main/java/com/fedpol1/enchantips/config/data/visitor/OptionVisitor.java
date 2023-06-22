@@ -5,12 +5,7 @@ import com.fedpol1.enchantips.config.data.ColorDataEntry;
 import com.fedpol1.enchantips.config.data.IntegerDataEntry;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.*;
-import dev.isxander.yacl3.gui.controllers.ColorController;
-import dev.isxander.yacl3.gui.controllers.TickBoxController;
-import dev.isxander.yacl3.gui.controllers.slider.IntegerSliderController;
-import dev.isxander.yacl3.gui.controllers.string.number.IntegerFieldController;
-
-import java.awt.*;
+import java.awt.Color;
 
 public class OptionVisitor implements DataVisitor {
 
@@ -20,7 +15,7 @@ public class OptionVisitor implements DataVisitor {
                 .controller(TickBoxControllerBuilder::create);
     }
 
-    public Object visit(IntegerDataEntry.IntegerData data) {
+    public Option.Builder<Integer> visit(IntegerDataEntry.IntegerData data) {
         return Option.createBuilder(Integer.class)
                 .binding(data.getDefaultValue(), data::getValue, data::setValue)
                 .controller(o -> data.getStep() == 0 ?
@@ -33,7 +28,7 @@ public class OptionVisitor implements DataVisitor {
                 );
     }
 
-    public Object visit(ColorDataEntry.ColorData data) {
+    public Option.Builder<Color> visit(ColorDataEntry.ColorData data) {
         return Option.createBuilder(Color.class)
                 .binding(data.getDefaultValue(), data::getValue, data::setValue)
                 .controller(ColorControllerBuilder::create);

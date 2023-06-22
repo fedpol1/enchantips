@@ -6,8 +6,8 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
 
     private final IntegerData data;
 
-    public IntegerDataEntry(String key, int defaultValue, int min, int max, int step, boolean hasTooltip) {
-        super(key, hasTooltip);
+    public IntegerDataEntry(String key, int defaultValue, int min, int max, int step, int tooltipLines) {
+        super(key, tooltipLines);
         this.data = new IntegerData(this, defaultValue, min, max, step);
     }
 
@@ -39,10 +39,6 @@ public class IntegerDataEntry extends AbstractDataEntry<Integer> implements Data
 
         public IntegerDataEntry getEntry() {
             return this.entry;
-        }
-
-        public void setValueToDefault() {
-            this.value = this.defaultValue;
         }
 
         public Integer getValue() {

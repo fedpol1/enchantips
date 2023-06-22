@@ -3,15 +3,15 @@ package com.fedpol1.enchantips.config.data;
 public abstract class AbstractDataEntry<T> {
 
     protected final String key;
-    protected final boolean hasTooltip;
+    protected final int tooltipLines;
 
-    AbstractDataEntry(String key, boolean hasTooltip) {
+    AbstractDataEntry(String key, int tooltipLines) {
         this.key = key;
-        this.hasTooltip = hasTooltip;
+        this.tooltipLines = tooltipLines;
     }
 
-    public boolean hasTooltip() {
-        return this.hasTooltip;
+    public int getNumTooltipLines() {
+        return this.tooltipLines;
     }
 
     public abstract Data<T> getData();

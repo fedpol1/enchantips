@@ -26,11 +26,14 @@ public class OptionNode<T> extends AbstractNode{
     }
 
     public Option<?> getYaclOption() {
+        OptionDescription.Builder desc = OptionDescription.createBuilder();
+        for(int i = 0; i < this.entry.getNumTooltipLines(); i++) {
+            desc = desc.text(Text.translatable(this.getFullName() + ".option_tooltip." + i));
+        }
+
         Option.Builder<?> b = (Option.Builder<?>) this.entry.getData().accept(new OptionVisitor());
         return b.name(Text.translatable(this.getFullName() + ".option_title"))
-                .description(OptionDescription.createBuilder()
-                        .text(Text.translatable(this.entry.hasTooltip() ? this.getFullName() + ".option_tooltip" : ""))
-                        .build())
+                .description(desc.build())
                 .build();
     }
 

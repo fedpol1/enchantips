@@ -6,8 +6,8 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
 
     private final BooleanData data;
 
-    public BooleanDataEntry(String key, boolean defaultValue, boolean hasTooltip) {
-        super(key, hasTooltip);
+    public BooleanDataEntry(String key, boolean defaultValue, int tooltipLines) {
+        super(key, tooltipLines);
         this.data = new BooleanData(this, defaultValue);
     }
 
@@ -33,10 +33,6 @@ public class BooleanDataEntry extends AbstractDataEntry<Boolean> implements Data
 
         public BooleanDataEntry getEntry() {
             return this.entry;
-        }
-
-        public void setValueToDefault() {
-            this.value = this.defaultValue;
         }
 
         public Boolean getValue() {

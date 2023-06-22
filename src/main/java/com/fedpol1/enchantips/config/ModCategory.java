@@ -1,23 +1,23 @@
 package com.fedpol1.enchantips.config;
 
-import com.fedpol1.enchantips.config.tree.CategoryNode;
-import com.fedpol1.enchantips.config.tree.ConfigTree;
+import com.fedpol1.enchantips.config.tree.*;
 
 public enum ModCategory {
 
-    TOOLTIP_TOGGLES(ConfigTree.root.addCategory("toggles_tooltips")),
-    TOOLTIP_COLORS(ConfigTree.root.addCategory("colors_tooltips")),
+    TOOLTIPS(ConfigTree.root.addCategory("tooltips")),
+    TOOLTIP_TOGGLES(TOOLTIPS.getNode().addChild(new GroupNode("toggles"))),
+    TOOLTIP_COLORS(TOOLTIPS.getNode().addChild(new GroupNode("colors"))),
     HIGHLIGHTS(ConfigTree.root.addCategory("highlights")),
     MISCELLANEOUS(ConfigTree.root.addCategory("miscellaneous")),
     INDIVIDUAL_ENCHANTMENTS(ConfigTree.root.addCategory("individual_enchantments"));
 
-    private final CategoryNode node;
+    private final Node node;
 
-    ModCategory(CategoryNode cat) {
+    ModCategory(Node cat) {
         this.node = cat;
     }
 
-    public CategoryNode getNode() {
+    public Node getNode() {
         return this.node;
     }
 

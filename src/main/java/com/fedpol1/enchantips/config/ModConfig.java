@@ -31,10 +31,10 @@ public class ModConfig {
         for(Enchantment current : Registries.ENCHANTMENT) {
             gn = (GroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().addChild(new GroupNode(current));
             ModConfigData.enchantmentData.put(current, gn);
-            gn.addChild(new OptionNode<>(new ColorDataEntry(ModConfigData.MIN_COLOR_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultMinColor().getRGB(), false)));
-            gn.addChild(new OptionNode<>(new ColorDataEntry(ModConfigData.MAX_COLOR_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultMaxColor().getRGB(), false)));
-            gn.addChild(new OptionNode<>(new IntegerDataEntry(ModConfigData.ORDER_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultOrder(), -2000000000, 2000000000, 0, true)));
-            gn.addChild(new OptionNode<>(new BooleanDataEntry(ModConfigData.HIGHLIGHT_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultHighlightVisibility(), false)));
+            gn.addChild(new OptionNode<>(new ColorDataEntry(ModConfigData.MIN_COLOR_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultMinColor().getRGB(), 0)));
+            gn.addChild(new OptionNode<>(new ColorDataEntry(ModConfigData.MAX_COLOR_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultMaxColor().getRGB(), 0)));
+            gn.addChild(new OptionNode<>(new IntegerDataEntry(ModConfigData.ORDER_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultOrder(), -2000000000, 2000000000, 0, 1)));
+            gn.addChild(new OptionNode<>(new BooleanDataEntry(ModConfigData.HIGHLIGHT_KEY, ((EnchantmentAccess)current).enchantipsGetDefaultHighlightVisibility(), 0)));
         }
         ModConfig.readConfig();
         ModConfig.writeConfig();

@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.config.data;
 
 public interface DataEntry<T, U> {
 
-    boolean hasTooltip();
+    int getNumTooltipLines();
     String getKey();
     T getData();
     U getValue();

@@ -4,9 +4,7 @@ import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
 
 public interface Data<T> {
 
-        DataEntry getEntry();
-
-        void setValueToDefault();
+        DataEntry<?, ?> getEntry();
 
         T getValue();
 

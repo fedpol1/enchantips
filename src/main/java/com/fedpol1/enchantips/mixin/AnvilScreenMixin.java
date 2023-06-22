@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.AnvilScreenWidgets;
 import com.fedpol1.enchantips.util.EnchantmentListHelper;
@@ -112,23 +113,23 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
     private boolean enchantipsShouldSwapInputs() {
         this.enchantipsHandler.setNewItemName("");
+
+        ItemStack inputStack1 = this.handler.getSlot(0).getStack();
+        ItemStack inputStack2 = this.handler.getSlot(1).getStack();
+
+        // get original output and cost
+        this.enchantipsHandler.setStackInSlot(0, this.enchantipsHandler.nextRevision(), inputStack1);
+        this.enchantipsHandler.setStackInSlot(1, this.enchantipsHandler.nextRevision(), inputStack2);
+        this.enchantipsHandler.updateResult();
         int originalCost = this.enchantipsHandler.getLevelCost();
         NbtList originalEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
 
         // swap input items on client and evaluate what the output would be
-        ItemStack inputStack1 = this.handler.getSlot(0).getStack();
-        ItemStack inputStack2 = this.handler.getSlot(1).getStack();
         this.enchantipsHandler.setStackInSlot(0, this.enchantipsHandler.nextRevision(), inputStack2);
         this.enchantipsHandler.setStackInSlot(1, this.enchantipsHandler.nextRevision(), inputStack1);
         this.enchantipsHandler.updateResult();
-
         int newCost = this.enchantipsHandler.getLevelCost();
         NbtList newEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
-
-        // swap items back
-        this.enchantipsHandler.setStackInSlot(0, this.enchantipsHandler.nextRevision(), inputStack1);
-        this.enchantipsHandler.setStackInSlot(1, this.enchantipsHandler.nextRevision(), inputStack2);
-        this.enchantipsHandler.updateResult();
 
         return newCost > 0 && originalCost > newCost && EnchantmentListHelper.sameEnchantments(originalEnchants, newEnchants, true);
     }
