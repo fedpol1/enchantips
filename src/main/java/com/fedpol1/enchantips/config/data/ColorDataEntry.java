@@ -8,9 +8,9 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
 
     private final ColorData data;
 
-    public ColorDataEntry(String key, int defaultColor, int tooltipLines) {
+    public ColorDataEntry(String key, int defaultValue, int tooltipLines) {
         super(key, tooltipLines);
-        this.data = new ColorData(this, defaultColor);
+        this.data = new ColorData(this, defaultValue);
     }
 
     public ColorData getData() {
@@ -25,12 +25,12 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
 
         private final ColorDataEntry entry;
         private Color color;
-        private final Color defaultColor;
+        private final Color defaultValue;
 
-        ColorData(ColorDataEntry entry, int defaultColor) {
+        ColorData(ColorDataEntry entry, int defaultValue) {
             this.entry = entry;
-            this.color = new Color(defaultColor);
-            this.defaultColor = new Color(defaultColor);
+            this.color = new Color(defaultValue);
+            this.defaultValue = new Color(defaultValue);
         }
 
         public Color getValue() {
@@ -47,7 +47,7 @@ public class ColorDataEntry extends AbstractDataEntry<Color> implements DataEntr
 
         public Color getDefaultValue() {
             // this should never be null
-            return this.defaultColor;
+            return this.defaultValue;
         }
 
         public void setValue(Color c) {
