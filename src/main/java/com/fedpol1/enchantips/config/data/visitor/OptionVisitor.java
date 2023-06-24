@@ -10,13 +10,13 @@ import java.awt.Color;
 public class OptionVisitor implements DataVisitor {
 
     public Option.Builder<Boolean> visit(BooleanDataEntry.BooleanData data) {
-        return Option.createBuilder(Boolean.class)
+        return Option.<Boolean>createBuilder()
                 .binding(data.getDefaultValue(), data::getValue, data::setValue)
                 .controller(TickBoxControllerBuilder::create);
     }
 
     public Option.Builder<Integer> visit(IntegerDataEntry.IntegerData data) {
-        return Option.createBuilder(Integer.class)
+        return Option.<Integer>createBuilder()
                 .binding(data.getDefaultValue(), data::getValue, data::setValue)
                 .controller(o -> data.getStep() == 0 ?
                         IntegerFieldControllerBuilder.create(o)
@@ -29,7 +29,7 @@ public class OptionVisitor implements DataVisitor {
     }
 
     public Option.Builder<Color> visit(ColorDataEntry.ColorData data) {
-        return Option.createBuilder(Color.class)
+        return Option.<Color>createBuilder()
                 .binding(data.getDefaultValue(), data::getValue, data::setValue)
                 .controller(ColorControllerBuilder::create);
     }
