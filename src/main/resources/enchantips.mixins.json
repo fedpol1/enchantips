@@ -9,6 +9,7 @@
     "BundleTooltipComponentMixin",
     "EnchantedBookItemMixin",
     "EnchantmentMixin",
+    "EnchantmentScreenHandlerMixin",
     "EnchantmentScreenMixin",
     "HandledScreenMixin",
     "InGameHudMixin",

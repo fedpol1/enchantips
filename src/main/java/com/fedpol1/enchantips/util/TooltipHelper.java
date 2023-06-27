@@ -18,11 +18,13 @@ public abstract class TooltipHelper {
     public static final String RARITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.rarity";
     public static final String MODIFIED_LEVEL_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level";
     public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment";
+    public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
+    public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
     public static MutableText buildRarity(int rarity, TextColor numberColor) {
         MutableText rarityText = MutableText.of(new LiteralTextContent(Integer.toString(rarity)));
         rarityText.setStyle(Style.EMPTY.withColor(numberColor));
-        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.RARITY_BRACKET.getData().getValue()).getRGB())));
+        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.DECORATION.getData().getValue()).getRGB())));
     }
 
     public static MutableText buildModifiedLevel(int lower, int upper) {
