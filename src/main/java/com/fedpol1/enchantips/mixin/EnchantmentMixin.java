@@ -54,7 +54,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
         rarityText.append(" ").append(enchantmentText);
-        if((boolean) ModOption.SHOW_RARITY.getData().getValue()) {
+        if((boolean) ModOption.SHOW_RARITY.getValue()) {
             return rarityText;
         }
         return enchantmentText;

@@ -60,8 +60,8 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
     @Inject(method = "drawForeground(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "RETURN"))
     private void enchantipsDrawWarning(DrawContext context, int mouseX, int mouseY, CallbackInfo ci) {
-        if(!(boolean) ModOption.SHOW_ANVIL_WARNING.getData().getValue() || !this.enchantipsDisplayWarning) { return; }
-        if((boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getData().getValue()) {
+        if(!(boolean) ModOption.SHOW_ANVIL_WARNING.getValue() || !this.enchantipsDisplayWarning) { return; }
+        if((boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) {
             ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET.renderButton(context, mouseX, mouseY, 0.0f);
         }
         else {
@@ -71,13 +71,13 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
     @Inject(method = "onSlotUpdate(Lnet/minecraft/screen/ScreenHandler;ILnet/minecraft/item/ItemStack;)V", at = @At(value = "TAIL"))
     private void enchantipsAddWarning(CallbackInfo ci) {
-        if(!(boolean) ModOption.SHOW_ANVIL_WARNING.getData().getValue()) { return; }
+        if(!(boolean) ModOption.SHOW_ANVIL_WARNING.getValue()) { return; }
         this.enchantipsDisplayWarning = this.enchantipsShouldSwapInputs();
     }
 
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
     protected void enchantipsAddAnvilSwapButton(CallbackInfo ci) {
-        if(!(boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getData().getValue()) { return; }
+        if(!(boolean) ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) { return; }
         this.addDrawableChild(new TexturedButtonWidget(
                 this.x + 152,
                 this.height / 2 - 36,

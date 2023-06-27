@@ -35,10 +35,10 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         ItemStack itemStack = handler.getSlot(0).getStack();
         int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchantment, l, itemStack, tableLevel);
         int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchantment, l, itemStack, tableLevel);
-        if((boolean) ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()) {
+        if((boolean) ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getValue()) {
             list.add(TooltipHelper.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
         }
-        if((boolean) ModOption.SHOW_EXTRA_ENCHANTMENTS.getData().getValue()) {
+        if((boolean) ModOption.SHOW_EXTRA_ENCHANTMENTS.getValue()) {
             ScrollableTooltipSection section = ((EnchantmentScreenHandlerAccess)handler).enchantipsGetSection(j);
             if(section != null) {
                 ScrollableTooltipSection.setActiveSection(section);

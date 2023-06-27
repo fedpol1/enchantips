@@ -24,15 +24,15 @@ public abstract class TooltipHelper {
     public static MutableText buildRarity(int rarity, TextColor numberColor) {
         MutableText rarityText = MutableText.of(new LiteralTextContent(Integer.toString(rarity)));
         rarityText.setStyle(Style.EMPTY.withColor(numberColor));
-        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.DECORATION.getData().getValue()).getRGB())));
+        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.DECORATION.getValue()).getRGB())));
     }
 
     public static MutableText buildModifiedLevel(int lower, int upper) {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()).getRGB()),
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getData().getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL.getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getValue()).getRGB()),
                 MODIFIED_LEVEL_TOOLTIP);
     }
 
@@ -41,8 +41,8 @@ public abstract class TooltipHelper {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL.getData().getValue()).getRGB()),
-                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getData().getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL.getValue()).getRGB()),
+                TextColor.fromRgb(((Color) ModOption.MODIFIED_ENCHANTMENT_LEVEL_VALUE.getValue()).getRGB()),
                 MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP
         );
     }
@@ -58,20 +58,20 @@ public abstract class TooltipHelper {
 
     public static MutableText buildEnchantability(int ench) {
         MutableText enchText = MutableText.of(new LiteralTextContent(Integer.toString(ench)));
-        enchText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.ENCHANTABILITY_VALUE.getData().getValue()).getRGB())));
+        enchText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.ENCHANTABILITY_VALUE.getValue()).getRGB())));
         return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.ENCHANTABILITY.getData().getValue()).getRGB())));
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.ENCHANTABILITY.getValue()).getRGB())));
     }
     public static MutableText buildRepairCost(int cost) {
         MutableText costText = MutableText.of(new LiteralTextContent(Integer.toString(cost)));
-        costText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.REPAIRCOST_VALUE.getData().getValue()).getRGB())));
+        costText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.REPAIRCOST_VALUE.getValue()).getRGB())));
         return Text.translatable(REPAIR_COST_TOOLTIP, costText)
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.REPAIRCOST.getData().getValue()).getRGB())));
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.REPAIRCOST.getValue()).getRGB())));
     }
 
     public static MutableText buildUnbreakable() {
         return Text.translatable("item.unbreakable")
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.UNBREAKABLE_COLOR.getData().getValue()).getRGB())));
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(((Color) ModOption.UNBREAKABLE_COLOR.getValue()).getRGB())));
     }
 
     public static void appendEnchantments(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {

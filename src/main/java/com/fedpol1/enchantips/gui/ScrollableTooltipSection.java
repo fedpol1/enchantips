@@ -50,11 +50,11 @@ public class ScrollableTooltipSection {
 
     private Text startLine() {
         MutableText valueText = MutableText.of(new LiteralTextContent(Integer.toString(this.position)));
-        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_START, valueText).setStyle(Style.EMPTY.withColor(((Color) ModOption.DECORATION.getData().getValue()).getRGB()));
+        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_START, valueText).setStyle(Style.EMPTY.withColor(((Color) ModOption.DECORATION.getValue()).getRGB()));
     }
 
     private Text endLine() {
         MutableText valueText = MutableText.of(new LiteralTextContent(Integer.toString(Math.max(0, this.text.size() - MAX_LINES_SHOWN - this.position))));
-        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_END, valueText).setStyle(Style.EMPTY.withColor(((Color) ModOption.DECORATION.getData().getValue()).getRGB()));
+        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_END, valueText).setStyle(Style.EMPTY.withColor(((Color) ModOption.DECORATION.getValue()).getRGB()));
     }
 }

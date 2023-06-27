@@ -36,8 +36,8 @@ public enum ModOption {
         category.getNode().addChild(o);
     }
 
-    public Data<?> getData() {
-        return this.entry.getData();
+    public Object getValue() {
+        return this.entry.getData().getValue();
     }
 
     public static void init() {}
