@@ -15,7 +15,7 @@ public class BundleTooltipComponentMixin {
 
     @Redirect(method = "drawSlot(IIIZLnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/font/TextRenderer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V"))
     private void enchantipsHighlightOtherTradeItems(DrawContext context, TextRenderer textRenderer, ItemStack stack, int x, int y) {
-        if((boolean) ModOption.SHOW_HIGHLIGHTS.getValue()) {
+        if(ModOption.SHOW_HIGHLIGHTS.getValue()) {
             SlotHighlight.highlightSingleSlot(context, stack, x, y, 255);
         }
         context.drawItemInSlot(textRenderer, stack, x, y);

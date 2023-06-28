@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.config.tree;
 
-import com.fedpol1.enchantips.config.data.AbstractDataEntry;
+import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.visitor.OptionVisitor;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
@@ -10,30 +10,30 @@ import net.minecraft.text.Text;
 
 public class OptionNode<T> extends AbstractNode{
 
-    private final AbstractDataEntry<T> entry;
+    private final ModOption<T> meta;
 
-    public OptionNode(AbstractDataEntry<T> entry) {
-        super(entry.getKey());
-        this.entry = entry;
+    public OptionNode(ModOption<T> meta) {
+        super(meta.getKey());
+        this.meta = meta;
     }
 
     public Data<T> getData() {
-        return this.entry.getData();
+        return this.meta.getData();
     }
 
     public T getValue() {
-        return this.entry.getData().getValue();
+        return this.meta.getData().getValue();
     }
 
     public Option<?> getYaclOption() {
         OptionDescription.Builder desc = OptionDescription.createBuilder();
-        for(int i = 0; i < this.entry.getNumTooltipLines(); i++) {
+        for(int i = 0; i < this.meta.getNumTooltipLines(); i++) {
             desc = desc
                     .text(Text.translatable(this.getFullName() + ".option_tooltip." + i))
                     .text(Text.literal(""));
         }
 
-        Option.Builder<?> b = (Option.Builder<?>) this.entry.getData().accept(new OptionVisitor());
+        Option.Builder<?> b = (Option.Builder<?>) this.meta.getData().accept(new OptionVisitor());
         return b.name(Text.translatable(this.getFullName() + ".option_title"))
                 .description(desc.build())
                 .build();

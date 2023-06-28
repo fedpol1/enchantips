@@ -12,7 +12,9 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.awt.*;
 import java.util.Objects;
@@ -21,12 +23,13 @@ import java.util.Objects;
 public abstract class EnchantmentMixin implements EnchantmentAccess {
 
     /**
+     * overwrite getName method
      * @author fedpol1
      * @reason overhaul enchantment tooltips
      */
-    @Overwrite
-    public Text getName(int level) {
-        return this.enchantipsGetName(level, false);
+    @Inject(method = "getName(I)Lnet/minecraft/text/Text;", at = @At(value = "HEAD"), cancellable = true)
+    public void enchantipsGetName(int level, CallbackInfoReturnable<Text> cir) {
+        cir.setReturnValue(this.enchantipsGetName(level, false));
     }
 
     public Text enchantipsGetName(int level, boolean modifyRarity) {
@@ -54,7 +57,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
         rarityText.append(" ").append(enchantmentText);
-        if((boolean) ModOption.SHOW_RARITY.getValue()) {
+        if(ModOption.SHOW_RARITY.getValue()) {
             return rarityText;
         }
         return enchantmentText;

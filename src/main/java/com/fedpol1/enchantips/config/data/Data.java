@@ -1,10 +1,9 @@
 package com.fedpol1.enchantips.config.data;
 
+import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
 
 public interface Data<T> {
-
-        DataEntry<?, ?> getEntry();
 
         T getValue();
 

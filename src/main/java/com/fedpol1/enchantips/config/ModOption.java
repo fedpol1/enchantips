@@ -3,41 +3,57 @@ package com.fedpol1.enchantips.config;
 import com.fedpol1.enchantips.config.data.*;
 import com.fedpol1.enchantips.config.tree.*;
 
-public enum ModOption {
+import java.awt.*;
 
-    SHOW_REPAIRCOST(new BooleanDataEntry("repair_cost", true, 1), ModCategory.TOOLTIP_TOGGLES),
-    SHOW_ENCHANTABILITY(new BooleanDataEntry("enchantability",true, 0), ModCategory.TOOLTIP_TOGGLES),
-    SHOW_ENCHANTABILITY_WHEN_ENCHANTED(new BooleanDataEntry("enchantability.when_enchanted",true, 0), ModCategory.TOOLTIP_TOGGLES),
-    SHOW_RARITY(new BooleanDataEntry("rarity",false, 2), ModCategory.TOOLTIP_TOGGLES),
-    SHOW_MODIFIED_ENCHANTMENT_LEVEL(new BooleanDataEntry("modified_level",true, 2), ModCategory.TOOLTIP_TOGGLES),
-    SHOW_EXTRA_ENCHANTMENTS(new BooleanDataEntry("extra_enchantments",true, 1), ModCategory.TOOLTIP_TOGGLES),
-    REPAIRCOST(new ColorDataEntry("repair_cost", 0xbf3f00, 0), ModCategory.TOOLTIP_COLORS),
-    REPAIRCOST_VALUE(new ColorDataEntry("repair_cost.value", 0xdf1f1f, 0), ModCategory.TOOLTIP_COLORS),
-    ENCHANTABILITY(new ColorDataEntry("enchantability", 0xbf007f, 0), ModCategory.TOOLTIP_COLORS),
-    ENCHANTABILITY_VALUE(new ColorDataEntry("enchantability.value", 0xff1f9f, 0), ModCategory.TOOLTIP_COLORS),
-    DECORATION(new ColorDataEntry("decoration", 0x4f4f47, 1), ModCategory.TOOLTIP_COLORS),
-    MODIFIED_ENCHANTMENT_LEVEL(new ColorDataEntry("modified_level", 0xdf9f3f, 0), ModCategory.TOOLTIP_COLORS),
-    MODIFIED_ENCHANTMENT_LEVEL_VALUE(new ColorDataEntry("modified_level.value", 0xdf7f3f, 0), ModCategory.TOOLTIP_COLORS),
-    SHOW_HIGHLIGHTS(new BooleanDataEntry("show",false, 0), ModCategory.HIGHLIGHTS),
-    HIGHLIGHTS_RESPECT_HIDEFLAGS(new BooleanDataEntry("respect_hideflags",true, 0), ModCategory.HIGHLIGHTS),
-    HIGHLIGHT_LIMIT(new IntegerDataEntry("limit", 4, 0, 16, 1, 0), ModCategory.HIGHLIGHTS),
-    HIGHLIGHT_HOTBAR_ALPHA(new IntegerDataEntry("hotbar_alpha", 127, 0, 255, 0, 0), ModCategory.HIGHLIGHTS),
-    HIGHLIGHT_TRADING_ALPHA(new IntegerDataEntry("trading_alpha", 127, 0, 255, 0, 0), ModCategory.HIGHLIGHTS),
-    SHOW_PROTECTION_BAR(new BooleanDataEntry("show_protection_bar",false, 0), ModCategory.MISCELLANEOUS),
-    SHOW_ANVIL_ITEM_SWAP_BUTTON(new BooleanDataEntry("show_anvil_swap_button",false, 3), ModCategory.MISCELLANEOUS),
-    SHOW_ANVIL_WARNING(new BooleanDataEntry("show_anvil_warning",true, 1), ModCategory.MISCELLANEOUS),
-    UNBREAKABLE_COLOR(new ColorDataEntry("unbreakable_color", 0x00dfff, 0), ModCategory.MISCELLANEOUS);
+public class ModOption<T> {
 
-    private final AbstractDataEntry<?> entry;
+    public static final ModOption<Boolean> SHOW_REPAIRCOST = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(true), "repair_cost", 1));
+    public static final ModOption<Boolean> SHOW_ENCHANTABILITY = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(true), "enchantability", 0));
+    public static final ModOption<Boolean> SHOW_ENCHANTABILITY_WHEN_ENCHANTED = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(true), "enchantability.when_enchanted", 0));
+    public static final ModOption<Boolean> SHOW_RARITY = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(false), "rarity", 2));
+    public static final ModOption<Boolean> SHOW_MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(true), "modified_level", 2));
+    public static final ModOption<Boolean> SHOW_EXTRA_ENCHANTMENTS = ModCategory.TOOLTIP_TOGGLES.addChild(new ModOption<>(new BooleanOption(true), "extra_enchantments", 1));
+    public static final ModOption<Color> REPAIRCOST = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xbf3f00), "repair_cost", 0));
+    public static final ModOption<Color> REPAIRCOST_VALUE = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xdf1f1f), "repair_cost.value", 0));
+    public static final ModOption<Color> ENCHANTABILITY = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xbf007f), "enchantability", 0));
+    public static final ModOption<Color> ENCHANTABILITY_VALUE = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xff1f9f), "enchantability.value", 0));
+    public static final ModOption<Color> DECORATION = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0x4f4f47), "decoration", 1));
+    public static final ModOption<Color> MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xdf9f3f), "modified_level", 0));
+    public static final ModOption<Color> MODIFIED_ENCHANTMENT_LEVEL_VALUE = ModCategory.TOOLTIP_COLORS.addChild(new ModOption<>(new ColorOption(0xdf7f3f), "modified_level.value", 0));
+    public static final ModOption<Boolean> SHOW_HIGHLIGHTS = ModCategory.HIGHLIGHTS.addChild(new ModOption<>(new BooleanOption(false), "show", 0));
+    public static final ModOption<Boolean> HIGHLIGHTS_RESPECT_HIDEFLAGS = ModCategory.HIGHLIGHTS.addChild(new ModOption<>(new BooleanOption(true), "respect_hideflags", 0));
+    public static final ModOption<Integer> HIGHLIGHT_LIMIT = ModCategory.HIGHLIGHTS.addChild(new ModOption<>(new IntegerOption(4, 0, 16, 1), "limit", 0));
+    public static final ModOption<Integer> HIGHLIGHT_HOTBAR_ALPHA = ModCategory.HIGHLIGHTS.addChild(new ModOption<>(new IntegerOption(127, 0, 255, 0), "hotbar_alpha", 0));
+    public static final ModOption<Integer> HIGHLIGHT_TRADING_ALPHA = ModCategory.HIGHLIGHTS.addChild(new ModOption<>(new IntegerOption(127, 0, 255, 0), "trading_alpha", 0));
+    public static final ModOption<Boolean> SHOW_PROTECTION_BAR = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(false), "show_protection_bar", 0));
+    public static final ModOption<Boolean> SHOW_ANVIL_ITEM_SWAP_BUTTON = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(false), "show_anvil_swap_button", 3));
+    public static final ModOption<Boolean> SHOW_ANVIL_WARNING = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(true), "show_anvil_warning", 1));
+    public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new ColorOption(0x00dfff), "unbreakable_color", 0));
 
-    ModOption(AbstractDataEntry<?> entry, ModCategory category) {
-        OptionNode<?> o = new OptionNode<>(entry);
-        this.entry = entry;
-        category.getNode().addChild(o);
+    private final Data<T> data;
+    protected final String key;
+    protected final int tooltipLines;
+
+    ModOption(Data<T> data, String key, int tooltipLines) {
+        this.data = data;
+        this.key = key;
+        this.tooltipLines = tooltipLines;
     }
 
-    public Object getValue() {
-        return this.entry.getData().getValue();
+    public Data<T> getData() {
+        return this.data;
+    }
+
+    public int getNumTooltipLines() {
+        return this.tooltipLines;
+    }
+
+    public String getKey() {
+        return this.key;
+    }
+
+    public T getValue() {
+        return this.data.getValue();
     }
 
     public static void init() {}

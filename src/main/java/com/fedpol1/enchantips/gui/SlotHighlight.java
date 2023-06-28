@@ -33,10 +33,10 @@ public abstract class SlotHighlight {
 
         ItemStackAccess stackAccess = (ItemStackAccess)(Object)stack;
         ArrayList<Color> arrayOfColor = new ArrayList<>();
-        if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !(boolean) ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
-            arrayOfColor.add((Color) ModOption.UNBREAKABLE_COLOR.getValue());
+        if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
+            arrayOfColor.add(ModOption.UNBREAKABLE_COLOR.getValue());
         }
-        if(stackAccess.enchantipsEnchantmentsVisible() || !(boolean) ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
+        if(stackAccess.enchantipsEnchantmentsVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
             for (EnchantmentLevelData levelData : arrayOfEnchLevel) {
                 if (!ModConfigData.isEnchantmentHighlighted(levelData.getEnchantment())) { continue; }
                 arrayOfColor.add(levelData.getColor());
@@ -46,7 +46,7 @@ public abstract class SlotHighlight {
     }
 
     public static void drawEnchantments(DrawContext context, ArrayList<Color> arrayOfColor, int x, int y, int alpha) {
-        int limit = Math.min(arrayOfColor.size(), (int) ModOption.HIGHLIGHT_LIMIT.getValue());
+        int limit = Math.min(arrayOfColor.size(), ModOption.HIGHLIGHT_LIMIT.getValue());
         float frac = 16.0f / limit;
         for(int i = 0; i < limit; i++) {
             context.fill(x + Math.round(i * frac), y, x + Math.round((i+1) * frac), y + 16, (arrayOfColor.get(i).getRGB() & 0xffffff) | (alpha << 24) );
