@@ -8,7 +8,7 @@ import net.minecraft.nbt.NbtList;
 public abstract class EnchantmentListHelper {
 
     public static Enchantment getEnchantment(NbtElement e) {
-        EnchantmentLevelData ench = EnchantmentLevelData.of(e);
+        EnchantmentLevel ench = EnchantmentLevel.of(e);
         if(ench == null) { return null; }
         return ench.getEnchantment();
     }

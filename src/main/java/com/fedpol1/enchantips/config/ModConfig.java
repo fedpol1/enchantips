@@ -1,12 +1,12 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.data.*;
 import com.fedpol1.enchantips.config.deserializer.ConfigTreeDeserializer;
 import com.fedpol1.enchantips.config.serializer.ConfigTreeSerializer;
 import com.fedpol1.enchantips.config.tree.*;
 import com.fedpol1.enchantips.config.tree.visitor.*;
+import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.google.gson.GsonBuilder;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import net.fabricmc.loader.api.FabricLoader;
@@ -31,10 +31,10 @@ public class ModConfig {
         for(Enchantment current : Registries.ENCHANTMENT) {
             gn = (GroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.addChild(new GroupNode(current));
             ModConfigData.enchantmentData.put(current, gn);
-            gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(((EnchantmentAccess)current).enchantipsGetDefaultMinColor().getRGB()),  ModConfigData.MIN_COLOR_KEY, 0)));
-            gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(((EnchantmentAccess)current).enchantipsGetDefaultMaxColor().getRGB()),  ModConfigData.MAX_COLOR_KEY, 0)));
-            gn.addChild(new OptionNode<>(new ModOption<>(new IntegerOption(((EnchantmentAccess)current).enchantipsGetDefaultOrder(), -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1)));
-            gn.addChild(new OptionNode<>(new ModOption<>(new BooleanOption(((EnchantmentAccess)current).enchantipsGetDefaultHighlightVisibility()),  ModConfigData.HIGHLIGHT_KEY, 0)));
+            gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(EnchantmentAppearanceHelper.getDefaultMinColor(current).getRGB()),  ModConfigData.MIN_COLOR_KEY, 0)));
+            gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(EnchantmentAppearanceHelper.getDefaultMaxColor(current).getRGB()),  ModConfigData.MAX_COLOR_KEY, 0)));
+            gn.addChild(new OptionNode<>(new ModOption<>(new IntegerOption(EnchantmentAppearanceHelper.getDefaultOrder(current), -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1)));
+            gn.addChild(new OptionNode<>(new ModOption<>(new BooleanOption(EnchantmentAppearanceHelper.getDefaultHighlightVisibility(current)),  ModConfigData.HIGHLIGHT_KEY, 0)));
         }
         ModConfig.readConfig();
         ModConfig.writeConfig();

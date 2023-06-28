@@ -1,12 +1,10 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,10 +73,10 @@ public abstract class TooltipHelper {
     }
 
     public static void appendEnchantments(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
-        ArrayList<EnchantmentLevelData> enchantmentLevelData = EnchantmentLevelData.ofList(enchantments);
+        ArrayList<EnchantmentLevel> enchantmentLevelData = EnchantmentLevel.ofList(enchantments);
         Collections.sort(enchantmentLevelData);
-        for(EnchantmentLevelData ench : enchantmentLevelData) {
-            tooltip.add(((EnchantmentAccess)ench.getEnchantment()).enchantipsGetName(ench.getLevel(), modifyRarity));
+        for(EnchantmentLevel ench : enchantmentLevelData) {
+            tooltip.add(EnchantmentAppearanceHelper.getName(ench, modifyRarity));
         }
     }
 }

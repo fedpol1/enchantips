@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.gui;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.util.EnchantmentLevelData;
+import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public abstract class SlotHighlight {
         if(stack.getCount() == 0) { return; }
 
         NbtList enchNbt = stack.isOf(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantmentNbt(stack) : stack.getEnchantments();
-        ArrayList<EnchantmentLevelData> arrayOfEnchLevel = EnchantmentLevelData.ofList(enchNbt);
+        ArrayList<EnchantmentLevel> arrayOfEnchLevel = EnchantmentLevel.ofList(enchNbt);
         Collections.sort(arrayOfEnchLevel);
 
         ItemStackAccess stackAccess = (ItemStackAccess)(Object)stack;
@@ -37,7 +37,7 @@ public abstract class SlotHighlight {
             arrayOfColor.add(ModOption.UNBREAKABLE_COLOR.getValue());
         }
         if(stackAccess.enchantipsEnchantmentsVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {
-            for (EnchantmentLevelData levelData : arrayOfEnchLevel) {
+            for (EnchantmentLevel levelData : arrayOfEnchLevel) {
                 if (!ModConfigData.isEnchantmentHighlighted(levelData.getEnchantment())) { continue; }
                 arrayOfColor.add(levelData.getColor());
             }

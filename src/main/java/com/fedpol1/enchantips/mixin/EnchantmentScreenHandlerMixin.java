@@ -1,11 +1,11 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.accessor.EnchantmentScreenHandlerAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
+import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
-import com.fedpol1.enchantips.util.EnchantmentLevelData;
+import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.Inventory;
@@ -42,22 +42,22 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
             int absoluteLowerBound = EnchantmentFilterer.getLowerBound(givenEnchantment, t.enchantmentLevel[i], stack, t.enchantmentPower[i]);
             int absoluteUpperBound = EnchantmentFilterer.getUpperBound(givenEnchantment, t.enchantmentLevel[i], stack, t.enchantmentPower[i]);
 
-            ArrayList<EnchantmentLevelData> enchantmentLevelData = new ArrayList<>();
+            ArrayList<EnchantmentLevel> enchantmentLevelData = new ArrayList<>();
             for (Enchantment current : Registries.ENCHANTMENT) {
                 if(!current.target.isAcceptableItem(stack.getItem()) && !stack.isOf(Items.BOOK)) { continue; }
                 if(!current.canCombine(givenEnchantment)) { continue; }
                 if(!current.isAvailableForRandomSelection() || current.isTreasure()) { continue; }
                 for(int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
-                    EnchantmentLevelData enchLevel = EnchantmentLevelData.of(current, z);
+                    EnchantmentLevel enchLevel = EnchantmentLevel.of(current, z);
                     if(enchLevel.getHighestModifiedLevel() >= absoluteLowerBound && enchLevel.getLowestModifiedLevel() <= absoluteUpperBound) {
-                        enchantmentLevelData.add(EnchantmentLevelData.of(current, z));
+                        enchantmentLevelData.add(EnchantmentLevel.of(current, z));
                     }
                 }
             }
             Collections.sort(enchantmentLevelData);
             List<Text> extra = new ArrayList<>();
-            for(EnchantmentLevelData levelData : enchantmentLevelData) {
-                MutableText text = (MutableText) ((EnchantmentAccess) levelData.getEnchantment()).enchantipsGetName(levelData.getLevel(), stack.isOf(Items.ENCHANTED_BOOK));
+            for(EnchantmentLevel levelData : enchantmentLevelData) {
+                MutableText text = (MutableText) EnchantmentAppearanceHelper.getName(levelData, stack.isOf(Items.ENCHANTED_BOOK));
                 if(ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getValue()) {
                     text.append(" ").append(
                             TooltipHelper.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
