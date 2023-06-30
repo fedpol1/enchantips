@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class HandledScreenMixin {
 
     @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "HEAD"))
-    private void enchantipsInjectResetScrollableTooltipSection(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void enchantipsResetScrollableTooltipSection(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         ScrollableTooltipSection.setActiveSection(null);
     }
 
     @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V", ordinal = 0, shift = At.Shift.AFTER))
-    private void enchantipsInjectRenderDrawHighlights(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void enchantipsRenderDrawHighlights(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         ScreenHandler handler = ((HandledScreen<?>) (Object) this).getScreenHandler();
 
         float[] oldShaderColor = RenderSystem.getShaderColor();
@@ -36,7 +36,7 @@ public abstract class HandledScreenMixin {
     }
 
     @Inject(method = "keyPressed(III)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;handleHotbarKeyPressed(II)Z", ordinal = 0), cancellable = true)
-    private void enchantipsInjectHandleTooltipScroll(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void enchantipsHandleTooltipScroll(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         HandledScreen<?> t = (HandledScreen<?>) (Object) this;
         if(t instanceof EnchantmentScreen) {
             ScrollableTooltipSection s = ScrollableTooltipSection.getActiveSection();
