@@ -24,7 +24,7 @@ public class ModConfig {
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(EnchantipsClient.MODID + ".json").toFile();
 
     public static void registerConfig() {
-        EnchantipsClient.LOGGER.info("Initializing configs");
+        EnchantipsClient.LOGGER.info("Initializing Enchantips configs");
         ModCategory.init();
         ModOption.init();
         GroupNode gn;

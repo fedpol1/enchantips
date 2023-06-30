@@ -14,7 +14,6 @@ public class EnchantipsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ModConfig.registerConfig();
         KeyInputHandler.registerKeybind();
     }
 }
