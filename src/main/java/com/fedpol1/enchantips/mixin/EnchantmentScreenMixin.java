@@ -40,10 +40,8 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         }
         if(ModOption.SHOW_EXTRA_ENCHANTMENTS.getValue()) {
             ScrollableTooltipSection section = ((EnchantmentScreenHandlerAccess)handler).enchantipsGetSection(j);
-            if(section != null) {
-                ScrollableTooltipSection.setActiveSection(section);
-                list.addAll(section.getShownTextAll());
-            }
+            ScrollableTooltipSection.setActiveSection(section);
+            list.addAll(section.getShownTextAll());
         }
     }
 }

@@ -7,13 +7,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScrollableTooltipSection {
 
     private static ScrollableTooltipSection activeSection; // there can only be one; handled screens set this to null every frame
+    private static ScrollableTooltipSection previousNonEmpty;
+    public static final ScrollableTooltipSection EMPTY = new ScrollableTooltipSection(new ArrayList<>());
     private static final int MAX_LINES_SHOWN = 7;
 
     private final List<Text> text;
@@ -25,7 +26,13 @@ public class ScrollableTooltipSection {
     }
 
     public static void setActiveSection(ScrollableTooltipSection s) {
-        if(ScrollableTooltipSection.activeSection != s) { // if active section actually changes, reset position
+        if(s == null) {
+            throw new IllegalStateException("Active scrollable tooltip section cannot be null.");
+        }
+        if(ScrollableTooltipSection.activeSection != ScrollableTooltipSection.EMPTY) {
+            ScrollableTooltipSection.previousNonEmpty = ScrollableTooltipSection.activeSection;
+        }
+        if(s != ScrollableTooltipSection.previousNonEmpty) { // if active section actually changes, reset position
             s.position = 0;
         }
         ScrollableTooltipSection.activeSection = s;

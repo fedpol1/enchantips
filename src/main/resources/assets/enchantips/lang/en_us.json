@@ -53,8 +53,5 @@
   "enchantips.tooltip.repair_cost": "Repair Cost: %s",
   "enchantips.tooltip.enchantability": "Enchantability: %s",
   "enchantips.tooltip.modified_level": "Modified Level: %s-%s",
-  "enchantips.tooltip.modified_level.for_enchantment": "%s-%s",
-
-  "key.enchantips.scroll.down": "Scroll Tooltip Down (Enchantips)",
-  "key.enchantips.scroll.up": "Scroll Tooltip Up (Enchantips)"
+  "enchantips.tooltip.modified_level.for_enchantment": "%s-%s"
 }

@@ -1,9 +1,10 @@
 package com.fedpol1.enchantips;
 
-import com.fedpol1.enchantips.config.ModConfig;
-
-import com.fedpol1.enchantips.event.KeyInputHandler;
+import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +15,12 @@ public class EnchantipsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyInputHandler.registerKeybind();
+        ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if(screen instanceof EnchantmentScreen) {
+                ScreenMouseEvents.afterMouseScroll(screen).register((mouseScreen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+                    ScrollableTooltipSection.getActiveSection().scroll((int) -verticalAmount);
+                });
+            }
+        });
     }
 }
