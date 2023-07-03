@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips;
 
-import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
+import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
@@ -17,9 +17,7 @@ public class EnchantipsClient implements ClientModInitializer {
     public void onInitializeClient() {
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if(screen instanceof EnchantmentScreen) {
-                ScreenMouseEvents.afterMouseScroll(screen).register((mouseScreen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-                    ScrollableTooltipSection.getActiveSection().scroll((int) -verticalAmount);
-                });
+                ScreenMouseEvents.afterMouseScroll(screen).register(EnchantmentScreenEvents::onScroll);
             }
         });
     }

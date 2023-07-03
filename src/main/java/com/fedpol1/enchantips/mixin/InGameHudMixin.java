@@ -26,7 +26,7 @@ public abstract class InGameHudMixin implements InGameHudAccess {
     }
 
     @Inject(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getProfiler()Lnet/minecraft/util/profiler/Profiler;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsStoreStuffFromBarRenderer(DrawContext context, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, HungerManager hungerManager, int k, int m, int n, int o, float f, int p, int q, int r, int s, int t, int u, int v) {
+    private void enchantipsRenderProtectionBar(DrawContext context, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, HungerManager hungerManager, int k, int m, int n, int o, float f, int p, int q, int r, int s, int t, int u, int v) {
         if(ModOption.SHOW_PROTECTION_BAR.getValue()) {
             ProtectionHud.renderWholeProtectionBar(context, m, s);
         }

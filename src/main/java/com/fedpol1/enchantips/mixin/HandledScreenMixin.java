@@ -22,13 +22,11 @@ public abstract class HandledScreenMixin {
 
     @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V", ordinal = 0, shift = At.Shift.AFTER))
     private void enchantipsRenderDrawHighlights(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        ScreenHandler handler = ((HandledScreen<?>) (Object) this).getScreenHandler();
-
-        float[] oldShaderColor = RenderSystem.getShaderColor();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if(ModOption.SHOW_HIGHLIGHTS.getValue()) {
-            SlotHighlight.drawEnchantedItemSlotHighlights(context, handler, 255);
+            float[] oldShaderColor = RenderSystem.getShaderColor();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            SlotHighlight.drawEnchantedItemSlotHighlights(context, ((HandledScreen<?>) (Object) this).getScreenHandler(), 255);
+            RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);
         }
-        RenderSystem.setShaderColor(oldShaderColor[0], oldShaderColor[1], oldShaderColor[2], oldShaderColor[3]);
     }
 }
