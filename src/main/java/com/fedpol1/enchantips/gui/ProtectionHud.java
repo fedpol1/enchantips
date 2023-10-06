@@ -11,17 +11,20 @@ import net.minecraft.util.Identifier;
 
 public class ProtectionHud {
 
-    public static final Identifier ICONS = new Identifier(EnchantipsClient.MODID, "textures/gui/icons.png");
-    public static final int ICONS_WIDTH = 32;
-    public static final int ICONS_HEIGHT = 32;
+    public static final Identifier PROTECTION_EMPTY = new Identifier(EnchantipsClient.MODID, "hud/protection_empty");
 
-    private static void renderIndividualProtectionBars(DrawContext context, int protAmount, int texHeight, int xpos, int ypos, int v) {
-        int u = 0;
+    private static void renderIndividualProtectionBars(DrawContext context, ProtectionType protectionType, int protAmount, int xpos, int ypos) {
+        String path = "hud/" + protectionType.getProtectionName();
+        String suffix;
+        int width = protectionType.getWidth();
+        int height = protectionType.getHeight();
         for(int i = 0; i < Math.min(20, protAmount); i+=2) {
+            suffix = "_full";
             if(i + 1 == protAmount) {
-                u = 9;
+                suffix = "_half";
+                width = protectionType.getReducedWidth();
             }
-            context.drawTexture(ICONS, xpos + 4 * i, ypos, u, v, 9, texHeight, ICONS_WIDTH, ICONS_HEIGHT);
+            context.drawGuiTexture(new Identifier(EnchantipsClient.MODID, path + suffix), xpos + 4 * i, ypos, width, height);
         }
     }
 
@@ -43,13 +46,13 @@ public class ProtectionHud {
         int ypos = armorHeight - (client.player.getArmor() == 0 ? 0 : 10);
 
         for(int i = 0; i < 10; i++) {
-                context.drawTexture(ICONS, xpos + 8 * i, ypos, 18, 0, 9, 9, ICONS_WIDTH, ICONS_HEIGHT);
+                context.drawGuiTexture(PROTECTION_EMPTY, xpos + 8 * i, ypos, 9, 9);
         }
-        renderIndividualProtectionBars(context, projProt, 3, xpos, ypos, 9);
-        renderIndividualProtectionBars(context, fireProt, 3, xpos, ypos+2, 12);
-        renderIndividualProtectionBars(context, blastProt, 3, xpos, ypos+4, 15);
-        renderIndividualProtectionBars(context, fallProt, 3, xpos, ypos+6, 18);
-        renderIndividualProtectionBars(context, genericProt, 9, xpos, ypos, 0);
+        renderIndividualProtectionBars(context, ProtectionType.PROJECTILE, projProt, xpos, ypos);
+        renderIndividualProtectionBars(context, ProtectionType.FIRE, fireProt, xpos, ypos+2);
+        renderIndividualProtectionBars(context, ProtectionType.BLAST, blastProt, xpos, ypos+4);
+        renderIndividualProtectionBars(context, ProtectionType.FALL, fallProt, xpos, ypos+6);
+        renderIndividualProtectionBars(context, ProtectionType.GENERIC, genericProt, xpos, ypos);
     }
 
     private static int getProtectionLevel(Iterable<ItemStack> stacks, Enchantment e) {
@@ -58,5 +61,39 @@ public class ProtectionHud {
             level += EnchantmentHelper.getLevel(e, stack);
         }
         return level;
+    }
+
+    enum ProtectionType {
+        GENERIC("protection", 9, 9),
+        PROJECTILE("projectile_protection", 9, 3),
+        FIRE("fire_protection", 9, 3),
+        BLAST("blast_protection", 9, 3),
+        FALL("fall_protection", 9, 3);
+
+        final String protectionName;
+        final int width;
+        final int height;
+
+        ProtectionType(String s, int width, int height) {
+            this.protectionName = s;
+            this.width = width;
+            this.height = height;
+        }
+
+        public String getProtectionName() {
+            return this.protectionName;
+        }
+
+        public int getWidth() {
+            return this.width;
+        }
+
+        public int getReducedWidth() {
+            return (int)Math.ceil((double)this.width / 2.0);
+        }
+
+        public int getHeight() {
+            return this.height;
+        }
     }
 }
