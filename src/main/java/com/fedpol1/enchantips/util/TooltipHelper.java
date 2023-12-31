@@ -20,7 +20,7 @@ public abstract class TooltipHelper {
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
     public static MutableText buildRarity(int rarity, TextColor numberColor) {
-        MutableText rarityText = MutableText.of(new LiteralTextContent(Integer.toString(rarity)));
+        MutableText rarityText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
         rarityText.setStyle(Style.EMPTY.withColor(numberColor));
         return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
     }
@@ -46,8 +46,8 @@ public abstract class TooltipHelper {
     }
 
     private static MutableText buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
-        MutableText lowerText = MutableText.of(new LiteralTextContent(Integer.toString(lower)));
-        MutableText upperText = MutableText.of(new LiteralTextContent(Integer.toString(upper)));
+        MutableText lowerText = MutableText.of(new PlainTextContent.Literal(Integer.toString(lower)));
+        MutableText upperText = MutableText.of(new PlainTextContent.Literal(Integer.toString(upper)));
         lowerText.setStyle(Style.EMPTY.withColor(valueColor));
         upperText.setStyle(Style.EMPTY.withColor(valueColor));
         return Text.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
@@ -55,13 +55,13 @@ public abstract class TooltipHelper {
     }
 
     public static MutableText buildEnchantability(int ench) {
-        MutableText enchText = MutableText.of(new LiteralTextContent(Integer.toString(ench)));
+        MutableText enchText = MutableText.of(new PlainTextContent.Literal(Integer.toString(ench)));
         enchText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_VALUE.getValue().getRGB())));
         return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY.getValue().getRGB())));
     }
     public static MutableText buildRepairCost(int cost) {
-        MutableText costText = MutableText.of(new LiteralTextContent(Integer.toString(cost)));
+        MutableText costText = MutableText.of(new PlainTextContent.Literal(Integer.toString(cost)));
         costText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIRCOST_VALUE.getValue().getRGB())));
         return Text.translatable(REPAIR_COST_TOOLTIP, costText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIRCOST.getValue().getRGB())));

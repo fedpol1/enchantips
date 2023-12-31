@@ -1,19 +1,18 @@
 package com.fedpol1.enchantips.gui.widgets;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.screen.ButtonTextures;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class AnvilSwapButton extends ButtonWidget {
-    public AnvilSwapButton(int x, int y, PressAction onPress) {
-        super(x, y, 16, 16, Text.translatable("narrator.button.enchantips.anvil_swap"), onPress, DEFAULT_NARRATION_SUPPLIER);
-    }
+public class AnvilSwapButton extends TexturedButtonWidget {
 
-    public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        AnvilSwapButton.Icon icon = this.isSelected() ? Icon.HOVER : Icon.DEFAULT;
-        context.drawGuiTexture(icon.texture, this.getX(), this.getY(), this.width, this.height);
+    public AnvilSwapButton(int x, int y, PressAction onPress) {
+        super(x, y, 16, 16,
+                new ButtonTextures(Icon.DEFAULT.texture, Icon.HOVER.texture),
+                onPress,
+                Text.translatable("narrator.button.enchantips.anvil_swap"));
     }
 
     enum Icon {

@@ -2,8 +2,8 @@ package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
@@ -59,12 +59,12 @@ public class ScrollableTooltipSection {
     }
 
     private Text startLine() {
-        MutableText valueText = MutableText.of(new LiteralTextContent(Integer.toString(this.position)));
+        MutableText valueText = MutableText.of(new PlainTextContent.Literal(Integer.toString(this.position)));
         return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_START, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
     }
 
     private Text endLine() {
-        MutableText valueText = MutableText.of(new LiteralTextContent(Integer.toString(Math.max(0, this.text.size() - MAX_LINES_SHOWN - this.position))));
+        MutableText valueText = MutableText.of(new PlainTextContent.Literal(Integer.toString(Math.max(0, this.text.size() - MAX_LINES_SHOWN - this.position))));
         return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_END, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
     }
 }
