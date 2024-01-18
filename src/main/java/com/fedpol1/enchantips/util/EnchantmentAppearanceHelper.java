@@ -53,6 +53,12 @@ public class EnchantmentAppearanceHelper {
         return new Color(0xffdfdf);
     }
 
+    public static Color getDefaultOvermaxColor(Enchantment e) {
+        if(e.isCursed()) { return new Color(0xff5f1f); }
+        if(e.isTreasure()) { return new Color(0x1fff3f); }
+        return new Color(0xffdf3f);
+    }
+
     public static int getDefaultOrder(Enchantment e) {
         if(e.isCursed()) { return 0; }
         if(e.isTreasure()) { return 1; }

@@ -33,6 +33,7 @@ public class ModConfig {
             ModConfigData.enchantmentData.put(current, gn);
             gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(EnchantmentAppearanceHelper.getDefaultMinColor(current).getRGB()),  ModConfigData.MIN_COLOR_KEY, 0)));
             gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(EnchantmentAppearanceHelper.getDefaultMaxColor(current).getRGB()),  ModConfigData.MAX_COLOR_KEY, 0)));
+            gn.addChild(new OptionNode<>(new ModOption<>(new ColorOption(EnchantmentAppearanceHelper.getDefaultOvermaxColor(current).getRGB()),  ModConfigData.OVERMAX_COLOR_KEY, 0)));
             gn.addChild(new OptionNode<>(new ModOption<>(new IntegerOption(EnchantmentAppearanceHelper.getDefaultOrder(current), -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1)));
             gn.addChild(new OptionNode<>(new ModOption<>(new BooleanOption(EnchantmentAppearanceHelper.getDefaultHighlightVisibility(current)),  ModConfigData.HIGHLIGHT_KEY, 0)));
         }

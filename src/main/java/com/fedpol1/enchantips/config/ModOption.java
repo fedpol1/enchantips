@@ -29,6 +29,8 @@ public class ModOption<T> {
     public static final ModOption<Boolean> SHOW_ANVIL_ITEM_SWAP_BUTTON = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(false), "show_anvil_swap_button", 3));
     public static final ModOption<Boolean> SHOW_ANVIL_WARNING = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(true), "show_anvil_warning", 1));
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new ColorOption(0x00dfff), "unbreakable_color", 0));
+    public static final ModOption<Boolean> HIGHLIGHT_UNBREAKABLE = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(true), "highlight_unbreakable", 0));
+    public static final ModOption<Boolean> PRIORITIZE_OVERMAX_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addChild(new ModOption<>(new BooleanOption(true), "prioritize_overmax_enchantments", 0));
 
     private final Data<T> data;
     protected final String key;

@@ -10,6 +10,7 @@ public class ModConfigData {
 
     public static final String MIN_COLOR_KEY = "min_color";
     public static final String MAX_COLOR_KEY = "max_color";
+    public static final String OVERMAX_COLOR_KEY = "overmax_color";
     public static final String ORDER_KEY = "order";
     public static final String HIGHLIGHT_KEY = "highlight";
 

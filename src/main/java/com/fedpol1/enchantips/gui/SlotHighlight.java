@@ -33,7 +33,8 @@ public abstract class SlotHighlight {
 
         ItemStackAccess stackAccess = (ItemStackAccess)(Object)stack;
         ArrayList<Color> arrayOfColor = new ArrayList<>();
-        if(stackAccess.enchantipsIsUnbreakable() && (stackAccess.enchantipsUnbreakableVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
+        if(stackAccess.enchantipsIsUnbreakable() && ModOption.HIGHLIGHT_UNBREAKABLE.getValue() &&
+                (stackAccess.enchantipsUnbreakableVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue())) {
             arrayOfColor.add(ModOption.UNBREAKABLE_COLOR.getValue());
         }
         if(stackAccess.enchantipsEnchantmentsVisible() || !ModOption.HIGHLIGHTS_RESPECT_HIDEFLAGS.getValue()) {

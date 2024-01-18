@@ -29,9 +29,12 @@
   "enchantips.config.miscellaneous.show_anvil_warning.option_title": "Show Anvil Warning",
   "enchantips.config.miscellaneous.show_anvil_swap_button.option_title": "Show Anvil Item Swap Button",
   "enchantips.config.miscellaneous.unbreakable_color.option_title": "Unbreakable Color",
+  "enchantips.config.miscellaneous.highlight_unbreakable.option_title": "Highlight Unbreakable Items",
+  "enchantips.config.miscellaneous.prioritize_overmax_enchantments.option_title": "Prioritize Overlevelled Enchantments",
   "enchantips.config.individual_enchantments": "Individual Enchantments",
   "enchantips.config.individual_enchantments.min_color.option_title": "Minimum Color",
   "enchantips.config.individual_enchantments.max_color.option_title": "Maximum Color",
+  "enchantips.config.individual_enchantments.overmax_color.option_title": "Over Maximum Color",
   "enchantips.config.individual_enchantments.order.option_title": "Order",
   "enchantips.config.individual_enchantments.highlight.option_title": "Highlight Visible",
 
