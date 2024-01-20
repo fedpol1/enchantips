@@ -1,7 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
+import com.fedpol1.enchantips.config.tree.OptionNode;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 
 public class BooleanOption implements Data<Boolean> {
 
@@ -33,7 +34,12 @@ public class BooleanOption implements Data<Boolean> {
         this.value = Boolean.parseBoolean(s);
     }
 
-    public Object accept(DataVisitor v) {
-        return v.visit(this);
+    public Option<Boolean> getYaclOption(OptionNode<Boolean> optionNode) {
+        return Option.<Boolean>createBuilder()
+                .binding(this.getDefaultValue(), this::getValue, this::setValue)
+                .controller(TickBoxControllerBuilder::create)
+                .name(this.getOptionTitle(optionNode))
+                .description(this.getOptionDescription(optionNode))
+                .build();
     }
 }

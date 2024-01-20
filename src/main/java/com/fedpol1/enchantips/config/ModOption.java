@@ -1,8 +1,13 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.config.data.*;
+import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
+import com.fedpol1.enchantips.config.tree.OptionNode;
+import dev.isxander.yacl3.api.ButtonOption;
+import dev.isxander.yacl3.gui.YACLScreen;
 
 import java.awt.Color;
+import java.util.function.BiConsumer;
 
 public class ModOption<T> {
 
@@ -32,8 +37,8 @@ public class ModOption<T> {
     public static final ModOption<Boolean> PRIORITIZE_OVERMAX_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 0);
 
     private final Data<T> data;
-    protected final String key;
-    protected final int tooltipLines;
+    private final String key;
+    private final int tooltipLines;
 
     public ModOption(Data<T> data, String key, int tooltipLines) {
         this.data = data;

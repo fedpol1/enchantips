@@ -1,7 +1,9 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
+import com.fedpol1.enchantips.config.tree.OptionNode;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 
 public class IntegerOption implements Data<Integer> {
 
@@ -39,19 +41,19 @@ public class IntegerOption implements Data<Integer> {
         this.value = Integer.parseInt(s);
     }
 
-    public int getMin() {
-        return this.min;
-    }
-
-    public int getMax() {
-        return this.max;
-    }
-
-    public int getStep() {
-        return this.step;
-    }
-
-    public Object accept(DataVisitor v) {
-        return v.visit(this);
+    public Option<Integer> getYaclOption(OptionNode<Integer> optionNode) {
+        return Option.<Integer>createBuilder()
+                .binding(this.getDefaultValue(), this::getValue, this::setValue)
+                .controller(o -> this.step == 0 ?
+                        IntegerFieldControllerBuilder.create(o)
+                                .min(this.min)
+                                .max(this.max) :
+                        IntegerSliderControllerBuilder.create(o)
+                                .range(this.min, this.max)
+                                .step(this.step)
+                )
+                .name(this.getOptionTitle(optionNode))
+                .description(this.getOptionDescription(optionNode))
+                .build();
     }
 }

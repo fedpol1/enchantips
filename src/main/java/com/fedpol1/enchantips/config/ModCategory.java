@@ -24,7 +24,7 @@ public enum ModCategory {
     }
 
     public GroupNode addGroup(String name) {
-        if(!(this.node instanceof CategoryNode)) {
+        if(!(this.node instanceof GroupParent)) {
             throw new UnsupportedOperationException("Groups can only be added to categories.");
         }
         return ((CategoryNode)this.node).addGroup(name);
@@ -35,14 +35,6 @@ public enum ModCategory {
             throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support groups.");
         }
         return ((CategoryNode)this.node).addGroup(ench);
-    }
-
-    public <T> ModOption<T> addOption(ModOption<T> c) {
-        if(!(this.node instanceof OptionParent)) {
-            throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support options.");
-        }
-        ((OptionParent)this.node).addOption(c);
-        return c;
     }
 
     public <T> ModOption<T> addOption(Data<T> meta, String key, int tooltipLines) {

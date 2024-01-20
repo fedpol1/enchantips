@@ -1,7 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
-import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.config.data.visitor.DataVisitor;
+import com.fedpol1.enchantips.config.tree.OptionNode;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 
 import java.awt.Color;
 import java.util.Locale;
@@ -37,7 +38,12 @@ public class ColorOption implements Data<Color> {
         this.color = new Color(Integer.parseInt(s.substring(1), 16));
     }
 
-    public Object accept(DataVisitor v) {
-        return v.visit(this);
+    public Option<Color> getYaclOption(OptionNode<Color> optionNode) {
+        return Option.<Color>createBuilder()
+                .binding(this.getDefaultValue(), this::getValue, this::setValue)
+                .controller(ColorControllerBuilder::create)
+                .name(this.getOptionTitle(optionNode))
+                .description(this.getOptionDescription(optionNode))
+                .build();
     }
 }
