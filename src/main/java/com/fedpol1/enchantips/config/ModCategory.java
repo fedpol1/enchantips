@@ -1,12 +1,14 @@
 package com.fedpol1.enchantips.config;
 
+import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.tree.*;
+import net.minecraft.enchantment.Enchantment;
 
 public enum ModCategory {
 
     TOOLTIPS(ConfigTree.root.addCategory("tooltips")),
-    TOOLTIP_TOGGLES(TOOLTIPS.addChild(new GroupNode("toggles"))),
-    TOOLTIP_COLORS(TOOLTIPS.addChild(new GroupNode("colors"))),
+    TOOLTIP_TOGGLES(TOOLTIPS.addGroup("toggles")),
+    TOOLTIP_COLORS(TOOLTIPS.addGroup("colors")),
     HIGHLIGHTS(ConfigTree.root.addCategory("highlights")),
     MISCELLANEOUS(ConfigTree.root.addCategory("miscellaneous")),
     INDIVIDUAL_ENCHANTMENTS(ConfigTree.root.addCategory("individual_enchantments"));
@@ -21,14 +23,35 @@ public enum ModCategory {
         return this.node;
     }
 
-    public Node addChild(AbstractNode c) {
-        return this.node.addChild(c);
+    public GroupNode addGroup(String name) {
+        if(!(this.node instanceof CategoryNode)) {
+            throw new UnsupportedOperationException("Groups can only be added to categories.");
+        }
+        return ((CategoryNode)this.node).addGroup(name);
     }
 
-    public <T> ModOption<T> addChild(ModOption<T> c) {
-        OptionNode<T> o = new OptionNode<>(c);
-        this.node.addChild(o);
+    public EnchantmentGroupNode addGroup(Enchantment ench) {
+        if(!(this.node instanceof GroupParent)) {
+            throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support groups.");
+        }
+        return ((CategoryNode)this.node).addGroup(ench);
+    }
+
+    public <T> ModOption<T> addOption(ModOption<T> c) {
+        if(!(this.node instanceof OptionParent)) {
+            throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support options.");
+        }
+        ((OptionParent)this.node).addOption(c);
         return c;
+    }
+
+    public <T> ModOption<T> addOption(Data<T> meta, String key, int tooltipLines) {
+        if(!(this.node instanceof OptionParent)) {
+            throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support options.");
+        }
+        ModOption<T> option = new ModOption<>(meta, key, tooltipLines);
+        ((OptionParent)this.node).addOption(option);
+        return option;
     }
 
     public static void init() {}

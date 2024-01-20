@@ -6,13 +6,19 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public class ConfigTreeSerializer implements JsonSerializer<AbstractNode> {
+public class ConfigTreeSerializer implements JsonSerializer<Node> {
 
-    public JsonElement serialize(AbstractNode node, Type typeOfNode, JsonSerializationContext context) {
+    public static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(CategoryNode.class, new CategoryNodeSerializer())
+            .registerTypeAdapter(GroupNode.class, new GroupNodeSerializer())
+            .registerTypeAdapter(EnchantmentGroupNode.class, new EnchantmentGroupNodeSerializer())
+            .registerTypeAdapter(OptionNode.class, new OptionNodeSerializer())
+            .create();
+
+    public JsonElement serialize(Node node, Type typeOfNode, JsonSerializationContext context) {
         JsonArray children = new JsonArray();
-        Gson gson = new GsonBuilder().registerTypeAdapter(CategoryNode.class, new CategoryNodeSerializer()).create();
         for(Map.Entry<String, Node> current : node.getChildren()) {
-            children.add(gson.toJsonTree(current.getValue()));
+            children.add(ConfigTreeSerializer.gson.toJsonTree(current.getValue()));
         }
         return children;
     }

@@ -3,16 +3,16 @@ package com.fedpol1.enchantips.config.tree;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 
-public class ConfigTree extends AbstractNode {
+public class ConfigTree extends Node {
 
     public static ConfigTree root = new ConfigTree(EnchantipsClient.MODID + ".config");
 
-    ConfigTree(String name) {
-        super(name);
+    private ConfigTree(String name) {
+        super(name, null);
     }
 
     public CategoryNode addCategory(String name) {
-        return (CategoryNode) ConfigTree.root.addChild(new CategoryNode(name));
+        return new CategoryNode(name, this);
     }
 
     public Object accept(ScreenVisitor v, Object data) {

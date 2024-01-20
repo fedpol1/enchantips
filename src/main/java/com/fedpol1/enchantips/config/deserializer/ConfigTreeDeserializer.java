@@ -36,7 +36,7 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
         }
     }
 
-    private static void deserializeOption(JsonObject json, AbstractNode parent) {
+    private static void deserializeOption(JsonObject json, Node parent) {
         OptionNode<?> opt = (OptionNode<?>) parent.getChild(json.getAsJsonPrimitive("name").getAsString());
         if(opt == null) { return; }
         opt.getData().readStringValue(json.getAsJsonPrimitive("value").getAsString());

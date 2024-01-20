@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.config;
 
+import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import net.minecraft.enchantment.Enchantment;
@@ -18,6 +19,10 @@ public class ModConfigData {
 
     public static GroupNode get(Enchantment e) {
         return ModConfigData.enchantmentData.get(e);
+    }
+
+    public static void addEnchantment(Enchantment e, EnchantmentGroupNode gn) {
+        ModConfigData.enchantmentData.put(e, gn);
     }
 
     public static boolean isEnchantmentHighlighted(Enchantment e) {

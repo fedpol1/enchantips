@@ -35,12 +35,25 @@ public class ScreenVisitor implements TreeVisitor {
     }
 
     public Object visit(GroupNode n, Object data) {
+        OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
+                .name(Text.translatable(n.getFullName()))
+                .description(OptionDescription.createBuilder()
+                        .text(Text.translatable(""))
+                        .build())
+                .collapsed(true);
+        for(Map.Entry<String, Node> current : n.getChildren()) {
+            groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));
+        }
+        return ((ConfigCategory.Builder)data).group(groupBuilder.build());
+    }
+
+    public Object visit(EnchantmentGroupNode n, Object data) {
         Enchantment ench = n.getEnchantment();
 
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Text.translatable(ench == null ? n.getFullName() : ench.getTranslationKey()))
+                .name(Text.translatable(ench.getTranslationKey()))
                 .description(OptionDescription.createBuilder()
-                        .text(Text.translatable(ench == null ? "" : Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
+                        .text(Text.translatable(Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
                         .build())
                 .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {

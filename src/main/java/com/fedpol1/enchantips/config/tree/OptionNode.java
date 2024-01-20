@@ -8,12 +8,12 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
 
-public class OptionNode<T> extends AbstractNode{
+public class OptionNode<T> extends Node {
 
     private final ModOption<T> meta;
 
-    public OptionNode(ModOption<T> meta) {
-        super(meta.getKey());
+    protected OptionNode(ModOption<T> meta, Node parent) {
+        super(meta.getKey(), parent);
         this.meta = meta;
     }
 

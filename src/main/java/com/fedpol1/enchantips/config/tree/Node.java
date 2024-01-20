@@ -2,15 +2,42 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public interface Node {
+public abstract class Node {
 
-    Node getChild(String s);
-    Set<Map.Entry<String, Node>> getChildren();
-    Node addChild(AbstractNode c);
-    String getName() ;
-    String getFullName() ;
-    Object accept(ScreenVisitor v, Object data);
+    private final String name;
+    protected String fullName;
+    protected final LinkedHashMap<String, Node> children = new LinkedHashMap<>();
+    protected Node parent;
+
+    protected Node(String name, Node parent) {
+        this.name = name;
+        this.parent = parent;
+        this.fullName = name;
+        if(this.parent != null) {
+            this.fullName = this.parent.getFullName() + "." + this.name;
+            this.parent.children.put(this.getName(), this);
+        }
+    }
+
+    public Node getChild(String s) {
+        return this.children.get(s);
+    }
+
+    public Set<Map.Entry<String, Node>> getChildren() {
+        return this.children.entrySet();
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public abstract Object accept(ScreenVisitor v, Object data);
 }
