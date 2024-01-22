@@ -37,6 +37,7 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
 
     public void run (YACLScreen screen, ButtonOption button) {
         this.action.accept(screen, button);
+        screen.close();
     }
 
     public ButtonOption getYaclOption(OptionNode<BiConsumer<YACLScreen, ButtonOption>> optionNode) {

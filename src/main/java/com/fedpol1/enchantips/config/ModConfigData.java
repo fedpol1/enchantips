@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
-import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import net.minecraft.enchantment.Enchantment;
 
@@ -15,9 +14,9 @@ public class ModConfigData {
     public static final String ORDER_KEY = "order";
     public static final String HIGHLIGHT_KEY = "highlight";
 
-    protected static HashMap<Enchantment, GroupNode> enchantmentData = new HashMap<>();
+    protected static HashMap<Enchantment, EnchantmentGroupNode> enchantmentData = new HashMap<>();
 
-    public static GroupNode get(Enchantment e) {
+    public static EnchantmentGroupNode get(Enchantment e) {
         return ModConfigData.enchantmentData.get(e);
     }
 
@@ -26,10 +25,10 @@ public class ModConfigData {
     }
 
     public static boolean isEnchantmentHighlighted(Enchantment e) {
-        return (boolean) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(ModConfigData.HIGHLIGHT_KEY)).getValue();
+        return (boolean) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getHighlight()).getValue();
     }
 
     public static int getEnchantmentOrder(Enchantment e) {
-        return (int) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getChild(ModConfigData.ORDER_KEY)).getValue();
+        return (int) ((OptionNode<?>) ModConfigData.enchantmentData.get(e).getOrder()).getValue();
     }
 }

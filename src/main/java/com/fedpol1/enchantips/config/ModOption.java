@@ -35,6 +35,76 @@ public class ModOption<T> {
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable_color", 0);
     public static final ModOption<Boolean> HIGHLIGHT_UNBREAKABLE = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "highlight_unbreakable", 0);
     public static final ModOption<Boolean> PRIORITIZE_OVERMAX_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 0);
+    public static final ModOption<Color> ACTION_COLOR = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ColorOption(0x000000), "action_color", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                yaclScreen.config.saveFunction();
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setMinColor(ModOption.ACTION_COLOR.getValue());
+                });
+            }
+    ), "set_min_colors", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                yaclScreen.config.saveFunction();
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setMaxColor(ModOption.ACTION_COLOR.getValue());
+                });
+            }
+    ), "set_max_colors", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_OVERMAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                yaclScreen.config.saveFunction();
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setOvermaxColor(ModOption.ACTION_COLOR.getValue());
+                });
+            }
+    ), "set_overmax_colors", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> COPY_MAX_COLORS_TO_OVERMAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).copyMaxColorToOvermaxColor();
+                });
+            }
+    ), "copy_max_colors_to_overmax_colors", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_MIN_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setMinColor(null);
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setMaxColor(null);
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setOvermaxColor(null);
+                });
+            }
+    ), "reset_colors", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_ORDERS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(null);
+                });
+            }
+    ), "reset_orders", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_ORDERS_TO_0 = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModOption.PRIORITIZE_OVERMAX_ENCHANTMENTS.getData().setValue(false);
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(0);
+                });
+            }
+    ), "set_orders_to_0", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_TRUE = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(true);
+                });
+            }
+    ), "set_highlights_true", 2);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_FALSE = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
+                    ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(false);
+                });
+            }
+    ), "set_highlights_false", 2);
 
     private final Data<T> data;
     private final String key;

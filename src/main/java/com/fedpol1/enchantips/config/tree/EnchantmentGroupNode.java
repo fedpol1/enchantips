@@ -65,6 +65,42 @@ public class EnchantmentGroupNode extends GroupNode {
         return this.highlight;
     }
 
+    public void setMinColor(Color value) {
+        this.setProperty(this.minColor, value);
+    }
+
+    public void setMaxColor(Color value) {
+        this.setProperty(this.maxColor, value);
+    }
+
+    public void setOvermaxColor(Color value) {
+        this.setProperty(this.overmaxColor, value);
+    }
+
+    public void copyMaxColorToOvermaxColor() {
+        this.setProperty(this.overmaxColor, this.maxColor.getValue());
+    }
+
+    public void setOrder(Integer value) {
+        this.setProperty(this.order, value);
+    }
+
+    public void setHighlight(Boolean value) {
+        this.setProperty(this.highlight, value);
+    }
+
+    private <T> void setProperty(OptionNode<T> property, T value) {
+        if(property.parent != this) {
+            throw new UnsupportedOperationException("Property must be a child.");
+        }
+        if(value == null) {
+            property.getData().setValue(property.getData().getDefaultValue());
+            return;
+        }
+        property.getData().setValue(value);
+    }
+
+
     public Object accept(ScreenVisitor v, Object data) {
         return v.visit(this, data);
     }

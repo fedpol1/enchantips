@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.util;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import net.minecraft.enchantment.Enchantment;
@@ -66,18 +67,18 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
     public Color getColor() {
         Enchantment ench = this.getEnchantment();
-        GroupNode gn = ModConfigData.get(Objects.requireNonNull(ench));
+        EnchantmentGroupNode gn = ModConfigData.get(Objects.requireNonNull(ench));
 
         if(this.getLevel() > ench.getMaxLevel()) {
-            return ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.OVERMAX_COLOR_KEY))).getValue());
+            return ((Color) ((OptionNode<?>) (gn.getOvermaxColor())).getValue());
         }
 
         // intensity 0-1; 0 indicates min level, 1 indicates max level; single-level enchantments are max
         float intensity = 1.0f - (float)(ench.getMaxLevel() - this.getLevel()) / Math.max(1.0f, ench.getMaxLevel() - ench.getMinLevel());
         intensity = Math.min(1.0f, Math.max(0.0f, intensity));
 
-        int rgbMin = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MIN_COLOR_KEY))).getValue()).getRGB();
-        int rgbMax = ((Color) ((OptionNode<?>) (gn.getChild(ModConfigData.MAX_COLOR_KEY))).getValue()).getRGB();
+        int rgbMin = ((Color) ((OptionNode<?>) (gn.getMinColor())).getValue()).getRGB();
+        int rgbMax = ((Color) ((OptionNode<?>) (gn.getMaxColor())).getValue()).getRGB();
 
         int r1 = (rgbMin & 0xff0000) >> 16;
         int r2 = (rgbMax & 0xff0000) >> 16;

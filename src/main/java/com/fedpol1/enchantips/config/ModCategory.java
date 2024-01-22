@@ -11,6 +11,7 @@ public enum ModCategory {
     TOOLTIP_COLORS(TOOLTIPS.addGroup("colors")),
     HIGHLIGHTS(ConfigTree.root.addCategory("highlights")),
     MISCELLANEOUS(ConfigTree.root.addCategory("miscellaneous")),
+    MISCELLANEOUS_ACTIONS(MISCELLANEOUS.addGroup("actions")),
     INDIVIDUAL_ENCHANTMENTS(ConfigTree.root.addCategory("individual_enchantments"));
 
     private final Node node;
