@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "enchantips:chars/swatch.png",
+      "height": 8,
+      "ascent": 8,
+      "chars": [
+        "#"
+      ]
+    }
+  ]
+}
