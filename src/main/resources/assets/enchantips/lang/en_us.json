@@ -4,6 +4,7 @@
   "enchantips.config": "Enchantips Configuration",
   "enchantips.config.tooltips": "Tooltips",
   "enchantips.config.tooltips.toggles": "Tooltip Toggles",
+  "enchantips.config.tooltips.toggles.swatches.option_title": "Swatches",
   "enchantips.config.tooltips.toggles.repair_cost.option_title": "Repair Cost",
   "enchantips.config.tooltips.toggles.enchantability.option_title": "Enchantability",
   "enchantips.config.tooltips.toggles.enchantability.when_enchanted.option_title": "Enchantability When Enchanted",
@@ -50,6 +51,8 @@
   "enchantips.config.individual_enchantments.highlight.option_title": "Highlight Visible",
 
   "enchantips.config.tooltips.toggles.repair_cost.option_tooltip.0": "Only shown when not 0.",
+  "enchantips.config.tooltips.toggles.swatches.option_tooltip.0": "Places a colored swatch next to enchantment names.",
+  "enchantips.config.tooltips.toggles.swatches.option_tooltip.1": "Enchantment names will use the decoration color.",
   "enchantips.config.tooltips.toggles.rarity.option_tooltip.0": "Indicates how expensive an enchantment is to combine in an anvil.",
   "enchantips.config.tooltips.toggles.rarity.option_tooltip.1": "An enchantment with a rarity of n costs n × enchantmentLevel levels to add via an anvil.",
   "enchantips.config.tooltips.toggles.modified_level.option_tooltip.0": "Shows a best guess of the modified enchantment level value when enchanting.",
@@ -77,6 +80,7 @@
 
   "enchantips.tooltip.scrollable.end": "- ↓ (%s) -",
   "enchantips.tooltip.scrollable.start": "- ↑ (%s) -",
+  "enchantips.tooltip.swatch": "#",
   "enchantips.tooltip.rarity": "[×%s]",
   "enchantips.tooltip.repair_cost": "Repair Cost: %s",
   "enchantips.tooltip.enchantability": "Enchantability: %s",

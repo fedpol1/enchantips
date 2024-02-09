@@ -19,9 +19,21 @@ public abstract class TooltipHelper {
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
-    public static MutableText buildRarity(int rarity, TextColor numberColor) {
+    public static MutableText buildSwatch(int rgb) {
+        return Text.translatable("enchantips.tooltip.swatch")
+                .setStyle(Style.EMPTY
+                        .withColor(rgb)
+                        .withFont(EnchantipsClient.SYMBOL_FONT)
+                );
+    }
+
+    public static MutableText buildRarity(int rarity, int numberColor) {
         MutableText rarityText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
-        rarityText.setStyle(Style.EMPTY.withColor(numberColor));
+        Style style = Style.EMPTY.withColor(numberColor);
+        if(ModOption.SHOW_SWATCHES.getValue()) {
+            style = Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB());
+        }
+        rarityText.setStyle(style);
         return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
     }
 

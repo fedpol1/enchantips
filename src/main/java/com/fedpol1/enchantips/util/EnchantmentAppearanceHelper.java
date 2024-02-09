@@ -5,14 +5,13 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 
 import java.awt.*;
 
 public class EnchantmentAppearanceHelper {
 
     public static Text getName(EnchantmentLevel enchLevel, boolean modifyRarity) {
-        TextColor colorFinal = TextColor.fromRgb(enchLevel.getColor().getRGB());
+        int colorFinal = enchLevel.getColor().getRGB();
         int r;
         Enchantment ench = enchLevel.getEnchantment();
         int level = enchLevel.getLevel();
@@ -28,17 +27,27 @@ public class EnchantmentAppearanceHelper {
             r = Math.max(1, r / 2);
         }
 
+        MutableText swatchText = TooltipHelper.buildSwatch(colorFinal);
         MutableText rarityText = TooltipHelper.buildRarity(r, colorFinal);
         MutableText enchantmentText = Text.translatable(ench.getTranslationKey());
+        MutableText finalText = Text.literal("");
+
+        if(ModOption.SHOW_SWATCHES.getValue()) {
+            colorFinal = ModOption.DECORATION.getValue().getRGB();
+        }
         enchantmentText.setStyle(Style.EMPTY.withColor(colorFinal));
+
         if (level != 1 || (ench).getMaxLevel() != 1) {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
-        rarityText.append(" ").append(enchantmentText);
-        if(ModOption.SHOW_RARITY.getValue()) {
-            return rarityText;
+
+        if(ModOption.SHOW_SWATCHES.getValue()) {
+            finalText.append(swatchText).append(" ");
         }
-        return enchantmentText;
+        if(ModOption.SHOW_RARITY.getValue()) {
+            finalText.append(rarityText).append(" ");
+        }
+        return finalText.append(enchantmentText);
     }
 
     public static Color getDefaultMinColor(Enchantment e) {

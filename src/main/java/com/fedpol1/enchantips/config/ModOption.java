@@ -2,7 +2,6 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.config.data.*;
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
-import com.fedpol1.enchantips.config.tree.OptionNode;
 import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.gui.YACLScreen;
 
@@ -11,6 +10,7 @@ import java.util.function.BiConsumer;
 
 public class ModOption<T> {
 
+    public static final ModOption<Boolean> SHOW_SWATCHES = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "swatches", 2);
     public static final ModOption<Boolean> SHOW_REPAIRCOST = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "repair_cost", 1);
     public static final ModOption<Boolean> SHOW_ENCHANTABILITY = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability", 0);
     public static final ModOption<Boolean> SHOW_ENCHANTABILITY_WHEN_ENCHANTED = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability.when_enchanted", 0);
