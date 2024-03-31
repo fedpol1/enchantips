@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
+import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 
 public class GroupNode extends Node implements OptionParent {
 
@@ -13,7 +13,7 @@ public class GroupNode extends Node implements OptionParent {
         return new OptionNode<>(meta, this);
     }
 
-    public Object accept(ScreenVisitor v, Object data) {
+    public Object accept(TreeVisitor v, Object data) {
         return v.visit(this, data);
     }
 }

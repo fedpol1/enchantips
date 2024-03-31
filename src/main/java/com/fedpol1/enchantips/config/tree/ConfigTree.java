@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
+import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 
 public class ConfigTree extends Node {
 
@@ -15,7 +15,7 @@ public class ConfigTree extends Node {
         return new CategoryNode(name, this);
     }
 
-    public Object accept(ScreenVisitor v, Object data) {
+    public Object accept(TreeVisitor v, Object data) {
         return v.visit(this, data);
     }
 }

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.config.tree;
 
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
+import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,5 +39,5 @@ public abstract class Node {
         return this.fullName;
     }
 
-    public abstract Object accept(ScreenVisitor v, Object data);
+    public abstract Object accept(TreeVisitor v, Object data);
 }

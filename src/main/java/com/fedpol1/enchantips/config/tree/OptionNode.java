@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.data.Data;
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
+import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 import dev.isxander.yacl3.api.Option;
 
 public class OptionNode<T> extends Node {
@@ -32,7 +32,7 @@ public class OptionNode<T> extends Node {
         return this.getData().getYaclOption(this);
     }
 
-    public Object accept(ScreenVisitor v, Object data) {
+    public Object accept(TreeVisitor v, Object data) {
         return v.visit(this, data);
     }
 }

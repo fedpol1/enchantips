@@ -6,12 +6,13 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+// handles all node types except OptionNode
 public class ConfigTreeSerializer implements JsonSerializer<Node> {
 
     public static Gson gson = new GsonBuilder()
-            .registerTypeAdapter(CategoryNode.class, new CategoryNodeSerializer())
-            .registerTypeAdapter(GroupNode.class, new GroupNodeSerializer())
-            .registerTypeAdapter(EnchantmentGroupNode.class, new EnchantmentGroupNodeSerializer())
+            .registerTypeAdapter(CategoryNode.class, new ConfigTreeSerializer())
+            .registerTypeAdapter(GroupNode.class, new ConfigTreeSerializer())
+            .registerTypeAdapter(EnchantmentGroupNode.class, new ConfigTreeSerializer())
             .registerTypeAdapter(OptionNode.class, new OptionNodeSerializer())
             .create();
 
