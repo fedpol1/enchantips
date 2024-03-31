@@ -16,10 +16,10 @@ public class ConfigTreeSerializer implements JsonSerializer<Node> {
             .create();
 
     public JsonElement serialize(Node node, Type typeOfNode, JsonSerializationContext context) {
-        JsonArray children = new JsonArray();
+        JsonObject json = new JsonObject();
         for(Map.Entry<String, Node> current : node.getChildren()) {
-            children.add(ConfigTreeSerializer.gson.toJsonTree(current.getValue()));
+            json.add(current.getKey(), ConfigTreeSerializer.gson.toJsonTree(current.getValue()));
         }
-        return children;
+        return json;
     }
 }

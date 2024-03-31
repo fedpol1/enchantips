@@ -2,6 +2,7 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.deserializer.ConfigTreeDeserializer;
+import com.fedpol1.enchantips.config.deserializer.OldConfigTreeDeserializer;
 import com.fedpol1.enchantips.config.serializer.ConfigTreeSerializer;
 import com.fedpol1.enchantips.config.tree.*;
 import com.fedpol1.enchantips.config.tree.visitor.*;
@@ -42,10 +43,19 @@ public class ModConfig {
             while (sc.hasNextLine()) {
                 fileContents.append(sc.nextLine());
             }
-            new GsonBuilder()
-                    .registerTypeAdapter(ConfigTree.class, new ConfigTreeDeserializer())
-                    .create()
-                    .fromJson(fileContents.toString(), ConfigTree.class);
+            try {
+                new GsonBuilder()
+                        .registerTypeAdapter(ConfigTree.class, new ConfigTreeDeserializer())
+                        .create()
+                        .fromJson(fileContents.toString(), ConfigTree.class);
+            }
+            catch (Exception e) {
+                EnchantipsClient.LOGGER.info("Falling back on old config format.");
+                new GsonBuilder()
+                        .registerTypeAdapter(ConfigTree.class, new OldConfigTreeDeserializer())
+                        .create()
+                        .fromJson(fileContents.toString(), ConfigTree.class);
+            }
         }
         catch (IOException e) {
             EnchantipsClient.LOGGER.error("Could not read configuration file.\n" + e.getMessage());
