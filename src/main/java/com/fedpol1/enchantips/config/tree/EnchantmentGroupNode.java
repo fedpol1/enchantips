@@ -6,7 +6,7 @@ import com.fedpol1.enchantips.config.data.BooleanOption;
 import com.fedpol1.enchantips.config.data.ColorOption;
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.IntegerOption;
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
+import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
@@ -100,8 +100,7 @@ public class EnchantmentGroupNode extends GroupNode {
         property.getData().setValue(value);
     }
 
-
-    public Object accept(ScreenVisitor v, Object data) {
+    public Object accept(TreeVisitor v, Object data) {
         return v.visit(this, data);
     }
 }
