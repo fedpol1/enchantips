@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.mixin;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
@@ -49,7 +49,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     }
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsAddEnchantabilityTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    private void enchantipsAddEnchantabilityTooltip(PlayerEntity player, TooltipType context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
         if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue()) {
             if(!(t.hasEnchantments() && !ModOption.SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getValue())) {
@@ -59,7 +59,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     }
 
     @Inject(method = "getTooltip(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipContext;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;hasNbt()Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsAddRepairCostTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    private void enchantipsAddRepairCostTooltip(PlayerEntity player, TooltipType context, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
         int cost = t.getRepairCost();
         if(!(t.getItem() instanceof EnchantedBookItem) && cost != 0 && ModOption.SHOW_REPAIRCOST.getValue()) {
@@ -78,7 +78,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;hasNbt()Z", ordinal = 1)),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isSectionVisible(ILnet/minecraft/item/ItemStack$TooltipSection;)Z", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsAddNewUnbreakableTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText, int i) {
+    private void enchantipsAddNewUnbreakableTooltip(PlayerEntity player, TooltipType context, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText, int i) {
         if (ItemStackMixin.isSectionVisible(i, ItemStack.TooltipSection.UNBREAKABLE) && this.nbt.getBoolean(UNBREAKABLE_KEY)) {
             list.add(TooltipHelper.buildUnbreakable());
         }

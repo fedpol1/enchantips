@@ -4,7 +4,8 @@
 build/
 out/
 classes/
-enSources/
+remappedSrc/
+en-sources/
 
 # eclipse
 
