@@ -16,7 +16,8 @@
     "InGameHudMixin",
     "ItemEnchantmentsComponentMixin",
     "ItemStackMixin",
-    "MerchantScreenMixin"
+    "MerchantScreenMixin",
+    "UnbreakableComponentMixin"
   ],
   "server": [],
   "injectors": {
