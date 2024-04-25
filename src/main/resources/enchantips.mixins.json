@@ -8,7 +8,6 @@
     "AnvilScreenMixin",
     "RegistriesMixin",
     "BundleTooltipComponentMixin",
-    "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "EnchantmentScreenHandlerMixin",
     "EnchantmentScreenMixin",
