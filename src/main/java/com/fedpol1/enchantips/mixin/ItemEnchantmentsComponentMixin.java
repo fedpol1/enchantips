@@ -1,7 +1,9 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.item.TooltipType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
@@ -32,10 +34,12 @@ public class ItemEnchantmentsComponentMixin {
         if(!this.showInTooltip) {
             return;
         }
-        ArrayList<EnchantmentLevel> enchantmentLevels = EnchantmentLevel.ofList((ItemEnchantmentsComponent) (Object)this);
+        ItemEnchantmentsComponent t = (ItemEnchantmentsComponent)(Object) this;
+        boolean modifyRarity = t == DataComponentTypes.STORED_ENCHANTMENTS;
+        ArrayList<EnchantmentLevel> enchantmentLevels = EnchantmentLevel.ofList(t);
         Collections.sort(enchantmentLevels);
         for(EnchantmentLevel el : enchantmentLevels) {
-            tooltip.accept(el.getEnchantment().getName(el.getLevel()));
+            tooltip.accept(EnchantmentAppearanceHelper.getName(el, modifyRarity));
         }
     }
 }
