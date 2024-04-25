@@ -47,6 +47,7 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
     public static ArrayList<EnchantmentLevel> ofList(ItemEnchantmentsComponent component) {
         ArrayList<EnchantmentLevel> enchantments = new ArrayList<>();
+        if(component == null) { return enchantments; }
         for(Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : component.getEnchantmentsMap()) {
             Enchantment enchantment = entry.getKey().value();
             if(enchantment == null) { continue; }

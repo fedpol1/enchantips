@@ -5,10 +5,11 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import java.awt.Color;
@@ -27,8 +28,8 @@ public abstract class SlotHighlight {
     public static void highlightSingleSlot(DrawContext context, ItemStack stack, int x, int y, int alpha) {
         if(stack.getCount() == 0) { return; }
 
-        NbtList enchNbt = stack.isOf(Items.ENCHANTED_BOOK) ? EnchantedBookItem.getEnchantmentNbt(stack) : stack.getEnchantments();
-        ArrayList<EnchantmentLevel> arrayOfEnchLevel = EnchantmentLevel.ofList(enchNbt);
+        DataComponentType<ItemEnchantmentsComponent> componentType = stack.isOf(Items.ENCHANTED_BOOK) ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS;
+        ArrayList<EnchantmentLevel> arrayOfEnchLevel = EnchantmentLevel.ofList(stack.get(componentType));
         Collections.sort(arrayOfEnchLevel);
 
         ItemStackAccess stackAccess = (ItemStackAccess)(Object)stack;
