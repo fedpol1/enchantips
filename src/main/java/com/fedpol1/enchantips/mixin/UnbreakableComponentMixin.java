@@ -1,12 +1,10 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.client.item.TooltipType;
 import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.item.Item;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.function.Consumer;
@@ -32,7 +30,6 @@ public class UnbreakableComponentMixin {
         if(!this.showInTooltip) {
             return;
         }
-        tooltip.accept(Text.translatable("item.unbreakable")
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.UNBREAKABLE_COLOR.getValue().getRGB()))));
+        tooltip.accept(TooltipHelper.buildUnbreakable());
     }
 }
