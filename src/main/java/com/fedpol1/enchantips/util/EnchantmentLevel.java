@@ -1,19 +1,18 @@
 package com.fedpol1.enchantips.util;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
-import com.fedpol1.enchantips.config.tree.GroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,13 +45,12 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
         return new EnchantmentLevel(ench, c.getInt("lvl"));
     }
 
-    public static ArrayList<EnchantmentLevel> ofList(NbtList l) {
+    public static ArrayList<EnchantmentLevel> ofList(ItemEnchantmentsComponent component) {
         ArrayList<EnchantmentLevel> enchantments = new ArrayList<>();
-        EnchantmentLevel enchantment;
-        for(NbtElement e : l) {
-            enchantment = of(e);
+        for(Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : component.getEnchantmentsMap()) {
+            Enchantment enchantment = entry.getKey().value();
             if(enchantment == null) { continue; }
-            enchantments.add(enchantment);
+            enchantments.add(EnchantmentLevel.of(enchantment, entry.getIntValue()));
         }
         return enchantments;
     }

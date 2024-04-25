@@ -2,12 +2,7 @@ package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModOption;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class TooltipHelper {
 
@@ -82,13 +77,5 @@ public abstract class TooltipHelper {
     public static MutableText buildUnbreakable() {
         return Text.translatable("item.unbreakable")
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.UNBREAKABLE_COLOR.getValue().getRGB())));
-    }
-
-    public static void appendEnchantments(List<Text> tooltip, NbtList enchantments, boolean modifyRarity) {
-        ArrayList<EnchantmentLevel> enchantmentLevelData = EnchantmentLevel.ofList(enchantments);
-        Collections.sort(enchantmentLevelData);
-        for(EnchantmentLevel ench : enchantmentLevelData) {
-            tooltip.add(EnchantmentAppearanceHelper.getName(ench, modifyRarity));
-        }
     }
 }
