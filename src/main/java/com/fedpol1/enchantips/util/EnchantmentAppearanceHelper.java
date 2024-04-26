@@ -12,16 +12,10 @@ public class EnchantmentAppearanceHelper {
 
     public static Text getName(EnchantmentLevel enchLevel, boolean modifyRarity) {
         int colorFinal = enchLevel.getColor().getRGB();
-        int r;
+
         Enchantment ench = enchLevel.getEnchantment();
         int level = enchLevel.getLevel();
-        switch (ench.getRarity()) {
-            case COMMON -> r= 1;
-            case UNCOMMON -> r = 2;
-            case RARE -> r = 4;
-            case VERY_RARE -> r = 8;
-            default -> r = 0;
-        }
+        int r = ench.getAnvilCost();
 
         if(modifyRarity && r != 0) {
             r = Math.max(1, r / 2);
