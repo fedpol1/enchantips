@@ -35,6 +35,10 @@ public class EnchantmentAppearanceHelper {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
 
+        if(ModOption.SHOW_ENCHANTMENT_MAX_LEVEL.getValue()) {
+            enchantmentText.append("/").append(Text.translatable("enchantment.level." + enchLevel.getEnchantment().getMaxLevel()));
+        }
+
         if(ModOption.SHOW_SWATCHES.getValue()) {
             finalText.append(swatchText).append(" ");
         }
