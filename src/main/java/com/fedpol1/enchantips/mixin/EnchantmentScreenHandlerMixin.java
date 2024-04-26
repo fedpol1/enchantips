@@ -44,7 +44,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
 
             ArrayList<EnchantmentLevel> enchantmentLevelData = new ArrayList<>();
             for (Enchantment current : Registries.ENCHANTMENT) {
-                if(!current.target.isAcceptableItem(stack.getItem()) && !stack.isOf(Items.BOOK)) { continue; }
+                if(!(stack.isIn(current.getApplicableItems()) && current.isPrimaryItem(stack)) && !stack.isOf(Items.BOOK)) { continue; }
                 if(!current.canCombine(givenEnchantment)) { continue; }
                 if(!current.isAvailableForRandomSelection() || current.isTreasure()) { continue; }
                 for(int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {

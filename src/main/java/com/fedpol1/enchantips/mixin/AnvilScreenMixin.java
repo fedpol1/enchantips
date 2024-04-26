@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtList;
@@ -108,14 +109,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
         this.enchantipsHandler.setStackInSlot(1, this.enchantipsHandler.nextRevision(), inputStack2);
         this.enchantipsHandler.updateResult();
         int originalCost = this.enchantipsHandler.getLevelCost();
-        NbtList originalEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
+        ItemEnchantmentsComponent originalEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
 
         // swap input items on client and evaluate what the output would be
         this.enchantipsHandler.setStackInSlot(0, this.enchantipsHandler.nextRevision(), inputStack2);
         this.enchantipsHandler.setStackInSlot(1, this.enchantipsHandler.nextRevision(), inputStack1);
         this.enchantipsHandler.updateResult();
         int newCost = this.enchantipsHandler.getLevelCost();
-        NbtList newEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
+        ItemEnchantmentsComponent newEnchants = this.enchantipsHandler.getSlot(2).getStack().getEnchantments();
 
         return newCost > 0 && originalCost > newCost && EnchantmentListHelper.sameEnchantments(originalEnchants, newEnchants, true);
     }

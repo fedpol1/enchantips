@@ -33,7 +33,6 @@ dependencies {
 	}
 
 	modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}-fabric") {
-		exclude(group: "org.quiltmc.parsers")
 		exclude(group: "com.twelvemonkeys.common")
 		exclude(group: "com.twelvemonkeys.imageio")
 	}

@@ -1,5 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.item.TooltipType;
@@ -14,7 +16,7 @@ import java.util.Collections;
 import java.util.function.Consumer;
 
 @Mixin(ItemEnchantmentsComponent.class)
-public class ItemEnchantmentsComponentMixin {
+public class ItemEnchantmentsComponentMixin implements ItemEnchantmentsComponentAccess {
 
     @Mutable
     @Final
@@ -41,5 +43,10 @@ public class ItemEnchantmentsComponentMixin {
         for(EnchantmentLevel el : enchantmentLevels) {
             tooltip.accept(EnchantmentAppearanceHelper.getName(el, modifyRarity));
         }
+    }
+
+    @Override
+    public boolean enchantipsShowInTooltip() {
+        return this.showInTooltip;
     }
 }

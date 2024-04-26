@@ -1,14 +1,18 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
 import net.minecraft.client.item.TooltipType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,13 +30,35 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     private void enchantipsAddExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
         ItemStack t = (ItemStack)(Object)this;
 
-        if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue()) {
+        if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue() && t.get(DataComponentTypes.ENCHANTMENTS) != null) {
             list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
         }
 
         Integer cost = t.get(DataComponentTypes.REPAIR_COST);
-        if(!(t.getItem() instanceof EnchantedBookItem) && cost != null && ModOption.SHOW_REPAIRCOST.getValue()) {
+        if(!(t.getItem() instanceof EnchantedBookItem) && cost != null && cost != 0 && ModOption.SHOW_REPAIRCOST.getValue()) {
             list.add(TooltipHelper.buildRepairCost(cost));
         }
+    }
+
+    @Override
+    public boolean enchantipsIsUnbreakable() {
+        ItemStack t = (ItemStack)(Object)this;
+        return t.get(DataComponentTypes.UNBREAKABLE) != null;
+    }
+
+    public boolean enchantipsUnbreakableVisible() {
+        ItemStack t = (ItemStack)(Object)this;
+        UnbreakableComponent ub = t.get(DataComponentTypes.UNBREAKABLE);
+        return ub != null && ub.showInTooltip();
+    }
+
+    public boolean enchantipsEnchantmentsVisible() {
+        ItemStack t = (ItemStack)(Object)this;
+        ItemEnchantmentsComponent ench = t.get(
+                t.isOf(Items.ENCHANTED_BOOK) ?
+                        DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS
+        );
+        ItemEnchantmentsComponentAccess enchAccess = (ItemEnchantmentsComponentAccess) ench;
+        return enchAccess != null && enchAccess.enchantipsShowInTooltip();
     }
 }

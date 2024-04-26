@@ -7,12 +7,8 @@ import com.fedpol1.enchantips.config.tree.OptionNode;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,19 +26,6 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
     public static EnchantmentLevel of(Enchantment e, int l) {
         return new EnchantmentLevel(e, l);
-    }
-
-    public static EnchantmentLevel of(NbtElement e) {
-        if(!(e instanceof NbtCompound c)) { return null; }
-        return of(c);
-    }
-
-    public static EnchantmentLevel of(NbtCompound c) {
-        if(!c.contains("id", NbtElement.STRING_TYPE)) { return null; }
-        if(!c.contains("lvl", NbtElement.NUMBER_TYPE)) { return null; }
-        Enchantment ench = Registries.ENCHANTMENT.get(new Identifier(c.getString("id")));
-        if(ench == null) { return null; }
-        return new EnchantmentLevel(ench, c.getInt("lvl"));
     }
 
     public static ArrayList<EnchantmentLevel> ofList(ItemEnchantmentsComponent component) {
