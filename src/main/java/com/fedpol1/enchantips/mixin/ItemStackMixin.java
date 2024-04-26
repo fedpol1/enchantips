@@ -30,7 +30,10 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     private void enchantipsAddExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
         ItemStack t = (ItemStack)(Object)this;
 
-        if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue() && t.get(DataComponentTypes.ENCHANTMENTS) != null) {
+        if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue()
+                && t.get(DataComponentTypes.ENCHANTMENTS) != null
+                && (t.getEnchantments().getEnchantmentsMap().isEmpty() || ModOption.SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getValue())
+        ) {
             list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
         }
 
