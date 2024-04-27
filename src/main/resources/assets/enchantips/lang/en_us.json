@@ -10,6 +10,7 @@
   "enchantips.config.tooltips.toggles.enchantability.when_enchanted.option_title": "Enchantability When Enchanted",
   "enchantips.config.tooltips.toggles.rarity.option_title": "Enchantment Rarity",
   "enchantips.config.tooltips.toggles.show_enchantment_max_level.option_title": "Max Enchantment Level",
+  "enchantips.config.tooltips.toggles.show_enchantment_targets.option_title": "Enchantment Targets",
   "enchantips.config.tooltips.toggles.modified_level.option_title": "Modified Enchanting Power",
   "enchantips.config.tooltips.toggles.extra_enchantments.option_title": "Possible Enchantments",
   "enchantips.config.tooltips.colors": "Tooltip Colors",
@@ -81,7 +82,6 @@
 
   "enchantips.tooltip.scrollable.end": "- ↓ (%s) -",
   "enchantips.tooltip.scrollable.start": "- ↑ (%s) -",
-  "enchantips.tooltip.swatch": "#",
   "enchantips.tooltip.rarity": "[×%s]",
   "enchantips.tooltip.repair_cost": "Repair Cost: %s",
   "enchantips.tooltip.enchantability": "Enchantability: %s",

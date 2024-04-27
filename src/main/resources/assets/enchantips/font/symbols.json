@@ -1,13 +1,247 @@
 {
-  "providers": [
-    {
-      "type": "bitmap",
-      "file": "enchantips:chars/swatch.png",
-      "height": 8,
-      "ascent": 8,
-      "chars": [
-        "#"
-      ]
-    }
-  ]
+	"providers": [
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/swatch.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"#"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/all.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"O"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/anvil.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"A"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/book.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"B"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/miscellaneous.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"M"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/unknown.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"U"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/boots.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"b"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/leggings.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"l"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/chestplate.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"c"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/helmet.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"h"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/skull.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"S"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/elytra.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"E"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/sword.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"w"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/axe.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"a"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/pickaxe.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"p"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/shovel.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"s"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/hoe.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"e"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/shears.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"L"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/trident.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"T"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/mace.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"m"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/shield.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"D"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/bow.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"W"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/crossbow.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"C"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/fishing_rod.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"r"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/baited_rod.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"t"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/brush.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"R"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tool/flint_and_steel.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"F"
+			]
+		}
+	]
 }
