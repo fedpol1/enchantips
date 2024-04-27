@@ -16,6 +16,7 @@ public class ModOption<T> {
     public static final ModOption<Boolean> SHOW_ENCHANTABILITY_WHEN_ENCHANTED = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability.when_enchanted", 0);
     public static final ModOption<Boolean> SHOW_RARITY = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "rarity", 2);
     public static final ModOption<Boolean> SHOW_ENCHANTMENT_MAX_LEVEL = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "show_enchantment_max_level", 0);
+    public static final ModOption<Boolean> SHOW_ENCHANTMENT_TARGETS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "show_enchantment_targets", 0);
     public static final ModOption<Boolean> SHOW_MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "modified_level", 2);
     public static final ModOption<Boolean> SHOW_EXTRA_ENCHANTMENTS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "extra_enchantments", 1);
     public static final ModOption<Color> REPAIRCOST = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf3f00), "repair_cost", 0);

@@ -1,16 +1,11 @@
 package com.fedpol1.enchantips.accessor;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-
-import java.awt.*;
+import net.minecraft.item.Item;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.MutableText;
 
 public interface EnchantmentAccess {
-    Text enchantipsGetName(int level, boolean modifyRarity);
-    TextColor enchantipsGetColor(int level);
-    float enchantipsGetIntensity(int level);
-    Color enchantipsGetDefaultMinColor();
-    Color enchantipsGetDefaultMaxColor();
-    int enchantipsGetDefaultOrder();
-    boolean enchantipsGetDefaultHighlightVisibility();
+    TagKey<Item> enchantipsGetPrimaryItems();
+    TagKey<Item> enchantipsGetSecondaryItems();
+    MutableText enchantipsGetEnchantmentTargetSymbolText();
 }
