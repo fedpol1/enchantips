@@ -47,6 +47,15 @@
 		},
 		{
 			"type": "bitmap",
+			"file": "enchantips:chars/none.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"-"
+			]
+		},
+		{
+			"type": "bitmap",
 			"file": "enchantips:chars/unknown.png",
 			"height": 8,
 			"ascent": 8,
@@ -97,6 +106,15 @@
 			"ascent": 8,
 			"chars": [
 				"S"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/armor/pumpkin.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"P"
 			]
 		},
 		{
@@ -241,6 +259,15 @@
 			"ascent": 8,
 			"chars": [
 				"F"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/compass.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"o"
 			]
 		}
 	]
