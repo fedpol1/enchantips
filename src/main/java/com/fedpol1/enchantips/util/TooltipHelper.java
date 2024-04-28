@@ -6,6 +6,7 @@ import net.minecraft.text.*;
 
 public abstract class TooltipHelper {
 
+    public static final String FORCED_GLINT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.forced_glint";
     public static final String REPAIR_COST_TOOLTIP = EnchantipsClient.MODID + ".tooltip.repair_cost";
     public static final String ENCHANTABILITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantability";
     public static final String RARITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.rarity";
@@ -58,6 +59,11 @@ public abstract class TooltipHelper {
         upperText.setStyle(Style.EMPTY.withColor(valueColor));
         return Text.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
 
+    }
+
+    public static MutableText buildForcedGlint(boolean b) {
+        return Text.translatable(FORCED_GLINT_TOOLTIP + "." + b)
+                .setStyle(Style.EMPTY.withColor(ModOption.FORCED_GLINT.getValue().getRGB()));
     }
 
     public static MutableText buildEnchantability(int ench) {

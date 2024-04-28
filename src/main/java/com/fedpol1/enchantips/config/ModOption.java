@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 public class ModOption<T> {
 
     public static final ModOption<Boolean> SHOW_SWATCHES = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "swatches", 2);
+    public static final ModOption<Boolean> SHOW_FORCED_GLINT = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "forced_glint", 1);
     public static final ModOption<Boolean> SHOW_REPAIRCOST = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "repair_cost", 1);
     public static final ModOption<Boolean> SHOW_ENCHANTABILITY = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability", 0);
     public static final ModOption<Boolean> SHOW_ENCHANTABILITY_WHEN_ENCHANTED = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability.when_enchanted", 0);
@@ -19,6 +20,7 @@ public class ModOption<T> {
     public static final ModOption<Boolean> SHOW_ENCHANTMENT_TARGETS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "show_enchantment_targets", 0);
     public static final ModOption<Boolean> SHOW_MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "modified_level", 2);
     public static final ModOption<Boolean> SHOW_EXTRA_ENCHANTMENTS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "extra_enchantments", 1);
+    public static final ModOption<Color> FORCED_GLINT = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf3f00), "forced_glint", 0);
     public static final ModOption<Color> REPAIRCOST = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf3f00), "repair_cost", 0);
     public static final ModOption<Color> REPAIRCOST_VALUE = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xdf1f1f), "repair_cost.value", 0);
     public static final ModOption<Color> ENCHANTABILITY = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf007f), "enchantability", 0);
