@@ -15,13 +15,6 @@ public abstract class TooltipHelper {
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
-    public static MutableText buildSymbol(MutableText symbol, int rgb) {
-        return symbol.setStyle(Style.EMPTY
-                        .withColor(rgb)
-                        .withFont(EnchantipsClient.SYMBOL_FONT)
-                );
-    }
-
     public static MutableText buildRarity(int rarity, int numberColor) {
         MutableText rarityText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
         Style style = Style.EMPTY.withColor(numberColor);

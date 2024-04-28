@@ -58,10 +58,6 @@ public class Symbol {
                 );
     }
 
-    public MutableText decorate() {
-        return Text.literal(this.s).setStyle(Style.EMPTY.withFont(EnchantipsClient.SYMBOL_FONT));
-    }
-
     public MutableText decorate(int rgb) {
         return Text.literal(this.s)
                 .setStyle(Style.EMPTY
