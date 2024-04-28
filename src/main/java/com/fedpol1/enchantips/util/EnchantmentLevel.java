@@ -69,9 +69,9 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
         int b1 = (rgbMin & 0xff);
         int b2 = (rgbMax & 0xff);
 
-        r1 += (r2-r1) * intensity;
-        g1 += (g2-g1) * intensity;
-        b1 += (b2-b1) * intensity;
+        r1 += (int) ((r2-r1) * intensity);
+        g1 += (int) ((g2-g1) * intensity);
+        b1 += (int) ((b2-b1) * intensity);
 
         return new Color((r1<<16) + (g1<<8) + b1);
     }
