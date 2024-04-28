@@ -37,7 +37,7 @@ public class ModOption<T> {
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable_color", 0);
     public static final ModOption<Boolean> HIGHLIGHT_UNBREAKABLE = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "highlight_unbreakable", 0);
     public static final ModOption<Boolean> PRIORITIZE_OVERMAX_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 0);
-    public static final ModOption<Integer> ENCHANTMENT_TARGET_ICON_LIMIT = ModCategory.MISCELLANEOUS.addOption(new IntegerOption(14, 1, 128, 0), "enchantment_target_icon_limit", 2);
+    public static final ModOption<Integer> ENCHANTMENT_TARGET_ICON_LIMIT = ModCategory.MISCELLANEOUS.addOption(new IntegerOption(11, 1, 256, 0), "enchantment_target_icon_limit", 2);
     public static final ModOption<Color> ACTION_COLOR = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ColorOption(0x000000), "action_color", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {

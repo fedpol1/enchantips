@@ -4,6 +4,8 @@ import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -59,47 +61,64 @@ public class EnchantmentAppearanceHelper {
         TagKey<Item> primaryTag = ((EnchantmentAccess) ench).enchantipsGetPrimaryItems();
         TagKey<Item> secondaryTag = ((EnchantmentAccess) ench).enchantipsGetSecondaryItems();
 
-        ArrayList<Symbol> primarySymbols = new ArrayList<>();
-        ArrayList<Symbol> secondarySymbols = new ArrayList<>();
-
-        for(Map.Entry<Item, Symbol> e : SymbolMap.SYMBOLS.entrySet()) {
-            if(e.getKey().getRegistryEntry().isIn(primaryTag) && !primarySymbols.contains(e.getValue())) {
-                primarySymbols.add(e.getValue());
-            }
-            if(e.getKey().getRegistryEntry().isIn(secondaryTag) && !secondarySymbols.contains(e.getValue())) {
-                secondarySymbols.add(e.getValue());
-            }
+        HashSet<Item> acceptableItems = new HashSet<>();
+        for(RegistryEntry<Item> i : Registries.ITEM.iterateEntries(primaryTag)) {
+            acceptableItems.add(i.value());
+        }
+        for(RegistryEntry<Item> i : Registries.ITEM.iterateEntries(secondaryTag)) {
+            acceptableItems.add(i.value());
         }
 
-        for(int i = 0; i < primarySymbols.size(); i++) {
-            for(int j = 0; j < secondarySymbols.size(); j++) {
-                if(secondarySymbols.get(j) == primarySymbols.get(i)) {
-                    secondarySymbols.set(j, null);
+        ArrayList<Symbol> primarySymbols = new ArrayList<>();
+        ArrayList<Symbol> secondarySymbols = new ArrayList<>();
+        ArrayList<Symbol> addTo;
+
+        // populate normal symbols
+        for(Map.Entry<Item, Symbol> e : SymbolMap.SYMBOLS.entrySet()) {
+            if(acceptableItems.contains(e.getKey())) {
+                addTo = EnchantmentAppearanceHelper.canBePrimaryItem(e.getKey(), ench, primaryTag) ?
+                        primarySymbols : secondarySymbols;
+                if(!addTo.contains(e.getValue())) {
+                    addTo.add(e.getValue());
                 }
             }
         }
 
-        ArrayList<Symbol> secondarySymbolsNoNull = new ArrayList<>();
-        for(Symbol s : secondarySymbols) {
-            if(s != null) { secondarySymbolsNoNull.add(s); }
+        // populate misc symbols
+        for(Item i : acceptableItems) {
+            if(!SymbolMap.SYMBOLS.containsKey(i)) {
+                addTo = EnchantmentAppearanceHelper.canBePrimaryItem(i, ench, primaryTag) ?
+                        primarySymbols : secondarySymbols;
+                if(!addTo.isEmpty() && addTo.getLast() != Symbol.MISCELLANEOUS) {
+                    addTo.add(Symbol.MISCELLANEOUS);
+                }
+            }
         }
 
         if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGET_ICON_LIMIT.getValue()) {
             primarySymbols = new ArrayList<>(Collections.singleton(Symbol.ALL));
         }
-        if(secondarySymbolsNoNull.size() > ModOption.ENCHANTMENT_TARGET_ICON_LIMIT.getValue()) {
-            secondarySymbolsNoNull = new ArrayList<>(Collections.singleton(Symbol.ALL));
+        if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGET_ICON_LIMIT.getValue()) {
+            secondarySymbols = new ArrayList<>(Collections.singleton(Symbol.ALL));
         }
 
         ArrayList<Symbol> finalSymbols = new ArrayList<>();
         finalSymbols.addAll(primarySymbols);
-        if(!secondarySymbolsNoNull.isEmpty()) { finalSymbols.add(Symbol.ANVIL); }
-        finalSymbols.addAll(secondarySymbolsNoNull);
+        if(!secondarySymbols.isEmpty()) { finalSymbols.add(Symbol.ANVIL); }
+        finalSymbols.addAll(secondarySymbols);
 
-        if(finalSymbols.size() == 0) {
+        if(finalSymbols.isEmpty()) {
             finalSymbols = new ArrayList<>(Collections.singleton(Symbol.NONE));
         }
         return Symbol.mergeAndDecorate(finalSymbols);
+    }
+
+    private static boolean canBePrimaryItem(Item item, Enchantment enchantment, TagKey<Item> primaryTag) {
+        if(item.getEnchantability() == 0) { return false; }
+        if(!enchantment.isAvailableForRandomSelection()) { return false; }
+        if(enchantment.isTreasure()) { return false; } // non-treasure curses can be selected
+        if(!item.getRegistryEntry().isIn(primaryTag)) { return false; }
+        return true;
     }
 
     public static Color getDefaultMinColor(Enchantment e) {
