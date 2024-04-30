@@ -12,13 +12,13 @@ public class ModOption<T> {
 
     public static final ModOption<Boolean> SWATCHES_SWITCH = ModCategory.TOOLTIPS_SWATCHES.addOption(new BooleanOption(false), "switch", 2);
     public static final ModOption<Color> SWATCHES_FALLBACK_COLOR = ModCategory.TOOLTIPS_SWATCHES.addOption(new ColorOption(0xaaaaaa), "fallback_color", 1);
-    public static final ModOption<Boolean> GLINT_OVERRIDE_SWITCH = ModCategory.TOOLTIPS_GLINT_OVERRIDE.addOption(new BooleanOption(true), "switch", 1);
+    public static final ModOption<Boolean> GLINT_OVERRIDE_SWITCH = ModCategory.TOOLTIPS_GLINT_OVERRIDE.addOption(new BooleanOption(false), "switch", 1);
     public static final ModOption<Color> GLINT_OVERRIDE_COLOR = ModCategory.TOOLTIPS_GLINT_OVERRIDE.addOption(new ColorOption(0xbf3f00), "color", 0);
     public static final ModOption<Boolean> REPAIR_COST_SWITCH = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new BooleanOption(true), "switch", 2);
     public static final ModOption<Color> REPAIR_COST_COLOR = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new ColorOption(0xbf3f00), "color", 0);
     public static final ModOption<Color> REPAIR_COST_VALUE_COLOR = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new ColorOption(0xdf1f1f), "color.value", 0);
     public static final ModOption<Boolean> ENCHANTABILITY_SWITCH = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(true), "switch", 1);
-    public static final ModOption<Boolean> ENCHANTABILITY_SWITCH_WHEN_ENCHANTED = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(true), "switch.when_enchanted", 1);
+    public static final ModOption<Boolean> ENCHANTABILITY_SWITCH_WHEN_ENCHANTED = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(false), "switch.when_enchanted", 1);
     public static final ModOption<Color> ENCHANTABILITY_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xbf007f), "color", 0);
     public static final ModOption<Color> ENCHANTABILITY_VALUE_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xff1f9f), "color.value", 0);
     public static final ModOption<Boolean> ANVIL_COST_SWITCH = ModCategory.TOOLTIPS_ANVIL_COST.addOption(new BooleanOption(false), "switch", 2);
