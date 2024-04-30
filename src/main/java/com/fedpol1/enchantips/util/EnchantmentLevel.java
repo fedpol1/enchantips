@@ -93,7 +93,7 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
     public int compareTo(EnchantmentLevel other) {
         // potentially prioritize overlevelled enchantments
-        if(ModOption.PRIORITIZE_OVERMAX_ENCHANTMENTS.getValue() && (this.isOvermax() ^ other.isOvermax())) {
+        if(ModOption.PRIORITIZE_OVERLEVELLED_ENCHANTMENTS.getValue() && (this.isOvermax() ^ other.isOvermax())) {
             return this.isOvermax() ? -1 : 1;
         }
 

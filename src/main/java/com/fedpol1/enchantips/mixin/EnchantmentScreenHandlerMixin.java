@@ -33,7 +33,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
 
     @Inject(method = "onContentChanged(Lnet/minecraft/inventory/Inventory;)V", at = @At(value = "RETURN"))
     public void enchantipsOnContentChanged(Inventory inventory, CallbackInfo ci) {
-        if(!ModOption.SHOW_EXTRA_ENCHANTMENTS.getValue()) { return; }
+        if(!ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) { return; }
         EnchantmentScreenHandler t = (EnchantmentScreenHandler) (Object) this;
         ItemStack stack = t.getSlot(0).getStack();
         for(int i = 0; i < 3; i++) {
@@ -58,14 +58,14 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
             List<Text> extra = new ArrayList<>();
             for(EnchantmentLevel levelData : enchantmentLevelData) {
                 MutableText text = (MutableText) EnchantmentAppearanceHelper.getName(levelData, stack.isOf(Items.ENCHANTED_BOOK));
-                if(ModOption.SHOW_MODIFIED_ENCHANTMENT_LEVEL.getValue()) {
+                if(ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
                     text.append(" ").append(
                             TooltipHelper.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())
                     );
                 }
                 extra.add(text);
             }
-            enchantipsSections[i] = new ScrollableTooltipSection(extra);
+            enchantipsSections[i] = new ScrollableTooltipSection(extra, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
         }
     }
 

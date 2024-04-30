@@ -10,38 +10,40 @@ import java.util.function.BiConsumer;
 
 public class ModOption<T> {
 
-    public static final ModOption<Boolean> SHOW_SWATCHES = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "swatches", 2);
-    public static final ModOption<Boolean> SHOW_FORCED_GLINT = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "forced_glint", 1);
-    public static final ModOption<Boolean> SHOW_REPAIRCOST = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "repair_cost", 1);
-    public static final ModOption<Boolean> SHOW_ENCHANTABILITY = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability", 0);
-    public static final ModOption<Boolean> SHOW_ENCHANTABILITY_WHEN_ENCHANTED = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "enchantability.when_enchanted", 0);
-    public static final ModOption<Boolean> SHOW_RARITY = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "rarity", 2);
-    public static final ModOption<Boolean> SHOW_ENCHANTMENT_MAX_LEVEL = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "show_enchantment_max_level", 0);
-    public static final ModOption<Boolean> SHOW_ENCHANTMENT_TARGETS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(false), "show_enchantment_targets", 0);
-    public static final ModOption<Boolean> SHOW_MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "modified_level", 2);
-    public static final ModOption<Boolean> SHOW_EXTRA_ENCHANTMENTS = ModCategory.TOOLTIP_TOGGLES.addOption(new BooleanOption(true), "extra_enchantments", 1);
-    public static final ModOption<Color> FORCED_GLINT = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf3f00), "forced_glint", 0);
-    public static final ModOption<Color> REPAIRCOST = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf3f00), "repair_cost", 0);
-    public static final ModOption<Color> REPAIRCOST_VALUE = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xdf1f1f), "repair_cost.value", 0);
-    public static final ModOption<Color> ENCHANTABILITY = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xbf007f), "enchantability", 0);
-    public static final ModOption<Color> ENCHANTABILITY_VALUE = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xff1f9f), "enchantability.value", 0);
-    public static final ModOption<Color> DECORATION = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0x4f4f47), "decoration", 1);
-    public static final ModOption<Color> MODIFIED_ENCHANTMENT_LEVEL = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xdf9f3f), "modified_level", 0);
-    public static final ModOption<Color> MODIFIED_ENCHANTMENT_LEVEL_VALUE = ModCategory.TOOLTIP_COLORS.addOption(new ColorOption(0xdf7f3f), "modified_level.value", 0);
-    public static final ModOption<Boolean> SHOW_HIGHLIGHTS = ModCategory.HIGHLIGHTS.addOption(new BooleanOption(false), "show", 0);
-    public static final ModOption<Boolean> HIGHLIGHTS_RESPECT_HIDEFLAGS = ModCategory.HIGHLIGHTS.addOption(new BooleanOption(true), "respect_hideflags", 0);
-    public static final ModOption<Integer> HIGHLIGHT_LIMIT = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(4, 0, 16, 1), "limit", 0);
-    public static final ModOption<Integer> HIGHLIGHT_HOTBAR_ALPHA = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "hotbar_alpha", 0);
-    public static final ModOption<Integer> HIGHLIGHT_TRADING_ALPHA = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "trading_alpha", 0);
-    public static final ModOption<Boolean> SHOW_PROTECTION_BAR = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(false), "show_protection_bar", 0);
-    public static final ModOption<Boolean> SHOW_ANVIL_ITEM_SWAP_BUTTON = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(false), "show_anvil_swap_button", 3);
-    public static final ModOption<Boolean> SHOW_ANVIL_WARNING = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "show_anvil_warning", 1);
-    public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable_color", 0);
-    public static final ModOption<Boolean> HIGHLIGHT_UNBREAKABLE = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "highlight_unbreakable", 0);
-    public static final ModOption<Boolean> PRIORITIZE_OVERMAX_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 0);
-    public static final ModOption<Integer> ENCHANTMENT_TARGET_ICON_LIMIT = ModCategory.MISCELLANEOUS.addOption(new IntegerOption(11, 1, 256, 0), "enchantment_target_icon_limit", 2);
-    public static final ModOption<Color> ACTION_COLOR = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ColorOption(0x000000), "action_color", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<Boolean> SWATCHES_SWITCH = ModCategory.TOOLTIPS_SWATCHES.addOption(new BooleanOption(false), "switch", 2);
+    public static final ModOption<Color> SWATCHES_FALLBACK_COLOR = ModCategory.TOOLTIPS_SWATCHES.addOption(new ColorOption(0xaaaaaa), "fallback_color", 1);
+    public static final ModOption<Boolean> GLINT_OVERRIDE_SWITCH = ModCategory.TOOLTIPS_GLINT_OVERRIDE.addOption(new BooleanOption(true), "switch", 1);
+    public static final ModOption<Color> GLINT_OVERRIDE_COLOR = ModCategory.TOOLTIPS_GLINT_OVERRIDE.addOption(new ColorOption(0xbf3f00), "color", 0);
+    public static final ModOption<Boolean> REPAIR_COST_SWITCH = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new BooleanOption(true), "switch", 2);
+    public static final ModOption<Color> REPAIR_COST_COLOR = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new ColorOption(0xbf3f00), "color", 0);
+    public static final ModOption<Color> REPAIR_COST_VALUE_COLOR = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new ColorOption(0xdf1f1f), "color.value", 0);
+    public static final ModOption<Boolean> ENCHANTABILITY_SWITCH = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(true), "switch", 1);
+    public static final ModOption<Boolean> ENCHANTABILITY_SWITCH_WHEN_ENCHANTED = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(true), "switch.when_enchanted", 1);
+    public static final ModOption<Color> ENCHANTABILITY_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xbf007f), "color", 0);
+    public static final ModOption<Color> ENCHANTABILITY_VALUE_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xff1f9f), "color.value", 0);
+    public static final ModOption<Boolean> ANVIL_COST_SWITCH = ModCategory.TOOLTIPS_ANVIL_COST.addOption(new BooleanOption(false), "switch", 2);
+    public static final ModOption<Boolean> MAXIMUM_ENCHANTMENT_LEVEL_SWITCH = ModCategory.TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL.addOption(new BooleanOption(false), "switch", 1);
+    public static final ModOption<Boolean> ENCHANTMENT_TARGETS_SWITCH = ModCategory.TOOLTIPS_ENCHANTMENT_TARGETS.addOption(new BooleanOption(false), "switch", 2);
+    public static final ModOption<Integer> ENCHANTMENT_TARGETS_LIMIT = ModCategory.TOOLTIPS_ENCHANTMENT_TARGETS.addOption(new IntegerOption(11, 1, 256, 0), "limit", 2);
+    public static final ModOption<Boolean> MODIFIED_ENCHANTING_POWER_SWITCH = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new BooleanOption(true), "switch", 1);
+    public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf9f3f), "color", 0);
+    public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_VALUE_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf7f3f), "color.value", 0);
+    public static final ModOption<Boolean> EXTRA_ENCHANTMENTS_SWITCH = ModCategory.TOOLTIPS_EXTRA_ENCHANTMENTS.addOption(new BooleanOption(true), "switch", 2);
+    public static final ModOption<Integer> EXTRA_ENCHANTMENTS_LIMIT = ModCategory.TOOLTIPS_EXTRA_ENCHANTMENTS.addOption(new IntegerOption(7, 1, 256, 0), "limit", 1);
+    public static final ModOption<Color> DECORATION = ModCategory.TOOLTIPS_MISCELLANEOUS.addOption(new ColorOption(0x4f4f47), "decoration", 1);
+    public static final ModOption<Boolean> HIGHLIGHTS_SWITCH = ModCategory.HIGHLIGHTS.addOption(new BooleanOption(false), "switch", 1);
+    public static final ModOption<Boolean> HIGHLIGHTS_SWITCH_OVERRIDE = ModCategory.HIGHLIGHTS.addOption(new BooleanOption(true), "switch.override", 1);
+    public static final ModOption<Integer> HIGHLIGHTS_LIMIT = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(4, 0, 16, 1), "limit", 1);
+    public static final ModOption<Integer> HIGHLIGHTS_ALPHA_HOTBAR = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "alpha.hotbar", 2);
+    public static final ModOption<Integer> HIGHLIGHTS_ALPHA_TRADING = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "alpha.trading", 2);
+    public static final ModOption<Boolean> ANVIL_SWAP_BUTTON_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(false), "anvil_swap_button.switch", 3);
+    public static final ModOption<Boolean> ANVIL_SWAP_WARNING_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(true), "anvil_swap_warning.switch", 1);
+    public static final ModOption<Boolean> PROTECTION_BAR_SWITCH = ModCategory.HEADS_UP_DISPLAY.addOption(new BooleanOption(false), "protection_bar.switch", 0);
+    public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable.color", 1);
+    public static final ModOption<Boolean> UNBREAKABLE_HIGHLIGHT = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "unbreakable.highlight", 1);
+    public static final ModOption<Boolean> PRIORITIZE_OVERLEVELLED_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 1);
+    public static final ModOption<Color> ACTION_COLOR = ModCategory.BULK_UPDATE.addOption(new ColorOption(0x000000), "action_color", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 yaclScreen.config.saveFunction();
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
@@ -49,7 +51,7 @@ public class ModOption<T> {
                 });
             }
     ), "set_min_colors", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 yaclScreen.config.saveFunction();
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
@@ -57,7 +59,7 @@ public class ModOption<T> {
                 });
             }
     ), "set_max_colors", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_OVERMAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_OVERMAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 yaclScreen.config.saveFunction();
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
@@ -65,14 +67,14 @@ public class ModOption<T> {
                 });
             }
     ), "set_overmax_colors", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> COPY_MAX_COLORS_TO_OVERMAX_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> COPY_MAX_COLORS_TO_OVERMAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).copyMaxColorToOvermaxColor();
                 });
             }
     ), "copy_max_colors_to_overmax_colors", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_MIN_COLORS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_MIN_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setMinColor(null);
@@ -81,29 +83,29 @@ public class ModOption<T> {
                 });
             }
     ), "reset_colors", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_ORDERS = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_ORDERS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(null);
                 });
             }
     ), "reset_orders", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_ORDERS_TO_0 = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_ORDERS_TO_0 = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
-                ModOption.PRIORITIZE_OVERMAX_ENCHANTMENTS.getData().setValue(false);
+                ModOption.PRIORITIZE_OVERLEVELLED_ENCHANTMENTS.getData().setValue(false);
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(0);
                 });
             }
     ), "set_orders_to_0", 1);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_TRUE = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_TRUE = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(true);
                 });
             }
     ), "set_highlights_true", 2);
-    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_FALSE = ModCategory.MISCELLANEOUS_ACTIONS.addOption(new ActionOption(
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_FALSE = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(false);

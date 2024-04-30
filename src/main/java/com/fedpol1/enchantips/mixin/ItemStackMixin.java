@@ -31,19 +31,19 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         ItemStack t = (ItemStack)(Object)this;
 
         Boolean glint = t.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
-        if(ModOption.SHOW_FORCED_GLINT.getValue() && glint != null) {
+        if(ModOption.GLINT_OVERRIDE_SWITCH.getValue() && glint != null) {
             list.add(TooltipHelper.buildForcedGlint(glint));
         }
 
-        if(t.getItem().isEnchantable(t) && ModOption.SHOW_ENCHANTABILITY.getValue()
+        if(t.getItem().isEnchantable(t) && ModOption.ENCHANTABILITY_SWITCH.getValue()
                 && t.get(DataComponentTypes.ENCHANTMENTS) != null
-                && (t.getEnchantments().getEnchantmentsMap().isEmpty() || ModOption.SHOW_ENCHANTABILITY_WHEN_ENCHANTED.getValue())
+                && (t.getEnchantments().getEnchantmentsMap().isEmpty() || ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED.getValue())
         ) {
             list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
         }
 
         Integer cost = t.get(DataComponentTypes.REPAIR_COST);
-        if(!(t.getItem() instanceof EnchantedBookItem) && cost != null && cost != 0 && ModOption.SHOW_REPAIRCOST.getValue()) {
+        if(!(t.getItem() instanceof EnchantedBookItem) && cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
             list.add(TooltipHelper.buildRepairCost(cost));
         }
     }

@@ -13,7 +13,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
@@ -42,13 +41,13 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
     @Inject(method = "onSlotUpdate(Lnet/minecraft/screen/ScreenHandler;ILnet/minecraft/item/ItemStack;)V", at = @At(value = "TAIL"))
     private void enchantipsAddWarning(CallbackInfo ci) {
-        if(!ModOption.SHOW_ANVIL_WARNING.getValue()) { return; }
+        if(!ModOption.ANVIL_SWAP_WARNING_SWITCH.getValue()) { return; }
         if(!this.enchantipsShouldSwapInputs()) {
             this.remove(ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET);
             this.remove(ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET);
             return;
         }
-        if(ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) {
+        if(ModOption.ANVIL_SWAP_BUTTON_SWITCH.getValue()) {
             this.addDrawable(ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET);
         }
         else {
@@ -69,7 +68,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                 16, 32,
                 new Identifier(EnchantipsClient.MODID, "widget/anvil_warning_large")
         );
-        if(!ModOption.SHOW_ANVIL_ITEM_SWAP_BUTTON.getValue()) { return; }
+        if(!ModOption.ANVIL_SWAP_BUTTON_SWITCH.getValue()) { return; }
         this.addDrawableChild(
             new AnvilSwapButton(
                 this.x + 152,

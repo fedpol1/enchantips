@@ -32,8 +32,8 @@ public class EnchantmentAppearanceHelper {
         MutableText enchantmentText = Text.translatable(ench.getTranslationKey());
         MutableText finalText = Text.literal("");
 
-        if(ModOption.SHOW_SWATCHES.getValue()) {
-            colorFinal = ModOption.DECORATION.getValue().getRGB();
+        if(ModOption.SWATCHES_SWITCH.getValue()) {
+            colorFinal = ModOption.SWATCHES_FALLBACK_COLOR.getValue().getRGB();
         }
         enchantmentText.setStyle(Style.EMPTY.withColor(colorFinal));
 
@@ -41,17 +41,17 @@ public class EnchantmentAppearanceHelper {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
 
-        if(ModOption.SHOW_ENCHANTMENT_MAX_LEVEL.getValue()) {
+        if(ModOption.MAXIMUM_ENCHANTMENT_LEVEL_SWITCH.getValue()) {
             enchantmentText.append("/").append(Text.translatable("enchantment.level." + enchLevel.getEnchantment().getMaxLevel()));
         }
 
-        if(ModOption.SHOW_SWATCHES.getValue()) {
+        if(ModOption.SWATCHES_SWITCH.getValue()) {
             finalText.append(swatchText).append(" ");
         }
-        if(ModOption.SHOW_RARITY.getValue()) {
+        if(ModOption.ANVIL_COST_SWITCH.getValue()) {
             finalText.append(rarityText).append(" ");
         }
-        if(ModOption.SHOW_ENCHANTMENT_TARGETS.getValue()) {
+        if(ModOption.ENCHANTMENT_TARGETS_SWITCH.getValue()) {
             finalText.append(EnchantmentAppearanceHelper.getEnchantmentTargetSymbolText(ench)).withColor(colorFinal).append(" ");
         }
         return finalText.append(enchantmentText);
@@ -95,10 +95,10 @@ public class EnchantmentAppearanceHelper {
             }
         }
 
-        if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGET_ICON_LIMIT.getValue()) {
+        if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
             primarySymbols = new ArrayList<>(Collections.singleton(Symbol.ALL));
         }
-        if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGET_ICON_LIMIT.getValue()) {
+        if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
             secondarySymbols = new ArrayList<>(Collections.singleton(Symbol.ALL));
         }
 
