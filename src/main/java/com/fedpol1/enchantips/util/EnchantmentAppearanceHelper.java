@@ -16,16 +16,12 @@ import java.util.*;
 
 public class EnchantmentAppearanceHelper {
 
-    public static Text getName(EnchantmentLevel enchLevel, boolean modifyRarity) {
+    public static Text getName(EnchantmentLevel enchLevel) {
         int colorFinal = enchLevel.getColor().getRGB();
 
         Enchantment ench = enchLevel.getEnchantment();
         int level = enchLevel.getLevel();
         int r = ench.getAnvilCost();
-
-        if(modifyRarity && r != 0) {
-            r = Math.max(1, r / 2);
-        }
 
         MutableText swatchText = Symbol.SWATCH.decorate(colorFinal);
         MutableText anvilCostText = TooltipHelper.buildAnvilCost(r, colorFinal);

@@ -79,6 +79,7 @@
   "enchantips.config.tooltips.enchantability.switch.when_enchanted.option_tooltip.0": "If enabled, indicates enchantability even when the item is already enchanted.",
   "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.0": "If enabled, indicates how expensive an enchantment is to combine in an anvil.",
   "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.1": "The shown value is multiplied by the enchantment's level to get the final cost.",
+  "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.2": "On enchanted books, the cost multiplier is half the usual number, down to a minimum of ×1. This is not reflected in the shown value.",
   "enchantips.config.tooltips.maximum_enchantment_level.switch.option_tooltip.0": "If enabled, indicates the maximum level of an enchantment.",
   "enchantips.config.tooltips.enchantment_targets.switch.option_tooltip.0": "If enabled, indicates which items an enchantment can go on.",
   "enchantips.config.tooltips.enchantment_targets.switch.option_tooltip.1": "Anvil-only items are shown to the right of an anvil icon.",

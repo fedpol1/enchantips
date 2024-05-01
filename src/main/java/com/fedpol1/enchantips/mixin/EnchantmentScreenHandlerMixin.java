@@ -57,7 +57,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
             Collections.sort(enchantmentLevelData);
             List<Text> extra = new ArrayList<>();
             for(EnchantmentLevel levelData : enchantmentLevelData) {
-                MutableText text = (MutableText) EnchantmentAppearanceHelper.getName(levelData, stack.isOf(Items.ENCHANTED_BOOK));
+                MutableText text = (MutableText) EnchantmentAppearanceHelper.getName(levelData);
                 if(ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
                     text.append(" ").append(
                             TooltipHelper.buildModifiedLevelForEnchantment(levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel())

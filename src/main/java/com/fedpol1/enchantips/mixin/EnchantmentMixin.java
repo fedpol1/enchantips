@@ -29,7 +29,7 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
      */
     @Overwrite
     public Text getName(int level) {
-        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of((Enchantment)(Object)this, level), false);
+        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of((Enchantment)(Object)this, level));
     }
 
     public TagKey<Item> enchantipsGetPrimaryItems() {
