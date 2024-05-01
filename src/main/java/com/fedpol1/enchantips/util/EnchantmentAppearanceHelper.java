@@ -28,7 +28,7 @@ public class EnchantmentAppearanceHelper {
         }
 
         MutableText swatchText = Symbol.SWATCH.decorate(colorFinal);
-        MutableText rarityText = TooltipHelper.buildRarity(r, colorFinal);
+        MutableText anvilCostText = TooltipHelper.buildAnvilCost(r, colorFinal);
         MutableText enchantmentText = Text.translatable(ench.getTranslationKey());
         MutableText finalText = Text.literal("");
 
@@ -49,7 +49,7 @@ public class EnchantmentAppearanceHelper {
             finalText.append(swatchText).append(" ");
         }
         if(ModOption.ANVIL_COST_SWITCH.getValue()) {
-            finalText.append(rarityText).append(" ");
+            finalText.append(anvilCostText).append(" ");
         }
         if(ModOption.ENCHANTMENT_TARGETS_SWITCH.getValue()) {
             finalText.append(EnchantmentAppearanceHelper.getEnchantmentTargetSymbolText(ench)).withColor(colorFinal).append(" ");

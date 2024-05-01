@@ -15,14 +15,14 @@ public abstract class TooltipHelper {
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
-    public static MutableText buildRarity(int rarity, int numberColor) {
-        MutableText rarityText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
+    public static MutableText buildAnvilCost(int rarity, int numberColor) {
+        MutableText anvilCostText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
         Style style = Style.EMPTY.withColor(numberColor);
         if(ModOption.SWATCHES_SWITCH.getValue()) {
-            style = Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB());
+            style = Style.EMPTY.withColor(ModOption.SWATCHES_FALLBACK_COLOR.getValue().getRGB());
         }
-        rarityText.setStyle(style);
-        return Text.translatable(RARITY_TOOLTIP, rarityText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
+        anvilCostText.setStyle(style);
+        return Text.translatable(RARITY_TOOLTIP, anvilCostText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
     }
 
     public static MutableText buildModifiedLevel(int lower, int upper) {
