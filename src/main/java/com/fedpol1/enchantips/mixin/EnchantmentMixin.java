@@ -9,8 +9,6 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 
-import java.util.List;
-
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin implements EnchantmentAccess {
 
@@ -32,11 +30,11 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
         return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of((Enchantment)(Object)this, level));
     }
 
-    public TagKey<Item> enchantipsGetPrimaryItems() {
+    public TagKey<Item> enchantips$getPrimaryItems() {
         return this.properties.primaryItems().isEmpty() ? this.properties.supportedItems() : this.properties.primaryItems().get();
     }
 
-    public TagKey<Item> enchantipsGetSecondaryItems() {
+    public TagKey<Item> enchantips$getSecondaryItems() {
         return this.properties.supportedItems();
     }
 }

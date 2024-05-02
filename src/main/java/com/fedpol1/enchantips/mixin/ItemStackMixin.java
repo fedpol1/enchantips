@@ -27,7 +27,7 @@ import java.util.List;
 public abstract class ItemStackMixin implements ItemStackAccess {
 
     @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsAddExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
+    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
         ItemStack t = (ItemStack)(Object)this;
 
         Boolean glint = t.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
@@ -49,24 +49,24 @@ public abstract class ItemStackMixin implements ItemStackAccess {
     }
 
     @Override
-    public boolean enchantipsIsUnbreakable() {
+    public boolean enchantips$isUnbreakable() {
         ItemStack t = (ItemStack)(Object)this;
         return t.get(DataComponentTypes.UNBREAKABLE) != null;
     }
 
-    public boolean enchantipsUnbreakableVisible() {
+    public boolean enchantips$unbreakableVisible() {
         ItemStack t = (ItemStack)(Object)this;
         UnbreakableComponent ub = t.get(DataComponentTypes.UNBREAKABLE);
         return ub != null && ub.showInTooltip();
     }
 
-    public boolean enchantipsEnchantmentsVisible() {
+    public boolean enchantips$enchantmentsVisible() {
         ItemStack t = (ItemStack)(Object)this;
         ItemEnchantmentsComponent ench = t.get(
                 t.isOf(Items.ENCHANTED_BOOK) ?
                         DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS
         );
         ItemEnchantmentsComponentAccess enchAccess = (ItemEnchantmentsComponentAccess) ench;
-        return enchAccess != null && enchAccess.enchantipsShowInTooltip();
+        return enchAccess != null && enchAccess.enchantips$showInTooltip();
     }
 }

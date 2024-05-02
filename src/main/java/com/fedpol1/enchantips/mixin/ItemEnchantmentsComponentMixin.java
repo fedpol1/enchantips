@@ -1,12 +1,9 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.item.TooltipType;
-import net.minecraft.component.DataComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
@@ -45,7 +42,7 @@ public class ItemEnchantmentsComponentMixin implements ItemEnchantmentsComponent
     }
 
     @Override
-    public boolean enchantipsShowInTooltip() {
+    public boolean enchantips$showInTooltip() {
         return this.showInTooltip;
     }
 }

@@ -12,7 +12,7 @@ public class RegistriesMixin {
 
     // initialize config AFTER registries are frozen so per-enchant configs are loaded properly
     @Inject(method = "freezeRegistries()V", at = @At(value = "TAIL"))
-    private static void enchantipsConfigInitialize(CallbackInfo ci) {
+    private static void enchantips$initializeConfig(CallbackInfo ci) {
         ModConfig.registerConfig();
     }
 }

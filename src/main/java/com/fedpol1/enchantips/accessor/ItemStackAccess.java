@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.accessor;
 
 public interface ItemStackAccess {
 
-    boolean enchantipsIsUnbreakable();
-    boolean enchantipsUnbreakableVisible();
-    boolean enchantipsEnchantmentsVisible();
+    boolean enchantips$isUnbreakable();
+    boolean enchantips$unbreakableVisible();
+    boolean enchantips$enchantmentsVisible();
 }

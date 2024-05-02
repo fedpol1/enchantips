@@ -54,8 +54,8 @@ public class EnchantmentAppearanceHelper {
     }
 
     public static MutableText getEnchantmentTargetSymbolText(Enchantment ench) {
-        TagKey<Item> primaryTag = ((EnchantmentAccess) ench).enchantipsGetPrimaryItems();
-        TagKey<Item> secondaryTag = ((EnchantmentAccess) ench).enchantipsGetSecondaryItems();
+        TagKey<Item> primaryTag = ((EnchantmentAccess) ench).enchantips$getPrimaryItems();
+        TagKey<Item> secondaryTag = ((EnchantmentAccess) ench).enchantips$getSecondaryItems();
 
         HashSet<Item> acceptableItems = new HashSet<>();
         for(RegistryEntry<Item> i : Registries.ITEM.iterateEntries(primaryTag)) {

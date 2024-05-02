@@ -19,6 +19,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -26,8 +27,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AnvilScreen.class)
 public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> {
 
+    @Unique
     private AnvilSwapWarn ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET;
+    @Unique
     private AnvilSwapWarn ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET;
+    @Unique
     private AnvilScreenHandler enchantipsHandler; // dummy handler used for computations
 
     public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
@@ -35,14 +39,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     }
 
     @Inject(method = "<init>(Lnet/minecraft/screen/AnvilScreenHandler;Lnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/text/Text;)V", at = @At(value = "TAIL"))
-    public void enchantipsInit(AnvilScreenHandler handler, PlayerInventory inventory, Text title, CallbackInfo ci) {
+    public void enchantips$init(AnvilScreenHandler handler, PlayerInventory inventory, Text title, CallbackInfo ci) {
         enchantipsHandler = new AnvilScreenHandler(handler.syncId, inventory);
     }
 
     @Inject(method = "onSlotUpdate(Lnet/minecraft/screen/ScreenHandler;ILnet/minecraft/item/ItemStack;)V", at = @At(value = "TAIL"))
-    private void enchantipsAddWarning(CallbackInfo ci) {
+    private void enchantips$addWarning(CallbackInfo ci) {
         if(!ModOption.ANVIL_SWAP_WARNING_SWITCH.getValue()) { return; }
-        if(!this.enchantipsShouldSwapInputs()) {
+        if(!this.enchantips$shouldSwapInputs()) {
             this.remove(ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET);
             this.remove(ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET);
             return;
@@ -56,7 +60,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     }
 
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
-    protected void enchantipsAddAnvilSwapButton(CallbackInfo ci) {
+    protected void enchantips$addAnvilSwapButton(CallbackInfo ci) {
         ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET = new AnvilSwapWarn(
                 this.x + 152, this.y + 33,
                 16, 16,
@@ -75,7 +79,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                 this.y + 47,
                 (button) -> {
                     // swap items with notifying the server but only if it is favorable to do so
-                    if (this.enchantipsShouldSwapInputs()) {
+                    if (this.enchantips$shouldSwapInputs()) {
                         ClientPlayNetworkHandler netHandler = MinecraftClient.getInstance().getNetworkHandler();
                         if (netHandler != null) {
                             for (int i : new int[]{0, 1, 0}) {
@@ -97,7 +101,8 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
         );
     }
 
-    private boolean enchantipsShouldSwapInputs() {
+    @Unique
+    private boolean enchantips$shouldSwapInputs() {
         this.enchantipsHandler.setNewItemName("");
 
         ItemStack inputStack1 = this.handler.getSlot(0).getStack();

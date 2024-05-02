@@ -18,14 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class InGameHudMixin implements InGameHudAccess {
 
     @Inject(method = "renderHotbarItem(Lnet/minecraft/client/gui/DrawContext;IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
-    private void enchantipsRenderHighlightsInHotbar(DrawContext context, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
+    private void enchantips$renderHighlightsInHotbar(DrawContext context, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, itemStack, i, j, ModOption.HIGHLIGHTS_ALPHA_HOTBAR.getValue());
         }
     }
 
     @Inject(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getProfiler()Lnet/minecraft/util/profiler/Profiler;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantipsRenderProtectionBar(DrawContext context, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, int k, int m, int n, float f, int o, int p, int q, int r, int s) {
+    private void enchantips$renderProtectionBar(DrawContext context, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, int k, int m, int n, float f, int o, int p, int q, int r, int s) {
         if(ModOption.PROTECTION_BAR_SWITCH.getValue()) {
             ProtectionHud.renderWholeProtectionBar(context, k, n - (p - 1) * q - 10);
         }

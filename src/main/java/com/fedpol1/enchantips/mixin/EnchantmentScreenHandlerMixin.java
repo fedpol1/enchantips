@@ -27,12 +27,12 @@ import java.util.List;
 @Mixin(EnchantmentScreenHandler.class)
 public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreenHandlerAccess {
 
-    public ScrollableTooltipSection enchantipsGetSection(int i) {
+    public ScrollableTooltipSection enchantips$getSection(int i) {
         return this.enchantipsSections[i];
     }
 
     @Inject(method = "onContentChanged(Lnet/minecraft/inventory/Inventory;)V", at = @At(value = "RETURN"))
-    public void enchantipsOnContentChanged(Inventory inventory, CallbackInfo ci) {
+    public void enchantips$onContentChanged(Inventory inventory, CallbackInfo ci) {
         if(!ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) { return; }
         EnchantmentScreenHandler t = (EnchantmentScreenHandler) (Object) this;
         ItemStack stack = t.getSlot(0).getStack();

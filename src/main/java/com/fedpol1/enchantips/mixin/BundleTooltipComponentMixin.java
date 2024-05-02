@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class BundleTooltipComponentMixin {
 
     @Redirect(method = "drawSlot(IIIZLnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/font/TextRenderer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V"))
-    private void enchantipsHighlightOtherTradeItems(DrawContext context, TextRenderer textRenderer, ItemStack stack, int x, int y) {
+    private void enchantips$highlightInnerItems(DrawContext context, TextRenderer textRenderer, ItemStack stack, int x, int y) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, stack, x, y, 255);
         }

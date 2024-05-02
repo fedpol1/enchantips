@@ -28,7 +28,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/EnchantmentScreen;isPointWithinBounds(IIIIDD)Z")),
             at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    public void enchantipsInjectRenderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, boolean bl, int i, int j, int k, Enchantment enchantment, int l, int m, List<Text> list) {
+    public void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, boolean bl, int i, int j, int k, Enchantment enchantment, int l, int m, List<Text> list) {
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentScreenHandler handler = t.getScreenHandler();
         int tableLevel = handler.enchantmentPower[j];
@@ -39,7 +39,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             list.add(TooltipHelper.buildModifiedLevel(absoluteLowerBound, absoluteUpperBound));
         }
         if(ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
-            ScrollableTooltipSection section = ((EnchantmentScreenHandlerAccess)handler).enchantipsGetSection(j);
+            ScrollableTooltipSection section = ((EnchantmentScreenHandlerAccess)handler).enchantips$getSection(j);
             ScrollableTooltipSection.setActiveSection(section);
             list.addAll(section.getShownTextAll());
         }
