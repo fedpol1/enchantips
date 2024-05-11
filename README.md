@@ -2,21 +2,23 @@
 Mod that enhances tooltips related to enchanting or enchantments.
 
 ## Dependencies
-+ Minecraft 1.19.4
-+ Fabric Loader 0.14.17 or greater
-+ Fabric API 0.77.0 or greater
++ Minecraft 1.20.5
++ Fabric Loader 0.15.10 or greater
++ Fabric API 0.97.6 or greater
 
 **For Configuration:**
-+ Mod Menu 6.10.0-rc4 or greater
-+ YetAnotherConfigLib 2.1.1 or greater
++ Mod Menu 10.0.0 or greater
++ YetAnotherConfigLib 3.4.0 or greater
 
 ## Features
 + ability to sort enchantments in the tooltip
 + ability to change enchantment colors per-enchantment
   + unbreakable gets a special color
   + color gradient between min levelled enchantments and max levelled enchantments
-+ enchantment rarity display
-  + this value is a factor in how expensive it is to combine an enchantment in an anvil and how often it appears in the enchantment table
+  + can opt for a swatch-style color display
++ enchantment anvil cost display
+  + this value is a factor in how expensive it is to combine an enchantment in an anvil
++ enchantment compatible items display
 + item enchantability display
 + item anvil penalty display
 + enchantment predictions when enchanting via enchantment table
