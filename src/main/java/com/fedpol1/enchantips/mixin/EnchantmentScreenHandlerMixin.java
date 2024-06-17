@@ -16,6 +16,7 @@ import net.minecraft.screen.EnchantmentScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -26,9 +27,12 @@ import java.util.List;
 
 @Mixin(EnchantmentScreenHandler.class)
 public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreenHandlerAccess {
+    @Unique
+    ScrollableTooltipSection[] enchantips$scrollableSections = new ScrollableTooltipSection[3];
 
+    @Unique
     public ScrollableTooltipSection enchantips$getSection(int i) {
-        return this.enchantipsSections[i];
+        return this.enchantips$scrollableSections[i];
     }
 
     @Inject(method = "onContentChanged(Lnet/minecraft/inventory/Inventory;)V", at = @At(value = "RETURN"))
@@ -65,7 +69,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
                 }
                 extra.add(text);
             }
-            enchantipsSections[i] = new ScrollableTooltipSection(extra, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
+            enchantips$scrollableSections[i] = new ScrollableTooltipSection(extra, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
         }
     }
 
