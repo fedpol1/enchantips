@@ -7,7 +7,6 @@ import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -16,7 +15,6 @@ import net.minecraft.screen.EnchantmentScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +27,7 @@ import java.util.List;
 
 @Mixin(ScreenHandler.class)
 public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreenHandlerAccess {
+
     @Unique
     ScrollableTooltipSection[] enchantips$scrollableSections = new ScrollableTooltipSection[3];
 
@@ -42,12 +41,12 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
         //noinspection ConstantValue
         if (!((Object)this instanceof EnchantmentScreenHandler handler) ||
             !ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
-        ) return;
+        ) { return; }
 
         ItemStack stack = handler.getSlot(0).getStack();
         for (int i = 0; i < 3; i++) {
             Enchantment givenEnchantment = Enchantment.byRawId(handler.enchantmentId[i]);
-            if (givenEnchantment == null) continue;
+            if (givenEnchantment == null) { continue; }
 
             int absoluteLowerBound = EnchantmentFilterer.getLowerBound(givenEnchantment, handler.enchantmentLevel[i], stack, handler.enchantmentPower[i]);
             int absoluteUpperBound = EnchantmentFilterer.getUpperBound(givenEnchantment, handler.enchantmentLevel[i], stack, handler.enchantmentPower[i]);
@@ -57,7 +56,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
                 if ((!(stack.isIn(current.getApplicableItems()) && current.isPrimaryItem(stack)) && !stack.isOf(Items.BOOK)) ||
                     !current.canCombine(givenEnchantment) ||
                     (!current.isAvailableForRandomSelection() || current.isTreasure())
-                ) continue;
+                ) { continue; }
 
                 for (int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
                     EnchantmentLevel level = EnchantmentLevel.of(current, z);
