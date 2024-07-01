@@ -16,6 +16,7 @@
     "ItemEnchantmentsComponentMixin",
     "ItemStackMixin",
     "MerchantScreenMixin",
+    "RegistryLoaderMixin",
     "UnbreakableComponentMixin"
   ],
   "server": [],

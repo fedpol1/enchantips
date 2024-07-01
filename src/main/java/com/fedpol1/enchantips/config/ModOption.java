@@ -41,6 +41,12 @@ public class ModOption<T> {
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable.color", 1);
     public static final ModOption<Boolean> UNBREAKABLE_HIGHLIGHT = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "unbreakable.highlight", 1);
     public static final ModOption<Boolean> PRIORITIZE_OVERLEVELLED_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 1);
+    public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> PRUNE_ENCHANTMENTS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
+            (yaclScreen, buttonOption) -> {
+                yaclScreen.config.saveFunction();
+                ModConfig.deregisterUnusedEnchantmentConfig();
+            }
+    ), "prune_enchantments", 1);
     public static final ModOption<Color> ACTION_COLOR = ModCategory.BULK_UPDATE.addOption(new ColorOption(0x000000), "action_color", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {

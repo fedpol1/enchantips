@@ -37,22 +37,25 @@ public class ModConfig {
         if(optionalWrapper.isEmpty()) { return; }
         RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
 
-        for(RegistryKey<Enchantment> ench : wrapper.streamKeys().toList()) {
-            if(ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(ench.getValue().toString()) == null) {
-                ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(ench);
-            }
+        for(RegistryKey<Enchantment> key : wrapper.streamKeys().toList()) {
+            EnchantmentGroupNode group = (EnchantmentGroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(key.getValue().toString());
+            if(group == null) { group = ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(key); }
+            Enchantment enchantment = registryManager.get(RegistryKeys.ENCHANTMENT).get(key);
+            if(enchantment == null) { continue; }
+            group.setDescription(enchantment.description());
         }
     }
 
-    public static void deregisterUnusedEnchantmentConfig(DynamicRegistryManager registryManager) {
-        Optional<RegistryWrapper.Impl<Enchantment>> optionalWrapper = registryManager.getOptionalWrapper(RegistryKeys.ENCHANTMENT);
-        if(optionalWrapper.isEmpty()) { return; }
-        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+    public static void deregisterUnusedEnchantmentConfig() {
+        TreeSet<String> toRemove = new TreeSet<>();
 
         for(Map.Entry<String, Node> entry : ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren()) {
-            if(wrapper.streamKeys().noneMatch((element) -> element.getValue().toString().equals(entry.getKey()))) {
-                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().removeChild(entry.getKey());
+            if(entry.getValue() instanceof EnchantmentGroupNode ench && !ench.isKnown()) {
+                toRemove.add(entry.getKey());
             }
+        }
+        for(String element : toRemove) {
+            ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().removeChild(element);
         }
     }
 

@@ -17,6 +17,7 @@ import java.awt.*;
 
 public class EnchantmentGroupNode extends GroupNode {
 
+    private boolean known;
     private final String identifier;
     private Text description;
     private final OptionNode<Color> minColor;
@@ -29,6 +30,7 @@ public class EnchantmentGroupNode extends GroupNode {
         super(ench, parent);
         ModConfigData.addEnchantment(ench, this);
 
+        this.known = false;
         this.identifier = ench;
         this.description = Text.translatable("enchantment.enchantips.unknown").setStyle(Style.EMPTY).formatted(Formatting.ITALIC);
         this.minColor = this.addOption(new ColorOption(0x9f7f7f),  ModConfigData.MIN_COLOR_KEY, 0);
@@ -57,7 +59,12 @@ public class EnchantmentGroupNode extends GroupNode {
     }
 
     public void setDescription(Text description) {
+        this.known = true;
         this.description = description;
+    }
+
+    public boolean isKnown() {
+        return this.known;
     }
 
     public OptionNode<Color> getMinColor() {

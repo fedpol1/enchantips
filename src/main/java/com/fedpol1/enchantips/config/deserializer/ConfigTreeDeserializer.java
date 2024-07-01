@@ -16,7 +16,6 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
     }
 
     private static void deserializeImpl(JsonElement json, Node node) {
-        EnchantipsClient.LOGGER.info("!!!" + json);
         for(Map.Entry<String, JsonElement> current : json.getAsJsonObject().asMap().entrySet()) {
             Node child = node.getChild(current.getKey());
             if(child == null) { continue; }
