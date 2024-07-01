@@ -36,14 +36,22 @@ public class ModConfig {
         Optional<RegistryWrapper.Impl<Enchantment>> optionalWrapper = registryManager.getOptionalWrapper(RegistryKeys.ENCHANTMENT);
         if(optionalWrapper.isEmpty()) { return; }
         RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+        int existingEnchantments = 0;
+        int newEnchantments = 0;
 
         for(RegistryKey<Enchantment> key : wrapper.streamKeys().toList()) {
             EnchantmentGroupNode group = (EnchantmentGroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(key.getValue().toString());
-            if(group == null) { group = ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(key); }
+            if(group == null) {
+                group = ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(key);
+                newEnchantments++;
+            } else {
+                existingEnchantments++;
+            }
             Enchantment enchantment = registryManager.get(RegistryKeys.ENCHANTMENT).get(key);
             if(enchantment == null) { continue; }
             group.setDescription(enchantment.description());
         }
+        EnchantipsClient.LOGGER.info("Found {} pre-existing enchantments and {} new enchantments.", existingEnchantments, newEnchantments);
     }
 
     public static void deregisterUnusedEnchantmentConfig() {
@@ -57,6 +65,7 @@ public class ModConfig {
         for(String element : toRemove) {
             ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().removeChild(element);
         }
+        EnchantipsClient.LOGGER.info("Pruned {} enchantments.", toRemove.size());
     }
 
     public static void readConfig() throws NullPointerException {
