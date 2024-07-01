@@ -1,5 +1,7 @@
 package com.fedpol1.enchantips.config.deserializer;
 
+import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.config.ModCategory;
 import com.fedpol1.enchantips.config.tree.*;
 import com.google.gson.*;
 
@@ -14,14 +16,25 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
     }
 
     private static void deserializeImpl(JsonElement json, Node node) {
+        EnchantipsClient.LOGGER.info("!!!" + json);
         for(Map.Entry<String, JsonElement> current : json.getAsJsonObject().asMap().entrySet()) {
             Node child = node.getChild(current.getKey());
-            if(child instanceof OptionNode<?>) {
+            if(child == null) { continue; }
+            if(child == ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode()) {
+                ConfigTreeDeserializer.deserializeEnchantments(current.getValue(), child);
+            } else if(child instanceof OptionNode<?>) {
                 ((OptionNode<?>) child).getData().readStringValue(current.getValue().getAsString());
-            }
-            else {
+            } else {
                 ConfigTreeDeserializer.deserializeImpl(current.getValue(), child);
             }
+        }
+    }
+
+    private static void deserializeEnchantments(JsonElement json, Node node) {
+        if(node != ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode()) { throw new IllegalStateException("Found enchantment outside of individual_enchantments."); }
+        for(Map.Entry<String, JsonElement> current : json.getAsJsonObject().asMap().entrySet()) {
+            EnchantmentGroupNode group = ((CategoryNode) node).addEnchantmentGroup(current.getKey());
+            ConfigTreeDeserializer.deserializeImpl(current.getValue(), group);
         }
     }
 }

@@ -16,7 +16,6 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
-import java.awt.*;
 import java.util.*;
 
 public class EnchantmentAppearanceHelper {
@@ -138,57 +137,5 @@ public class EnchantmentAppearanceHelper {
         else if(entryList.get().contains(entry)) { return false; }
 
         return !primaryItems.contains(RegistryEntry.of(item));
-    }
-
-    public static Color getDefaultMinColor(RegistryKey<Enchantment> key) {
-        Color base = new Color(0x9f7f7f);
-
-        World w = MinecraftClient.getInstance().world;
-        if(w == null) { return base; }
-        RegistryEntry<Enchantment> entry = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(key);
-
-        if(entry.isIn(EnchantmentTags.CURSE)) { return new Color(0xbf0000); }
-        if(!entry.isIn(EnchantmentTags.IN_ENCHANTING_TABLE)) { return new Color(0x009f00); }
-        return base;
-    }
-
-    public static Color getDefaultMaxColor(RegistryKey<Enchantment> key) {
-        Color base = new Color(0xffdfdf);
-
-        World w = MinecraftClient.getInstance().world;
-        if(w == null) { return base; }
-        RegistryEntry<Enchantment> entry = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(key);
-
-        if(entry.isIn(EnchantmentTags.CURSE)) { return new Color(0xff0000); }
-        if(!entry.isIn(EnchantmentTags.IN_ENCHANTING_TABLE)) { return new Color(0x00df00); }
-        return base;
-    }
-
-    public static Color getDefaultOvermaxColor(RegistryKey<Enchantment> key) {
-        Color base = new Color(0xffdf3f);
-
-        World w = MinecraftClient.getInstance().world;
-        if(w == null) { return base; }
-        RegistryEntry<Enchantment> entry = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(key);
-
-        if(entry.isIn(EnchantmentTags.CURSE)) { return new Color(0xff5f1f); }
-        if(!entry.isIn(EnchantmentTags.IN_ENCHANTING_TABLE)) { return new Color(0x1fff3f); }
-        return base;
-    }
-
-    public static int getDefaultOrder(RegistryKey<Enchantment> key) {
-        int base = 2;
-
-        World w = MinecraftClient.getInstance().world;
-        if(w == null) { return base; }
-        RegistryEntry<Enchantment> entry = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(key);
-
-        if(entry.isIn(EnchantmentTags.CURSE)) { return 0; }
-        if(!entry.isIn(EnchantmentTags.IN_ENCHANTING_TABLE)) { return 1; }
-        return base;
-    }
-
-    public static boolean getDefaultHighlightVisibility(RegistryKey<Enchantment> key) {
-        return true;
     }
 }

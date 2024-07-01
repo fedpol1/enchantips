@@ -42,11 +42,11 @@ public enum ModCategory {
         return ((CategoryNode)this.node).addGroup(name);
     }
 
-    public EnchantmentGroupNode addGroup(RegistryKey<Enchantment> ench) {
+    public EnchantmentGroupNode addEnchantmentGroup(RegistryKey<Enchantment> ench) {
         if(!(this.node instanceof GroupParent)) {
             throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support groups.");
         }
-        return ((CategoryNode)this.node).addGroup(ench);
+        return ((CategoryNode)this.node).addEnchantmentGroup(ench);
     }
 
     public <T> ModOption<T> addOption(Data<T> meta, String key, int tooltipLines) {

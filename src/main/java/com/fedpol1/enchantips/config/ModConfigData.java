@@ -21,8 +21,8 @@ public class ModConfigData {
         return ModConfigData.enchantmentData.get(e.getValue().toString());
     }
 
-    public static void addEnchantment(RegistryKey<Enchantment> e, EnchantmentGroupNode gn) {
-        ModConfigData.enchantmentData.put(e.getValue().toString(), gn);
+    public static void addEnchantment(String e, EnchantmentGroupNode gn) {
+        ModConfigData.enchantmentData.put(e, gn);
     }
 
     public static boolean isEnchantmentHighlighted(RegistryKey<Enchantment> e) {

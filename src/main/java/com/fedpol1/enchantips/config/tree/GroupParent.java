@@ -6,5 +6,6 @@ import net.minecraft.registry.RegistryKey;
 public interface GroupParent {
 
     GroupNode addGroup(String name);
-    EnchantmentGroupNode addGroup(RegistryKey<Enchantment> ench);
+    EnchantmentGroupNode addEnchantmentGroup(RegistryKey<Enchantment> ench);
+    EnchantmentGroupNode addEnchantmentGroup(String ench);
 }

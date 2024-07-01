@@ -39,7 +39,7 @@ public class ModConfig {
 
         for(RegistryKey<Enchantment> ench : wrapper.streamKeys().toList()) {
             if(ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(ench.getValue().toString()) == null) {
-                ModCategory.INDIVIDUAL_ENCHANTMENTS.addGroup(ench);
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(ench);
             }
         }
     }

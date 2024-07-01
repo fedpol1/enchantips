@@ -46,7 +46,7 @@ public class ScreenVisitor implements TreeVisitor {
 
     public Object visit(EnchantmentGroupNode n, Object data) {
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Text.literal(n.getDescription()))
+                .name(n.getDescription())
                 .description(OptionDescription.createBuilder()
                         .text(Text.translatable(n.getIdentifier()))
                         .build())

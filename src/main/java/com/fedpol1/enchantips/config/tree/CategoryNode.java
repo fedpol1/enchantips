@@ -15,7 +15,11 @@ public class CategoryNode extends Node implements GroupParent, OptionParent {
         return new GroupNode(name, this);
     }
 
-    public EnchantmentGroupNode addGroup(RegistryKey<Enchantment> ench) {
+    public EnchantmentGroupNode addEnchantmentGroup(RegistryKey<Enchantment> ench) {
+        return new EnchantmentGroupNode(ench, this);
+    }
+
+    public EnchantmentGroupNode addEnchantmentGroup(String ench) {
         return new EnchantmentGroupNode(ench, this);
     }
 
