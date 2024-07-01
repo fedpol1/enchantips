@@ -21,7 +21,6 @@ public enum ModCategory {
     USER_INTERFACE(ConfigTree.root.addCategory("user_interface")),
     HIGHLIGHTS(USER_INTERFACE.addGroup("highlights")),
     WIDGETS(USER_INTERFACE.addGroup("widgets")),
-    HEADS_UP_DISPLAY(USER_INTERFACE.addGroup("heads_up_display")),
     MISCELLANEOUS(USER_INTERFACE.addGroup("miscellaneous")),
     BULK_UPDATE(USER_INTERFACE.addGroup("bulk_update")),
     INDIVIDUAL_ENCHANTMENTS(ConfigTree.root.addCategory("individual_enchantments"));

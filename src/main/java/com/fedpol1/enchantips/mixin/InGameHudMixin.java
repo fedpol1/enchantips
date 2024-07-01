@@ -2,7 +2,6 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.accessor.InGameHudAccess;
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.gui.ProtectionHud;
 import com.fedpol1.enchantips.gui.SlotHighlight;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -13,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin implements InGameHudAccess {
@@ -23,13 +21,6 @@ public abstract class InGameHudMixin implements InGameHudAccess {
     private void enchantips$renderHighlightsInHotbar(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack itemStack, int seed, CallbackInfo ci) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, itemStack, x, y, ModOption.HIGHLIGHTS_ALPHA_HOTBAR.getValue());
-        }
-    }
-
-    @Inject(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;getProfiler()Lnet/minecraft/util/profiler/Profiler;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantips$renderProtectionBar(DrawContext context, CallbackInfo ci, PlayerEntity playerEntity, int i, boolean bl, long l, int j, int k, int m, int n, float f, int o, int p, int q, int r, int s) {
-        if(ModOption.PROTECTION_BAR_SWITCH.getValue()) {
-            ProtectionHud.renderWholeProtectionBar(context, k, n - (p - 1) * q - 10);
         }
     }
 }

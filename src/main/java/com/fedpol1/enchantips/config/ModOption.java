@@ -38,7 +38,6 @@ public class ModOption<T> {
     public static final ModOption<Integer> HIGHLIGHTS_ALPHA_TRADING = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "alpha.trading", 2);
     public static final ModOption<Boolean> ANVIL_SWAP_BUTTON_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(false), "anvil_swap_button.switch", 3);
     public static final ModOption<Boolean> ANVIL_SWAP_WARNING_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(true), "anvil_swap_warning.switch", 1);
-    public static final ModOption<Boolean> PROTECTION_BAR_SWITCH = ModCategory.HEADS_UP_DISPLAY.addOption(new BooleanOption(false), "protection_bar.switch", 1);
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable.color", 1);
     public static final ModOption<Boolean> UNBREAKABLE_HIGHLIGHT = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "unbreakable.highlight", 1);
     public static final ModOption<Boolean> PRIORITIZE_OVERLEVELLED_ENCHANTMENTS = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "prioritize_overmax_enchantments", 1);

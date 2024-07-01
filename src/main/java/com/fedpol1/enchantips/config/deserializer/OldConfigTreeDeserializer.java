@@ -31,7 +31,6 @@ public class OldConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
         OLD_TO_NEW.put("highlights.hotbar_alpha", ModOption.HIGHLIGHTS_ALPHA_HOTBAR);
         OLD_TO_NEW.put("highlights.trading_alpha", ModOption.HIGHLIGHTS_ALPHA_TRADING);
         OLD_TO_NEW.put("miscellaneous.actions.action_color", ModOption.ACTION_COLOR);
-        OLD_TO_NEW.put("miscellaneous.show_protection_bar", ModOption.PROTECTION_BAR_SWITCH);
         OLD_TO_NEW.put("miscellaneous.show_anvil_swap_button", ModOption.ANVIL_SWAP_BUTTON_SWITCH);
         OLD_TO_NEW.put("miscellaneous.show_anvil_warning", ModOption.ANVIL_SWAP_WARNING_SWITCH);
         OLD_TO_NEW.put("miscellaneous.unbreakable_color", ModOption.UNBREAKABLE_COLOR);
