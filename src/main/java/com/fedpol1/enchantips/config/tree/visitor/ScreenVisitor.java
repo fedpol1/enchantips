@@ -3,12 +3,9 @@ package com.fedpol1.enchantips.config.tree.visitor;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.*;
 import dev.isxander.yacl3.api.*;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class ScreenVisitor implements TreeVisitor {
 
@@ -38,7 +35,7 @@ public class ScreenVisitor implements TreeVisitor {
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
                 .name(Text.translatable(n.getFullName()))
                 .description(OptionDescription.createBuilder()
-                        .text(Text.translatable(""))
+                        .text(Text.literal(""))
                         .build())
                 .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {
@@ -48,12 +45,10 @@ public class ScreenVisitor implements TreeVisitor {
     }
 
     public Object visit(EnchantmentGroupNode n, Object data) {
-        Enchantment ench = n.getEnchantment();
-
         OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Text.translatable(ench.getTranslationKey()))
+                .name(Text.literal(n.getDescription()))
                 .description(OptionDescription.createBuilder()
-                        .text(Text.translatable(Objects.requireNonNull(Registries.ENCHANTMENT.getId(ench)).toString()))
+                        .text(Text.translatable(n.getIdentifier()))
                         .build())
                 .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {

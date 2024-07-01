@@ -12,12 +12,12 @@ import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
 public class ModConfig {
 
@@ -28,12 +28,32 @@ public class ModConfig {
         ModCategory.init();
         ModOption.init();
 
-        for(Enchantment current : Registries.ENCHANTMENT) {
-            ModCategory.INDIVIDUAL_ENCHANTMENTS.addGroup(current);
-        }
-
         ModConfig.readConfig();
         ModConfig.writeConfig();
+    }
+
+    public static void registerPerEnchantmentConfig(DynamicRegistryManager registryManager) {
+        Optional<RegistryWrapper.Impl<Enchantment>> optionalWrapper = registryManager.getOptionalWrapper(RegistryKeys.ENCHANTMENT);
+        if(optionalWrapper.isEmpty()) { return; }
+        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+
+        for(RegistryKey<Enchantment> ench : wrapper.streamKeys().toList()) {
+            if(ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(ench.getValue().toString()) == null) {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.addGroup(ench);
+            }
+        }
+    }
+
+    public static void deregisterUnusedEnchantmentConfig(DynamicRegistryManager registryManager) {
+        Optional<RegistryWrapper.Impl<Enchantment>> optionalWrapper = registryManager.getOptionalWrapper(RegistryKeys.ENCHANTMENT);
+        if(optionalWrapper.isEmpty()) { return; }
+        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+
+        for(Map.Entry<String, Node> entry : ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren()) {
+            if(wrapper.streamKeys().noneMatch((element) -> element.getValue().toString().equals(entry.getKey()))) {
+                ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().removeChild(entry.getKey());
+            }
+        }
     }
 
     public static void readConfig() throws NullPointerException {
@@ -76,7 +96,7 @@ public class ModConfig {
             fw.close();
         }
         catch (IOException e) {
-            EnchantipsClient.LOGGER.error("Could not write configuration file.\n" + e.getMessage());
+            EnchantipsClient.LOGGER.error("Could not write configuration file.\n{}", e.getMessage());
         }
     }
 

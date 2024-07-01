@@ -1,9 +1,9 @@
 package com.fedpol1.enchantips.accessor;
 
 import net.minecraft.item.Item;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.entry.RegistryEntryList;
 
 public interface EnchantmentAccess {
-    TagKey<Item> enchantips$getPrimaryItems();
-    TagKey<Item> enchantips$getSecondaryItems();
+    RegistryEntryList<Item> enchantips$getPrimaryItems();
+    RegistryEntryList<Item> enchantips$getSecondaryItems();
 }

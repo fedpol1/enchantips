@@ -5,7 +5,7 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public abstract class SlotHighlight {
     public static void highlightSingleSlot(DrawContext context, ItemStack stack, int x, int y, int alpha) {
         if(stack.getCount() == 0) { return; }
 
-        DataComponentType<ItemEnchantmentsComponent> componentType = stack.isOf(Items.ENCHANTED_BOOK) ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS;
+        ComponentType<ItemEnchantmentsComponent> componentType = stack.isOf(Items.ENCHANTED_BOOK) ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS;
         ArrayList<EnchantmentLevel> arrayOfEnchLevel = EnchantmentLevel.ofList(stack.get(componentType));
         Collections.sort(arrayOfEnchLevel);
 
@@ -40,7 +40,7 @@ public abstract class SlotHighlight {
         }
         if(stackAccess.enchantips$enchantmentsVisible() || !ModOption.HIGHLIGHTS_SWITCH_OVERRIDE.getValue()) {
             for (EnchantmentLevel levelData : arrayOfEnchLevel) {
-                if (!ModConfigData.isEnchantmentHighlighted(levelData.getEnchantment())) { continue; }
+                if (!ModConfigData.isEnchantmentHighlighted(levelData.getKey())) { continue; }
                 arrayOfColor.add(levelData.getColor());
             }
         }

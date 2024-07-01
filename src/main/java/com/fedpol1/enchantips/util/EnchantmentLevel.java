@@ -4,43 +4,55 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.Text;
+import net.minecraft.world.World;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Optional;
 
 public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
-    private final Enchantment enchantment;
+    private final RegistryKey<Enchantment> key;
     private final int level;
 
-    private EnchantmentLevel(Enchantment e, int l) {
-        this.enchantment = e;
+    private EnchantmentLevel(RegistryKey<Enchantment> e, int l) {
+        this.key = e;
         this.level = l;
     }
 
-    public static EnchantmentLevel of(Enchantment e, int l) {
-        return new EnchantmentLevel(e, l);
+    public static EnchantmentLevel of(Enchantment e, int l) throws IllegalStateException {
+        World w = MinecraftClient.getInstance().world;
+        if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: world is null."); }
+        Optional<RegistryKey<Enchantment>> optional = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getKey(e);
+        if(optional.isEmpty()) { throw new IllegalStateException("Could not construct EnchantmentLevel: optional is empty."); }
+        return new EnchantmentLevel(optional.get(), l);
     }
 
     public static ArrayList<EnchantmentLevel> ofList(ItemEnchantmentsComponent component) {
         ArrayList<EnchantmentLevel> enchantments = new ArrayList<>();
         if(component == null) { return enchantments; }
-        for(Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : component.getEnchantmentsMap()) {
-            Enchantment enchantment = entry.getKey().value();
+        for(RegistryEntry<Enchantment> entry : component.getEnchantments()) {
+            Enchantment enchantment = entry.value();
             if(enchantment == null) { continue; }
-            enchantments.add(EnchantmentLevel.of(enchantment, entry.getIntValue()));
+            enchantments.add(EnchantmentLevel.of(enchantment, component.getLevel(entry)));
         }
         return enchantments;
     }
 
+    public RegistryKey<Enchantment> getKey() {
+        return this.key;
+    }
+
     public Enchantment getEnchantment() {
-        return this.enchantment;
+        World w = MinecraftClient.getInstance().world;
+        if(w == null) { return null; }
+        return w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(this.key);
     }
 
     public int getLevel() {
@@ -49,7 +61,9 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
     public Color getColor() {
         Enchantment ench = this.getEnchantment();
-        EnchantmentGroupNode gn = ModConfigData.get(Objects.requireNonNull(ench));
+        EnchantmentGroupNode gn = ModConfigData.get(this.getKey());
+
+        if(ench == null) { return (Color) ((OptionNode<?>) (gn.getMinColor())).getValue(); }
 
         if(this.getLevel() > ench.getMaxLevel()) {
             return ((Color) ((OptionNode<?>) (gn.getOvermaxColor())).getValue());
@@ -88,7 +102,7 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
     }
 
     public boolean isOvermax() {
-        return this.level > enchantment.getMaxLevel();
+        return this.level > this.getEnchantment().getMaxLevel();
     }
 
     public int compareTo(EnchantmentLevel other) {
@@ -98,10 +112,10 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
         }
 
         // first compare order from enchantmentcolordata
-        int comparison = ModConfigData.getEnchantmentOrder(this.getEnchantment()) - ModConfigData.getEnchantmentOrder(other.getEnchantment());
+        int comparison = ModConfigData.getEnchantmentOrder(this.getKey()) - ModConfigData.getEnchantmentOrder(other.getKey());
         if(comparison != 0) { return comparison; }
         // then compare translated name
-        comparison = Text.translatable(this.getEnchantment().getTranslationKey()).getString().compareTo(Text.translatable(other.getEnchantment().getTranslationKey()).getString());
+        comparison = this.getEnchantment().description().getString().compareTo(other.getEnchantment().description().getString());
         if(comparison != 0) { return comparison; }
         // and finally level
         return this.getLevel() - other.getLevel();

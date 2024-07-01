@@ -6,6 +6,7 @@ import com.fedpol1.enchantips.gui.ProtectionHud;
 import com.fedpol1.enchantips.gui.SlotHighlight;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,10 +18,11 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin implements InGameHudAccess {
 
-    @Inject(method = "renderHotbarItem(Lnet/minecraft/client/gui/DrawContext;IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
-    private void enchantips$renderHighlightsInHotbar(DrawContext context, int i, int j, float f, PlayerEntity playerEntity, ItemStack itemStack, int k, CallbackInfo ci) {
+
+    @Inject(method = "renderHotbarItem(Lnet/minecraft/client/gui/DrawContext;IILnet/minecraft/client/render/RenderTickCounter;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
+    private void enchantips$renderHighlightsInHotbar(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack itemStack, int seed, CallbackInfo ci) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
-            SlotHighlight.highlightSingleSlot(context, itemStack, i, j, ModOption.HIGHLIGHTS_ALPHA_HOTBAR.getValue());
+            SlotHighlight.highlightSingleSlot(context, itemStack, x, y, ModOption.HIGHLIGHTS_ALPHA_HOTBAR.getValue());
         }
     }
 

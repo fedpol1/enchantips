@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.client.item.TooltipType;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;

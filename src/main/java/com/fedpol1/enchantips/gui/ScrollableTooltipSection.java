@@ -17,8 +17,8 @@ public class ScrollableTooltipSection {
     public static final ScrollableTooltipSection EMPTY = new ScrollableTooltipSection(new ArrayList<>(), 1);
 
     private final List<Text> text;
+    private final int lineLimit;
     private int position;
-    private int lineLimit;
 
     public ScrollableTooltipSection(List<Text> text, int limit) {
         this.text = text;

@@ -5,7 +5,8 @@ import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 
@@ -15,10 +16,10 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
     @Mutable
     @Final
     @Shadow
-    private final Enchantment.Properties properties;
+    private final Enchantment.Definition definition;
 
-    protected EnchantmentMixin(Enchantment.Properties properties) {
-        this.properties = properties;
+    protected EnchantmentMixin(Enchantment.Definition definition) {
+        this.definition = definition;
     }
 
     /**
@@ -26,15 +27,15 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
      * @reason overhaul enchantment tooltips
      */
     @Overwrite
-    public Text getName(int level) {
-        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of((Enchantment)(Object)this, level));
+    public static Text getName(RegistryEntry<Enchantment> ench, int level) throws IllegalStateException {
+        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(ench.value(), level));
     }
 
-    public TagKey<Item> enchantips$getPrimaryItems() {
-        return this.properties.primaryItems().isEmpty() ? this.properties.supportedItems() : this.properties.primaryItems().get();
+    public RegistryEntryList<Item> enchantips$getPrimaryItems() {
+        return this.definition.primaryItems().isEmpty() ? this.definition.supportedItems() : this.definition.primaryItems().get();
     }
 
-    public TagKey<Item> enchantips$getSecondaryItems() {
-        return this.properties.supportedItems();
+    public RegistryEntryList<Item> enchantips$getSecondaryItems() {
+        return this.definition.supportedItems();
     }
 }

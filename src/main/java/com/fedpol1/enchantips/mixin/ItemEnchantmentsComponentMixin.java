@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.mixin;
 import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
-import net.minecraft.client.item.TooltipType;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;

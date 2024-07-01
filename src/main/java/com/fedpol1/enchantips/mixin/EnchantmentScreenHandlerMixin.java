@@ -7,14 +7,20 @@ import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.screen.EnchantmentScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.collection.IndexedIterable;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,34 +43,40 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
     }
 
     @Inject(method = "setProperty(II)V", at = @At(value = "RETURN"))
-    public void enchantips$setProperty(int id, int value, CallbackInfo ci) {
+    public void enchantips$setProperty(int id, int value, CallbackInfo ci) throws IllegalStateException {
         //noinspection ConstantValue
         if (!((Object)this instanceof EnchantmentScreenHandler handler) ||
             !ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
         ) { return; }
 
+        World w = MinecraftClient.getInstance().world;
+        if(w == null) { return; }
+        DynamicRegistryManager registryManager = w.getRegistryManager();
+        IndexedIterable<RegistryEntry<Enchantment>> indexedIterable = registryManager.get(RegistryKeys.ENCHANTMENT).getIndexedEntries();
+
         ItemStack stack = handler.getSlot(0).getStack();
         for (int i = 0; i < 3; i++) {
-            Enchantment givenEnchantment = Enchantment.byRawId(handler.enchantmentId[i]);
+            RegistryEntry<Enchantment> givenEnchantment = indexedIterable.get(handler.enchantmentId[i]);
             if (givenEnchantment == null) { continue; }
+            EnchantmentLevel enchLevel = EnchantmentLevel.of(givenEnchantment.value(), handler.enchantmentLevel[i]);
 
-            int absoluteLowerBound = EnchantmentFilterer.getLowerBound(givenEnchantment, handler.enchantmentLevel[i], stack, handler.enchantmentPower[i]);
-            int absoluteUpperBound = EnchantmentFilterer.getUpperBound(givenEnchantment, handler.enchantmentLevel[i], stack, handler.enchantmentPower[i]);
+            int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchLevel, stack, handler.enchantmentPower[i]);
+            int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchLevel, stack, handler.enchantmentPower[i]);
 
             List<EnchantmentLevel> levels = new ArrayList<>();
-            for (Enchantment current : Registries.ENCHANTMENT) {
-                if ((!(stack.isIn(current.getApplicableItems()) && current.isPrimaryItem(stack)) && !stack.isOf(Items.BOOK)) ||
-                    !current.canCombine(givenEnchantment) ||
-                    (!current.isAvailableForRandomSelection() || current.isTreasure())
+            for (RegistryEntry<Enchantment> current : indexedIterable) {
+                if ((!(stack.isIn(current.value().getApplicableItems()) && current.value().isPrimaryItem(stack)) && !stack.isOf(Items.BOOK)) ||
+                    !Enchantment.canBeCombined(givenEnchantment, current) ||
+                    (!current.isIn(EnchantmentTags.IN_ENCHANTING_TABLE))
                 ) { continue; }
 
-                for (int z = current.getMinLevel(); z <= current.getMaxLevel(); z++) {
-                    EnchantmentLevel level = EnchantmentLevel.of(current, z);
+                for (int z = current.value().getMinLevel(); z <= current.value().getMaxLevel(); z++) {
+                    EnchantmentLevel level = EnchantmentLevel.of(current.value(), z);
 
                     if (level.getHighestModifiedLevel() >= absoluteLowerBound &&
                         level.getLowestModifiedLevel() <= absoluteUpperBound
                     ) {
-                        levels.add(EnchantmentLevel.of(current, z));
+                        levels.add(EnchantmentLevel.of(current.value(), z));
                     }
                 }
             }

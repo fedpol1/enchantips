@@ -16,8 +16,8 @@ public class AnvilSwapButton extends TexturedButtonWidget {
     }
 
     enum Icon {
-        DEFAULT(new Identifier(EnchantipsClient.MODID, "widget/anvil_swap_button_default")),
-        HOVER(new Identifier(EnchantipsClient.MODID, "widget/anvil_swap_button_hover"));
+        DEFAULT(Identifier.of(EnchantipsClient.MODID, "widget/anvil_swap_button_default")),
+        HOVER(Identifier.of(EnchantipsClient.MODID, "widget/anvil_swap_button_hover"));
 
         final Identifier texture;
 

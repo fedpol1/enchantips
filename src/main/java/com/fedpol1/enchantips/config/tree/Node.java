@@ -31,6 +31,10 @@ public abstract class Node {
         return this.children.entrySet();
     }
 
+    public void removeChild(String s) {
+        this.children.remove(s);
+    }
+
     public String getName() {
         return this.name;
     }

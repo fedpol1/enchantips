@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class EnchantipsClient implements ClientModInitializer {
 
     public static final String MODID = "enchantips";
-    public static final Identifier SYMBOL_FONT = new Identifier(EnchantipsClient.MODID, "symbols");
+    public static final Identifier SYMBOL_FONT = Identifier.of(EnchantipsClient.MODID, "symbols");
     public static final Logger LOGGER = LogManager.getLogger();
 
     @Override

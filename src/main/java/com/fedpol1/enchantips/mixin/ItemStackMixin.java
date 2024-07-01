@@ -4,7 +4,7 @@ import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.client.item.TooltipType;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.UnbreakableComponent;
@@ -26,7 +26,7 @@ import java.util.List;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ItemStackAccess {
 
-    @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/item/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/tooltip/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
         ItemStack t = (ItemStack)(Object)this;
 
@@ -37,7 +37,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
 
         if(t.getItem().isEnchantable(t) && ModOption.ENCHANTABILITY_SWITCH.getValue()
                 && t.get(DataComponentTypes.ENCHANTMENTS) != null
-                && (t.getEnchantments().getEnchantmentsMap().isEmpty() || ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED.getValue())
+                && (t.getEnchantments().isEmpty() || ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED.getValue())
         ) {
             list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
         }

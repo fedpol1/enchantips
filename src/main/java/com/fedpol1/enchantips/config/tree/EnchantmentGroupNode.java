@@ -8,41 +8,61 @@ import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.IntegerOption;
 import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.*;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class EnchantmentGroupNode extends GroupNode {
 
-    private final Enchantment enchantment;
+    private final String identifier;
+    private final String description;
     private final OptionNode<Color> minColor;
     private final OptionNode<Color> maxColor;
     private final OptionNode<Color> overmaxColor;
     private final OptionNode<Integer> order;
     private final OptionNode<Boolean> highlight;
 
-    protected EnchantmentGroupNode(Enchantment e, Node parent) {
-        super(Objects.requireNonNull(Registries.ENCHANTMENT.getId(e)).toString(), parent);
-        this.enchantment = e;
-        ModConfigData.addEnchantment(e, this);
+    protected EnchantmentGroupNode(RegistryKey<Enchantment> key, Node parent) {
+        super(key.getValue().toString(), parent);
+        ModConfigData.addEnchantment(key, this);
 
-        this.minColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultMinColor(e).getRGB()),  ModConfigData.MIN_COLOR_KEY, 0);
-        this.maxColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultMaxColor(e).getRGB()),  ModConfigData.MAX_COLOR_KEY, 0);
-        this.overmaxColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultOvermaxColor(e).getRGB()),  ModConfigData.OVERMAX_COLOR_KEY, 0);
-        this.order = this.addOption(new IntegerOption(EnchantmentAppearanceHelper.getDefaultOrder(e), -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1);
-        this.highlight = this.addOption(new BooleanOption(EnchantmentAppearanceHelper.getDefaultHighlightVisibility(e)),  ModConfigData.HIGHLIGHT_KEY, 1);
-    }
+        String desc;
+        try {
+            desc = MinecraftClient
+                    .getInstance()
+                    .world
+                    .getRegistryManager()
+                    .get(RegistryKeys.ENCHANTMENT)
+                    .get(key)
+                    .description()
+                    .getString();
+        } catch (NullPointerException e) {
+            desc = "";
+        }
 
-    public Enchantment getEnchantment() {
-        return this.enchantment;
+        this.identifier = key.getValue().toString();
+        this.description = desc;
+        this.minColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultMinColor(key).getRGB()),  ModConfigData.MIN_COLOR_KEY, 0);
+        this.maxColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultMaxColor(key).getRGB()),  ModConfigData.MAX_COLOR_KEY, 0);
+        this.overmaxColor = this.addOption(new ColorOption(EnchantmentAppearanceHelper.getDefaultOvermaxColor(key).getRGB()),  ModConfigData.OVERMAX_COLOR_KEY, 0);
+        this.order = this.addOption(new IntegerOption(EnchantmentAppearanceHelper.getDefaultOrder(key), -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1);
+        this.highlight = this.addOption(new BooleanOption(EnchantmentAppearanceHelper.getDefaultHighlightVisibility(key)),  ModConfigData.HIGHLIGHT_KEY, 1);
     }
 
     private <T> OptionNode<T> addOption(Data<T> data, String key, int tooltipLines) {
         OptionNode<T> opt = new OptionNode<>(new ModOption<>(data, key, tooltipLines), this);
         opt.fullName = parent.getFullName() + "." + opt.getName();
         return opt;
+    }
+
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public OptionNode<Color> getMinColor() {
