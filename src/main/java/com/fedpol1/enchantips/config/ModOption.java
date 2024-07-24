@@ -45,6 +45,7 @@ public class ModOption<T> {
             (yaclScreen, buttonOption) -> {
                 yaclScreen.config.saveFunction();
                 ModConfig.deregisterUnusedEnchantmentConfig();
+                ModConfig.writeConfig();
             }
     ), "prune_enchantments", 1);
     public static final ModOption<Color> ACTION_COLOR = ModCategory.BULK_UPDATE.addOption(new ColorOption(0x000000), "action_color", 1);
@@ -54,6 +55,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setMinColor(ModOption.ACTION_COLOR.getValue());
                 });
+                ModConfig.writeConfig();
             }
     ), "set_min_colors", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -62,6 +64,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setMaxColor(ModOption.ACTION_COLOR.getValue());
                 });
+                ModConfig.writeConfig();
             }
     ), "set_max_colors", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_OVERMAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -70,6 +73,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOvermaxColor(ModOption.ACTION_COLOR.getValue());
                 });
+                ModConfig.writeConfig();
             }
     ), "set_overmax_colors", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> COPY_MAX_COLORS_TO_OVERMAX_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -77,6 +81,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).copyMaxColorToOvermaxColor();
                 });
+                ModConfig.writeConfig();
             }
     ), "copy_max_colors_to_overmax_colors", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_MIN_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -86,6 +91,7 @@ public class ModOption<T> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setMaxColor(null);
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOvermaxColor(null);
                 });
+                ModConfig.writeConfig();
             }
     ), "reset_colors", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> RESET_ORDERS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -93,6 +99,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(null);
                 });
+                ModConfig.writeConfig();
             }
     ), "reset_orders", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_ORDERS_TO_0 = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -101,6 +108,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setOrder(0);
                 });
+                ModConfig.writeConfig();
             }
     ), "set_orders_to_0", 1);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_TRUE = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -108,6 +116,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(true);
                 });
+                ModConfig.writeConfig();
             }
     ), "set_highlights_true", 2);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_HIGHLIGHTS_FALSE = ModCategory.BULK_UPDATE.addOption(new ActionOption(
@@ -115,6 +124,7 @@ public class ModOption<T> {
                 ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChildren().forEach(nodeEntry -> {
                     ((EnchantmentGroupNode)nodeEntry.getValue()).setHighlight(false);
                 });
+                ModConfig.writeConfig();
             }
     ), "set_highlights_false", 2);
 
