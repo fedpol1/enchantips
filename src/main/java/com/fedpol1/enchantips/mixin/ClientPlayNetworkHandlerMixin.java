@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientConnectionState;
