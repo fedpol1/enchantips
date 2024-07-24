@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class RegistriesMixin {
 
     // initialize config AFTER registries are frozen so per-enchant configs are loaded properly
+    // likely not necessary in 1.21+ but it isn't broken so i won't change it
     @Inject(method = "freezeRegistries()V", at = @At(value = "TAIL"))
     private static void enchantips$initializeConfig(CallbackInfo ci) {
         ModConfig.registerConfig();

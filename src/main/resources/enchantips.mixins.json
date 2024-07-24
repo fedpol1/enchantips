@@ -6,8 +6,8 @@
   "mixins": [],
   "client": [
     "AnvilScreenMixin",
-    "RegistriesMixin",
     "BundleTooltipComponentMixin",
+    "ClientPlayNetworkHandlerMixin",
     "EnchantmentMixin",
     "EnchantmentScreenHandlerMixin",
     "EnchantmentScreenMixin",
@@ -16,7 +16,7 @@
     "ItemEnchantmentsComponentMixin",
     "ItemStackMixin",
     "MerchantScreenMixin",
-    "RegistryLoaderMixin",
+    "RegistriesMixin",
     "UnbreakableComponentMixin"
   ],
   "server": [],
