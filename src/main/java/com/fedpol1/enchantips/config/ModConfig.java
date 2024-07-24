@@ -51,6 +51,11 @@ public class ModConfig {
             if(enchantment == null) { continue; }
             group.setDescription(enchantment.description());
         }
+
+        if(newEnchantments > 0) {
+            ModConfig.writeConfig();
+        }
+
         EnchantipsClient.LOGGER.info("Found {} pre-existing enchantments and {} new enchantments.", existingEnchantments, newEnchantments);
     }
 
