@@ -40,12 +40,26 @@ public class EnchantmentAppearanceHelper {
         }
         enchantmentText.setStyle(Style.EMPTY.withColor(colorFinal));
 
-        if (level != 1 || (ench).getMaxLevel() != 1) {
+        if (level != 1 || ench.getMaxLevel() != 1) {
             enchantmentText.append(" ").append(Text.translatable("enchantment.level." + level));
         }
 
         if(ModOption.MAXIMUM_ENCHANTMENT_LEVEL_SWITCH.getValue()) {
-            enchantmentText.append("/").append(Text.translatable("enchantment.level." + enchLevel.getEnchantment().getMaxLevel()));
+            MutableText maxLevelText = Text.literal("/")
+                    .append(Text.translatable("enchantment.level." + enchLevel.getEnchantment().getMaxLevel()));
+            if(level == ench.getMaxLevel()) {
+                if(ModOption.MAXIMUM_ENCHANTMENT_LEVEL_SWITCH_AT_MAX.getValue()) {
+                    enchantmentText.append(maxLevelText);
+                }
+            }
+            else if(level > ench.getMaxLevel()) {
+                if(ModOption.MAXIMUM_ENCHANTMENT_LEVEL_SWITCH_OVER_MAX.getValue()) {
+                    enchantmentText.append(maxLevelText);
+                }
+            }
+            else {
+                enchantmentText.append(maxLevelText);
+            }
         }
 
         if(ModOption.SWATCHES_SWITCH.getValue()) {

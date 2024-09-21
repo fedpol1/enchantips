@@ -24,6 +24,8 @@
   "enchantips.config.tooltips.anvil_cost.switch.option_title": "Switch",
   "enchantips.config.tooltips.maximum_enchantment_level": "Maximum Enchantment Level",
   "enchantips.config.tooltips.maximum_enchantment_level.switch.option_title": "Switch",
+  "enchantips.config.tooltips.maximum_enchantment_level.switch.at_max.option_title": "Switch When At Maximum Level",
+  "enchantips.config.tooltips.maximum_enchantment_level.switch.over_max.option_title": "Switch When Over Maximum Level",
   "enchantips.config.tooltips.enchantment_targets": "Enchantment Targets",
   "enchantips.config.tooltips.enchantment_targets.switch.option_title": "Switch",
   "enchantips.config.tooltips.enchantment_targets.limit.option_title": "Limit",
