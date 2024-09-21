@@ -124,6 +124,8 @@
   "enchantips.config.user_interface.bulk_update.set_highlights_false.option_tooltip.1": "This is distinct from the global enchantment highlight setting.",
   "enchantips.config.individual_enchantments.order.option_tooltip.0": "Lower order enchantments are shown first.",
   "enchantips.config.individual_enchantments.highlight.option_tooltip.0": "If disabled, this enchantment is not shown in item highlights.",
+  "enchantips.config.individual_enchantments.option_tooltip.0": "Tags in current world:",
+  "enchantips.config.individual_enchantments.option_tooltip.1": "Unknown",
 
   "enchantips.tooltip.scrollable.end": "- ↓ (%s) -",
   "enchantips.tooltip.scrollable.start": "- ↑ (%s) -",
