@@ -10,6 +10,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -30,7 +31,14 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
         World w = MinecraftClient.getInstance().world;
         if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: world is null."); }
         Optional<RegistryKey<Enchantment>> optional = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getKey(e);
-        if(optional.isEmpty()) { throw new IllegalStateException("Could not construct EnchantmentLevel: optional is empty."); }
+        if(optional.isEmpty()) {
+            IntegratedServer s = MinecraftClient.getInstance().getServer();
+            if(s == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & no integrated server exists."); }
+            w = s.getWorld(w.getRegistryKey());
+            if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & server world is null."); }
+            optional = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getKey(e);
+            if(optional.isEmpty()) { throw new IllegalStateException("Could not construct EnchantmentLevel: client & server enchantment optionals are both empty."); }
+        }
         return new EnchantmentLevel(optional.get(), l);
     }
 
