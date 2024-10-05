@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -148,8 +149,9 @@ public class EnchantmentAppearanceHelper {
                 .get(RegistryKeys.ENCHANTMENT)
                 .getEntryList(EnchantmentTags.IN_ENCHANTING_TABLE);
         if(entryList.isEmpty()) { return false; }
-        else if(entryList.get().contains(entry)) { return false; }
+        else if(!entryList.get().contains(entry)) { return false; }
 
-        return !primaryItems.contains(RegistryEntry.of(item));
+        String itemId = Registries.ITEM.getEntry(item).getIdAsString();
+        return primaryItems.stream().map(RegistryEntry::getIdAsString).anyMatch(c -> c.equals(itemId));
     }
 }
