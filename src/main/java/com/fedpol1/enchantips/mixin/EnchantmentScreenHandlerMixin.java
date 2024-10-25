@@ -52,7 +52,7 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
         World w = MinecraftClient.getInstance().world;
         if(w == null) { return; }
         DynamicRegistryManager registryManager = w.getRegistryManager();
-        IndexedIterable<RegistryEntry<Enchantment>> indexedIterable = registryManager.get(RegistryKeys.ENCHANTMENT).getIndexedEntries();
+        IndexedIterable<RegistryEntry<Enchantment>> indexedIterable = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getIndexedEntries();
 
         ItemStack stack = handler.getSlot(0).getStack();
         for (int i = 0; i < 3; i++) {

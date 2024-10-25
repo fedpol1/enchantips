@@ -3,6 +3,8 @@ package com.fedpol1.enchantips.util;
 import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.EnchantableComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -81,7 +83,7 @@ public class EnchantmentAppearanceHelper {
     }
 
     public static MutableText getEnchantmentTargetSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
-        Enchantment ench = registryManager.get(RegistryKeys.ENCHANTMENT).entryOf(key).value();
+        Enchantment ench = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(key).value();
 
         RegistryEntryList<Item> primaryItems = ((EnchantmentAccess)(Object) ench).enchantips$getPrimaryItems();
         RegistryEntryList<Item> secondaryItems = ((EnchantmentAccess)(Object) ench).enchantips$getSecondaryItems();
@@ -139,15 +141,14 @@ public class EnchantmentAppearanceHelper {
     }
 
     private static boolean canBePrimaryItem(Item item, RegistryKey<Enchantment> key, RegistryEntryList<Item> primaryItems) {
-        if(item.getEnchantability() == 0) { return false; }
         World w = MinecraftClient.getInstance().world;
         if(w == null) { return false; }
-        RegistryEntry<Enchantment> entry = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(key);
+        RegistryEntry<Enchantment> entry = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(key);
 
         Optional<RegistryEntryList.Named<Enchantment>> entryList = w
                 .getRegistryManager()
-                .get(RegistryKeys.ENCHANTMENT)
-                .getEntryList(EnchantmentTags.IN_ENCHANTING_TABLE);
+                .getOrThrow(RegistryKeys.ENCHANTMENT)
+                .getOptional(EnchantmentTags.IN_ENCHANTING_TABLE);
         if(entryList.isEmpty()) { return false; }
         else if(!entryList.get().contains(entry)) { return false; }
 

@@ -31,7 +31,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/EnchantmentScreen;isPointWithinBounds(IIIIDD)Z")),
             at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    public void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, boolean bl, int i, int j, int k, Optional<RegistryEntry.Reference<Enchantment>> optional, int l, int m, List<Text> list)
+    public void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<RegistryEntry.Reference<Enchantment>> optional, int l, int m, List<Text> list)
     throws IllegalStateException {
         if(optional.isEmpty()) { return; }
         Enchantment enchantment = optional.get().value();

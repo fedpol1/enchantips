@@ -30,13 +30,13 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
     public static EnchantmentLevel of(Enchantment e, int l) throws IllegalStateException {
         World w = MinecraftClient.getInstance().world;
         if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: world is null."); }
-        Optional<RegistryKey<Enchantment>> optional = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getKey(e);
+        Optional<RegistryKey<Enchantment>> optional = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getKey(e);
         if(optional.isEmpty()) {
             IntegratedServer s = MinecraftClient.getInstance().getServer();
             if(s == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & no integrated server exists."); }
             w = s.getWorld(w.getRegistryKey());
             if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & server world is null."); }
-            optional = w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getKey(e);
+            optional = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getKey(e);
             if(optional.isEmpty()) { throw new IllegalStateException("Could not construct EnchantmentLevel: client & server enchantment optionals are both empty."); }
         }
         return new EnchantmentLevel(optional.get(), l);
@@ -60,7 +60,7 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
     public Enchantment getEnchantment() {
         World w = MinecraftClient.getInstance().world;
         if(w == null) { return null; }
-        return w.getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(this.key);
+        return w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(this.key);
     }
 
     public int getLevel() {

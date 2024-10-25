@@ -4,16 +4,15 @@ import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
+import net.minecraft.component.type.EnchantableComponent;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +26,7 @@ import java.util.List;
 public abstract class ItemStackMixin implements ItemStackAccess {
 
     @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/tooltip/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list, MutableText mutableText) {
+    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
 
         Boolean glint = t.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
@@ -35,15 +34,17 @@ public abstract class ItemStackMixin implements ItemStackAccess {
             list.add(TooltipHelper.buildForcedGlint(glint));
         }
 
-        if(t.getItem().isEnchantable(t) && ModOption.ENCHANTABILITY_SWITCH.getValue()
+        if(t.isEnchantable() && ModOption.ENCHANTABILITY_SWITCH.getValue()
                 && t.get(DataComponentTypes.ENCHANTMENTS) != null
                 && (t.getEnchantments().isEmpty() || ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED.getValue())
         ) {
-            list.add(TooltipHelper.buildEnchantability(t.getItem().getEnchantability()));
+            EnchantableComponent c = t.get(DataComponentTypes.ENCHANTABLE);
+            assert c != null;
+            list.add(TooltipHelper.buildEnchantability(c.value()));
         }
 
         Integer cost = t.get(DataComponentTypes.REPAIR_COST);
-        if(!(t.getItem() instanceof EnchantedBookItem) && cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
+        if(!(t.isOf(Items.ENCHANTED_BOOK)) && cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
             list.add(TooltipHelper.buildRepairCost(cost));
         }
     }

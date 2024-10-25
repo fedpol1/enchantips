@@ -2,7 +2,6 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.SlotHighlight;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.item.ItemStack;
@@ -25,11 +24,11 @@ public abstract class MerchantScreenMixin {
         ((MerchantScreenMixin) (Object) instance).renderFirstBuyItem(context, adjustedFirstBuyItem, originalFirstBuyItem, x, y);
     }
 
-    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V"))
-    private void enchantips$highlightOtherTradeItems(DrawContext context, TextRenderer textRenderer, ItemStack stack, int x, int y) {
+    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemWithoutEntity(Lnet/minecraft/item/ItemStack;II)V"))
+    private void enchantips$highlightOtherTradeItems(DrawContext context, ItemStack stack, int x, int y) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, stack, x, y, ModOption.HIGHLIGHTS_ALPHA_TRADING.getValue());
         }
-        context.drawItemInSlot(textRenderer, stack, x, y);
+        context.drawItemWithoutEntity(stack, x, y);
     }
 }

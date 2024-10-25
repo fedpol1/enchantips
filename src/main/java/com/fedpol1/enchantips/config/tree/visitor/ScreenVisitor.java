@@ -64,7 +64,7 @@ public class ScreenVisitor implements TreeVisitor {
         if(tagsKnown) {
             Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = world
                     .getRegistryManager()
-                    .get(RegistryKeys.ENCHANTMENT)
+                    .getOrThrow(RegistryKeys.ENCHANTMENT)
                     .getEntry(Identifier.of(n.getIdentifier()));
             if(enchantmentReference.isPresent()) {
                 for (TagKey<Enchantment> tag : enchantmentReference.get().streamTags().toList()) {

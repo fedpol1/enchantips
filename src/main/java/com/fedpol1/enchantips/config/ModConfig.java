@@ -33,7 +33,7 @@ public class ModConfig {
     }
 
     public static void registerPerEnchantmentConfig(DynamicRegistryManager registryManager) {
-        Optional<RegistryWrapper.Impl<Enchantment>> optionalWrapper = registryManager.getOptionalWrapper(RegistryKeys.ENCHANTMENT);
+        Optional<Registry<Enchantment>> optionalWrapper = registryManager.getOptional(RegistryKeys.ENCHANTMENT);
         if(optionalWrapper.isEmpty()) { return; }
         RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
         int existingEnchantments = 0;
@@ -47,7 +47,7 @@ public class ModConfig {
             } else {
                 existingEnchantments++;
             }
-            Enchantment enchantment = registryManager.get(RegistryKeys.ENCHANTMENT).get(key);
+            Enchantment enchantment = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
             if(enchantment == null) { continue; }
             group.setDescription(enchantment.description());
         }
