@@ -24,7 +24,7 @@ public class EnchantipsClient implements ClientModInitializer {
     public static final Identifier SYMBOL_FONT = Identifier.of(EnchantipsClient.MODID, "symbols");
     public static final Logger LOGGER = LogManager.getLogger();
 
-    private static KeyBinding ENCHANTMENT_INFO_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    private static final KeyBinding ENCHANTMENT_INFO_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.enchantips.enchantment_info",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_UNKNOWN, // unbound by default
@@ -42,7 +42,9 @@ public class EnchantipsClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             Screen current = MinecraftClient.getInstance().currentScreen;
             if(ENCHANTMENT_INFO_KEY.wasPressed() && !(current instanceof EnchantmentInfoScreen)) {
-                MinecraftClient.getInstance().setScreen(new EnchantmentInfoScreen(Text.of("aaaaaaaa"), current));
+                MinecraftClient.getInstance().setScreen(
+                        new EnchantmentInfoScreen(Text.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), current)
+                );
             }
         });
     }
