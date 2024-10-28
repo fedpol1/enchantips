@@ -30,6 +30,10 @@ public abstract class InfoDelineator implements Drawable, Element {
         return InfoDelineator.LINE_HEIGHT;
     }
 
+    public int getHeight() {
+        return this.getHeight(0);
+    }
+
     public void setHeight() {
         this.height = InfoDelineator.LINE_HEIGHT;
     }

@@ -37,7 +37,7 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
         int sum = 0;
         for(int i = 0; i < this.lines.size(); i++) {
             if(i >= index) { return sum; }
-            sum += this.lines.get(i).getHeight(this.lines.size());
+            sum += this.lines.get(i).getHeight();
         }
         return sum;
     }

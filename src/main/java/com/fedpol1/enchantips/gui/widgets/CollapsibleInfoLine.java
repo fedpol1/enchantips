@@ -46,6 +46,10 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
         return InfoDelineator.LINE_HEIGHT + (this.collapsed ? 0 : this.lines.getHeight(index));
     }
 
+    public int getHeight() {
+        return this.getHeight(this.lines.lines.size());
+    }
+
     @Override
     public void refresh(int index) {
         this.x = this.parent.x;
@@ -65,7 +69,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
         }
 
         if(this.y < this.nearestScrollableParent.y) { return; }
-        if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
+        if(this.y + InfoDelineator.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         this.drawButton(context, mouseX, mouseY, delta);
@@ -89,16 +93,21 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        for(InfoDelineator line : this.lines.lines) {
+            if(line.mouseClicked(mouseX, mouseY, button)) {
+                return true;
+            }
+        }
+
         if(this.isWithinButton(mouseX, mouseY) && button == 0) {
             this.collapsed = !this.collapsed;
-            boolean found = false;
             for (int i = 0; i < this.parent.lines.size(); i++) {
-                if (this.parent.lines.get(i) == this || found) {
-                    found = true;
-                    this.parent.lines.get(i).refresh(i);
+                if (this.parent.lines.get(i) == this) {
+                    this.refresh(i);
+                    this.nearestScrollableParent.refresh(0);
+                    return true;
                 }
             }
-            return true;
         }
         return false;
     }
