@@ -26,10 +26,8 @@ public class InfoLine extends InfoDelineator implements Drawable, Element {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawHorizontalLine(this.x, this.x + width, this.y, 0xff0000ff);
-        context.drawHorizontalLine(this.x, this.x + width, this.y + LINE_HEIGHT, 0xff0000ff);
-        context.drawVerticalLine(this.x, this.y, this.y + LINE_HEIGHT, 0xff0000ff);
-        context.drawVerticalLine(this.x + this.width, this.y, this.y + LINE_HEIGHT, 0xff0000ff);
+        if(this.y < this.nearestScrollableParent.y) { return; }
+        if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         context.drawTextWrapped(renderer, renderer.trimToWidth(this.text, this.width), this.x, this.y + 1, this.width, 0x404040);

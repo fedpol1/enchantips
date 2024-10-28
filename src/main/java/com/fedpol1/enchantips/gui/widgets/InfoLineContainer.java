@@ -74,17 +74,8 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         for(InfoDelineator info : lines) {
-            if(info.nearestScrollableParent == null) {
-                EnchantipsClient.LOGGER.info("a");
-            }
-            if(info.y < info.nearestScrollableParent.y) { continue; }
-            if(info.y + info.height > info.nearestScrollableParent.y + info.nearestScrollableParent.height) { continue; }
             info.render(context, mouseX, mouseY, delta);
         }
-        context.drawHorizontalLine(this.x, this.x + width, this.y, 0xff000000);
-        context.drawHorizontalLine(this.x, this.x + width, this.y + this.height, 0xff000000);
-        context.drawVerticalLine(this.x, this.y, this.y + this.height, 0xff000000);
-        context.drawVerticalLine(this.x + this.width, this.y, this.y + this.height, 0xff000000);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

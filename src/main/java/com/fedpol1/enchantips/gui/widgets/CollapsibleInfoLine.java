@@ -60,17 +60,16 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawHorizontalLine(this.x, this.x + width, this.y, 0xffff0000);
-        context.drawHorizontalLine(this.x, this.x + width, this.y + LINE_HEIGHT, 0xffff0000);
-        context.drawVerticalLine(this.x, this.y, this.y + LINE_HEIGHT, 0xffff0000);
-        context.drawVerticalLine(this.x + this.width, this.y, this.y + LINE_HEIGHT, 0xffff0000);
+        if(!this.collapsed) {
+            this.lines.render(context, mouseX, mouseY, delta);
+        }
+
+        if(this.y < this.nearestScrollableParent.y) { return; }
+        if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         this.drawButton(context, mouseX, mouseY, delta);
         context.drawTextWrapped(renderer, renderer.trimToWidth(this.text, this.width), this.x + BUTTON_INDENTATION, this.y + 1, this.width - BUTTON_INDENTATION, 0x404040);
-        if(!this.collapsed) {
-            this.lines.render(context, mouseX, mouseY, delta);
-        }
     }
 
     private boolean isWithinButton(double mouseX, double mouseY) {
