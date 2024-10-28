@@ -1,7 +1,8 @@
 package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.gui.widgets.InfoLineContainer;
+import com.fedpol1.enchantips.gui.widgets.CollapsibleInfoLine;
+import com.fedpol1.enchantips.gui.widgets.ScrollableInfoLineContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -15,18 +16,34 @@ public class EnchantmentInfoScreen extends Screen {
     private final Screen parent;
     private static final Identifier FRAME_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/frame");
     private static final Identifier BACKGROUND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/background");
-    private final InfoLineContainer lines;
+    private final ScrollableInfoLineContainer lines;
 
     public EnchantmentInfoScreen(Text title, @Nullable Screen parent) {
         super(title);
         this.parent = parent;
-        this.lines = new InfoLineContainer(this.width/10 + 32, this.height/10 + 32, this.width * 8/10 - 64, this.height * 8/10 - 64);
+        this.lines = new ScrollableInfoLineContainer(this);
+        CollapsibleInfoLine c = new CollapsibleInfoLine(Text.literal("new"));
         this.lines.addLine(Text.literal("a"));
+        this.lines.addLine(c);
+        c.addLine(Text.literal("qqq1"));
+        c.addLine(Text.literal("qqq2"));
+        c.addLine(Text.literal("qqq3"));
         this.lines.addLine(Text.literal("bb"));
         this.lines.addLine(Text.literal("cccc"));
         this.lines.addLine(Text.literal("dddddddd"));
         this.lines.addLine(Text.literal("eeeeeeeeeeeeeeee"));
         this.lines.addLine(Text.literal("ffffffffffffffffffffffffffffffff"));
+        this.lines.addLine(Text.literal("1"));
+        this.lines.addLine(Text.literal("2"));
+        this.lines.addLine(Text.literal("3"));
+        this.lines.addLine(Text.literal("4"));
+        this.lines.addLine(Text.literal("5"));
+        this.lines.addLine(Text.literal("6"));
+        this.lines.addLine(Text.literal("7"));
+        this.lines.addLine(Text.literal("8"));
+        this.lines.addLine(Text.literal("9"));
+        this.lines.addLine(Text.literal("10"));
+
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -54,12 +71,23 @@ public class EnchantmentInfoScreen extends Screen {
 
     @Override
     protected void init() {
-        this.lines.refresh(this.width/10 + 32, this.height/10 + 64, this.width * 8/10 - 64, this.height * 8/10 - 96);
+        this.lines.refresh(0);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+        lines.scroll((int)verticalAmount);
+        return false;
+    }
+
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        this.lines.mouseClicked(mouseX, mouseY, button);
+        return true;
     }
 
     @Override
