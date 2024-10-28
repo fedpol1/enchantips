@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Element {
 
-    protected static final int BUTTON_INDENTATION = 11;
+    protected static final int BUTTON_INDENTATION = 10;
     protected static final Identifier COLLAPSE_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/collapse");
     protected static final Identifier COLLAPSE_HOVER_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/collapse_hover");
     protected static final Identifier EXPAND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/expand");
@@ -73,7 +73,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
     }
 
     private boolean isWithinButton(double mouseX, double mouseY) {
-        int x = this.x + 1;
+        int x = this.x;
         int y = this.y + 1;
         return mouseX >= x && mouseX < x + BUTTON_WIDTH && mouseY >= y && mouseY < y + BUTTON_HEIGHT;
     }
@@ -85,7 +85,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
         } else {
             texture = this.collapsed ? EXPAND_TEXTURE : COLLAPSE_TEXTURE;
         }
-        context.drawGuiTexture(RenderLayer::getGuiTextured, texture, this.x + 1, this.y + 1, BUTTON_WIDTH, BUTTON_HEIGHT);
+        context.drawGuiTexture(RenderLayer::getGuiTextured, texture, this.x, this.y + 1, BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
