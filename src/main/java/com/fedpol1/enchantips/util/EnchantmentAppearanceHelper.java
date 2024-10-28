@@ -138,7 +138,7 @@ public class EnchantmentAppearanceHelper {
         return Symbol.mergeAndDecorate(finalSymbols);
     }
 
-    private static boolean canBePrimaryItem(Item item, RegistryKey<Enchantment> key, RegistryEntryList<Item> primaryItems) {
+    public static boolean canBePrimaryItem(Item item, RegistryKey<Enchantment> key, RegistryEntryList<Item> primaryItems) {
         World w = MinecraftClient.getInstance().world;
         if(w == null) { return false; }
         RegistryEntry<Enchantment> entry = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(key);

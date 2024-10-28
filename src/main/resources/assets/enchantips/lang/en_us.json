@@ -3,6 +3,9 @@
   "enchantment.enchantips.unknown": "Enchantips: Unknown",
 
   "enchantips.gui.enchantment_info": "Enchantment Information",
+  "enchantips.gui.enchantment_info.primary_items": "Primary Items",
+  "enchantips.gui.enchantment_info.secondary_items": "Secondary Items",
+  "enchantips.gui.enchantment_info.tags": "Tags:",
 
   "enchantips.config": "Enchantips Configuration",
   "enchantips.config.tooltips": "Tooltips",

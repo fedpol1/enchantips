@@ -1,15 +1,26 @@
 package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.gui.widgets.CollapsibleInfoLine;
+import com.fedpol1.enchantips.gui.widgets.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.ScrollableInfoLineContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.*;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Optional;
 
 public class EnchantmentInfoScreen extends Screen {
 
@@ -22,28 +33,54 @@ public class EnchantmentInfoScreen extends Screen {
         super(title);
         this.parent = parent;
         this.lines = new ScrollableInfoLineContainer(this);
-        CollapsibleInfoLine c = new CollapsibleInfoLine(Text.literal("new"));
-        this.lines.addLine(Text.literal("a"));
-        this.lines.addLine(c);
-        c.addLine(Text.literal("qqq1"));
-        c.addLine(Text.literal("qqq2"));
-        c.addLine(Text.literal("qqq3"));
-        this.lines.addLine(Text.literal("bb"));
-        this.lines.addLine(Text.literal("cccc"));
-        this.lines.addLine(Text.literal("dddddddd"));
-        this.lines.addLine(Text.literal("eeeeeeeeeeeeeeee"));
-        this.lines.addLine(Text.literal("ffffffffffffffffffffffffffffffff"));
-        this.lines.addLine(Text.literal("1"));
-        this.lines.addLine(Text.literal("2"));
-        this.lines.addLine(Text.literal("3"));
-        this.lines.addLine(Text.literal("4"));
-        this.lines.addLine(Text.literal("5"));
-        this.lines.addLine(Text.literal("6"));
-        this.lines.addLine(Text.literal("7"));
-        this.lines.addLine(Text.literal("8"));
-        this.lines.addLine(Text.literal("9"));
-        this.lines.addLine(Text.literal("10"));
 
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if(world == null) { return; }
+        Optional<Registry<Enchantment>> optionalWrapper = world.getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT);
+        if(optionalWrapper.isEmpty()) { return; }
+        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+
+        for(RegistryKey<Enchantment> key : wrapper.streamKeys().toList()) {
+            Enchantment enchantment = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
+            if(enchantment == null) { continue; }
+            CollapsibleInfoLine enchMeta = new CollapsibleInfoLine(enchantment.description());
+            this.lines.addLine(enchMeta);
+
+            // identifier
+            enchMeta.addLine(new InfoLine(Text.literal(key.getValue().toString())));
+
+            // primary and secondary items
+            CollapsibleInfoLine primary = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.primary_items"));
+            CollapsibleInfoLine secondary = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.secondary_items"));
+            List<String> primaryItems = ((EnchantmentAccess)(Object) enchantment).enchantips$getPrimaryItems()
+                    .stream()
+                    .map(e -> Registries.ITEM.getId(e.value()).toString())
+                    .sorted()
+                    .toList();
+            List<String> secondaryItems = ((EnchantmentAccess)(Object) enchantment).enchantips$getSecondaryItems()
+                    .stream()
+                    .map(e -> Registries.ITEM.getId(e.value()).toString())
+                    .sorted()
+                    .filter(e -> !primaryItems.contains(e))
+                    .toList();
+            if(!primaryItems.isEmpty()) { enchMeta.addLine(primary); }
+            if(!secondaryItems.isEmpty()) { enchMeta.addLine(secondary); }
+            primaryItems.forEach(e -> primary.addLine(Text.literal(e)));
+            secondaryItems.forEach(e -> secondary.addLine(Text.literal(e)));
+
+            // tags
+            CollapsibleInfoLine tags = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.tags"));
+            enchMeta.addLine(tags);
+            Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = world
+                    .getRegistryManager()
+                    .getOrThrow(RegistryKeys.ENCHANTMENT)
+                    .getEntry(key.getValue());
+            if(enchantmentReference.isPresent()) {
+                for (TagKey<Enchantment> tag : enchantmentReference.get().streamTags().toList()) {
+                    tags.addLine(Text.literal("#").append(Text.literal(tag.id().toString())));
+                }
+            }
+        }
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
