@@ -3,9 +3,13 @@
   "enchantment.enchantips.unknown": "Enchantips: Unknown",
 
   "enchantips.gui.enchantment_info": "Enchantment Information",
+  "enchantips.gui.enchantment_info.max_level": "Max Level: %s",
+  "enchantips.gui.enchantment_info.weight": "Weight: %s",
+  "enchantips.gui.enchantment_info.anvil_cost": "Anvil Cost: %s",
+  "enchantips.gui.enchantment_info.exclusive_set": "Exclusive Set",
   "enchantips.gui.enchantment_info.primary_items": "Primary Items",
   "enchantips.gui.enchantment_info.secondary_items": "Secondary Items",
-  "enchantips.gui.enchantment_info.tags": "Tags:",
+  "enchantips.gui.enchantment_info.tags": "Tags",
 
   "enchantips.config": "Enchantips Configuration",
   "enchantips.config.tooltips": "Tooltips",

@@ -32,7 +32,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     }
 
     public void scroll(int s) {
-        int scroll = s * 5;
+        int scroll = s * InfoDelineator.LINE_HEIGHT;
         InfoDelineator last = this.getLast();
         int scrollingCapacity = Math.max(0, last.y + last.height - this.y - this.height);
         this.scrollHeight += Math.clamp(scroll, -scrollingCapacity, -this.scrollHeight);

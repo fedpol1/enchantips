@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,14 +41,23 @@ public class EnchantmentInfoScreen extends Screen {
         if(optionalWrapper.isEmpty()) { return; }
         RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
 
-        for(RegistryKey<Enchantment> key : wrapper.streamKeys().toList()) {
+        for(RegistryKey<Enchantment> key : wrapper.streamKeys().sorted(Comparator.comparing(RegistryKey::toString)).toList()) {
             Enchantment enchantment = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
             if(enchantment == null) { continue; }
-            CollapsibleInfoLine enchMeta = new CollapsibleInfoLine(enchantment.description());
+            CollapsibleInfoLine enchMeta = new CollapsibleInfoLine(Text.literal(key.getValue().toString()));
             this.lines.addLine(enchMeta);
 
-            // identifier
-            enchMeta.addLine(new InfoLine(Text.literal(key.getValue().toString())));
+            // misc
+            enchMeta.addLine(new InfoLine(enchantment.description())); // description
+            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.max_level", enchantment.getMaxLevel())));
+            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.weight", enchantment.getWeight())));
+            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.anvil_cost", enchantment.getAnvilCost())));
+
+            // exclusive set
+            CollapsibleInfoLine exclusive = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.exclusive_set"));
+            List<String> exclusiveEnchs = enchantment.exclusiveSet().stream().map(RegistryEntry::getIdAsString).sorted().toList();
+            if(!exclusiveEnchs.isEmpty()) { enchMeta.addLine(exclusive); }
+            exclusiveEnchs.forEach(e -> exclusive.addLine(Text.literal(e)));
 
             // primary and secondary items
             CollapsibleInfoLine primary = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.primary_items"));
