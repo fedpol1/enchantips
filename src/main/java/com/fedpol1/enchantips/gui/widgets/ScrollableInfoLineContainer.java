@@ -1,19 +1,27 @@
 package com.fedpol1.enchantips.gui.widgets;
 
-import com.fedpol1.enchantips.gui.EnchantmentInfoScreen;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 
 public class ScrollableInfoLineContainer extends InfoLineContainer implements Drawable, Element {
 
+    protected int padding;
     protected int scrollHeight;
-    private final EnchantmentInfoScreen screen;
 
-    public ScrollableInfoLineContainer(EnchantmentInfoScreen screen) {
+    public ScrollableInfoLineContainer() {
         super();
-        this.screen = screen;
         this.scrollHeight = 0;
         this.nearestScrollableParent = this;
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public int getHeight() {
@@ -21,11 +29,6 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     }
 
     public void refresh(int index) {
-        this.x = this.screen.width/10 + 15;
-        this.y = this.screen.height/10 + 24;
-        this.width = this.screen.width * 8/10 - 30;
-        this.height = this.screen.height * 8/10 - 39;
-
         for(int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);
         }
@@ -34,7 +37,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     public void scroll(int s) {
         int scroll = s * InfoDelineator.LINE_HEIGHT;
         InfoDelineator last = this.getLast();
-        int scrollingCapacity = Math.max(0, last.y + last.height - this.y - this.height);
+        int scrollingCapacity = Math.max(0, last.y + last.height - (this.y + this.height));
         this.scrollHeight += Math.clamp(scroll, -scrollingCapacity, -this.scrollHeight);
         this.refresh(0);
     }

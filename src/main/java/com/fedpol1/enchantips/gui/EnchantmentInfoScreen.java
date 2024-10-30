@@ -33,7 +33,7 @@ public class EnchantmentInfoScreen extends Screen {
     public EnchantmentInfoScreen(Text title, @Nullable Screen parent) {
         super(title);
         this.parent = parent;
-        this.lines = new ScrollableInfoLineContainer(this);
+        this.lines = new ScrollableInfoLineContainer();
 
         ClientWorld world = MinecraftClient.getInstance().world;
         if(world == null) { return; }
@@ -118,6 +118,8 @@ public class EnchantmentInfoScreen extends Screen {
 
     @Override
     protected void init() {
+        this.lines.setPosition(this.width/10 + 15, this.height/10 + 24);
+        this.lines.setDimensions(this.width * 8/10 - 30, this.height * 8/10 - 39);
         this.lines.refresh(0);
     }
 
