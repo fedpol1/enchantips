@@ -6,6 +6,9 @@
   "enchantips.gui.enchantment_info.max_level": "Max Level: %s",
   "enchantips.gui.enchantment_info.weight": "Weight: %s",
   "enchantips.gui.enchantment_info.anvil_cost": "Anvil Cost: %s",
+  "enchantips.gui.enchantment_info.min_power": "Minimum Enchantment Power",
+  "enchantips.gui.enchantment_info.max_power": "Maximum Enchantment Power",
+  "enchantips.gui.enchantment_info.per_power": "%s: %s",
   "enchantips.gui.enchantment_info.exclusive_set": "Exclusive Set",
   "enchantips.gui.enchantment_info.primary_items": "Primary Items",
   "enchantips.gui.enchantment_info.secondary_items": "Secondary Items",
@@ -38,7 +41,7 @@
   "enchantips.config.tooltips.enchantment_targets": "Enchantment Targets",
   "enchantips.config.tooltips.enchantment_targets.switch.option_title": "Switch",
   "enchantips.config.tooltips.enchantment_targets.limit.option_title": "Limit",
-  "enchantips.config.tooltips.modified_enchanting_power": "Modified Enchanting Power",
+  "enchantips.config.tooltips.modified_enchanting_power": "Enchanting Power",
   "enchantips.config.tooltips.modified_enchanting_power.switch.option_title": "Switch",
   "enchantips.config.tooltips.modified_enchanting_power.color.option_title": "Color",
   "enchantips.config.tooltips.modified_enchanting_power.color.value.option_title": "Value Color",
@@ -143,6 +146,6 @@
   "enchantips.tooltip.glint_override.false": "Glint Overridden Off",
   "enchantips.tooltip.repair_cost": "Repair Cost: %s",
   "enchantips.tooltip.enchantability": "Enchantability: %s",
-  "enchantips.tooltip.modified_level": "Modified Level: %s-%s",
+  "enchantips.tooltip.modified_level": "Enchanting Power: %s-%s",
   "enchantips.tooltip.modified_level.for_enchantment": "%s-%s"
 }

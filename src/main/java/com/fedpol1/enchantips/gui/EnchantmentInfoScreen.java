@@ -53,6 +53,23 @@ public class EnchantmentInfoScreen extends Screen {
             enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.weight", enchantment.getWeight())));
             enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.anvil_cost", enchantment.getAnvilCost())));
 
+            CollapsibleInfoLine minPowers = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.min_power"));
+            CollapsibleInfoLine maxPowers = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.max_power"));
+            enchMeta.addLine(minPowers);
+            enchMeta.addLine(maxPowers);
+            for(int i = 1; i < enchantment.getMaxLevel() + 1; i++) {
+                minPowers.addLine(Text.translatable(
+                        "enchantips.gui.enchantment_info.per_power",
+                        Text.translatable("enchantment.level." + i),
+                        enchantment.getMinPower(i)
+                        ));
+                maxPowers.addLine(Text.translatable(
+                        "enchantips.gui.enchantment_info.per_power",
+                        Text.translatable("enchantment.level." + i),
+                        enchantment.getMaxPower(i)
+                ));
+            }
+
             // exclusive set
             CollapsibleInfoLine exclusive = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.exclusive_set"));
             List<String> exclusiveEnchs = enchantment.exclusiveSet().stream().map(RegistryEntry::getIdAsString).sorted().toList();
