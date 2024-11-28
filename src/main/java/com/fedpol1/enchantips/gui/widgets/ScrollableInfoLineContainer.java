@@ -48,8 +48,8 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         super.render(context, mouseX, mouseY, delta);
 
         if(this.scrollerHeight < this.scrollbarHeight) {
-            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_BACKGROUND_TEXTURE, scrollbarX, scrollbarY, 6, this.scrollbarHeight);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, scrollbarX, scrollerY, 6, this.scrollerHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
         }
     }
 
@@ -61,10 +61,8 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         this.scrollbarHeight = this.getHeight() + 2 * this.padding;
         this.scrollbarX = this.x + this.width + this.padding - SCROLLER_WIDTH;
         this.scrollbarY = this.y - this.padding;
-        this.scrollerHeight = (int) Math.clamp((float) scrollbarHeight * this.getHeight() / super.getHeight(), 32, scrollbarHeight);
+        this.scrollerHeight = (int) Math.clamp((float) this.scrollbarHeight * this.getHeight() / super.getHeight(), 32, this.scrollbarHeight);
         this.scrollerY = Math.clamp (
-                (int) (scrollbarY - (float) this.scrollHeight * (scrollbarHeight - this.scrollerHeight) / (super.getHeight() - this.getHeight())),
-                scrollbarY,
                 scrollbarY + scrollbarHeight - this.scrollerHeight
         );
     }
@@ -79,5 +77,16 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+            this.setScrollAmount((double)this.getMaxScroll());
+        } else {
+            double d = (double)Math.max(1, this.getMaxScroll());
+            int i = this.height;
+            int j = MathHelper.clamp((int)((float)(i * i) / (float)this.getMaxPosition()), 32, i - 8);
+            double e = Math.max(1.0, d / (double)(i - j));
+            this.setScrollAmount(this.getScrollAmount() + deltaY * e);
+        }*/
+
+        return true;
     }
 }
