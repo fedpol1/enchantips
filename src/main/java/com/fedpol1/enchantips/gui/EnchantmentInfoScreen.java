@@ -173,6 +173,11 @@ public class EnchantmentInfoScreen extends Screen {
         return true;
     }
 
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        this.lines.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return true;
+    }
+
     @Override
     public void close() {
         assert this.client != null;

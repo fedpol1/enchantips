@@ -5,7 +5,6 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 public class ScrollableInfoLineContainer extends InfoLineContainer implements Drawable, Element {
 
@@ -21,11 +20,13 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     private int scrollbarHeight;
     private int scrollerY;
     private int scrollerHeight;
+    private boolean scrolling;
 
     public ScrollableInfoLineContainer(int padding) {
         super();
         this.padding = padding;
         this.scrollHeight = 0;
+        this.scrolling = false;
         this.nearestScrollableParent = this;
     }
 
@@ -63,7 +64,9 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         this.scrollbarY = this.y - this.padding;
         this.scrollerHeight = (int) Math.clamp((float) this.scrollbarHeight * this.getHeight() / super.getHeight(), 32, this.scrollbarHeight);
         this.scrollerY = Math.clamp (
-                scrollbarY + scrollbarHeight - this.scrollerHeight
+                (int) (scrollbarY - (float) this.scrollHeight * (this.scrollbarHeight - this.scrollerHeight) / (super.getHeight() - this.getHeight())),
+                this.scrollbarY,
+                this.scrollbarY + this.scrollbarHeight - this.scrollerHeight
         );
     }
 
@@ -75,18 +78,35 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         this.refresh(0);
     }
 
+    private void scrollTo(int destination) {
+        float destinationFraction = Math.clamp(
+                ((float) destination - this.scrollbarY - this.scrollerHeight/2.0f) / (this.scrollbarHeight - this.scrollerHeight),
+                0.0f,
+                1.0f
+        );
+        this.scroll((int) -((this.scrollHeight + destinationFraction * (super.getHeight() - this.getHeight())) / InfoDelineator.LINE_HEIGHT));
+    }
+
+    private boolean isWithinScrollbar(double mouseX, double mouseY) {
+        return mouseX >= this.scrollbarX && mouseX < this.scrollbarX + SCROLLER_WIDTH &&
+                mouseY >= this.scrollbarY && mouseY < this.scrollbarY + this.scrollbarHeight;
+    }
+
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        this.scrolling = button == 0 && this.isWithinScrollbar(mouseX, mouseY);
+        if(this.scrolling) {
+            this.scrollTo((int) mouseY);
+        }
+
         return super.mouseClicked(mouseX, mouseY, button);
     }
-            this.setScrollAmount((double)this.getMaxScroll());
-        } else {
-            double d = (double)Math.max(1, this.getMaxScroll());
-            int i = this.height;
-            int j = MathHelper.clamp((int)((float)(i * i) / (float)this.getMaxPosition()), 32, i - 8);
-            double e = Math.max(1.0, d / (double)(i - j));
-            this.setScrollAmount(this.getScrollAmount() + deltaY * e);
-        }*/
 
-        return true;
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if(super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) { return true; }
+        if(this.scrolling) {
+            this.scrollTo((int) mouseY);
+            return true;
+        }
+        return false;
     }
 }
