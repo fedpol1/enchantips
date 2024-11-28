@@ -40,7 +40,7 @@ public class EnchantmentInfoScreen extends Screen {
         super(title);
         this.parent = parent;
         this.calculateDimensions();
-        this.lines = new ScrollableInfoLineContainer(6);
+        this.lines = new ScrollableInfoLineContainer(0x404040, 6);
 
         ClientWorld world = MinecraftClient.getInstance().world;
         if(world == null) { return; }

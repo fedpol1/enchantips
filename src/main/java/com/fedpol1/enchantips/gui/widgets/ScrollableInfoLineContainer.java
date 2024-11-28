@@ -13,6 +13,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     private static final Identifier SCROLLER_BACKGROUND_TEXTURE = Identifier.ofVanilla("widget/scroller_background");
     private static final int SCROLLER_WIDTH = 6;
 
+    protected int childColor;
     protected int padding; // not really
     protected int scrollHeight;
     private int scrollbarX;
@@ -22,8 +23,9 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     private int scrollerHeight;
     private boolean scrolling;
 
-    public ScrollableInfoLineContainer(int padding) {
+    public ScrollableInfoLineContainer(int childColor, int padding) {
         super();
+        this.childColor = childColor;
         this.padding = padding;
         this.scrollHeight = 0;
         this.scrolling = false;

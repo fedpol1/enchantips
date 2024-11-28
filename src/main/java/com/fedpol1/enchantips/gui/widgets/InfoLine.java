@@ -30,7 +30,14 @@ public class InfoLine extends InfoDelineator implements Drawable, Element {
         if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        context.drawTextWrapped(renderer, renderer.trimToWidth(this.text, this.width), this.x, this.y + 1, this.width, 0x404040);
+        context.drawTextWrapped(
+                renderer,
+                renderer.trimToWidth(this.text, this.width),
+                this.x,
+                this.y + 1,
+                this.width,
+                this.nearestScrollableParent.childColor
+        );
     }
 
     @Override
