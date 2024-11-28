@@ -6,8 +6,8 @@ import net.minecraft.client.gui.Element;
 
 public abstract class InfoDelineator implements Drawable, Element {
 
-    protected static final int LINE_HEIGHT = 10;
-    protected static final int INDENTATION = 16;
+    public static final int LINE_HEIGHT = 10;
+    public static final int INDENTATION = 16;
 
     protected int x;
     protected int y;

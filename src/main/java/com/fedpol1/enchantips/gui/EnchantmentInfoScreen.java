@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.gui;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.gui.widgets.CollapsibleInfoLine;
+import com.fedpol1.enchantips.gui.widgets.InfoDelineator;
 import com.fedpol1.enchantips.gui.widgets.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.ScrollableInfoLineContainer;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,14 +26,20 @@ import java.util.Optional;
 
 public class EnchantmentInfoScreen extends Screen {
 
-    private final Screen parent;
     private static final Identifier FRAME_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/frame");
     private static final Identifier BACKGROUND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/background");
+
+    private int windowX;
+    private int windowY;
+    private int windowWidth;
+    private int windowHeight;
     private final ScrollableInfoLineContainer lines;
+    private final Screen parent;
 
     public EnchantmentInfoScreen(Text title, @Nullable Screen parent) {
         super(title);
         this.parent = parent;
+        this.calculateDimensions();
         this.lines = new ScrollableInfoLineContainer(6);
 
         ClientWorld world = MinecraftClient.getInstance().world;
@@ -110,33 +117,43 @@ public class EnchantmentInfoScreen extends Screen {
         }
     }
 
+    private void calculateDimensions() {
+        this.windowX = this.width/10;
+        this.windowY = this.height/10;
+        this.windowWidth = this.width * 8/10;
+        this.windowHeight = this.height * 8/10;
+        int extra = Math.floorMod(this.windowHeight - 39, InfoDelineator.LINE_HEIGHT);
+        this.windowY += extra/2;
+        this.windowHeight -= extra;
+    }
+
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        this.drawWindow(context, this.width/10, this.height/10);
+        this.drawWindow(context);
         this.lines.render(context, mouseX, mouseY, delta);
     }
 
-    public void drawWindow(DrawContext context, int x, int y) {
-        int w = this.width * 8/10;
-        int h = this.height * 8/10;
+    public void drawWindow(DrawContext context) {
+        this.calculateDimensions();
         RenderSystem.enableBlend();
         context.drawGuiTexture(
                 RenderLayer::getGuiTextured,
                 EnchantmentInfoScreen.BACKGROUND_TEXTURE,
-                x, y, w, h
+                this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
         context.drawGuiTexture(
                 RenderLayer::getGuiTextured,
                 EnchantmentInfoScreen.FRAME_TEXTURE,
-                x, y, w, h
+                this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.drawText(this.textRenderer, this.title, x + 8, y + 6, 0x404040, false);
+        context.drawText(this.textRenderer, this.title, this.windowX + 8, this.windowY + 6, 0x404040, false);
     }
 
     @Override
     protected void init() {
-        this.lines.setPosition(this.width/10 + 15, this.height/10 + 24);
-        this.lines.setDimensions(this.width * 8/10 - 30, this.height * 8/10 - 39);
+        this.calculateDimensions();
+        this.lines.setPosition(this.windowX + 15, this.windowY + 24);
+        this.lines.setDimensions(this.windowWidth - 30, this.windowHeight - 39);
         this.lines.refresh(0);
     }
 
