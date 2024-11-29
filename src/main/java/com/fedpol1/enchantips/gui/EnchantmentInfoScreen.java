@@ -121,7 +121,7 @@ public class EnchantmentInfoScreen extends Screen {
         this.windowX = this.width/10;
         this.windowY = this.height/10;
         this.windowWidth = this.width * 8/10;
-        this.windowHeight = this.height * 8/10;
+        this.windowHeight = Math.max(this.height * 8/10, InfoDelineator.LINE_HEIGHT + 39);
         int extra = Math.floorMod(this.windowHeight - 39, InfoDelineator.LINE_HEIGHT);
         this.windowY += extra/2;
         this.windowHeight -= extra;

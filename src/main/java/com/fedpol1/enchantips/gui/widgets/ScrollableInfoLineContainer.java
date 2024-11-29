@@ -40,6 +40,9 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
     public void setDimensions(int width, int height) {
         this.width = width;
         this.height = height / InfoDelineator.LINE_HEIGHT * InfoDelineator.LINE_HEIGHT; // induce floor
+        if(this.height < InfoDelineator.LINE_HEIGHT) {
+            throw new IllegalArgumentException("Height cannot be less than line height.");
+        }
     }
 
     public int getHeight() {
@@ -64,7 +67,11 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         this.scrollbarHeight = this.getHeight() + 2 * this.padding;
         this.scrollbarX = this.x + this.width + this.padding - SCROLLER_WIDTH;
         this.scrollbarY = this.y - this.padding;
-        this.scrollerHeight = (int) Math.clamp((float) this.scrollbarHeight * this.getHeight() / super.getHeight(), 32, this.scrollbarHeight);
+        this.scrollerHeight = (int) Math.clamp(
+                (float) this.scrollbarHeight * this.getHeight() / super.getHeight(),
+                Math.min(32, this.scrollbarHeight/4),
+                this.scrollbarHeight
+        );
         this.scrollerY = Math.clamp (
                 (int) (scrollbarY - (float) this.scrollHeight * (this.scrollbarHeight - this.scrollerHeight) / (super.getHeight() - this.getHeight())),
                 this.scrollbarY,
