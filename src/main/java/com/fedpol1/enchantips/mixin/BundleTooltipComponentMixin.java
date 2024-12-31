@@ -18,7 +18,7 @@ import java.util.List;
 public class BundleTooltipComponentMixin {
 
     @Inject(method = "drawItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
-    private void enchantips$highlightInnerItemsTODO(int index, int x, int y, List<ItemStack> stacks, int seed, TextRenderer textRenderer, DrawContext drawContext, CallbackInfo ci, @Local ItemStack stack) {
+    private void enchantips$highlightInnerItems(int index, int x, int y, List<ItemStack> stacks, int seed, TextRenderer textRenderer, DrawContext drawContext, CallbackInfo ci, @Local ItemStack stack) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(drawContext, stack, x + 4, y + 4, 255);
         }
