@@ -39,7 +39,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     }
 
     @Inject(method = "<init>(Lnet/minecraft/screen/AnvilScreenHandler;Lnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/text/Text;)V", at = @At(value = "TAIL"))
-    public void enchantips$init(AnvilScreenHandler handler, PlayerInventory inventory, Text title, CallbackInfo ci) {
+    private void enchantips$init(AnvilScreenHandler handler, PlayerInventory inventory, Text title, CallbackInfo ci) {
         enchantipsHandler = new AnvilScreenHandler(handler.syncId, inventory);
     }
 
@@ -60,7 +60,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     }
 
     @Inject(method = "setup()V", at = @At(value = "TAIL"))
-    protected void enchantips$addAnvilSwapButton(CallbackInfo ci) {
+    private void enchantips$addAnvilSwapButton(CallbackInfo ci) {
         ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET = new AnvilSwapWarn(
                 this.x + 152, this.y + 33,
                 16, 16,

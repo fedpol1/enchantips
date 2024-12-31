@@ -35,15 +35,10 @@ import java.util.List;
 public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreenHandlerAccess {
 
     @Unique
-    ScrollableTooltipSection[] enchantips$scrollableSections = new ScrollableTooltipSection[3];
-
-    @Unique
-    public ScrollableTooltipSection enchantips$getSection(int i) {
-        return this.enchantips$scrollableSections[i];
-    }
+    private final ScrollableTooltipSection[] enchantips$scrollableSections = new ScrollableTooltipSection[3];
 
     @Inject(method = "setProperty(II)V", at = @At(value = "RETURN"))
-    public void enchantips$setProperty(int id, int value, CallbackInfo ci) throws IllegalStateException {
+    private void enchantips$setProperty(int id, int value, CallbackInfo ci) {
         //noinspection ConstantValue
         if (!((Object)this instanceof EnchantmentScreenHandler handler) ||
             !ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
@@ -98,4 +93,8 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
         }
     }
 
+    @Override
+    public ScrollableTooltipSection enchantips$getSection(int i) {
+        return this.enchantips$scrollableSections[i];
+    }
 }

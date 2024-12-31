@@ -8,6 +8,9 @@ import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,21 +19,14 @@ import java.util.function.Consumer;
 @Mixin(ItemEnchantmentsComponent.class)
 public class ItemEnchantmentsComponentMixin implements ItemEnchantmentsComponentAccess {
 
-    @Mutable
     @Final
     @Shadow
-    final boolean showInTooltip;
+    boolean showInTooltip;
 
-    public ItemEnchantmentsComponentMixin(boolean showInTooltip) {
-        this.showInTooltip = showInTooltip;
-    }
+    @Inject(method = "appendTooltip", at = @At("HEAD"), cancellable = true)
+    private void enchantips$modifyTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type, CallbackInfo ci) {
+        ci.cancel();
 
-    /**
-     * @author fedpol1
-     * @reason sort enchantments in tooltip
-     */
-    @Overwrite
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
         if(!this.showInTooltip) {
             return;
         }

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HandledScreen.class)
-public abstract class HandledScreenMixin {
+public class HandledScreenMixin {
 
     @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "HEAD"))
     private void enchantips$resetScrollableTooltipSection(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
