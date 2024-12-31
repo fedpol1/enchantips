@@ -1,12 +1,12 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.accessor.EnchantmentScreenHandlerAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import net.minecraft.enchantment.Enchantment;
@@ -19,20 +19,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 import java.util.Optional;
 
 @Mixin(EnchantmentScreen.class)
-public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
+public class EnchantmentScreenMixin {
 
     @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/EnchantmentScreen;isPointWithinBounds(IIIIDD)Z")),
-            at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    public void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<RegistryEntry.Reference<Enchantment>> optional, int l, int m, List<Text> list)
-    throws IllegalStateException {
+            at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER)
+    )
+    private void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, @Local(ordinal = 3) int j, @Local Optional<RegistryEntry.Reference<Enchantment>> optional, @Local(ordinal = 5) int l, @Local List<Text> list) {
         if(optional.isEmpty()) { return; }
         Enchantment enchantment = optional.get().value();
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;

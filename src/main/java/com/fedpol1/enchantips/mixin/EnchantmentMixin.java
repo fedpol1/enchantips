@@ -9,32 +9,29 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Enchantment.class)
-public abstract class EnchantmentMixin implements EnchantmentAccess {
+public class EnchantmentMixin implements EnchantmentAccess {
 
-    @Mutable
     @Final
     @Shadow
-    private final Enchantment.Definition definition;
+    private Enchantment.Definition definition;
 
-    protected EnchantmentMixin(Enchantment.Definition definition) {
-        this.definition = definition;
+    @Inject(method = "getName", at = @At("HEAD"), cancellable = true)
+    private static void enchantips$modifyName(RegistryEntry<Enchantment> enchantment, int level, CallbackInfoReturnable<Text> cir) {
+        cir.setReturnValue(EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(enchantment.value(), level)));
     }
 
-    /**
-     * @author fedpol1
-     * @reason overhaul enchantment tooltips
-     */
-    @Overwrite
-    public static Text getName(RegistryEntry<Enchantment> ench, int level) throws IllegalStateException {
-        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(ench.value(), level));
-    }
 
+    @Override
     public RegistryEntryList<Item> enchantips$getPrimaryItems() {
         return this.definition.primaryItems().isEmpty() ? this.definition.supportedItems() : this.definition.primaryItems().get();
     }
 
+    @Override
     public RegistryEntryList<Item> enchantips$getSecondaryItems() {
         return this.definition.supportedItems();
     }

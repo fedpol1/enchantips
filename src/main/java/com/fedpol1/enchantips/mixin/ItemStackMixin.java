@@ -4,6 +4,7 @@ import com.fedpol1.enchantips.accessor.ItemEnchantmentsComponentAccess;
 import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.component.type.EnchantableComponent;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.DataComponentTypes;
@@ -18,15 +19,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ItemStackAccess {
 
-    @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/tooltip/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/tooltip/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER))
+    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, @Local List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
 
         Boolean glint = t.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
@@ -55,12 +55,14 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         return t.get(DataComponentTypes.UNBREAKABLE) != null;
     }
 
+    @Override
     public boolean enchantips$unbreakableVisible() {
         ItemStack t = (ItemStack)(Object)this;
         UnbreakableComponent ub = t.get(DataComponentTypes.UNBREAKABLE);
         return ub != null && ub.showInTooltip();
     }
 
+    @Override
     public boolean enchantips$enchantmentsVisible() {
         ItemStack t = (ItemStack)(Object)this;
         ItemEnchantmentsComponent ench = t.get(

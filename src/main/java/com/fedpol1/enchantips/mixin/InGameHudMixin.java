@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.accessor.InGameHudAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.SlotHighlight;
 import net.minecraft.client.gui.DrawContext;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
-public abstract class InGameHudMixin implements InGameHudAccess {
+public class InGameHudMixin {
 
 
     @Inject(method = "renderHotbarItem(Lnet/minecraft/client/gui/DrawContext;IILnet/minecraft/client/render/RenderTickCounter;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getBobbingAnimationTime()I", ordinal = 0))
