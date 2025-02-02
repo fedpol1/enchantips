@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.accessor.EnchantmentAccess;
+import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import net.minecraft.enchantment.Enchantment;
@@ -9,6 +10,9 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin implements EnchantmentAccess {
@@ -22,13 +26,15 @@ public abstract class EnchantmentMixin implements EnchantmentAccess {
         this.definition = definition;
     }
 
-    /**
-     * @author fedpol1
-     * @reason overhaul enchantment tooltips
-     */
-    @Overwrite
-    public static Text getName(RegistryEntry<Enchantment> ench, int level) throws IllegalStateException {
-        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(ench.value(), level));
+    @Inject(method = "getName(Lnet/minecraft/registry/entry/RegistryEntry;I)Lnet/minecraft/text/Text;", at = @At(value = "HEAD"), cancellable = true)
+    private static void enchantips$overwriteName(RegistryEntry<Enchantment> enchantment, int level, CallbackInfoReturnable<Text> cir) throws IllegalStateException {
+        if(ModOption.GLOBAL_NAME_MODIFICATION.getValue()) {
+            cir.setReturnValue(
+                    EnchantmentAppearanceHelper.getName(
+                            EnchantmentLevel.of(enchantment.value(), level)
+                    )
+            );
+        }
     }
 
     public RegistryEntryList<Item> enchantips$getPrimaryItems() {

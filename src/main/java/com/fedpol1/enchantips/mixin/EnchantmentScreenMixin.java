@@ -4,6 +4,7 @@ import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.accessor.EnchantmentScreenHandlerAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
+import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
@@ -17,6 +18,7 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -50,5 +52,10 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             ScrollableTooltipSection.setActiveSection(section);
             list.addAll(section.getShownTextAll());
         }
+    }
+
+    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getName(Lnet/minecraft/registry/entry/RegistryEntry;I)Lnet/minecraft/text/Text;"))
+    private Text enchantips$modifyClueName(RegistryEntry<Enchantment> enchantment, int level) {
+        return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(enchantment.value(), level));
     }
 }
