@@ -116,7 +116,7 @@ public class EnchantmentAppearanceHelper {
             if(!Symbols.ITEM_SYMBOLS.containsKey(i)) {
                 addTo = EnchantmentAppearanceHelper.canBePrimaryItem(Registries.ITEM.get(i), key, primaryItems) ?
                         primarySymbols : secondarySymbols;
-                if(!addTo.isEmpty() && addTo.getLast() != Symbols.MISCELLANEOUS_SYMBOL) {
+                if(addTo.isEmpty() || addTo.getLast() != Symbols.MISCELLANEOUS_SYMBOL) {
                     addTo.add(Symbols.MISCELLANEOUS_SYMBOL);
                 }
             }
