@@ -27,8 +27,8 @@ public class SymbolSetReloadListener implements SimpleSynchronousResourceReloadL
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
             reader.close();
             this.populate(json);
-        } catch (IOException | JsonSyntaxException e) {
-            EnchantipsClient.LOGGER.warn("Failed to load Enchantips symbol set.{}", e.getMessage());
+        } catch (IOException | JsonSyntaxException | ClassCastException | IllegalStateException e) {
+            EnchantipsClient.LOGGER.warn("Failed to load Enchantips symbol set.\n{}", e.getMessage());
         }
     }
 
