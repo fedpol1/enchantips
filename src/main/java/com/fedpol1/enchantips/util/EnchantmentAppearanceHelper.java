@@ -16,7 +16,6 @@ import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -64,7 +63,7 @@ public class EnchantmentAppearanceHelper {
         }
 
         if(ModOption.SWATCHES_SWITCH.getValue()) {
-            finalText.append(Symbols.SWATCH_SYMBOL.copy().withColor(colorFinal)).append(" ");
+            finalText.append(Symbols.get("swatch").copy().withColor(colorFinal)).append(" ");
         }
         if(ModOption.ANVIL_COST_SWITCH.getValue()) {
             finalText.append(TooltipHelper.buildAnvilCost(r, colorFinal)).append(" ");
@@ -85,57 +84,45 @@ public class EnchantmentAppearanceHelper {
     public static MutableText getEnchantmentTargetSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
         Enchantment ench = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(key).value();
 
+        // primary items must be a subset of secondary items
         RegistryEntryList<Item> primaryItems = ((EnchantmentAccess)(Object) ench).enchantips$getPrimaryItems();
         RegistryEntryList<Item> secondaryItems = ((EnchantmentAccess)(Object) ench).enchantips$getSecondaryItems();
+        RegistryEntryList<Item> filteredPrimaryItems = RegistryEntryList.of(
+                primaryItems.stream().filter(
+                        i -> EnchantmentAppearanceHelper.canBePrimaryItem(
+                                Registries.ITEM.get(i.getKey().get().getValue()),
+                                key,
+                                primaryItems
+                        )
+                ).toList()
+        );
+        RegistryEntryList<Item> filteredSecondaryItems = RegistryEntryList.of(
+                secondaryItems.stream().filter(e -> !filteredPrimaryItems.contains(e)).toList()
+        );
 
-        HashSet<Identifier> acceptableItems = new HashSet<>();
-
-        // primary items MUST be a subset of secondary items
-        // therefore we do not iterate through primary items
-        for(RegistryEntry<Item> i : secondaryItems) {
-            acceptableItems.add(i.getKey().get().getValue());
-        }
-
-        ArrayList<Text> primarySymbols = new ArrayList<>();
-        ArrayList<Text> secondarySymbols = new ArrayList<>();
-        ArrayList<Text> addTo;
-
-        // populate normal symbols
-        for(Map.Entry<Identifier, Text> e : Symbols.ITEM_SYMBOLS.entrySet()) {
-            if(acceptableItems.contains(e.getKey())) {
-                addTo = EnchantmentAppearanceHelper.canBePrimaryItem(Registries.ITEM.get(e.getKey()), key, primaryItems) ?
-                        primarySymbols : secondarySymbols;
-                if(!addTo.contains(e.getValue())) {
-                    addTo.add(e.getValue());
-                }
-            }
-        }
-
-        // populate misc symbols
-        for(Identifier i : acceptableItems) {
-            if(!Symbols.ITEM_SYMBOLS.containsKey(i)) {
-                addTo = EnchantmentAppearanceHelper.canBePrimaryItem(Registries.ITEM.get(i), key, primaryItems) ?
-                        primarySymbols : secondarySymbols;
-                if(addTo.isEmpty() || addTo.getLast() != Symbols.MISCELLANEOUS_SYMBOL) {
-                    addTo.add(Symbols.MISCELLANEOUS_SYMBOL);
-                }
-            }
-        }
+        List<Text> primarySymbols = Symbols.getSet("items").getApplicableSymbols(
+                filteredPrimaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
+                Symbols.get("miscellaneous_item")
+        );
+        List<Text> secondarySymbols = Symbols.getSet("items").getApplicableSymbols(
+                filteredSecondaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
+                Symbols.get("miscellaneous_item")
+        );
 
         if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            primarySymbols = new ArrayList<>(Collections.singleton(Symbols.ALL_SYMBOL));
+            primarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all")));
         }
         if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            secondarySymbols = new ArrayList<>(Collections.singleton(Symbols.ALL_SYMBOL));
+            secondarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all")));
         }
 
         ArrayList<Text> finalSymbols = new ArrayList<>();
         finalSymbols.addAll(primarySymbols);
-        if(!secondarySymbols.isEmpty()) { finalSymbols.add(Symbols.ANVIL_SYMBOL); }
+        if(!secondarySymbols.isEmpty()) { finalSymbols.add(Symbols.get("anvil")); }
         finalSymbols.addAll(secondarySymbols);
 
         if(finalSymbols.isEmpty()) {
-            finalSymbols = new ArrayList<>(Collections.singleton(Symbols.NONE_SYMBOL));
+            finalSymbols = new ArrayList<>(Collections.singleton(Symbols.get("none")));
         }
 
         MutableText finalText = Text.empty();

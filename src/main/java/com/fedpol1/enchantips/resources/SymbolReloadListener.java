@@ -6,6 +6,7 @@ import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
 
 import java.io.BufferedReader;
@@ -13,19 +14,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class SymbolSetReloadListener implements SimpleSynchronousResourceReloadListener {
+public class SymbolReloadListener implements SimpleSynchronousResourceReloadListener {
 
     @Override
     public Identifier getFabricId() {
-        return Identifier.of(EnchantipsClient.MODID, "symbol_set");
+        return Identifier.of(EnchantipsClient.MODID, "symbol");
     }
 
     @Override
     public void reload(ResourceManager manager) {
-        Symbols.SYMBOL_SETS = new HashMap<>();
+        Symbols.SYMBOLS = new HashMap<>();
 
         Map<Identifier, Resource> resources = manager.findResources(
-                "symbol_sets",
+                "symbols",
                 path -> path.toString().endsWith(".json")
         );
 
@@ -34,9 +35,9 @@ public class SymbolSetReloadListener implements SimpleSynchronousResourceReloadL
                 Optional<String> contents = reader.lines().reduce((a, b) -> a + b);
                 Gson gson = new Gson();
                 if(contents.isEmpty()) continue;
-                Symbols.SYMBOL_SETS.put(
+                Symbols.SYMBOLS.put(
                         entry.getKey(),
-                        SymbolSet.CODEC
+                        TextCodecs.CODEC
                                 .decode(JsonOps.INSTANCE, gson.fromJson(contents.get(), JsonElement.class))
                                 .getOrThrow().getFirst()
                 );

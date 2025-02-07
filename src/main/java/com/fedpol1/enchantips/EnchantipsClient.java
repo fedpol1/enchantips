@@ -2,6 +2,7 @@ package com.fedpol1.enchantips;
 
 import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
 import com.fedpol1.enchantips.gui.EnchantmentInfoScreen;
+import com.fedpol1.enchantips.resources.SymbolReloadListener;
 import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -9,7 +10,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
@@ -52,6 +52,7 @@ public class EnchantipsClient implements ClientModInitializer {
             }
         });
 
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SymbolReloadListener());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SymbolSetReloadListener());
     }
 }
