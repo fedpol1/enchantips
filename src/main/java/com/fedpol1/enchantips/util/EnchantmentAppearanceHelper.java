@@ -95,7 +95,7 @@ public class EnchantmentAppearanceHelper {
                 .getEntry(key.getValue());
         if(enchantmentReference.isPresent()) {
             tagSymbols = Symbols.getSet("tags").getApplicableSymbols(
-                    enchantmentReference.get().streamTags().toList().stream().map(TagKey::id).toList(),
+                    enchantmentReference.get().streamTags().map(TagKey::id).toList(),
                     Symbols.get("miscellaneous_tag")
             );
         }
