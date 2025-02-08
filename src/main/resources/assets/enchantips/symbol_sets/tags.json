@@ -3,10 +3,7 @@
     "values": [
       "minecraft:curse"
     ],
-    "symbol": {
-      "text": "v",
-      "font": "enchantips:symbols"
-    }
+    "symbol": "enchantips:tag/curse"
   },
   {
     "values": [
@@ -20,10 +17,7 @@
       }
     ],
     "minimum_matches": 2,
-    "symbol": {
-      "text": "^",
-      "font": "enchantips:symbols"
-    }
+    "symbol": "enchantips:tag/treasure"
   },
   {
     "values": [
@@ -32,10 +26,7 @@
         "expected": false
       }
     ],
-    "symbol": {
-      "text": "V",
-      "font": "enchantips:symbols"
-    }
+    "symbol": "enchantips:tag/non_tradeable"
   },
   {
     "values": [
@@ -43,10 +34,7 @@
       "minecraft:tradeable"
     ],
     "minimum_matches": 2,
-    "symbol": {
-      "text": "2",
-      "font": "enchantips:symbols"
-    }
+    "symbol": "enchantips:tag/double"
   }
 ]
 
