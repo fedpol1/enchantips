@@ -14,8 +14,13 @@
       {
         "id": "minecraft:in_enchanting_table",
         "expected": false
+      },
+      {
+        "id": "minecraft:curse",
+        "expected": false
       }
     ],
+    "minimum_matches": 2,
     "symbol": {
       "text": "^",
       "font": "enchantips:symbols"
@@ -35,8 +40,10 @@
   },
   {
     "values": [
-      "minecraft:double_trade_price"
+      "minecraft:double_trade_price",
+      "minecraft:tradeable"
     ],
+    "minimum_matches": 2,
     "symbol": {
       "text": "2",
       "font": "enchantips:symbols"
