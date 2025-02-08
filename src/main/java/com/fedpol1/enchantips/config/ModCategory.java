@@ -15,6 +15,7 @@ public enum ModCategory {
     TOOLTIPS_ANVIL_COST(TOOLTIPS.addGroup("anvil_cost")),
     TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL(TOOLTIPS.addGroup("maximum_enchantment_level")),
     TOOLTIPS_ENCHANTMENT_TARGETS(TOOLTIPS.addGroup("enchantment_targets")),
+    TOOLTIPS_ENCHANTMENT_TAGS(TOOLTIPS.addGroup("enchantment_tags")),
     TOOLTIPS_MODIFIED_ENCHANTING_POWER(TOOLTIPS.addGroup("modified_enchanting_power")),
     TOOLTIPS_EXTRA_ENCHANTMENTS(TOOLTIPS.addGroup("extra_enchantments")),
     TOOLTIPS_MISCELLANEOUS(TOOLTIPS.addGroup("miscellaneous")),

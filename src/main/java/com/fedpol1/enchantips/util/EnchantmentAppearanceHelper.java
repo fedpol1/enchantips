@@ -13,9 +13,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.EnchantmentTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -24,6 +26,7 @@ public class EnchantmentAppearanceHelper {
 
     public static Text getName(EnchantmentLevel enchLevel) {
         int colorFinal = enchLevel.getColor().getRGB();
+        World world = MinecraftClient.getInstance().world;
 
         RegistryKey<Enchantment> key = enchLevel.getKey();
         Enchantment ench = enchLevel.getEnchantment();
@@ -68,17 +71,49 @@ public class EnchantmentAppearanceHelper {
         if(ModOption.ANVIL_COST_SWITCH.getValue()) {
             finalText.append(TooltipHelper.buildAnvilCost(r, colorFinal)).append(" ");
         }
-        if(ModOption.ENCHANTMENT_TARGETS_SWITCH.getValue()) {
-            World world = MinecraftClient.getInstance().world;
-            if(world != null) {
-                MutableText symbolText = EnchantmentAppearanceHelper
-                        .getEnchantmentTargetSymbolText(key, world.getRegistryManager());
+        if(ModOption.ENCHANTMENT_TAGS_SWITCH.getValue() && world != null) {
+            MutableText symbolText = EnchantmentAppearanceHelper
+                    .getEnchantmentTagSymbolText(key, world.getRegistryManager());
 
-                finalText.append(symbolText).withColor(colorFinal);
-                if(!symbolText.getString().isEmpty()) finalText.append(" "); // only append extra space if needed
-            }
+            finalText.append(symbolText).withColor(colorFinal);
+            if(!symbolText.getString().isEmpty()) finalText.append(" "); // only append extra space if needed
+        }
+        if(ModOption.ENCHANTMENT_TARGETS_SWITCH.getValue() && world != null) {
+            MutableText symbolText = EnchantmentAppearanceHelper
+                    .getEnchantmentTargetSymbolText(key, world.getRegistryManager());
+
+            finalText.append(symbolText).withColor(colorFinal);
+            if(!symbolText.getString().isEmpty()) finalText.append(" "); // only append extra space if needed
         }
         return finalText.append(enchantmentText);
+    }
+
+    public static MutableText getEnchantmentTagSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
+        List<Text> tagSymbols;
+        Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = registryManager
+                .getOrThrow(RegistryKeys.ENCHANTMENT)
+                .getEntry(key.getValue());
+        if(enchantmentReference.isPresent()) {
+            tagSymbols = Symbols.getSet("tags").getApplicableSymbols(
+                    enchantmentReference.get().streamTags().toList().stream().map(TagKey::id).toList(),
+                    Symbols.get("miscellaneous_tag")
+            );
+        }
+        else {
+            tagSymbols = List.of(Symbols.get("unknown_tag"));
+        }
+
+        if(tagSymbols.size() > ModOption.ENCHANTMENT_TAGS_LIMIT.getValue()) {
+            tagSymbols = List.of(Symbols.get("all_tag"));
+        }
+
+        if(tagSymbols.isEmpty()) {
+            tagSymbols = List.of(Symbols.get("no_tag"));
+        }
+
+        MutableText finalSymbols = Text.empty();
+        tagSymbols.forEach(finalSymbols::append);
+        return finalSymbols;
     }
 
     public static MutableText getEnchantmentTargetSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
@@ -110,10 +145,10 @@ public class EnchantmentAppearanceHelper {
         );
 
         if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            primarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all")));
+            primarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all_item")));
         }
         if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            secondarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all")));
+            secondarySymbols = new ArrayList<>(Collections.singleton(Symbols.get("all_item")));
         }
 
         ArrayList<Text> finalSymbols = new ArrayList<>();
@@ -122,7 +157,7 @@ public class EnchantmentAppearanceHelper {
         finalSymbols.addAll(secondarySymbols);
 
         if(finalSymbols.isEmpty()) {
-            finalSymbols = new ArrayList<>(Collections.singleton(Symbols.get("none")));
+            finalSymbols = new ArrayList<>(Collections.singleton(Symbols.get("no_item")));
         }
 
         MutableText finalText = Text.empty();

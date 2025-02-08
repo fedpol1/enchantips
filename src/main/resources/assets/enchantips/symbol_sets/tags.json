@@ -1,0 +1,46 @@
+[
+  {
+    "values": [
+      "minecraft:curse"
+    ],
+    "symbol": {
+      "text": "v",
+      "font": "enchantips:symbols",
+	  "color": "#ff0000"
+    }
+  },
+  {
+    "values": [
+      {
+        "id": "minecraft:in_enchanting_table",
+        "expected": false
+      }
+    ],
+    "symbol": {
+      "text": "^",
+      "font": "enchantips:symbols"
+    }
+  },
+  {
+    "values": [
+      {
+        "id": "minecraft:tradeable",
+        "expected": false
+      }
+    ],
+    "symbol": {
+      "text": "V",
+      "font": "enchantips:symbols"
+    }
+  },
+  {
+    "values": [
+      "minecraft:double_trade_price"
+    ],
+    "symbol": {
+      "text": "2",
+      "font": "enchantips:symbols"
+    }
+  }
+]
+

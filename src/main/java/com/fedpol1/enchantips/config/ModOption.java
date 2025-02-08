@@ -27,6 +27,8 @@ public class ModOption<T> {
     public static final ModOption<Boolean> MAXIMUM_ENCHANTMENT_LEVEL_SWITCH_OVER_MAX = ModCategory.TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL.addOption(new BooleanOption(true), "switch.over_max", 0);
     public static final ModOption<Boolean> ENCHANTMENT_TARGETS_SWITCH = ModCategory.TOOLTIPS_ENCHANTMENT_TARGETS.addOption(new BooleanOption(false), "switch", 2);
     public static final ModOption<Integer> ENCHANTMENT_TARGETS_LIMIT = ModCategory.TOOLTIPS_ENCHANTMENT_TARGETS.addOption(new IntegerOption(11, 1, 256, 0), "limit", 2);
+    public static final ModOption<Boolean> ENCHANTMENT_TAGS_SWITCH = ModCategory.TOOLTIPS_ENCHANTMENT_TAGS.addOption(new BooleanOption(false), "switch", 1);
+    public static final ModOption<Integer> ENCHANTMENT_TAGS_LIMIT = ModCategory.TOOLTIPS_ENCHANTMENT_TAGS.addOption(new IntegerOption(5, 1, 256, 0), "limit", 1);
     public static final ModOption<Boolean> MODIFIED_ENCHANTING_POWER_SWITCH = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new BooleanOption(true), "switch", 1);
     public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf9f3f), "color", 0);
     public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_VALUE_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf7f3f), "color.value", 0);

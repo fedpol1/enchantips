@@ -269,6 +269,42 @@
 			"chars": [
 				"o"
 			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tag/curse.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"v"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tag/treasure.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"^"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tag/double.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"2"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "enchantips:chars/tag/non_tradeable.png",
+			"height": 8,
+			"ascent": 8,
+			"chars": [
+				"V"
+			]
 		}
 	]
 }
