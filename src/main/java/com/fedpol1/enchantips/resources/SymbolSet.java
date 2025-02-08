@@ -28,7 +28,7 @@ public class SymbolSet {
         Set<Identifier> miscValues = new HashSet<>(ids);
         for(SymbolSetEntry entry : this.entries) {
             List<Identifier> applicable = entry.applicable(ids);
-            if(!applicable.isEmpty()) {
+            if(applicable.size() >= entry.getMinimumMatches()) {
                 if(!applied.contains((entry.getSymbol()))) {
                     applied.add(entry.getSymbol());
                 }
