@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class ItemStackMixin implements ItemStackAccess {
 
     @Inject(method = "getTooltip(Lnet/minecraft/item/Item$TooltipContext;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/tooltip/TooltipType;)Ljava/util/List;", at = @At(value = "INVOKE", target = "java/util/List.add (Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, List<Text> list) {
+    private void enchantips$addExtraTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir, boolean bl, List<Text> list) {
         ItemStack t = (ItemStack)(Object)this;
 
         Boolean glint = t.get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);

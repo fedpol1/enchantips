@@ -73,13 +73,13 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         this.drawButton(context, mouseX, mouseY, delta);
-        context.drawTextWrapped(
+        context.drawText(
                 renderer,
-                renderer.trimToWidth(this.text, this.width),
+                this.text,
                 this.x + BUTTON_INDENTATION,
                 this.y + 1,
-                this.width - BUTTON_INDENTATION,
-                this.nearestScrollableParent.childColor
+                this.nearestScrollableParent.childColor,
+                false
         );
     }
 
