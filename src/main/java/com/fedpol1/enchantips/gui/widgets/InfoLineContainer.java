@@ -52,7 +52,7 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
             return container.getLast();
         }
         if(last instanceof CollapsibleInfoLine collapsible) {
-            if(collapsible.collapsed) {
+            if(collapsible.collapsed || collapsible.lines.lines.isEmpty()) {
                 return collapsible;
             }
             return collapsible.lines.getLast();

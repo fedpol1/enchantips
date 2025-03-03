@@ -104,14 +104,17 @@ public class EnchantmentInfoScreen extends Screen {
 
             // tags
             CollapsibleInfoLine tags = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.tags"));
-            enchMeta.addLine(tags);
             Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = world
                     .getRegistryManager()
                     .getOrThrow(RegistryKeys.ENCHANTMENT)
                     .getEntry(key.getValue());
             if(enchantmentReference.isPresent()) {
-                for (TagKey<Enchantment> tag : enchantmentReference.get().streamTags().toList()) {
-                    tags.addLine(Text.literal("#").append(Text.literal(tag.id().toString())));
+                List<TagKey<Enchantment>> tagList = enchantmentReference.get().streamTags().toList();
+                if(!tagList.isEmpty()) {
+                    enchMeta.addLine(tags);
+                    for (TagKey<Enchantment> tag : tagList) {
+                        tags.addLine(Text.literal("#").append(Text.literal(tag.id().toString())));
+                    }
                 }
             }
         }
