@@ -43,6 +43,10 @@ public abstract class InfoDelineator implements Drawable, Element {
 
     public abstract void refresh(int index);
 
+    public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
+        this.nearestScrollableParent = container;
+    }
+
     @Override
     public void setFocused(boolean focused) {
         this.focused = focused;

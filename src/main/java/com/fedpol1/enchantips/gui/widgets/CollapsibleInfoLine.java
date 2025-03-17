@@ -38,7 +38,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
 
     public void addLine(InfoDelineator line) {
         line.parent = this.lines;
-        line.nearestScrollableParent = this.nearestScrollableParent;
+        line.setNearestScrollableParent(this.nearestScrollableParent);
         this.lines.addLine(line);
     }
 

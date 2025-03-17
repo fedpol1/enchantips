@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.gui.widgets;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.text.Text;
@@ -25,10 +24,10 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
 
     public void addLine(InfoDelineator line) {
         line.parent = this;
-        line.nearestScrollableParent = this.nearestScrollableParent;
+        line.setNearestScrollableParent(this.nearestScrollableParent);
         if(line instanceof CollapsibleInfoLine collapsible) {
             collapsible.lines.parent = this;
-            collapsible.lines.nearestScrollableParent = this.nearestScrollableParent;
+            collapsible.lines.setNearestScrollableParent(this.nearestScrollableParent);
         }
         this.lines.add(line);
     }
@@ -68,6 +67,14 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
         this.height = this.getHeight();
         for (int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);
+        }
+    }
+
+    @Override
+    public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
+        super.setNearestScrollableParent(container);
+        for(InfoDelineator line : this.lines) {
+            line.setNearestScrollableParent(container);
         }
     }
 

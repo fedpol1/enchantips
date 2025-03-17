@@ -1,11 +1,7 @@
 package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.accessor.EnchantmentAccess;
-import com.fedpol1.enchantips.gui.widgets.CollapsibleInfoLine;
-import com.fedpol1.enchantips.gui.widgets.InfoDelineator;
-import com.fedpol1.enchantips.gui.widgets.InfoLine;
-import com.fedpol1.enchantips.gui.widgets.ScrollableInfoLineContainer;
+import com.fedpol1.enchantips.gui.widgets.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -14,14 +10,11 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.*;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 public class EnchantmentInfoScreen extends Screen {
@@ -51,72 +44,13 @@ public class EnchantmentInfoScreen extends Screen {
         for(RegistryKey<Enchantment> key : wrapper.streamKeys().sorted(Comparator.comparing(RegistryKey::toString)).toList()) {
             Enchantment enchantment = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
             if(enchantment == null) { continue; }
-            CollapsibleInfoLine enchMeta = new CollapsibleInfoLine(Text.literal(key.getValue().toString()));
+            EnchantmentInfoLine enchMeta = new EnchantmentInfoLine(key);
             this.lines.addLine(enchMeta);
-
-            // misc
-            enchMeta.addLine(new InfoLine(enchantment.description())); // description
-            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.max_level", enchantment.getMaxLevel())));
-            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.weight", enchantment.getWeight())));
-            enchMeta.addLine(new InfoLine(Text.translatable("enchantips.gui.enchantment_info.anvil_cost", enchantment.getAnvilCost())));
-
-            CollapsibleInfoLine minPowers = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.min_power"));
-            CollapsibleInfoLine maxPowers = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.max_power"));
-            enchMeta.addLine(minPowers);
-            enchMeta.addLine(maxPowers);
-            for(int i = 1; i < enchantment.getMaxLevel() + 1; i++) {
-                minPowers.addLine(Text.translatable(
-                        "enchantips.gui.enchantment_info.per_power",
-                        Text.translatable("enchantment.level." + i),
-                        enchantment.getMinPower(i)
-                        ));
-                maxPowers.addLine(Text.translatable(
-                        "enchantips.gui.enchantment_info.per_power",
-                        Text.translatable("enchantment.level." + i),
-                        enchantment.getMaxPower(i)
-                ));
-            }
-
-            // exclusive set
-            CollapsibleInfoLine exclusive = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.exclusive_set"));
-            List<String> exclusiveEnchs = enchantment.exclusiveSet().stream().map(RegistryEntry::getIdAsString).sorted().toList();
-            if(!exclusiveEnchs.isEmpty()) { enchMeta.addLine(exclusive); }
-            exclusiveEnchs.forEach(e -> exclusive.addLine(Text.literal(e)));
-
-            // primary and secondary items
-            CollapsibleInfoLine primary = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.primary_items"));
-            CollapsibleInfoLine secondary = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.secondary_items"));
-            List<String> primaryItems = ((EnchantmentAccess)(Object) enchantment).enchantips$getPrimaryItems()
-                    .stream()
-                    .map(e -> Registries.ITEM.getId(e.value()).toString())
-                    .sorted()
-                    .toList();
-            List<String> secondaryItems = ((EnchantmentAccess)(Object) enchantment).enchantips$getSecondaryItems()
-                    .stream()
-                    .map(e -> Registries.ITEM.getId(e.value()).toString())
-                    .sorted()
-                    .filter(e -> !primaryItems.contains(e))
-                    .toList();
-            if(!primaryItems.isEmpty()) { enchMeta.addLine(primary); }
-            if(!secondaryItems.isEmpty()) { enchMeta.addLine(secondary); }
-            primaryItems.forEach(e -> primary.addLine(Text.literal(e)));
-            secondaryItems.forEach(e -> secondary.addLine(Text.literal(e)));
-
-            // tags
-            CollapsibleInfoLine tags = new CollapsibleInfoLine(Text.translatable("enchantips.gui.enchantment_info.tags"));
-            Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = world
-                    .getRegistryManager()
-                    .getOrThrow(RegistryKeys.ENCHANTMENT)
-                    .getEntry(key.getValue());
-            if(enchantmentReference.isPresent()) {
-                List<TagKey<Enchantment>> tagList = enchantmentReference.get().streamTags().toList();
-                if(!tagList.isEmpty()) {
-                    enchMeta.addLine(tags);
-                    for (TagKey<Enchantment> tag : tagList) {
-                        tags.addLine(Text.literal("#").append(Text.literal(tag.id().toString())));
-                    }
-                }
-            }
+            enchMeta.populateMeta(enchantment);
+            enchMeta.populatePowers(enchantment);
+            enchMeta.populateExclusiveSet(enchantment);
+            enchMeta.populateItems(enchantment);
+            enchMeta.populateTags(key, world);
         }
     }
 
