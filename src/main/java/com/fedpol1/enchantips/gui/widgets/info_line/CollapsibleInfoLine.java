@@ -1,35 +1,25 @@
-package com.fedpol1.enchantips.gui.widgets;
+package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.gui.widgets.tiny_button.CollapsibleButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Element {
 
-    protected static final int BUTTON_INDENTATION = 10;
-    protected static final Identifier COLLAPSE_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/collapse");
-    protected static final Identifier COLLAPSE_HOVER_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/collapse_hover");
-    protected static final Identifier EXPAND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/expand");
-    protected static final Identifier EXPAND_HOVER_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/expand_hover");
-    protected static final int BUTTON_WIDTH = 9;
-    protected static final int BUTTON_HEIGHT = 9;
-
     protected final Text text;
-    protected boolean collapsed;
     protected final InfoLineContainer lines;
+    private final CollapsibleButton button;
 
     public CollapsibleInfoLine(Text text) {
         super();
         this.height = 0;
         this.text = text;
-        this.collapsed = true;
         this.lines = new InfoLineContainer();
+        this.button = new CollapsibleButton(this.x, this.y, true);
     }
 
     public void addLine(Text line) {
@@ -43,11 +33,15 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
     }
 
     public int getHeight(int index) {
-        return InfoDelineator.LINE_HEIGHT + (this.collapsed ? 0 : this.lines.getHeight(index));
+        return InfoDelineator.LINE_HEIGHT + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
     }
 
     public int getHeight() {
         return this.getHeight(this.lines.lines.size());
+    }
+
+    public boolean isCollapsed() {
+        return this.button.isCollapsed();
     }
 
     @Override
@@ -55,16 +49,17 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
         this.x = this.parent.x;
         this.y = this.parent.y + this.parent.getHeight(index);
         if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
+        this.button.setPosition(this.x, this.y);
         this.width = this.parent.width;
-        this.height = this.getHeight(index) + (this.collapsed ? 0 : this.lines.getHeight());
-        if(!this.collapsed) {
+        this.height = this.getHeight(index) + (this.isCollapsed() ? 0 : this.lines.getHeight());
+        if(!this.isCollapsed()) {
             this.lines.refresh(index);
         }
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        if(!this.collapsed) {
+        if(!this.isCollapsed()) {
             this.lines.render(context, mouseX, mouseY, delta);
         }
 
@@ -72,31 +67,15 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
         if(this.y + InfoDelineator.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        this.drawButton(context, mouseX, mouseY, delta);
+        this.button.render(context, mouseX, mouseY, delta);
         context.drawText(
                 renderer,
                 this.text,
-                this.x + BUTTON_INDENTATION,
+                this.x + this.button.getWidth() + 1,
                 this.y + 1,
                 this.nearestScrollableParent.childColor,
                 false
         );
-    }
-
-    private boolean isWithinButton(double mouseX, double mouseY) {
-        int x = this.x;
-        int y = this.y + 1;
-        return mouseX >= x && mouseX < x + BUTTON_WIDTH && mouseY >= y && mouseY < y + BUTTON_HEIGHT;
-    }
-
-    private void drawButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier texture;
-        if(this.isWithinButton(mouseX, mouseY)) {
-            texture = this.collapsed ? EXPAND_HOVER_TEXTURE : COLLAPSE_HOVER_TEXTURE;
-        } else {
-            texture = this.collapsed ? EXPAND_TEXTURE : COLLAPSE_TEXTURE;
-        }
-        context.drawGuiTexture(RenderLayer::getGuiTextured, texture, this.x, this.y + 1, BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -106,8 +85,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
             }
         }
 
-        if(this.isWithinButton(mouseX, mouseY) && button == 0) {
-            this.collapsed = !this.collapsed;
+        if(this.button.mouseClicked(mouseX, mouseY, button)) {
             for (int i = 0; i < this.parent.lines.size(); i++) {
                 if (this.parent.lines.get(i) == this) {
                     this.refresh(i);

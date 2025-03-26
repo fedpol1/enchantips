@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips.gui.widgets;
+package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;

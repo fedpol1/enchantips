@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips.gui.widgets;
+package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -51,7 +51,7 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
             return container.getLast();
         }
         if(last instanceof CollapsibleInfoLine collapsible) {
-            if(collapsible.collapsed || collapsible.lines.lines.isEmpty()) {
+            if(collapsible.isCollapsed() || collapsible.lines.lines.isEmpty()) {
                 return collapsible;
             }
             return collapsible.lines.getLast();
