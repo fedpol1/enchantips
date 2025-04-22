@@ -5,7 +5,7 @@ import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.widgets.AnvilSwapButton;
 import com.fedpol1.enchantips.gui.widgets.AnvilSwapWarn;
 import com.fedpol1.enchantips.util.EnchantmentListHelper;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.screen.sync.ItemStackHash;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,15 +83,15 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                     if (this.enchantips$shouldSwapInputs()) {
                         ClientPlayNetworkHandler netHandler = MinecraftClient.getInstance().getNetworkHandler();
                         if (netHandler != null) {
-                            for (int i : new int[]{0, 1, 0}) {
+                            for (short i : new short[]{0, 1, 0}) {
                                 ClickSlotC2SPacket p = new ClickSlotC2SPacket(
                                     this.handler.syncId,
                                     this.handler.getRevision(),
                                     i,
-                                    0,
+                                    (byte) 0,
                                     SlotActionType.PICKUP,
-                                    ItemStack.EMPTY,
-                                    new Int2ObjectArrayMap<>()
+                                    new Int2ObjectOpenHashMap<>(),
+                                    ItemStackHash.fromItemStack(this.handler.getCursorStack(), MinecraftClient.getInstance().getNetworkHandler().method_68823())
                                 );
                                 netHandler.sendPacket(p);
                             }

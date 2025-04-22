@@ -71,9 +71,4 @@ public abstract class TooltipHelper {
         return Text.translatable(REPAIR_COST_TOOLTIP, costText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIR_COST_COLOR.getValue().getRGB())));
     }
-
-    public static MutableText buildUnbreakable() {
-        return Text.translatable("item.unbreakable")
-                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.UNBREAKABLE_COLOR.getValue().getRGB())));
-    }
 }

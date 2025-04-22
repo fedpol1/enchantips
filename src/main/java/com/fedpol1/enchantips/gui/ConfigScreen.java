@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips.gui.screen;
+package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoDelineator;
@@ -22,23 +22,41 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
 
-public abstract class BaseScreen extends Screen {
+public class ConfigScreen extends Screen {
 
-    protected static final Identifier FRAME_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/frame");
-    protected static final Identifier BACKGROUND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/background");
+    private static final Identifier FRAME_TEXTURE = Identifier.of(EnchantipsClient.MODID, "config/frame");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "config/background");
 
-    protected int windowX;
-    protected int windowY;
-    protected int windowWidth;
-    protected int windowHeight;
-    protected ScrollableInfoLineContainer lines;
-    protected final Screen parent;
+    private int windowX;
+    private int windowY;
+    private int windowWidth;
+    private int windowHeight;
+    private final ScrollableInfoLineContainer lines;
+    private final Screen parent;
 
-    public BaseScreen(Text title, @Nullable Screen parent) {
+    public ConfigScreen(Text title, @Nullable Screen parent) {
         super(title);
         this.parent = parent;
         this.calculateDimensions();
+        this.lines = new ScrollableInfoLineContainer(0x404040, 6);
 
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if(world == null) { return; }
+        Optional<Registry<Enchantment>> optionalWrapper = world.getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT);
+        if(optionalWrapper.isEmpty()) { return; }
+        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+
+        for(RegistryKey<Enchantment> key : wrapper.streamKeys().sorted(Comparator.comparing(RegistryKey::toString)).toList()) {
+            Enchantment enchantment = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
+            if(enchantment == null) { continue; }
+            EnchantmentInfoLine enchMeta = new EnchantmentInfoLine(key);
+            this.lines.addLine(enchMeta);
+            enchMeta.populateMeta(enchantment);
+            enchMeta.populatePowers(enchantment);
+            enchMeta.populateExclusiveSet(enchantment);
+            enchMeta.populateItems(enchantment);
+            enchMeta.populateTags(key, world);
+        }
     }
 
     private void calculateDimensions() {
@@ -61,12 +79,12 @@ public abstract class BaseScreen extends Screen {
         this.calculateDimensions();
         context.drawGuiTexture(
                 RenderLayer::getGuiTextured,
-                BaseScreen.BACKGROUND_TEXTURE,
+                ConfigScreen.BACKGROUND_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
         context.drawGuiTexture(
                 RenderLayer::getGuiTextured,
-                BaseScreen.FRAME_TEXTURE,
+                ConfigScreen.FRAME_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
         context.drawText(this.textRenderer, this.title, this.windowX + 8, this.windowY + 6, 0x404040, false);

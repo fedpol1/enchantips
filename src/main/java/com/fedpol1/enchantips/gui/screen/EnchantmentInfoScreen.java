@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui.screen;
 
-import com.fedpol1.enchantips.gui.widgets.*;
+import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.info_generic.EnchantmentInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
 import net.minecraft.client.MinecraftClient;

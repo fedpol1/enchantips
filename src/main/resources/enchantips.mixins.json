@@ -16,8 +16,7 @@
     "ItemEnchantmentsComponentMixin",
     "ItemStackMixin",
     "MerchantScreenMixin",
-    "RegistriesMixin",
-    "UnbreakableComponentMixin"
+    "RegistriesMixin"
   ],
   "server": [],
   "injectors": {
