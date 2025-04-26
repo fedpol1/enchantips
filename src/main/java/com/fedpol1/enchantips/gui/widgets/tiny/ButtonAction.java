@@ -1,4 +1,4 @@
-package com.fedpol1.enchantips.gui.widgets.tiny_button;
+package com.fedpol1.enchantips.gui.widgets.tiny;
 
 public interface ButtonAction {
 

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import com.fedpol1.enchantips.gui.widgets.tiny_button.CollapsibleButton;
+import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

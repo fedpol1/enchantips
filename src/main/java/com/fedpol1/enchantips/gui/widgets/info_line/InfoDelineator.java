@@ -41,6 +41,12 @@ public abstract class InfoDelineator implements Drawable, Element {
     @Override
     public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
 
+    public boolean shouldRender(DrawContext context, int mouseX, int mouseY, float delta) {
+        if(this.y < this.nearestScrollableParent.y) { return false; }
+        if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
+        return true;
+    }
+
     public abstract void refresh(int index);
 
     public void setNearestScrollableParent(ScrollableInfoLineContainer container) {

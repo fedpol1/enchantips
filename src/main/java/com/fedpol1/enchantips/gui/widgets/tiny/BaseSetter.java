@@ -1,15 +1,15 @@
-package com.fedpol1.enchantips.gui.widgets.tiny_button;
+package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
-public abstract class BaseButton {
+public abstract class BaseSetter {
 
     protected int x;
     protected int y;
 
-    public BaseButton(int x, int y) {
+    public BaseSetter(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -43,7 +43,7 @@ public abstract class BaseButton {
 
     public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
 
-    void render(DrawContext context, int mouseX, int mouseY, float delta, Identifier texture) {
+    protected void render(DrawContext context, int mouseX, int mouseY, float delta, Identifier texture) {
         String namespace = texture.getNamespace();
         String path = texture.getPath();
         if(this.isWithin(mouseX, mouseY)) {

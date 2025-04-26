@@ -1,10 +1,10 @@
-package com.fedpol1.enchantips.gui.widgets.tiny_button;
+package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class BooleanButton extends BaseButton {
+public class BooleanButton extends BaseSetter {
 
     protected boolean state;
 
@@ -22,5 +22,9 @@ public class BooleanButton extends BaseButton {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return super.mouseClicked(mouseX, mouseY, button, () -> this.state = !this.state);
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 }

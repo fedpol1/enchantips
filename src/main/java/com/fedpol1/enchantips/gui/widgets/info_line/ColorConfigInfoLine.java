@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.config.ModOption;
-import com.fedpol1.enchantips.gui.widgets.tiny.BooleanButton;
+import com.fedpol1.enchantips.gui.widgets.tiny.ColorSetter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -9,20 +9,23 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;
 
-public class BooleanConfigInfoLine extends ConfigInfoLine<Boolean> implements Drawable, Element {
+import java.awt.*;
 
-    private final BooleanButton button;
+public class ColorConfigInfoLine extends ConfigInfoLine<Color> implements Drawable, Element {
 
-    public BooleanConfigInfoLine(Text text, ModOption<Boolean> option, boolean state) {
+    private final ColorSetter setter;
+
+    public ColorConfigInfoLine(Text text, ModOption<Color> option, Color state) {
         super(text, option);
         this.height = 0;
-        this.button = new BooleanButton(this.x + this.resetButton.getWidth() + 1, this.y, state);
+        this.setter = new ColorSetter(this.x + this.resetButton.getWidth() + 1, this.y, state) {
+        };
     }
 
     @Override
     public void refresh(int index) {
         super.refresh(index);
-        this.button.setPosition(this.x + this.resetButton.getWidth() + 1, this.y);
+        this.setter.setPosition(this.x + this.resetButton.getWidth() + 1, this.y);
     }
 
     @Override
@@ -31,11 +34,11 @@ public class BooleanConfigInfoLine extends ConfigInfoLine<Boolean> implements Dr
         super.render(context, mouseX, mouseY, delta);
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        this.button.render(context, mouseX, mouseY, delta);
+        this.setter.render(context, mouseX, mouseY, delta);
         context.drawText(
                 renderer,
                 this.text,
-                this.x + this.resetButton.getWidth() + this.button.getWidth() + 2,
+                this.x + this.resetButton.getWidth() + this.setter.getWidth() + 2,
                 this.y + 1,
                 this.nearestScrollableParent.childColor,
                 false
@@ -43,11 +46,11 @@ public class BooleanConfigInfoLine extends ConfigInfoLine<Boolean> implements Dr
     }
 
     public void reset() {
-        this.button.setState(this.option.getData().getDefaultValue());
+        this.setter.setColor(this.option.getData().getDefaultValue());
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(this.button.mouseClicked(mouseX, mouseY, button)) {
+        if(this.setter.mouseClicked(mouseX, mouseY, button)) {
             for (int i = 0; i < this.parent.lines.size(); i++) {
                 if (this.parent.lines.get(i) == this) {
                     this.refresh(0);

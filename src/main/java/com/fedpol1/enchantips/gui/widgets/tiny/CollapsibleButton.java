@@ -1,10 +1,10 @@
-package com.fedpol1.enchantips.gui.widgets.tiny_button;
+package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class CollapsibleButton extends BaseButton {
+public class CollapsibleButton extends BaseSetter {
 
     protected boolean collapsed;
 
