@@ -1,12 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.util.SelectionManager;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;
@@ -14,26 +9,21 @@ import java.util.Locale;
 
 public class ColorSetter extends BaseSetter{
 
-    private static final String[] ALLOWED_CHARACTERS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-            "a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F"};
-    private static final int MAXIMUM_LENGTH = 6;
-
     protected boolean focused;
     protected Color color;
-    protected String colorText;
-    protected SelectionManager selectionManager;
+    protected TextField textField;
 
     public ColorSetter(int x, int y, Color color) {
         super(x, y);
-        this.color = color;
-        this.colorText = this.colorToString(this.color); // discard alpha
-        this.selectionManager = new SelectionManager(
-                () -> this.colorText,
-                this::setColorText,
-                SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
-                SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
-                s -> s.matches("[0-9A-Fa-f]*")
+        this.textField = new TextField(
+                this.x + 9,
+                this.y,
+                6,
+                "0123456789abcdefABCDEF",
+                true
         );
+        this.textField.setText(this.colorToString(color));
+        this.color = color;
         this.focused = false;
     }
 
@@ -57,12 +47,7 @@ public class ColorSetter extends BaseSetter{
     }
 
     public int getWidth() {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        int maxWidth = 0;
-        for(String c : ColorSetter.ALLOWED_CHARACTERS) {
-            maxWidth = Math.max(maxWidth, textRenderer.getWidth(Text.literal(c)));
-        }
-        return maxWidth * 6 + 4 + 7;
+        return this.textField.getWidth() + 10;
     }
 
     public int getHeight() {
@@ -71,55 +56,31 @@ public class ColorSetter extends BaseSetter{
 
     public void setColor(Color c) {
         this.color = c;
-        this.colorText = this.colorToString(c);
+        this.textField.setText(this.colorToString(c));
     }
 
-    public void setColorText(String s) {
-        this.colorText = s;
+    public void setPosition(int x, int y) {
+        super.setPosition(x, y);
+        this.textField.setPosition(x + 9, y);
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/color_setter"));
-
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        int textWidth = textRenderer.getWidth(Text.literal(this.colorText));
-        // positions measured from right edge
-        int sectionStartPos = textRenderer.getWidth(Text.literal(this.colorText.substring(this.selectionManager.getSelectionStart())));
-        int sectionEndPos = textRenderer.getWidth(Text.literal(this.colorText.substring(this.selectionManager.getSelectionEnd())));
-        String selectionPath = sectionStartPos < sectionEndPos ? "selection" : "selection_alt";
-        int width = this.getWidth();
-
         context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.color.getRGB() & 0xffffff | 0xff000000 );
-        if(this.focused) {
-            context.drawGuiTexture(
-                    RenderLayer::getGuiTextured,
-                    Identifier.of(EnchantipsClient.MODID, selectionPath),
-                    this.x - 2 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
-                    1 + Math.abs(sectionEndPos - sectionStartPos), 9
-            );
-        }
-        context.drawText(
-                MinecraftClient.getInstance().textRenderer,
-                Text.literal(this.colorText),
-                this.x - 1 + width - textWidth, this.y + 1,
-                0xffffff, false
-        );
+        this.textField.render(context, mouseX, mouseY, delta);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> {});
-        if(isWithinBounds) {
-            this.selectionManager.selectAll();
-        }
+        boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> this.textField.selectionManager.selectAll());
         this.focused = isWithinBounds;
+        this.textField.focused = isWithinBounds;
         return isWithinBounds;
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.handleSpecialKey(keyCode)) {
-            this.shiftText();
+        if(this.textField.keyPressed(keyCode, scanCode, modifiers)) {
+            this.color = this.stringToColor(this.textField.text);
             return true;
         }
         return false;
@@ -127,29 +88,10 @@ public class ColorSetter extends BaseSetter{
 
     public boolean charTyped(char chr, int modifiers) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.insert(Character.toUpperCase(chr))) {
-            this.shiftText();
+        if(this.textField.charTyped(chr, modifiers)) {
+            this.color = this.stringToColor(this.textField.text);
+            return true;
         }
-        return true;
-    }
-
-    private void shiftText() {
-        int deletePosition = 0;
-        int deleteLength = Math.max(0, this.colorText.length() - MAXIMUM_LENGTH);
-        if(this.selectionManager.getSelectionStart() < this.colorText.length()) {
-            deletePosition = this.selectionManager.getSelectionStart();
-        }
-        int deleteLengthAtStart = Math.max(0, deletePosition + deleteLength - this.colorText.length());
-        deleteLength -= deleteLengthAtStart;
-
-        if(this.colorText.length() > 6) {
-            this.colorText = this.colorText.substring(deleteLengthAtStart, deletePosition) +
-                    this.colorText.substring(deletePosition + deleteLength);
-            this.selectionManager.setSelection(
-                    Math.min(this.colorText.length(), this.selectionManager.getSelectionStart()),
-                    Math.min(this.colorText.length(), this.selectionManager.getSelectionEnd())
-            );
-        }
-        this.color = this.stringToColor(this.colorText);
+        return false;
     }
 }
