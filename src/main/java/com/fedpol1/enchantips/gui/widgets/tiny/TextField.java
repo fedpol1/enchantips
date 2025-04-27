@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.google.common.base.CharMatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -26,7 +27,7 @@ public class TextField extends BaseSetter<String> {
                 this::setText,
                 SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
                 SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
-                s -> this.text.chars().sequential().allMatch(c1 -> this.allowedCharacters.chars().anyMatch(c2 -> c1 == c2))
+                s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s)
         );
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
