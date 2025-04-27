@@ -61,4 +61,12 @@ public class ColorConfigInfoLine extends ConfigInfoLine<Color> implements Drawab
         }
         return false;
     }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return this.setter.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        return this.setter.charTyped(chr, modifiers);
+    }
 }

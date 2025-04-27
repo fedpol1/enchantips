@@ -66,4 +66,12 @@ public abstract class InfoDelineator implements Drawable, Element {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return false;
     }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return false;
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        return false;
+    }
 }

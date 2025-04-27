@@ -118,4 +118,12 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements Dr
         }
         return false;
     }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        return super.charTyped(chr, modifiers);
+    }
 }

@@ -91,4 +91,18 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
         }
         return true;
     }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for(InfoDelineator line : lines) {
+            line.keyPressed(keyCode, scanCode, modifiers);
+        }
+        return true;
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        for(InfoDelineator line : lines) {
+            line.charTyped(chr, modifiers);
+        }
+        return true;
+    }
 }

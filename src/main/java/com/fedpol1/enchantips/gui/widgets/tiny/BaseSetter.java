@@ -57,6 +57,14 @@ public abstract class BaseSetter {
         );
     }
 
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return false;
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        return false;
+    }
+
     public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
 
     protected boolean mouseClicked(double mouseX, double mouseY, int button, ButtonAction action) {

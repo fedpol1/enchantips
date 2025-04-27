@@ -80,11 +80,6 @@ public abstract class BaseScreen extends Screen {
         this.lines.refresh(0);
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         lines.scroll((int)verticalAmount);
@@ -98,6 +93,19 @@ public abstract class BaseScreen extends Screen {
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         this.lines.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return true;
+    }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(super.keyPressed(keyCode, scanCode, modifiers)) {
+            return true;
+        }
+        this.lines.keyPressed(keyCode, scanCode, modifiers);
+        return true;
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        this.lines.charTyped(chr, modifiers);
         return true;
     }
 
