@@ -81,27 +81,37 @@ public class ColorSetter extends BaseSetter{
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/color_setter"));
 
-        int sectionWidth = this.selectionManager.getSelectionEnd() - this.selectionManager.getSelectionStart();
-        int sectionStart = Math.min(this.selectionManager.getSelectionEnd(), this.selectionManager.getSelectionStart());
-        String path = sectionWidth < 0 ? "selection" : "selection_alt";
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        int textWidth = textRenderer.getWidth(Text.literal(this.colorText));
+        // positions measured from right edge
+        int sectionStartPos = textRenderer.getWidth(Text.literal(this.colorText.substring(this.selectionManager.getSelectionStart())));
+        int sectionEndPos = textRenderer.getWidth(Text.literal(this.colorText.substring(this.selectionManager.getSelectionEnd())));
+        String selectionPath = sectionStartPos < sectionEndPos ? "selection" : "selection_alt";
+        int width = this.getWidth();
 
         context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.color.getRGB() & 0xffffff | 0xff000000 );
-        context.drawGuiTexture(
-                RenderLayer::getGuiTextured,
-                Identifier.of(EnchantipsClient.MODID, path),
-                this.x +  9 + sectionStart * 6, this.y,
-                1 + Math.abs(sectionWidth) * 6, 9
-        );
+        if(this.focused) {
+            context.drawGuiTexture(
+                    RenderLayer::getGuiTextured,
+                    Identifier.of(EnchantipsClient.MODID, selectionPath),
+                    this.x - 2 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
+                    1 + Math.abs(sectionEndPos - sectionStartPos), 9
+            );
+        }
         context.drawText(
                 MinecraftClient.getInstance().textRenderer,
-                this.colorText,
-                this.x + 10, this.y + 1,
+                Text.literal(this.colorText),
+                this.x - 1 + width - textWidth, this.y + 1,
                 0xffffff, false
         );
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> {});
+        if(isWithinBounds) {
+            this.selectionManager.selectAll();
+        }
         this.focused = isWithinBounds;
         return isWithinBounds;
     }
@@ -135,11 +145,11 @@ public class ColorSetter extends BaseSetter{
         if(this.colorText.length() > 6) {
             this.colorText = this.colorText.substring(deleteLengthAtStart, deletePosition) +
                     this.colorText.substring(deletePosition + deleteLength);
-            this.color = this.stringToColor(this.colorText);
             this.selectionManager.setSelection(
                     Math.min(this.colorText.length(), this.selectionManager.getSelectionStart()),
                     Math.min(this.colorText.length(), this.selectionManager.getSelectionEnd())
             );
         }
+        this.color = this.stringToColor(this.colorText);
     }
 }
