@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ColorConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
@@ -21,5 +22,7 @@ public class ConfigScreen extends BaseScreen {
         this.lines.addLine(new BooleanConfigInfoLine(Text.literal("among us sussy"), ModOption.ENCHANTMENT_TARGETS_SWITCH, false));
         this.lines.addLine(new ColorConfigInfoLine(Text.literal("impostor"), ModOption.ENCHANTABILITY_COLOR, new Color(0xff0000)));
         this.lines.addLine(new ColorConfigInfoLine(Text.literal("crewmate"), ModOption.ENCHANTABILITY_VALUE_COLOR, new Color(0x00ff00)));
+        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("task"), ModOption.EXTRA_ENCHANTMENTS_LIMIT, 4));
+        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("vote"), ModOption.HIGHLIGHTS_ALPHA_HOTBAR, 4));
     }
 }

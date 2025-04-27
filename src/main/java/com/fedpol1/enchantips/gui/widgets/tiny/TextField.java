@@ -9,7 +9,7 @@ import net.minecraft.client.util.SelectionManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class TextField extends BaseSetter {
+public class TextField extends BaseSetter<String> {
 
     protected String text;
     protected SelectionManager selectionManager;
@@ -27,7 +27,6 @@ public class TextField extends BaseSetter {
                 SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
                 SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
                 s -> this.text.chars().sequential().allMatch(c1 -> this.allowedCharacters.chars().anyMatch(c2 -> c1 == c2))
-
         );
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
@@ -47,6 +46,9 @@ public class TextField extends BaseSetter {
     public int getHeight() {
         return 9;
     }
+
+    @Override
+    public void setValue(String value) {}
 
     public String getText() {
         return this.text;
@@ -83,13 +85,7 @@ public class TextField extends BaseSetter {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return false;/*
-        boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> {});
-        if(isWithinBounds) {
-            this.selectionManager.selectAll();
-        }
-        this.focused = isWithinBounds;
-        return isWithinBounds;*/
+        return false;
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {

@@ -4,7 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
-public abstract class BaseSetter {
+public abstract class BaseSetter<T> {
 
     protected int x;
     protected int y;
@@ -34,6 +34,8 @@ public abstract class BaseSetter {
         this.x = x;
         this.y = y;
     }
+
+    public abstract void setValue(T value);
 
     public boolean isWithin(double mouseX, double mouseY) {
         int x = this.x;

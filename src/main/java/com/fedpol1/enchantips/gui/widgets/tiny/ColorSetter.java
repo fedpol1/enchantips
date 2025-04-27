@@ -7,14 +7,11 @@ import net.minecraft.util.Identifier;
 import java.awt.*;
 import java.util.Locale;
 
-public class ColorSetter extends BaseSetter{
+public class ColorSetter extends TextSetter<Color>{
 
-    protected boolean focused;
-    protected Color color;
-    protected TextField textField;
 
     public ColorSetter(int x, int y, Color color) {
-        super(x, y);
+        super(x, y, color);
         this.textField = new TextField(
                 this.x + 9,
                 this.y,
@@ -22,28 +19,16 @@ public class ColorSetter extends BaseSetter{
                 "0123456789abcdefABCDEF",
                 true
         );
-        this.textField.setText(this.colorToString(color));
-        this.color = color;
-        this.focused = false;
+        this.value = color;
+        this.textField.setText(this.getStringValue());
     }
 
-    public Color stringToColor(String s) {
-        if(s.isEmpty()) {
-            return new Color(0);
-        }
-        return new Color(Integer.parseInt(s, 16));
+    public void readStringValue(String s) {
+        this.value = new Color(s.isEmpty() ? 0 : Integer.parseInt(s, 16));
     }
 
-    public String colorToString(Color c) {
-        return String.format(Locale.ROOT, "%06X", c.getRGB() & 0xffffff);
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
+    public String getStringValue() {
+        return String.format(Locale.ROOT, "%06X", this.value.getRGB() & 0xffffff);
     }
 
     public int getWidth() {
@@ -54,11 +39,6 @@ public class ColorSetter extends BaseSetter{
         return 9;
     }
 
-    public void setColor(Color c) {
-        this.color = c;
-        this.textField.setText(this.colorToString(c));
-    }
-
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         this.textField.setPosition(x + 9, y);
@@ -66,32 +46,7 @@ public class ColorSetter extends BaseSetter{
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/color_setter"));
-        context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.color.getRGB() & 0xffffff | 0xff000000 );
+        context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.value.getRGB() & 0xffffff | 0xff000000 );
         this.textField.render(context, mouseX, mouseY, delta);
-    }
-
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> this.textField.selectionManager.selectAll());
-        this.focused = isWithinBounds;
-        this.textField.focused = isWithinBounds;
-        return isWithinBounds;
-    }
-
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(!this.focused) { return false; }
-        if(this.textField.keyPressed(keyCode, scanCode, modifiers)) {
-            this.color = this.stringToColor(this.textField.text);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean charTyped(char chr, int modifiers) {
-        if(!this.focused) { return false; }
-        if(this.textField.charTyped(chr, modifiers)) {
-            this.color = this.stringToColor(this.textField.text);
-            return true;
-        }
-        return false;
     }
 }

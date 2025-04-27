@@ -4,7 +4,7 @@ import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class CollapsibleButton extends BaseSetter {
+public class CollapsibleButton extends BaseSetter<Object> {
 
     protected boolean collapsed;
 
@@ -16,6 +16,9 @@ public class CollapsibleButton extends BaseSetter {
     public boolean isCollapsed() {
         return this.collapsed;
     }
+
+    @Override
+    public void setValue(Object value) {}
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {

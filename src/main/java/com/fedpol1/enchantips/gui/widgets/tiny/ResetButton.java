@@ -5,7 +5,7 @@ import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class ResetButton extends BaseSetter {
+public class ResetButton extends BaseSetter<Object> {
 
     protected final ConfigInfoLine<?> line;
 
@@ -13,6 +13,9 @@ public class ResetButton extends BaseSetter {
         super(x, y);
         this.line = line;
     }
+
+    @Override
+    public void setValue(Object value) {}
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
