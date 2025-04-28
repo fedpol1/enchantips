@@ -9,7 +9,6 @@ import java.util.Locale;
 
 public class ColorSetter extends TextSetter<Color>{
 
-
     public ColorSetter(int x, int y, Color color) {
         super(x, y, color);
         this.textField = new TextField(
@@ -17,6 +16,7 @@ public class ColorSetter extends TextSetter<Color>{
                 this.y,
                 6,
                 "0123456789abcdefABCDEF",
+                s -> true,
                 true
         );
         this.value = color;
@@ -24,10 +24,16 @@ public class ColorSetter extends TextSetter<Color>{
     }
 
     public void readStringValue(String s) {
-        this.value = new Color(s.isEmpty() ? 0 : Integer.parseInt(s, 16));
+        try {
+            this.value = new Color(Integer.parseInt(s, 16));
+        } catch (NumberFormatException e) {
+            this.value = null;
+        }
+
     }
 
     public String getStringValue() {
+        if(this.value == null) { return ""; }
         return String.format(Locale.ROOT, "%06X", this.value.getRGB() & 0xffffff);
     }
 
@@ -46,7 +52,9 @@ public class ColorSetter extends TextSetter<Color>{
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/color_setter"));
-        context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.value.getRGB() & 0xffffff | 0xff000000 );
+        if(this.value != null) {
+            context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.value.getRGB() & 0xffffff | 0xff000000);
+        }
         this.textField.render(context, mouseX, mouseY, delta);
     }
 }

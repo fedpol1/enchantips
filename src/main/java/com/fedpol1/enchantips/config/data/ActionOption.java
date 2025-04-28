@@ -31,6 +31,10 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
         this.action = action;
     }
 
+    public boolean canSet(BiConsumer<YACLScreen, ButtonOption> action) {
+        return false;
+    }
+
     public void readStringValue(String s) {
         // empty
     }

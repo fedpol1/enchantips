@@ -12,17 +12,24 @@ public class IntegerSetter extends TextSetter<Integer>{
                 this.x,
                 this.y,
                 9,
-                "0123456789",
+                "-0123456789",
+                s -> true,
                 true
         );
         this.textField.setText(this.getStringValue());
     }
 
     public void readStringValue(String s) {
-        this.value = Integer.parseInt(s.isEmpty() ? "0" : s);
+        try {
+            this.value = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            this.value = null;
+        }
+
     }
 
     public String getStringValue() {
+        if(this.value == null) { return ""; }
         return Integer.toString(this.value);
     }
 

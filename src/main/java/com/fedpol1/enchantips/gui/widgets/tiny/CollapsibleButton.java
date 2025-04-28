@@ -18,9 +18,6 @@ public class CollapsibleButton extends BaseSetter<Object> {
     }
 
     @Override
-    public void setValue(Object value) {}
-
-    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         String path = this.collapsed ? "enchantment_info/expand" : "enchantment_info/collapse";
         super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, path));

@@ -3,7 +3,6 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 public abstract class TextSetter<T> extends BaseSetter<T>{
 
     protected boolean focused;
-    protected T value;
     protected TextField textField;
 
     public TextSetter(int x, int y, T value) {

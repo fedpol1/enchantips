@@ -8,6 +8,7 @@ public abstract class BaseSetter<T> {
 
     protected int x;
     protected int y;
+    protected T value;
 
     public BaseSetter(int x, int y) {
         this.x = x;
@@ -35,7 +36,13 @@ public abstract class BaseSetter<T> {
         this.y = y;
     }
 
-    public abstract void setValue(T value);
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return this.value;
+    }
 
     public boolean isWithin(double mouseX, double mouseY) {
         int x = this.x;

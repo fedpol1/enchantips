@@ -11,6 +11,6 @@ public class BooleanConfigInfoLine extends ConfigInfoLine<Boolean> implements Dr
     public BooleanConfigInfoLine(Text text, ModOption<Boolean> option, boolean value) {
         super(text, option);
         this.height = 0;
-        this.setter = new BooleanButton(this.x + this.resetButton.getWidth() + 1, this.y, value);
+        this.setter = new BooleanButton(this.x + this.resetButton.getWidth() + this.saveButton.getWidth() + 2, this.y, value);
     }
 }

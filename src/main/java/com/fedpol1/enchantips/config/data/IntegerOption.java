@@ -37,6 +37,10 @@ public class IntegerOption implements Data<Integer> {
         this.value = v;
     }
 
+    public boolean canSet(Integer v) {
+        return v != null && v >= this.min && v <= this.max;
+    }
+
     public void readStringValue(String s) {
         this.value = Integer.parseInt(s);
     }

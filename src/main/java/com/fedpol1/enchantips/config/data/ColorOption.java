@@ -30,8 +30,12 @@ public class ColorOption implements Data<Color> {
         return this.defaultValue;
     }
 
-    public void setValue(Color c) {
-        this.color = c;
+    public void setValue(Color v) {
+        this.color = v;
+    }
+
+    public boolean canSet(Color v) {
+        return v != null;
     }
 
     public void readStringValue(String s) {

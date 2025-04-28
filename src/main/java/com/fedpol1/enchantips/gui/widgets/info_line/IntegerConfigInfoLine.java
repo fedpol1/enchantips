@@ -11,6 +11,6 @@ public class IntegerConfigInfoLine extends ConfigInfoLine<Integer> implements Dr
     public IntegerConfigInfoLine(Text text, ModOption<Integer> option, Integer value) {
         super(text, option);
         this.height = 0;
-        this.setter = new IntegerSetter(this.x + this.resetButton.getWidth() + 1, this.y, value);
+        this.setter = new IntegerSetter(this.x + this.resetButton.getWidth() + this.saveButton.getWidth() + 2, this.y, value);
     }
 }

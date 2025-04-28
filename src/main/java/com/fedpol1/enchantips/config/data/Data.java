@@ -13,7 +13,9 @@ public interface Data<T> {
 
     T getDefaultValue();
 
-    void setValue(T c);
+    void setValue(T v);
+
+    boolean canSet(T v);
 
     void readStringValue(String c);
 

@@ -13,6 +13,6 @@ public class ColorConfigInfoLine extends ConfigInfoLine<Color> implements Drawab
     public ColorConfigInfoLine(Text text, ModOption<Color> option, Color value) {
         super(text, option);
         this.height = 0;
-        this.setter = new ColorSetter(this.x + this.resetButton.getWidth() + 1, this.y, value);
+        this.setter = new ColorSetter(this.x + this.resetButton.getWidth() + this.saveButton.getWidth() + 2, this.y, value);
     }
 }

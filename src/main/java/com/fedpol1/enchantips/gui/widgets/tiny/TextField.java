@@ -2,6 +2,7 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Predicate;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -19,7 +20,7 @@ public class TextField extends BaseSetter<String> {
     protected boolean rightAligned;
     protected boolean focused;
 
-    public TextField(int x, int y, int maximumLength, String allowedCharacters, boolean rightAligned) {
+    public TextField(int x, int y, int maximumLength, String allowedCharacters, Predicate<String> predicate, boolean rightAligned) {
         super(x, y);
         this.text = "";
         this.selectionManager = new SelectionManager(
@@ -27,7 +28,7 @@ public class TextField extends BaseSetter<String> {
                 this::setText,
                 SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
                 SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
-                s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s)
+                s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s) && predicate.apply(s)
         );
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
@@ -47,9 +48,6 @@ public class TextField extends BaseSetter<String> {
     public int getHeight() {
         return 9;
     }
-
-    @Override
-    public void setValue(String value) {}
 
     public String getText() {
         return this.text;

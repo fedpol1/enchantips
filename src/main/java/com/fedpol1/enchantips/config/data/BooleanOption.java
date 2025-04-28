@@ -30,6 +30,10 @@ public class BooleanOption implements Data<Boolean> {
         this.value = v;
     }
 
+    public boolean canSet(Boolean v) {
+        return v != null;
+    }
+
     public void readStringValue(String s) {
         this.value = Boolean.parseBoolean(s);
     }
