@@ -69,14 +69,11 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
         if(super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
-        if(this.setter.mouseClicked(mouseX, mouseY, button)) {
-            for (int i = 0; i < this.parent.lines.size(); i++) {
-                if (this.parent.lines.get(i) == this) {
-                    this.refresh(0);
-                    this.nearestScrollableParent.refresh(0);
-                    return true;
-                }
-            }
+        if(this.resetButton.mouseClicked(mouseX, mouseY, button) ||
+                this.saveButton.mouseClicked(mouseX, mouseY, button) ||
+                this.setter.mouseClicked(mouseX, mouseY, button)
+        ) {
+            this.refresh(0);
         }
         return false;
     }
