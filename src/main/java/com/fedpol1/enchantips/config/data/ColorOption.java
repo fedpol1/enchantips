@@ -1,6 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.ColorConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 
@@ -40,6 +42,14 @@ public class ColorOption implements Data<Color> {
 
     public void readStringValue(String s) {
         this.color = new Color(Integer.parseInt(s.substring(1), 16));
+    }
+
+    public ConfigInfoLine<Color> getConfigLine(OptionNode<Color> optionNode) {
+        return new ColorConfigInfoLine(
+                this.getOptionTitle(optionNode),
+                this,
+                this.color
+        );
     }
 
     public Option<Color> getYaclOption(OptionNode<Color> optionNode) {

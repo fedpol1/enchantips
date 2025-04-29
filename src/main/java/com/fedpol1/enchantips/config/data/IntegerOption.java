@@ -1,6 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
@@ -43,6 +45,14 @@ public class IntegerOption implements Data<Integer> {
 
     public void readStringValue(String s) {
         this.value = Integer.parseInt(s);
+    }
+
+    public ConfigInfoLine<Integer> getConfigLine(OptionNode<Integer> optionNode) {
+        return new IntegerConfigInfoLine(
+                this.getOptionTitle(optionNode),
+                this,
+                this.value
+                );
     }
 
     public Option<Integer> getYaclOption(OptionNode<Integer> optionNode) {

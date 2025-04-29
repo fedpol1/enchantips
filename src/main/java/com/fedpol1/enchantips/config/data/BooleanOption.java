@@ -1,6 +1,8 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 
@@ -36,6 +38,14 @@ public class BooleanOption implements Data<Boolean> {
 
     public void readStringValue(String s) {
         this.value = Boolean.parseBoolean(s);
+    }
+
+    public ConfigInfoLine<Boolean> getConfigLine(OptionNode<Boolean> optionNode) {
+        return new BooleanConfigInfoLine(
+                this.getOptionTitle(optionNode),
+                this,
+                this.value
+        );
     }
 
     public Option<Boolean> getYaclOption(OptionNode<Boolean> optionNode) {

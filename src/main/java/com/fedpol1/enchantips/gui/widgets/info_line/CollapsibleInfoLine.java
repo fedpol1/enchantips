@@ -8,7 +8,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;
 
-public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Element {
+public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine, Drawable, Element {
 
     protected final Text text;
     protected final InfoLineContainer lines;
@@ -27,6 +27,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements Drawable, Ele
     }
 
     public void addLine(InfoDelineator line) {
+        if(line == null) { return; }
         line.parent = this.lines;
         line.setNearestScrollableParent(this.nearestScrollableParent);
         this.lines.addLine(line);

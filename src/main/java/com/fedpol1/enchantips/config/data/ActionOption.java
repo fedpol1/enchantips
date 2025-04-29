@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.gui.YACLScreen;
 
@@ -42,6 +43,10 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
     public void run (YACLScreen screen, ButtonOption button) {
         this.action.accept(screen, button);
         screen.close();
+    }
+
+    public ConfigInfoLine<BiConsumer<YACLScreen, ButtonOption>> getConfigLine(OptionNode<BiConsumer<YACLScreen, ButtonOption>> optionNode) {
+        return null;
     }
 
     public ButtonOption getYaclOption(OptionNode<BiConsumer<YACLScreen, ButtonOption>> optionNode) {

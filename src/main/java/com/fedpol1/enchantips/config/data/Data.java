@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
@@ -32,6 +33,8 @@ public interface Data<T> {
     default Text getOptionTitle(OptionNode<T> optionNode) {
         return Text.translatable(optionNode.getFullName() + ".option_title");
     }
+
+    ConfigInfoLine<T> getConfigLine(OptionNode<T> optionNode);
 
     Option<T> getYaclOption(OptionNode<T> optionNode);
 }

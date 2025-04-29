@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 
-public class InfoLineContainer extends InfoDelineator implements Drawable {
+public class InfoLineContainer extends InfoDelineator implements InfoMultiLine, Drawable {
 
     protected int x;
     protected int y;
@@ -23,6 +23,7 @@ public class InfoLineContainer extends InfoDelineator implements Drawable {
     }
 
     public void addLine(InfoDelineator line) {
+        if(line == null) { return; }
         line.parent = this;
         line.setNearestScrollableParent(this.nearestScrollableParent);
         if(line instanceof CollapsibleInfoLine collapsible) {

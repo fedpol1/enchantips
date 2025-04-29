@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
-public class ScrollableInfoLineContainer extends InfoLineContainer implements Drawable, Element {
+public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Drawable, Element {
 
     //
     private static final Identifier SCROLLER_TEXTURE = Identifier.ofVanilla("widget/scroller");
