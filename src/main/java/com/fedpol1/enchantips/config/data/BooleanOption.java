@@ -5,6 +5,9 @@ import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import net.minecraft.text.Text;
+
+import java.util.List;
 
 public class BooleanOption implements Data<Boolean> {
 
@@ -38,6 +41,13 @@ public class BooleanOption implements Data<Boolean> {
 
     public void readStringValue(String s) {
         this.value = Boolean.parseBoolean(s);
+    }
+
+    public List<Text> getTooltip(Boolean v) {
+        if(this.canSet(v)) {
+            return null;
+        }
+        return List.of(Text.translatable("enchantips.gui.setter.boolean.error.invalid"));
     }
 
     public ConfigInfoLine<Boolean> getConfigLine(OptionNode<Boolean> optionNode) {

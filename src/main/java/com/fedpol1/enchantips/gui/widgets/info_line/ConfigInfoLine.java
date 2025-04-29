@@ -11,6 +11,8 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;
 
+import java.util.List;
+
 public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, Element {
 
     protected final Data<T> data;
@@ -56,13 +58,17 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
     }
 
     public boolean canSave() {
-        return this.data.canSet(this.setter.getValue());
+        return this.data.canSet(this.setter.getValue()) && !this.setter.getValue().equals(this.data.getValue());
     }
 
     public void save() {
         if(this.canSave()) {
             this.data.setValue(this.setter.getValue());
         }
+    }
+
+    public List<Text> getSaveButtonTooltip() {
+        return this.data.getTooltip(this.setter.getValue());
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -73,7 +79,12 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
                 this.saveButton.mouseClicked(mouseX, mouseY, button) ||
                 this.setter.mouseClicked(mouseX, mouseY, button)
         ) {
-            this.refresh(0);
+            for (int i = 0; i < this.parent.lines.size(); i++) {
+                if (this.parent.lines.get(i) == this) {
+                    this.refresh(i);
+                    return true;
+                }
+            }
         }
         return false;
     }

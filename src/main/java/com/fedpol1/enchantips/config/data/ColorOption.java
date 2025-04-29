@@ -5,8 +5,10 @@ import com.fedpol1.enchantips.gui.widgets.info_line.ColorConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
+import net.minecraft.text.Text;
 
 import java.awt.Color;
+import java.util.List;
 import java.util.Locale;
 
 public class ColorOption implements Data<Color> {
@@ -42,6 +44,13 @@ public class ColorOption implements Data<Color> {
 
     public void readStringValue(String s) {
         this.color = new Color(Integer.parseInt(s.substring(1), 16));
+    }
+
+    public List<Text> getTooltip(Color v) {
+        if(this.canSet(v)) {
+            return null;
+        }
+        return List.of(Text.translatable("enchantips.gui.setter.color.error.invalid"));
     }
 
     public ConfigInfoLine<Color> getConfigLine(OptionNode<Color> optionNode) {

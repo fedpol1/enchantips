@@ -6,6 +6,8 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
 
+import java.util.List;
+
 public interface Data<T> {
 
     T getValue();
@@ -33,6 +35,8 @@ public interface Data<T> {
     default Text getOptionTitle(OptionNode<T> optionNode) {
         return Text.translatable(optionNode.getFullName() + ".option_title");
     }
+
+    List<Text> getTooltip(T v);
 
     ConfigInfoLine<T> getConfigLine(OptionNode<T> optionNode);
 

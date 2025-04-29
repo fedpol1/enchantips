@@ -6,6 +6,9 @@ import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
+import net.minecraft.text.Text;
+
+import java.util.List;
 
 public class IntegerOption implements Data<Integer> {
 
@@ -45,6 +48,16 @@ public class IntegerOption implements Data<Integer> {
 
     public void readStringValue(String s) {
         this.value = Integer.parseInt(s);
+    }
+
+    public List<Text> getTooltip(Integer v) {
+        if(this.canSet(v)) {
+            return null;
+        }
+        if(v == null) {
+            return List.of(Text.translatable("enchantips.gui.setter.integer.error.invalid"));
+        }
+        return List.of(Text.translatable("enchantips.gui.setter.integer.error.out_of_bounds", v, this.min, this.max));
     }
 
     public ConfigInfoLine<Integer> getConfigLine(OptionNode<Integer> optionNode) {

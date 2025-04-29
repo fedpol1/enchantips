@@ -15,6 +15,10 @@
   "enchantips.gui.enchantment_info.tags": "Tags",
 
   "enchantips.gui.config": "Enchantips Configuration",
+  "enchantips.gui.setter.boolean.error.invalid": "Value must be a color",
+  "enchantips.gui.setter.color.error.invalid": "Value must be a color",
+  "enchantips.gui.setter.integer.error.invalid": "Value must be an integer",
+  "enchantips.gui.setter.integer.error.out_of_bounds": "Value %s must be in range %s-%s",
 
   "enchantips.config": "Enchantips Configuration",
   "enchantips.config.tooltips": "Tooltips",
