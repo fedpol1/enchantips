@@ -57,8 +57,12 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
         this.setter.setValue(this.data.getDefaultValue());
     }
 
+    public boolean isDefault() {
+        return this.data.getDefaultValue().equals(this.setter.getValue());
+    }
+
     public boolean canSave() {
-        return this.data.canSet(this.setter.getValue()) && !this.setter.getValue().equals(this.data.getValue());
+        return this.data.canSet(this.setter.getValue()) && !this.data.getValue().equals(this.setter.getValue());
     }
 
     public void save() {
