@@ -66,6 +66,9 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(super.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
         if(this.setter.mouseClicked(mouseX, mouseY, button)) {
             for (int i = 0; i < this.parent.lines.size(); i++) {
                 if (this.parent.lines.get(i) == this) {
@@ -79,10 +82,16 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(super.keyPressed(keyCode, scanCode, modifiers)) {
+            return true;
+        }
         return this.setter.keyPressed(keyCode, scanCode, modifiers);
     }
 
     public boolean charTyped(char chr, int modifiers) {
+        if(super.charTyped(chr, modifiers)) {
+            return true;
+        }
         return this.setter.charTyped(chr, modifiers);
     }
 }

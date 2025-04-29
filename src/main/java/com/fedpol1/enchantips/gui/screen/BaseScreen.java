@@ -87,26 +87,22 @@ public abstract class BaseScreen extends Screen {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        this.lines.mouseClicked(mouseX, mouseY, button);
-        return true;
+        return this.lines.mouseClicked(mouseX, mouseY, button);
     }
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        this.lines.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-        return true;
+        return this.lines.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if(super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
         }
-        this.lines.keyPressed(keyCode, scanCode, modifiers);
-        return true;
+        return this.lines.keyPressed(keyCode, scanCode, modifiers);
     }
 
     public boolean charTyped(char chr, int modifiers) {
-        this.lines.charTyped(chr, modifiers);
-        return true;
+        return this.lines.charTyped(chr, modifiers);
     }
 
     @Override

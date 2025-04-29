@@ -80,6 +80,9 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(super.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
         for(InfoDelineator line : this.lines.lines) {
             if(line.mouseClicked(mouseX, mouseY, button)) {
                 return true;
@@ -93,6 +96,30 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
                     this.nearestScrollableParent.refresh(0);
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(super.keyPressed(keyCode, scanCode, modifiers)) {
+            return true;
+        }
+        for(InfoDelineator line : this.lines.lines) {
+            if(line.keyPressed(keyCode, scanCode, modifiers)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean charTyped(char chr, int modifiers) {
+        if(super.charTyped(chr, modifiers)) {
+            return true;
+        }
+        for(InfoDelineator line : this.lines.lines) {
+            if(line.charTyped(chr, modifiers)) {
+                return true;
             }
         }
         return false;
