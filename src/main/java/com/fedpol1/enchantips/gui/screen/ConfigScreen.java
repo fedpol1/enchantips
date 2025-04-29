@@ -17,12 +17,12 @@ public class ConfigScreen extends BaseScreen {
         super(title, parent);
         this.lines = new ScrollableInfoLineContainer(0x404040, 6);
 
-        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("among us"), ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED, true));
-        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("sussy"), ModOption.ANVIL_COST_SWITCH, true));
-        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("among us sussy"), ModOption.ENCHANTMENT_TARGETS_SWITCH, false));
-        this.lines.addLine(new ColorConfigInfoLine(Text.literal("impostor"), ModOption.ENCHANTABILITY_COLOR, new Color(0xff0000)));
-        this.lines.addLine(new ColorConfigInfoLine(Text.literal("crewmate"), ModOption.ENCHANTABILITY_VALUE_COLOR, new Color(0x00ff00)));
-        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("task"), ModOption.EXTRA_ENCHANTMENTS_LIMIT, 4));
-        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("vote"), ModOption.HIGHLIGHTS_ALPHA_HOTBAR, 4));
+        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("among us"), ModOption.ENCHANTABILITY_SWITCH_WHEN_ENCHANTED.getData(), true));
+        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("sussy"), ModOption.ANVIL_COST_SWITCH.getData(), true));
+        this.lines.addLine(new BooleanConfigInfoLine(Text.literal("among us sussy"), ModOption.ENCHANTMENT_TARGETS_SWITCH.getData(), false));
+        this.lines.addLine(new ColorConfigInfoLine(Text.literal("impostor"), ModOption.ENCHANTABILITY_COLOR.getData(), new Color(0xff0000)));
+        this.lines.addLine(new ColorConfigInfoLine(Text.literal("crewmate"), ModOption.ENCHANTABILITY_VALUE_COLOR.getData(), new Color(0x00ff00)));
+        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("task"), ModOption.EXTRA_ENCHANTMENTS_LIMIT.getData(), 4));
+        this.lines.addLine(new IntegerConfigInfoLine(Text.literal("vote"), ModOption.HIGHLIGHTS_ALPHA_HOTBAR.getData(), 4));
     }
 }

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import com.fedpol1.enchantips.gui.widgets.tiny.ResetButton;
 import com.fedpol1.enchantips.gui.widgets.tiny.SaveButton;
@@ -13,14 +13,14 @@ import net.minecraft.text.Text;
 
 public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, Element {
 
-    protected final ModOption<T> option;
+    protected final Data<T> data;
     protected BaseSetter<T> setter;
     protected final ResetButton resetButton;
     protected final SaveButton saveButton;
 
-    public ConfigInfoLine(Text text, ModOption<T> option) {
+    public ConfigInfoLine(Text text, Data<T> data) {
         super(text);
-        this.option = option;
+        this.data = data;
         this.resetButton = new ResetButton(this.x, this.y, this);
         this.saveButton = new SaveButton(this.x + this.resetButton.getWidth() + 1, this.y, this);
     }
@@ -52,16 +52,16 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
     }
 
     public void reset() {
-        this.setter.setValue(this.option.getData().getDefaultValue());
+        this.setter.setValue(this.data.getDefaultValue());
     }
 
     public boolean canSave() {
-        return this.option.getData().canSet(this.setter.getValue());
+        return this.data.canSet(this.setter.getValue());
     }
 
     public void save() {
         if(this.canSave()) {
-            this.option.getData().setValue(this.setter.getValue());
+            this.data.setValue(this.setter.getValue());
         }
     }
 
