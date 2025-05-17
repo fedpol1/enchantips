@@ -1,7 +1,10 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 
 public abstract class BaseSetter<T> {
@@ -79,6 +82,10 @@ public abstract class BaseSetter<T> {
     protected boolean mouseClicked(double mouseX, double mouseY, int button, ButtonAction action) {
         if(this.isWithin(mouseX, mouseY) && button == 0) {
             action.execute();
+            MinecraftClient
+                    .getInstance()
+                    .getSoundManager()
+                    .play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             return true;
         }
         return false;

@@ -70,11 +70,14 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         if(super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
+        
+        boolean lineClicked = false;
         for(InfoDelineator line : this.lines.lines) {
             if(line.mouseClicked(mouseX, mouseY, button)) {
-                return true;
+                lineClicked = true;
             }
         }
+        if(lineClicked) { return true; }
 
         if(this.button.mouseClicked(mouseX, mouseY, button)) {
             for (int i = 0; i < this.parent.lines.size(); i++) {

@@ -43,14 +43,9 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
         this.saveButton.render(context, mouseX, mouseY, delta);
         this.setter.render(context, mouseX, mouseY, delta);
 
-        this.renderText(
-                context,
-                this.resetButton.getWidth() + this.saveButton.getWidth() + this.setter.getWidth() + 3,
-                mouseX,
-                mouseY,
-                delta
-        );
-        if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY)) {
+        int offset = this.resetButton.getWidth() + this.saveButton.getWidth() + this.setter.getWidth() + 3;
+        this.renderText(context, offset, mouseX, mouseY, delta);
+        if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY) && mouseX >= this.x + offset) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, mouseX, mouseY);
         }
     }
