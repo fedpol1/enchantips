@@ -1,7 +1,5 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -9,11 +7,8 @@ import net.minecraft.text.Text;
 
 public class InfoLine extends InfoDelineator implements Drawable, Element {
 
-    protected Text text;
-
     public InfoLine(Text text) {
-        super();
-        this.text = text;
+        super(text);
     }
 
     public void refresh(int index) {
@@ -27,16 +22,7 @@ public class InfoLine extends InfoDelineator implements Drawable, Element {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if(!this.shouldRender(context, mouseX, mouseY, delta)) { return; }
-
-        TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        context.drawText(
-                renderer,
-                this.text,
-                this.x,
-                this.y + 1,
-                this.nearestScrollableParent.childColor,
-                false
-        );
+        this.renderText(context, 0, mouseX, mouseY, delta);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -10,14 +8,11 @@ import net.minecraft.text.Text;
 
 public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine, Drawable, Element {
 
-    protected final Text text;
     protected final InfoLineContainer lines;
     private final CollapsibleButton button;
 
     public CollapsibleInfoLine(Text text) {
-        super();
-        this.height = 0;
-        this.text = text;
+        super(text);
         this.lines = new InfoLineContainer();
         this.button = new CollapsibleButton(this.x, this.y, true);
     }
@@ -67,16 +62,8 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         if(this.y < this.nearestScrollableParent.y) { return; }
         if(this.y + InfoDelineator.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
 
-        TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         this.button.render(context, mouseX, mouseY, delta);
-        context.drawText(
-                renderer,
-                this.text,
-                this.x + this.button.getWidth() + 1,
-                this.y + 1,
-                this.nearestScrollableParent.childColor,
-                false
-        );
+        this.renderText(context, this.button.getWidth() + 1, mouseX, mouseY, delta);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

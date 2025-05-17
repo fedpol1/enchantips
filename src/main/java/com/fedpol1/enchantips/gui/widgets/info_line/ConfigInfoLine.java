@@ -5,7 +5,6 @@ import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import com.fedpol1.enchantips.gui.widgets.tiny.ResetButton;
 import com.fedpol1.enchantips.gui.widgets.tiny.SaveButton;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
@@ -44,14 +43,12 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
         this.saveButton.render(context, mouseX, mouseY, delta);
         this.setter.render(context, mouseX, mouseY, delta);
 
-        TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
-        context.drawText(
-                renderer,
-                this.text,
-                this.x + this.resetButton.getWidth() + this.saveButton.getWidth() + this.setter.getWidth() + 3,
-                this.y + 1,
-                this.nearestScrollableParent.childColor,
-                false
+        this.renderText(
+                context,
+                this.resetButton.getWidth() + this.saveButton.getWidth() + this.setter.getWidth() + 3,
+                mouseX,
+                mouseY,
+                delta
         );
         if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY)) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, mouseX, mouseY);
