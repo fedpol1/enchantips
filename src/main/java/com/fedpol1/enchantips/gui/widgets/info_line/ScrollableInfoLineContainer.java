@@ -45,15 +45,23 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         }
     }
 
+    public int getWidth() {
+        return super.getWidth() - (this.scrollerVisible() ? SCROLLER_WIDTH/2 : 0);
+    }
+
     public int getHeight() {
         return this.height;
+    }
+
+    public boolean scrollerVisible() {
+        return this.scrollerHeight < this.scrollbarHeight;
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
-        if(this.scrollerHeight < this.scrollbarHeight) {
+        if(this.scrollerVisible()) {
             context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
             context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
         }

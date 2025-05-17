@@ -42,6 +42,10 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         this.lines.add(line);
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
     public int getHeight(int index) {
         int sum = 0;
         for(int i = 0; i < this.lines.size(); i++) {
@@ -74,7 +78,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         this.x = this.parent.x + InfoLine.INDENTATION;
         this.y = this.parent.y + this.parent.getHeight(index) + InfoLine.LINE_HEIGHT;
         if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.width = this.parent.width - InfoLine.INDENTATION;
+        this.width = this.parent.getWidth() - InfoLine.INDENTATION;
         this.height = this.getHeight();
         for (int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);

@@ -30,10 +30,10 @@ public abstract class BaseScreen extends Screen {
     }
 
     private void calculateDimensions() {
-        this.windowX = this.width/10;
-        this.windowY = this.height/10;
-        this.windowWidth = this.width * 8/10;
-        this.windowHeight = Math.max(this.height * 8/10, InfoLine.LINE_HEIGHT + 39);
+        this.windowX = this.width/20;
+        this.windowY = this.height/20;
+        this.windowWidth = this.width * 18/20;
+        this.windowHeight = Math.max(this.height * 18/20, InfoLine.LINE_HEIGHT + 39);
         int extra = Math.floorMod(this.windowHeight - 39, InfoLine.LINE_HEIGHT);
         this.windowY += extra/2;
         this.windowHeight -= extra;

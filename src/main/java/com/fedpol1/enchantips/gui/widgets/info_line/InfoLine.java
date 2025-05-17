@@ -101,7 +101,7 @@ public class InfoLine implements Drawable, Element {
         this.x = this.parent.x;
         this.y = this.parent.y + this.parent.getHeight(index);
         if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.width = this.parent.width;
+        this.width = this.parent.getWidth();
         this.height = this.getHeight(index);
 
         int offset = 0;
