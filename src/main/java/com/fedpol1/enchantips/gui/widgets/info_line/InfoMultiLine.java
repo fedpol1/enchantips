@@ -6,5 +6,5 @@ public interface InfoMultiLine {
 
     void addLine(Text line);
 
-    void addLine(InfoDelineator line);
+    void addLine(InfoLine line);
 }

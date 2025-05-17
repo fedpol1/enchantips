@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;
 
-public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine, Drawable, Element {
+public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Drawable, Element {
 
     protected final InfoLineContainer lines;
     protected final CollapsibleButton expandButton;
@@ -22,7 +22,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         this.addLine(new InfoLine(line));
     }
 
-    public void addLine(InfoDelineator line) {
+    public void addLine(InfoLine line) {
         if(line == null) { return; }
         line.parent = this.lines;
         line.setNearestScrollableParent(this.nearestScrollableParent);
@@ -30,7 +30,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
     }
 
     public int getHeight(int index) {
-        return InfoDelineator.LINE_HEIGHT + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
+        return InfoLine.LINE_HEIGHT + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
     }
 
     public int getHeight() {
@@ -67,7 +67,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         }
         
         boolean lineClicked = false;
-        for(InfoDelineator line : this.lines.lines) {
+        for(InfoLine line : this.lines.lines) {
             if(line.mouseClicked(mouseX, mouseY, button)) {
                 lineClicked = true;
             }
@@ -90,7 +90,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         if(super.keyPressed(keyCode, scanCode, modifiers)) {
             return true;
         }
-        for(InfoDelineator line : this.lines.lines) {
+        for(InfoLine line : this.lines.lines) {
             if(line.keyPressed(keyCode, scanCode, modifiers)) {
                 return true;
             }
@@ -102,7 +102,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         if(super.charTyped(chr, modifiers)) {
             return true;
         }
-        for(InfoDelineator line : this.lines.lines) {
+        for(InfoLine line : this.lines.lines) {
             if(line.charTyped(chr, modifiers)) {
                 return true;
             }

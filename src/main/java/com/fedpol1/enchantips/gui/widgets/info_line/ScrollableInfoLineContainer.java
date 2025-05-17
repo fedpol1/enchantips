@@ -39,8 +39,8 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
 
     public void setDimensions(int width, int height) {
         this.width = width;
-        this.height = height / InfoDelineator.LINE_HEIGHT * InfoDelineator.LINE_HEIGHT; // induce floor
-        if(this.height < InfoDelineator.LINE_HEIGHT) {
+        this.height = height / InfoLine.LINE_HEIGHT * InfoLine.LINE_HEIGHT; // induce floor
+        if(this.height < InfoLine.LINE_HEIGHT) {
             throw new IllegalArgumentException("Height cannot be less than line height.");
         }
     }
@@ -80,8 +80,8 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public void scroll(int s) {
-        int scroll = s * InfoDelineator.LINE_HEIGHT;
-        InfoDelineator last = this.getLast();
+        int scroll = s * InfoLine.LINE_HEIGHT;
+        InfoLine last = this.getLast();
         int scrollingCapacity = Math.max(0, last.y + last.height - (this.y + this.height));
         this.scrollHeight += Math.clamp(scroll, -scrollingCapacity, -this.scrollHeight);
         this.refresh(0);
@@ -93,7 +93,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
                 0.0f,
                 1.0f
         );
-        this.scroll((int) -((this.scrollHeight + destinationFraction * (super.getHeight() - this.getHeight())) / InfoDelineator.LINE_HEIGHT));
+        this.scroll((int) -((this.scrollHeight + destinationFraction * (super.getHeight() - this.getHeight())) / InfoLine.LINE_HEIGHT));
     }
 
     private boolean isWithinScrollbar(double mouseX, double mouseY) {

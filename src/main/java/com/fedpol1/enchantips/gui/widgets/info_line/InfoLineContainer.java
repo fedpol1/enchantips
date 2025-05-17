@@ -15,7 +15,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     protected boolean focused = false;
     protected InfoLineContainer parent;
     protected ScrollableInfoLineContainer nearestScrollableParent;
-    protected final ArrayList<InfoDelineator> lines;
+    protected final ArrayList<InfoLine> lines;
 
     public InfoLineContainer() {
         this.x = 0;
@@ -31,7 +31,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         this.addLine(new InfoLine(t));
     }
 
-    public void addLine(InfoDelineator line) {
+    public void addLine(InfoLine line) {
         if(line == null) { return; }
         line.parent = this;
         line.setNearestScrollableParent(this.nearestScrollableParent);
@@ -56,11 +56,11 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     }
 
     public void setHeight() {
-        this.height = InfoDelineator.LINE_HEIGHT;
+        this.height = InfoLine.LINE_HEIGHT;
     }
 
-    public InfoDelineator getLast() {
-        InfoDelineator last = this.lines.getLast();
+    public InfoLine getLast() {
+        InfoLine last = this.lines.getLast();
         if(last instanceof CollapsibleInfoLine collapsible) {
             if(collapsible.isCollapsed() || collapsible.lines.lines.isEmpty()) {
                 return collapsible;
@@ -71,10 +71,10 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     }
 
     public void refresh(int index) {
-        this.x = this.parent.x + InfoDelineator.INDENTATION;
-        this.y = this.parent.y + this.parent.getHeight(index) + InfoDelineator.LINE_HEIGHT;
+        this.x = this.parent.x + InfoLine.INDENTATION;
+        this.y = this.parent.y + this.parent.getHeight(index) + InfoLine.LINE_HEIGHT;
         if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.width = this.parent.width - InfoDelineator.INDENTATION;
+        this.width = this.parent.width - InfoLine.INDENTATION;
         this.height = this.getHeight();
         for (int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);
@@ -83,14 +83,14 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
 
     public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         this.nearestScrollableParent = container;
-        for(InfoDelineator line : this.lines) {
+        for(InfoLine line : this.lines) {
             line.setNearestScrollableParent(container);
         }
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        for(InfoDelineator info : lines) {
+        for(InfoLine info : lines) {
             info.render(context, mouseX, mouseY, delta);
         }
     }
@@ -104,21 +104,21 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for(InfoDelineator line : lines) {
+        for(InfoLine line : lines) {
             line.mouseClicked(mouseX, mouseY, button);
         }
         return true;
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        for(InfoDelineator line : lines) {
+        for(InfoLine line : lines) {
             line.keyPressed(keyCode, scanCode, modifiers);
         }
         return true;
     }
 
     public boolean charTyped(char chr, int modifiers) {
-        for(InfoDelineator line : lines) {
+        for(InfoLine line : lines) {
             line.charTyped(chr, modifiers);
         }
         return true;

@@ -1,26 +1,14 @@
 package com.fedpol1.enchantips.gui.screen;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.gui.widgets.info_line.InfoDelineator;
+import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
-import com.fedpol1.enchantips.gui.widgets.info_line.info_generic.EnchantmentInfoLine;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.Optional;
 
 public abstract class BaseScreen extends Screen {
 
@@ -45,8 +33,8 @@ public abstract class BaseScreen extends Screen {
         this.windowX = this.width/10;
         this.windowY = this.height/10;
         this.windowWidth = this.width * 8/10;
-        this.windowHeight = Math.max(this.height * 8/10, InfoDelineator.LINE_HEIGHT + 39);
-        int extra = Math.floorMod(this.windowHeight - 39, InfoDelineator.LINE_HEIGHT);
+        this.windowHeight = Math.max(this.height * 8/10, InfoLine.LINE_HEIGHT + 39);
+        int extra = Math.floorMod(this.windowHeight - 39, InfoLine.LINE_HEIGHT);
         this.windowY += extra/2;
         this.windowHeight -= extra;
     }
