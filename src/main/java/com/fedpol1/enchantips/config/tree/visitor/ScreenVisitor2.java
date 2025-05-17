@@ -37,7 +37,7 @@ public class ScreenVisitor2 implements TreeVisitor {
     }
 
     public Object visit(EnchantmentGroupNode n, Object data) {
-        CollapsibleInfoLine collapsible = new CollapsibleInfoLine(Text.translatable(n.getFullName()));
+        CollapsibleInfoLine collapsible = new CollapsibleInfoLine(n.getDescription());
         ((InfoMultiLine) data).addLine(collapsible);
 
         for(Map.Entry<String, Node> current : n.getChildren()) {

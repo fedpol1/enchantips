@@ -43,7 +43,7 @@ public class BooleanOption implements Data<Boolean> {
         this.value = Boolean.parseBoolean(s);
     }
 
-    public List<Text> getTooltip(Boolean v) {
+    public List<Text> getSaveTooltip(Boolean v) {
         if(this.canSet(v)) {
             return null;
         }
@@ -53,6 +53,7 @@ public class BooleanOption implements Data<Boolean> {
     public ConfigInfoLine<Boolean> getConfigLine(OptionNode<Boolean> optionNode) {
         return new BooleanConfigInfoLine(
                 this.getOptionTitle(optionNode),
+                this.getOptionTooltip(optionNode),
                 this,
                 this.value
         );

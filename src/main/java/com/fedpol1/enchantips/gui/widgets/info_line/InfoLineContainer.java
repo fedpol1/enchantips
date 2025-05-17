@@ -6,15 +6,24 @@ import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 
-public class InfoLineContainer extends InfoDelineator implements InfoMultiLine, Drawable {
+public class InfoLineContainer implements InfoMultiLine, Drawable {
 
     protected int x;
     protected int y;
     protected int width;
+    protected int height;
+    protected boolean focused = false;
+    protected InfoLineContainer parent;
+    protected ScrollableInfoLineContainer nearestScrollableParent;
     protected final ArrayList<InfoDelineator> lines;
 
     public InfoLineContainer() {
-        super();
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+        this.parent = null;
+        this.nearestScrollableParent = null;
         this.lines = new ArrayList<>();
     }
 
@@ -46,11 +55,12 @@ public class InfoLineContainer extends InfoDelineator implements InfoMultiLine, 
         return this.getHeight(this.lines.size());
     }
 
+    public void setHeight() {
+        this.height = InfoDelineator.LINE_HEIGHT;
+    }
+
     public InfoDelineator getLast() {
         InfoDelineator last = this.lines.getLast();
-        if(last instanceof InfoLineContainer container) {
-            return container.getLast();
-        }
         if(last instanceof CollapsibleInfoLine collapsible) {
             if(collapsible.isCollapsed() || collapsible.lines.lines.isEmpty()) {
                 return collapsible;
@@ -71,9 +81,8 @@ public class InfoLineContainer extends InfoDelineator implements InfoMultiLine, 
         }
     }
 
-    @Override
     public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
-        super.setNearestScrollableParent(container);
+        this.nearestScrollableParent = container;
         for(InfoDelineator line : this.lines) {
             line.setNearestScrollableParent(container);
         }
@@ -84,6 +93,14 @@ public class InfoLineContainer extends InfoDelineator implements InfoMultiLine, 
         for(InfoDelineator info : lines) {
             info.render(context, mouseX, mouseY, delta);
         }
+    }
+
+    public void setFocused(boolean focused) {
+        this.focused = focused;
+    }
+
+    public boolean isFocused() {
+        return this.focused;
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

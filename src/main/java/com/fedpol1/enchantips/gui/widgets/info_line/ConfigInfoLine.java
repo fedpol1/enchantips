@@ -16,12 +16,14 @@ import java.util.List;
 public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, Element {
 
     protected final Data<T> data;
+    protected final List<Text> tooltip;
     protected BaseSetter<T> setter;
     protected final ResetButton resetButton;
     protected final SaveButton saveButton;
 
-    public ConfigInfoLine(Text text, Data<T> data) {
+    public ConfigInfoLine(Text text, List<Text> tooltip, Data<T> data) {
         super(text);
+        this.tooltip = tooltip;
         this.data = data;
         this.resetButton = new ResetButton(this.x, this.y, this);
         this.saveButton = new SaveButton(this.x + this.resetButton.getWidth() + 1, this.y, this);
@@ -51,6 +53,9 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
                 this.nearestScrollableParent.childColor,
                 false
         );
+        if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY)) {
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, mouseX, mouseY);
+        }
     }
 
     public void reset() {
@@ -72,7 +77,7 @@ public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, El
     }
 
     public List<Text> getSaveButtonTooltip() {
-        return this.data.getTooltip(this.setter.getValue());
+        return this.data.getSaveTooltip(this.setter.getValue());
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

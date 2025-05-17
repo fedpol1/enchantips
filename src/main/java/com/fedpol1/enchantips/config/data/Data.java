@@ -6,7 +6,9 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public interface Data<T> {
 
@@ -36,9 +38,21 @@ public interface Data<T> {
         return Text.translatable(optionNode.getFullName() + ".option_title");
     }
 
-    List<Text> getTooltip(T v);
+    List<Text> getSaveTooltip(T v);
 
     ConfigInfoLine<T> getConfigLine(OptionNode<T> optionNode);
+
+    default List<Text> getOptionTooltip(OptionNode<T> option) {
+        Stack<Text> lines = new Stack<>();
+        for(int i = 0; i < option.getNumTooltipLines(); i++) {
+            lines.push(Text.translatable(option.getFullName() + ".option_tooltip." + i));
+            lines.push(Text.literal(""));
+        }
+        if(!lines.isEmpty()) {
+            lines.pop();
+        }
+        return lines;
+    }
 
     Option<T> getYaclOption(OptionNode<T> optionNode);
 }

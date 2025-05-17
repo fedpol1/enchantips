@@ -111,7 +111,6 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if(super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) { return true; }
         if(this.scrolling) {
             this.scrollTo((int) mouseY);
             return true;

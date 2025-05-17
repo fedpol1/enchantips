@@ -18,6 +18,10 @@ public abstract class TextSetter<T> extends BaseSetter<T>{
     public void setValue(T c) {
         this.value = c;
         this.textField.setText(this.getStringValue());
+        this.textField.selectionManager.setSelection(
+                this.textField.selectionManager.getSelectionStart(),
+                this.textField.selectionManager.getSelectionEnd()
+        );
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

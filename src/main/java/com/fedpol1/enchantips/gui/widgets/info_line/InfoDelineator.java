@@ -38,6 +38,12 @@ public abstract class InfoDelineator implements Drawable, Element {
         this.height = InfoDelineator.LINE_HEIGHT;
     }
 
+    public boolean isWithin(double mouseX, double mouseY) {
+        int x = this.x;
+        int y = this.y + 1;
+        return mouseX >= x && mouseX < x + this.width && mouseY >= y && mouseY < y + this.getHeight();
+    }
+
     @Override
     public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
 

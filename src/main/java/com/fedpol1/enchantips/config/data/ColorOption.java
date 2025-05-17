@@ -46,7 +46,7 @@ public class ColorOption implements Data<Color> {
         this.color = new Color(Integer.parseInt(s.substring(1), 16));
     }
 
-    public List<Text> getTooltip(Color v) {
+    public List<Text> getSaveTooltip(Color v) {
         if(this.canSet(v)) {
             return null;
         }
@@ -56,6 +56,7 @@ public class ColorOption implements Data<Color> {
     public ConfigInfoLine<Color> getConfigLine(OptionNode<Color> optionNode) {
         return new ColorConfigInfoLine(
                 this.getOptionTitle(optionNode),
+                this.getOptionTooltip(optionNode),
                 this,
                 this.color
         );

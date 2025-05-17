@@ -50,7 +50,7 @@ public class IntegerOption implements Data<Integer> {
         this.value = Integer.parseInt(s);
     }
 
-    public List<Text> getTooltip(Integer v) {
+    public List<Text> getSaveTooltip(Integer v) {
         if(this.canSet(v)) {
             return null;
         }
@@ -63,6 +63,7 @@ public class IntegerOption implements Data<Integer> {
     public ConfigInfoLine<Integer> getConfigLine(OptionNode<Integer> optionNode) {
         return new IntegerConfigInfoLine(
                 this.getOptionTitle(optionNode),
+                this.getOptionTooltip(optionNode),
                 this,
                 this.value
                 );

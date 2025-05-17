@@ -47,7 +47,7 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
         screen.close();
     }
 
-    public List<Text> getTooltip(BiConsumer<YACLScreen, ButtonOption> v) {
+    public List<Text> getSaveTooltip(BiConsumer<YACLScreen, ButtonOption> v) {
         return null;
     }
 
