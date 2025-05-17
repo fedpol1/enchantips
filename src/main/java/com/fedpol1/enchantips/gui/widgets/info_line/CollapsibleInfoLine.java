@@ -61,6 +61,13 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
         }
     }
 
+    @Override
+    public boolean shouldRender(DrawContext context, int mouseX, int mouseY, float delta) {
+        if(this.y < this.nearestScrollableParent.y) { return false; }
+        if(this.y + InfoLine.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
+        return true;
+    }
+
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(super.mouseClicked(mouseX, mouseY, button)) {
             return true;
