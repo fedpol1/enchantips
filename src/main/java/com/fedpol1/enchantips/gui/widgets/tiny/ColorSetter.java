@@ -1,24 +1,18 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.util.Locale;
 
-public class ColorSetter extends TextSetter<Color>{
+public class ColorSetter extends TextSetter<Color> {
 
-    public ColorSetter(int x, int y, Color color) {
-        super(x, y, color);
-        this.textField = new TextField(
-                this.x + 9,
-                this.y,
-                6,
-                "0123456789abcdefABCDEF",
-                s -> true,
-                true
-        );
+    public ColorSetter(int x, int y, ConfigInfoLine<Color> line, Color color) {
+        super(x, y, line, color);
+        this.textField = new TextField(this.x + 9, this.y, line, 6, "0123456789abcdefABCDEF");
         this.value = color;
         this.textField.setText(this.getStringValue());
     }
@@ -48,6 +42,11 @@ public class ColorSetter extends TextSetter<Color>{
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         this.textField.setPosition(x + 9, y);
+    }
+
+    @Override
+    public boolean canTrigger() {
+        return true;
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {

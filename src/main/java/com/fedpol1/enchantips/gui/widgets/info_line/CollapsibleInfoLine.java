@@ -9,12 +9,13 @@ import net.minecraft.text.Text;
 public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine, Drawable, Element {
 
     protected final InfoLineContainer lines;
-    private final CollapsibleButton button;
+    protected final CollapsibleButton expandButton;
 
     public CollapsibleInfoLine(Text text) {
         super(text);
         this.lines = new InfoLineContainer();
-        this.button = new CollapsibleButton(this.x, this.y, true);
+        this.expandButton = new CollapsibleButton(this.x, this.y, this,true);
+        this.setters.add(this.expandButton);
     }
 
     public void addLine(Text line) {
@@ -37,17 +38,16 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
     }
 
     public boolean isCollapsed() {
-        return this.button.isCollapsed();
+        return this.expandButton.isCollapsed();
+    }
+
+    public int numChildren() {
+        return this.lines.lines.size();
     }
 
     @Override
     public void refresh(int index) {
-        this.x = this.parent.x;
-        this.y = this.parent.y + this.parent.getHeight(index);
-        if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.button.setPosition(this.x, this.y);
-        this.width = this.parent.width;
-        this.height = this.getHeight(index) + (this.isCollapsed() ? 0 : this.lines.getHeight());
+        super.refresh(index);
         if(!this.isCollapsed()) {
             this.lines.refresh(index);
         }
@@ -55,15 +55,10 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
         if(!this.isCollapsed()) {
             this.lines.render(context, mouseX, mouseY, delta);
         }
-
-        if(this.y < this.nearestScrollableParent.y) { return; }
-        if(this.y + InfoDelineator.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return; }
-
-        this.button.render(context, mouseX, mouseY, delta);
-        this.renderText(context, this.button.getWidth() + 1, mouseX, mouseY, delta);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -79,7 +74,7 @@ public class CollapsibleInfoLine extends InfoDelineator implements InfoMultiLine
         }
         if(lineClicked) { return true; }
 
-        if(this.button.mouseClicked(mouseX, mouseY, button)) {
+        if(this.expandButton.mouseClicked(mouseX, mouseY, button)) {
             for (int i = 0; i < this.parent.lines.size(); i++) {
                 if (this.parent.lines.get(i) == this) {
                     this.refresh(i);

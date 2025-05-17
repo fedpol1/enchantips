@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
+import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -8,7 +9,9 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 
-public abstract class InfoDelineator implements Drawable, Element {
+import java.util.ArrayList;
+
+public class InfoDelineator implements Drawable, Element {
 
     public static final int LINE_HEIGHT = 10;
     public static final int INDENTATION = 16;
@@ -21,6 +24,7 @@ public abstract class InfoDelineator implements Drawable, Element {
     protected boolean focused = false;
     protected InfoLineContainer parent;
     protected ScrollableInfoLineContainer nearestScrollableParent;
+    protected final ArrayList<BaseSetter<?, ?>> setters;
 
     public InfoDelineator(Text text) {
         this.text = text;
@@ -30,6 +34,7 @@ public abstract class InfoDelineator implements Drawable, Element {
         this.height = 0;
         this.parent = null;
         this.nearestScrollableParent = null;
+        this.setters = new ArrayList<>();
     }
 
     public int getHeight(int index) {
@@ -75,7 +80,16 @@ public abstract class InfoDelineator implements Drawable, Element {
     }
 
     @Override
-    public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        if(!this.shouldRender(context, mouseX, mouseY, delta)) { return; }
+
+        int offset = 0;
+        for(BaseSetter<?, ?> setter : this.setters) {
+            setter.render(context, mouseX, mouseY, delta);
+            offset += setter.getWidth() + 1;
+        }
+        this.renderText(context, offset, mouseX, mouseY, delta);
+    }
 
     public boolean shouldRender(DrawContext context, int mouseX, int mouseY, float delta) {
         if(this.y < this.nearestScrollableParent.y) { return false; }
@@ -83,7 +97,19 @@ public abstract class InfoDelineator implements Drawable, Element {
         return true;
     }
 
-    public abstract void refresh(int index);
+    public  void refresh(int index) {
+        this.x = this.parent.x;
+        this.y = this.parent.y + this.parent.getHeight(index);
+        if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
+        this.width = this.parent.width;
+        this.height = this.getHeight(index);
+
+        int offset = 0;
+        for(BaseSetter<?, ?> setter : this.setters) {
+            setter.setPosition(this.x + offset, this.y);
+            offset += setter.getWidth() + 1;
+        }
+    }
 
     public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         this.nearestScrollableParent = container;

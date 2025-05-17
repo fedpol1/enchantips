@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Predicate;
 import net.minecraft.client.MinecraftClient;
@@ -11,28 +12,32 @@ import net.minecraft.client.util.SelectionManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class TextField extends BaseSetter<String> {
+public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
 
     protected String text;
     protected SelectionManager selectionManager;
     protected int maximumLength;
     protected String allowedCharacters;
-    protected boolean rightAligned;
     protected boolean focused;
 
-    public TextField(int x, int y, int maximumLength, String allowedCharacters, Predicate<String> predicate, boolean rightAligned) {
-        super(x, y);
+    public TextField(
+            int x,
+            int y,
+            ConfigInfoLine<?> line,
+            int maximumLength,
+            String allowedCharacters
+    ) {
+        super(x, y, line);
         this.text = "";
         this.selectionManager = new SelectionManager(
                 this::getText,
                 this::setText,
                 SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
                 SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
-                s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s) && predicate.apply(s)
+                s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s)
         );
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
-        this.rightAligned = rightAligned;
         this.focused = false;
     }
 
@@ -47,6 +52,11 @@ public class TextField extends BaseSetter<String> {
 
     public int getHeight() {
         return 9;
+    }
+
+    @Override
+    public boolean canTrigger() {
+        return true;
     }
 
     public String getText() {

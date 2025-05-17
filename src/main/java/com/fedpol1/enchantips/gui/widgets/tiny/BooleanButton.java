@@ -1,14 +1,20 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class BooleanButton extends BaseSetter<Boolean> {
+public class BooleanButton extends BaseSetter<ConfigInfoLine<Boolean>, Boolean> {
 
-    public BooleanButton(int x, int y, boolean state) {
-        super(x, y);
+    public BooleanButton(int x, int y, ConfigInfoLine<Boolean> line, boolean state) {
+        super(x, y, line);
         this.value = state;
+    }
+
+    @Override
+    public boolean canTrigger() {
+        return true;
     }
 
     @Override

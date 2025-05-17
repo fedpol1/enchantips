@@ -5,19 +5,20 @@ import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class ResetButton extends BaseSetter<Object> {
-
-    protected final ConfigInfoLine<?> line;
+public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
     public ResetButton(int x, int y, ConfigInfoLine<?> line) {
-        super(x, y);
-        this.line = line;
+        super(x, y, line);
+    }
+
+    @Override
+    public boolean canTrigger() {
+        return !this.line.isDefault();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        String path = this.line.isDefault() ? "config/reset_disabled" : "config/reset";
-        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, path));
+        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/reset"));
     }
 
     @Override

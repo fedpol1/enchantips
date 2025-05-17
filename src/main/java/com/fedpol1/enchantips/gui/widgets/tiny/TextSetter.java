@@ -1,12 +1,14 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
-public abstract class TextSetter<T> extends BaseSetter<T>{
+import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
+
+public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
 
     protected boolean focused;
     protected TextField textField;
 
-    public TextSetter(int x, int y, T value) {
-        super(x, y);
+    public TextSetter(int x, int y, ConfigInfoLine<T> line, T value) {
+        super(x, y, line);
         this.value = value;
         this.focused = false;
     }

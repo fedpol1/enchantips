@@ -12,40 +12,29 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
-public abstract class ConfigInfoLine<T> extends InfoLine implements Drawable, Element {
+public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements Drawable, Element {
 
     protected final Data<T> data;
     protected final List<Text> tooltip;
-    protected BaseSetter<T> setter;
     protected final ResetButton resetButton;
     protected final SaveButton saveButton;
+    protected BaseSetter<ConfigInfoLine<T>, T> setter;
 
     public ConfigInfoLine(Text text, List<Text> tooltip, Data<T> data) {
         super(text);
         this.tooltip = tooltip;
         this.data = data;
-        this.resetButton = new ResetButton(this.x, this.y, this);
-        this.saveButton = new SaveButton(this.x + this.resetButton.getWidth() + 1, this.y, this);
-    }
-
-    @Override
-    public void refresh(int index) {
-        super.refresh(index);
-        this.resetButton.setPosition(this.x, this.y);
-        this.saveButton.setPosition(this.x + this.resetButton.getWidth() + 1, this.y);
-        this.setter.setPosition(this.x + this.resetButton.getWidth() + this.saveButton.getWidth() + 2, this.y);
+        this.resetButton = new ResetButton(this.x + this.expandButton.getWidth() + 1, this.y, this);
+        this.saveButton = new SaveButton(this.x + this.expandButton.getWidth() + this.resetButton.getWidth() + 2, this.y, this);
+        this.setters.add(this.resetButton);
+        this.setters.add(this.saveButton);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if(!this.shouldRender(context, mouseX, mouseY, delta)) { return; }
-        this.resetButton.render(context, mouseX, mouseY, delta);
-        this.saveButton.render(context, mouseX, mouseY, delta);
-        this.setter.render(context, mouseX, mouseY, delta);
-
-        int offset = this.resetButton.getWidth() + this.saveButton.getWidth() + this.setter.getWidth() + 3;
-        this.renderText(context, offset, mouseX, mouseY, delta);
-        if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY) && mouseX >= this.x + offset) {
+        super.render(context, mouseX, mouseY, delta);
+        if(this.tooltip != null && !this.tooltip.isEmpty() && this.isWithin(mouseX, mouseY) && mouseX >= this.x + 40) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, mouseX, mouseY);
         }
     }

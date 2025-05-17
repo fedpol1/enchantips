@@ -9,19 +9,20 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public class SaveButton extends BaseSetter<Object> {
-
-    protected final ConfigInfoLine<?> line;
+public class SaveButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
     public SaveButton(int x, int y, ConfigInfoLine<?> line) {
-        super(x, y);
-        this.line = line;
+        super(x, y, line);
+    }
+
+    @Override
+    public boolean canTrigger() {
+        return this.line.canSave();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        String path = this.line.canSave() ? "config/save" : "config/save_disabled";
-        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, path));
+        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/save"));
         List<Text> tooltipText = this.line.getSaveButtonTooltip();
         if(tooltipText != null && this.isWithin(mouseX, mouseY)) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltipText, mouseX, mouseY);

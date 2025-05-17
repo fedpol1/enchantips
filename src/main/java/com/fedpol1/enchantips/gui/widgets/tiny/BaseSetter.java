@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
+import com.fedpol1.enchantips.gui.widgets.info_line.InfoDelineator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
@@ -7,15 +8,17 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 
-public abstract class BaseSetter<T> {
+public abstract class BaseSetter<T extends InfoDelineator, U> {
 
     protected int x;
     protected int y;
-    protected T value;
+    protected T line;
+    protected U value;
 
-    public BaseSetter(int x, int y) {
+    public BaseSetter(int x, int y, T line) {
         this.x = x;
         this.y = y;
+        this.line = line;
     }
 
     public int getX() {
@@ -39,25 +42,28 @@ public abstract class BaseSetter<T> {
         this.y = y;
     }
 
-    public void setValue(T value) {
+    public void setValue(U value) {
         this.value = value;
     }
 
-    public T getValue() {
+    public U getValue() {
         return this.value;
     }
 
     public boolean isWithin(double mouseX, double mouseY) {
-        int x = this.x;
-        int y = this.y + 1;
-        return mouseX >= x && mouseX < x + this.getWidth() && mouseY >= y && mouseY < y + this.getHeight();
+        return mouseX >= this.x && mouseX < this.x + this.getWidth() && mouseY >= this.y && mouseY < this.y + this.getHeight();
     }
+
+    public abstract boolean canTrigger();
 
     public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
 
     protected void render(DrawContext context, int mouseX, int mouseY, float delta, Identifier texture) {
         String namespace = texture.getNamespace();
         String path = texture.getPath();
+        if(!this.canTrigger()) {
+            path = path + "_disabled";
+        }
         if(this.isWithin(mouseX, mouseY)) {
             path = path + "_hover";
         }
@@ -80,7 +86,7 @@ public abstract class BaseSetter<T> {
     public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
 
     protected boolean mouseClicked(double mouseX, double mouseY, int button, ButtonAction action) {
-        if(this.isWithin(mouseX, mouseY) && button == 0) {
+        if(this.isWithin(mouseX, mouseY) && this.canTrigger() && button == 0) {
             action.execute();
             MinecraftClient
                     .getInstance()
