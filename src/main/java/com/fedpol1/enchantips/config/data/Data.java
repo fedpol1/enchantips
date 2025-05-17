@@ -46,10 +46,6 @@ public interface Data<T> {
         Stack<Text> lines = new Stack<>();
         for(int i = 0; i < option.getNumTooltipLines(); i++) {
             lines.push(Text.translatable(option.getFullName() + ".option_tooltip." + i));
-            lines.push(Text.literal(""));
-        }
-        if(!lines.isEmpty()) {
-            lines.pop();
         }
         return lines;
     }
