@@ -74,28 +74,22 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for(InfoLine line : this.lines.lines) {
-            if(line.mouseClicked(mouseX, mouseY, button)) {
-                return true;
-            }
+        if(!this.isCollapsed() && this.lines.mouseClicked(mouseX, mouseY, button)) {
+            return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        for(InfoLine line : this.lines.lines) {
-            if(line.keyPressed(keyCode, scanCode, modifiers)) {
-                return true;
-            }
+        if(!this.isCollapsed() && this.lines.keyPressed(keyCode, scanCode, modifiers)) {
+            return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     public boolean charTyped(char chr, int modifiers) {
-        for(InfoLine line : this.lines.lines) {
-            if(line.charTyped(chr, modifiers)) {
-                return true;
-            }
+        if(!this.isCollapsed() && this.lines.charTyped(chr, modifiers)) {
+            return true;
         }
         return super.charTyped(chr, modifiers);
     }

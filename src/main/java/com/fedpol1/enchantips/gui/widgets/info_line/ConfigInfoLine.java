@@ -30,12 +30,6 @@ public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements D
         this.setters.add(this.saveButton);
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        if(!this.shouldRender(context, mouseX, mouseY, delta)) { return; }
-        super.render(context, mouseX, mouseY, delta);
-    }
-
     public void reset() {
         this.setter.setValue(this.data.getDefaultValue());
     }

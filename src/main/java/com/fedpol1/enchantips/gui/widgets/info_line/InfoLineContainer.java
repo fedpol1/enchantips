@@ -71,6 +71,10 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         this.height = InfoLine.LINE_HEIGHT;
     }
 
+    public boolean isWithin(double mouseX, double mouseY) {
+        return mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.getHeight();
+    }
+
     public InfoLine getLast() {
         InfoLine last = this.lines.getLast();
         if(last instanceof CollapsibleInfoLine collapsible) {
@@ -120,23 +124,26 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        boolean ret = false;
         for(InfoLine line : lines) {
-            line.mouseClicked(mouseX, mouseY, button);
+            ret = ret || line.mouseClicked(mouseX, mouseY, button);
         }
-        return true;
+        return ret;
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean ret = false;
         for(InfoLine line : lines) {
-            line.keyPressed(keyCode, scanCode, modifiers);
+            ret = ret || line.keyPressed(keyCode, scanCode, modifiers);
         }
-        return true;
+        return ret;
     }
 
     public boolean charTyped(char chr, int modifiers) {
+        boolean ret = false;
         for(InfoLine line : lines) {
-            line.charTyped(chr, modifiers);
+            ret = ret || line.charTyped(chr, modifiers);
         }
-        return true;
+        return ret;
     }
 }
