@@ -6,7 +6,6 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 

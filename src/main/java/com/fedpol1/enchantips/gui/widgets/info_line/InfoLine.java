@@ -56,9 +56,9 @@ public class InfoLine implements Drawable, Element {
     public void renderText(DrawContext context, int startOffset, int mouseX, int mouseY, float delta) {
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         int textWidth = renderer.getWidth(this.text);
-        int scrollRange = Math.max(0, textWidth - (this.width - startOffset));
-        double time = (double) Util.getMeasuringTimeMs() / 1000.0;
-        double cosine = scrollRange * (Math.cos(3.14159465358989 * 8 * time / scrollRange) / 2.0 + 0.5);
+        int scrollRange = textWidth + InfoLine.INDENTATION;
+        boolean drawExtra = this.width < textWidth;
+        double dynamicOffset = (24.0 * (double) Util.getMeasuringTimeMs() / 1000.0) % scrollRange;
 
         context.enableScissor(
                 this.x + startOffset,
@@ -69,11 +69,21 @@ public class InfoLine implements Drawable, Element {
         context.drawText(
                 renderer,
                 this.text,
-                this.x + startOffset - (int) cosine,
+                this.x + startOffset - (drawExtra ? (int) dynamicOffset : 0),
                 this.y + 1,
                 this.nearestScrollableParent.childColor,
                 false
         );
+        if(drawExtra) {
+            context.drawText(
+                    renderer,
+                    this.text,
+                    this.x + startOffset - (int) dynamicOffset + InfoLine.INDENTATION + renderer.getWidth(this.text),
+                    this.y + 1,
+                    this.nearestScrollableParent.childColor,
+                    false
+            );
+        }
         context.disableScissor();
     }
 
