@@ -45,7 +45,7 @@ public class ScreenVisitor2 implements TreeVisitor {
     }
 
     public Object visit(EnchantmentGroupNode n, Object data) {
-        CollapsibleInfoLine collapsible = new CollapsibleInfoLine(Text.literal(n.getIdentifier()));
+        EnchantmentConfigInfoLine collapsible = new EnchantmentConfigInfoLine(n);
         ((InfoMultiLine) data).addLine(collapsible);
 
         World world = MinecraftClient.getInstance().world;

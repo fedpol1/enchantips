@@ -1,8 +1,6 @@
-package com.fedpol1.enchantips.gui.widgets.info_line.info_generic;
+package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.accessor.EnchantmentAccess;
-import com.fedpol1.enchantips.gui.widgets.info_line.CollapsibleInfoLine;
-import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
