@@ -24,7 +24,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     private boolean scrolling;
 
     public ScrollableInfoLineContainer(int childColor, int padding) {
-        super();
+        super(null);
         this.childColor = childColor;
         this.padding = padding;
         this.scrollHeight = 0;

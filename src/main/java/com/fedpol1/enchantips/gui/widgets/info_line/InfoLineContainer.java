@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -13,16 +14,16 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     protected int width;
     protected int height;
     protected boolean focused = false;
-    protected InfoLineContainer parent;
+    protected CollapsibleInfoLine parent;
     protected ScrollableInfoLineContainer nearestScrollableParent;
     protected final ArrayList<InfoLine> lines;
 
-    public InfoLineContainer() {
+    public InfoLineContainer(@Nullable CollapsibleInfoLine parent) {
         this.x = 0;
         this.y = 0;
         this.width = 0;
         this.height = 0;
-        this.parent = null;
+        this.parent = parent;
         this.nearestScrollableParent = null;
         this.lines = new ArrayList<>();
     }
@@ -35,11 +36,18 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         if(line == null) { return; }
         line.parent = this;
         line.setNearestScrollableParent(this.nearestScrollableParent);
-        if(line instanceof CollapsibleInfoLine collapsible) {
-            collapsible.lines.parent = this;
-            collapsible.lines.setNearestScrollableParent(this.nearestScrollableParent);
-        }
         this.lines.add(line);
+    }
+
+    public void removeLine(InfoLine line) {
+        for(int i = 0; i < this.lines.size(); i++) {
+            if (this.lines.get(i) == line) {
+                this.lines.remove(i);
+                this.refresh(i);
+                this.nearestScrollableParent.refresh(0);
+                break;
+            }
+        }
     }
 
     public int getWidth() {
@@ -74,11 +82,15 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         return last;
     }
 
+    public CollapsibleInfoLine getParent() {
+        return this.parent;
+    }
+
     public void refresh(int index) {
-        this.x = this.parent.x + InfoLine.INDENTATION;
-        this.y = this.parent.y + this.parent.getHeight(index) + InfoLine.LINE_HEIGHT;
-        if(this.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.width = this.parent.getWidth() - InfoLine.INDENTATION;
+        this.x = this.parent.parent.x + InfoLine.INDENTATION;
+        this.y = this.parent.parent.y + this.parent.parent.getHeight(index) + InfoLine.LINE_HEIGHT;
+        if(this.parent.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
+        this.width = this.parent.parent.getWidth() - InfoLine.INDENTATION;
         this.height = this.getHeight();
         for (int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);

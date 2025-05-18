@@ -63,7 +63,15 @@ public class ScreenVisitor2 implements TreeVisitor {
                 for (TagKey<Enchantment> tag : enchantmentReference.get().streamTags().toList()) {
                     tagLine.addLine(Text.literal("#").append(Text.literal(tag.id().toString())));
                 }
+            } else {
+                collapsible.addLine(
+                        new DeleteInfoLine(Text.translatable("enchantips.config.individual_enchantments.delete.option_title"))
+                );
             }
+        } else {
+            collapsible.addLine(
+                    new DeleteInfoLine(Text.translatable("enchantips.config.individual_enchantments.delete.option_title"))
+            );
         }
 
         for(Map.Entry<String, Node> current : n.getChildren()) {

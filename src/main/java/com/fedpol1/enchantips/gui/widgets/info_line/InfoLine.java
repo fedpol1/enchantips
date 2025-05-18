@@ -50,9 +50,7 @@ public class InfoLine implements Drawable, Element {
     }
 
     public boolean isWithin(double mouseX, double mouseY) {
-        int x = this.x;
-        int y = this.y + 1;
-        return mouseX >= x && mouseX < x + this.width && mouseY >= y && mouseY < y + this.getHeight();
+        return mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.getHeight();
     }
 
     public void renderText(DrawContext context, int startOffset, int mouseX, int mouseY, float delta) {
@@ -111,6 +109,10 @@ public class InfoLine implements Drawable, Element {
         }
     }
 
+    public InfoLineContainer getParent() {
+        return this.parent;
+    }
+
     public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         this.nearestScrollableParent = container;
     }
@@ -126,14 +128,36 @@ public class InfoLine implements Drawable, Element {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        for(BaseSetter<?, ?> setter : this.setters) {
+            if(setter.mouseClicked(mouseX, mouseY, button)) {
+                for (int i = 0; i < this.parent.lines.size(); i++) {
+                    if (this.parent.lines.get(i) == this) {
+                        this.refresh(i);
+                        this.nearestScrollableParent.refresh(0);
+                        return true;
+                    }
+                }
+                break; // probably redundant
+            }
+        }
         return false;
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for(BaseSetter<?, ?> setter : this.setters) {
+            if(setter.keyPressed(keyCode, scanCode, modifiers)) {
+                return true;
+            }
+        }
         return false;
     }
 
     public boolean charTyped(char chr, int modifiers) {
+        for(BaseSetter<?, ?> setter : this.setters) {
+            if(setter.charTyped(chr, modifiers)) {
+                return true;
+            }
+        }
         return false;
     }
 }

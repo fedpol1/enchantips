@@ -13,7 +13,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
 
     public CollapsibleInfoLine(Text text) {
         super(text);
-        this.lines = new InfoLineContainer();
+        this.lines = new InfoLineContainer(this);
         this.expandButton = new CollapsibleButton(this.x, this.y, this,true);
         this.setters.add(this.expandButton);
     }
@@ -53,6 +53,11 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
         }
     }
 
+    public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
+        super.setNearestScrollableParent(container);
+        this.lines.setNearestScrollableParent(container);
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
@@ -69,51 +74,29 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(super.mouseClicked(mouseX, mouseY, button)) {
-            return true;
-        }
-        
-        boolean lineClicked = false;
         for(InfoLine line : this.lines.lines) {
             if(line.mouseClicked(mouseX, mouseY, button)) {
-                lineClicked = true;
+                return true;
             }
         }
-        if(lineClicked) { return true; }
-
-        if(this.expandButton.mouseClicked(mouseX, mouseY, button)) {
-            for (int i = 0; i < this.parent.lines.size(); i++) {
-                if (this.parent.lines.get(i) == this) {
-                    this.refresh(i);
-                    this.nearestScrollableParent.refresh(0);
-                    return true;
-                }
-            }
-        }
-        return false;
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(super.keyPressed(keyCode, scanCode, modifiers)) {
-            return true;
-        }
         for(InfoLine line : this.lines.lines) {
             if(line.keyPressed(keyCode, scanCode, modifiers)) {
                 return true;
             }
         }
-        return false;
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     public boolean charTyped(char chr, int modifiers) {
-        if(super.charTyped(chr, modifiers)) {
-            return true;
-        }
         for(InfoLine line : this.lines.lines) {
             if(line.charTyped(chr, modifiers)) {
                 return true;
             }
         }
-        return false;
+        return super.charTyped(chr, modifiers);
     }
 }

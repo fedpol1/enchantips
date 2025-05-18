@@ -89,6 +89,7 @@
   "enchantips.config.user_interface.bulk_update.set_highlights_true.option_title": "Enable All Enchantment Highlights",
   "enchantips.config.user_interface.bulk_update.set_highlights_false.option_title": "Disable All Enchantment Highlights",
   "enchantips.config.individual_enchantments": "Individual Enchantments",
+  "enchantips.config.individual_enchantments.delete.option_title": "Delete",
   "enchantips.config.individual_enchantments.min_color.option_title": "Minimum Color",
   "enchantips.config.individual_enchantments.max_color.option_title": "Maximum Color",
   "enchantips.config.individual_enchantments.overmax_color.option_title": "Overlevelled Color",
