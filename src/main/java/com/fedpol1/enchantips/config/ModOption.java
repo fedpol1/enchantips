@@ -40,7 +40,7 @@ public class ModOption<T> {
     public static final ModOption<Integer> HIGHLIGHTS_LIMIT = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(4, 0, 16, 1), "limit", 1);
     public static final ModOption<Integer> HIGHLIGHTS_ALPHA_HOTBAR = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "alpha.hotbar", 2);
     public static final ModOption<Integer> HIGHLIGHTS_ALPHA_TRADING = ModCategory.HIGHLIGHTS.addOption(new IntegerOption(127, 0, 255, 0), "alpha.trading", 2);
-    public static final ModOption<Boolean> ANVIL_SWAP_BUTTON_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(false), "anvil_swap_button.switch", 3);
+    public static final ModOption<Boolean> ANVIL_SWAP_BUTTON_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(false), "anvil_swap_button.switch", 2);
     public static final ModOption<Boolean> ANVIL_SWAP_WARNING_SWITCH = ModCategory.WIDGETS.addOption(new BooleanOption(true), "anvil_swap_warning.switch", 1);
     public static final ModOption<Color> UNBREAKABLE_COLOR = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x00dfff), "unbreakable.color", 1);
     public static final ModOption<Boolean> UNBREAKABLE_HIGHLIGHT = ModCategory.MISCELLANEOUS.addOption(new BooleanOption(true), "unbreakable.highlight", 1);
