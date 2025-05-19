@@ -46,7 +46,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public int getWidth() {
-        return super.getWidth() - (this.scrollerVisible() ? SCROLLER_WIDTH/2 : 0);
+        return super.getWidth() -  SCROLLER_WIDTH / 2;
     }
 
     public int getHeight() {
