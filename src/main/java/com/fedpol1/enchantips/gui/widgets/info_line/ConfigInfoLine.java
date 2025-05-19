@@ -4,7 +4,6 @@ import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import com.fedpol1.enchantips.gui.widgets.tiny.ResetButton;
 import com.fedpol1.enchantips.gui.widgets.tiny.SaveButton;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.text.Text;

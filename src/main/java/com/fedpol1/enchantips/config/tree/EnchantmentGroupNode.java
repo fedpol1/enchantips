@@ -36,7 +36,7 @@ public class EnchantmentGroupNode extends GroupNode {
         this.minColor = this.addOption(new ColorOption(0x9f7f7f),  ModConfigData.MIN_COLOR_KEY, 0);
         this.maxColor = this.addOption(new ColorOption(0xffdfdf),  ModConfigData.MAX_COLOR_KEY, 0);
         this.overmaxColor = this.addOption(new ColorOption(0xffdf3f),  ModConfigData.OVERMAX_COLOR_KEY, 0);
-        this.order = this.addOption(new IntegerOption(0, -2000000000, 2000000000, 0),  ModConfigData.ORDER_KEY, 1);
+        this.order = this.addOption(new IntegerOption(0, -500000000, 500000000, 0),  ModConfigData.ORDER_KEY, 1);
         this.highlight = this.addOption(new BooleanOption(true),  ModConfigData.HIGHLIGHT_KEY, 1);
     }
 

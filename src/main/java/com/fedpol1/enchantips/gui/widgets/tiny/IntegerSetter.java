@@ -1,15 +1,15 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 public class IntegerSetter extends TextSetter<Integer> {
 
-    public IntegerSetter(int x, int y, ConfigInfoLine<Integer> line, Integer value) {
+    public IntegerSetter(int x, int y, IntegerConfigInfoLine line, Integer value) {
         super(x, y, line, value);
-        this.textField = new TextField(this.x, this.y, line, 9, "-0123456789");
+        this.textField = new TextField(this.x, this.y, line, line.getMaximumDigits(), "-0123456789");
         this.textField.setText(this.getStringValue());
     }
 

@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
+import com.fedpol1.enchantips.gui.widgets.info_line.ColorConfigInfoLine;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class ColorSetter extends TextSetter<Color> {
 
-    public ColorSetter(int x, int y, ConfigInfoLine<Color> line, Color color) {
+    public ColorSetter(int x, int y, ColorConfigInfoLine line, Color color) {
         super(x, y, line, color);
         this.textField = new TextField(this.x + 9, this.y, line, 6, "0123456789abcdefABCDEF");
         this.value = color;

@@ -26,6 +26,14 @@ public class IntegerOption implements Data<Integer> {
         this.step = step;
     }
 
+    public int getMin() {
+        return this.min;
+    }
+
+    public int getMax() {
+        return this.max;
+    }
+
     public Integer getValue() {
         return this.value;
     }
