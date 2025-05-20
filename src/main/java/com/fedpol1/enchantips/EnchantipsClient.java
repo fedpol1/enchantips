@@ -33,12 +33,6 @@ public class EnchantipsClient implements ClientModInitializer {
             GLFW.GLFW_KEY_UNKNOWN, // unbound by default
             "key.categories.misc"
     ));
-    private static final KeyBinding CONFIG_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key.enchantips.config", // temporary lol
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_UNKNOWN, // unbound by default
-            "key.categories.misc"
-    ));
 
     @Override
     public void onInitializeClient() {
@@ -52,12 +46,7 @@ public class EnchantipsClient implements ClientModInitializer {
             Screen current = MinecraftClient.getInstance().currentScreen;
             if(ENCHANTMENT_INFO_KEY.wasPressed() && !(current instanceof EnchantmentInfoScreen)) {
                 MinecraftClient.getInstance().setScreen(
-                        new EnchantmentInfoScreen(Text.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), current)
-                );
-            }
-            if (CONFIG_KEY.wasPressed() && !(current instanceof ConfigScreen)) {
-                MinecraftClient.getInstance().setScreen(
-                        new ConfigScreen(Text.translatable(EnchantipsClient.MODID + ".gui.config"), current)
+                        new EnchantmentInfoScreen(current)
                 );
             }
         });

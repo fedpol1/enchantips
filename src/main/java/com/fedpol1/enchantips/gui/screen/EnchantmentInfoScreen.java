@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.gui.screen;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.EnchantmentInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
 import net.minecraft.client.MinecraftClient;
@@ -15,8 +16,8 @@ import java.util.Optional;
 
 public class EnchantmentInfoScreen extends BaseScreen {
 
-    public EnchantmentInfoScreen(Text title, @Nullable Screen parent) {
-        super(title, parent);
+    public EnchantmentInfoScreen(@Nullable Screen parent) {
+        super(Text.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), parent);
         this.lines = new ScrollableInfoLineContainer(0x404040, 6);
 
         ClientWorld world = MinecraftClient.getInstance().world;
