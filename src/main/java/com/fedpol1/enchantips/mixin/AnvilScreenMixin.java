@@ -91,7 +91,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
                                     (byte) 0,
                                     SlotActionType.PICKUP,
                                     new Int2ObjectOpenHashMap<>(),
-                                    ItemStackHash.fromItemStack(this.handler.getCursorStack(), MinecraftClient.getInstance().getNetworkHandler().method_68823())
+                                    ItemStackHash.fromItemStack(this.handler.getCursorStack(), MinecraftClient.getInstance().getNetworkHandler().getComponentHasher())
                                 );
                                 netHandler.sendPacket(p);
                             }

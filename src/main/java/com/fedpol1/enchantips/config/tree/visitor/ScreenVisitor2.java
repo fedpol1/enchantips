@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ScreenVisitor2 implements TreeVisitor {
 
     public Object visit(ConfigTree n, Object data) {
-        ScrollableInfoLineContainer lines = new ScrollableInfoLineContainer(0x404040, 6);
+        ScrollableInfoLineContainer lines = new ScrollableInfoLineContainer(0xff404040, 6);
         for(Map.Entry<String, Node> current : n.getChildren()) {
             current.getValue().accept(this, lines);
         }

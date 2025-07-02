@@ -3,9 +3,9 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -48,16 +48,16 @@ public abstract class BaseScreen extends Screen {
     public void drawWindow(DrawContext context) {
         this.calculateDimensions();
         context.drawGuiTexture(
-                RenderLayer::getGuiTextured,
+                RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.BACKGROUND_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
         context.drawGuiTexture(
-                RenderLayer::getGuiTextured,
+                RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.FRAME_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.drawText(this.textRenderer, this.title, this.windowX + 8, this.windowY + 6, 0x404040, false);
+        context.drawText(this.textRenderer, this.title, this.windowX + 8, this.windowY + 6, 0xff404040, false);
     }
 
     @Override

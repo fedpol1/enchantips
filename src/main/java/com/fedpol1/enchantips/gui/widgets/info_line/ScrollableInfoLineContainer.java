@@ -1,9 +1,9 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Drawable, Element {
@@ -62,8 +62,8 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         super.render(context, mouseX, mouseY, delta);
 
         if(this.scrollerVisible()) {
-            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
+            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
+            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
         }
     }
 

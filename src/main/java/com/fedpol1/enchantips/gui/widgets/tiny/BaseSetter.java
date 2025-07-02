@@ -2,8 +2,8 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -68,7 +68,7 @@ public abstract class BaseSetter<T extends InfoLine, U> {
             path = path + "_hover";
         }
         context.drawGuiTexture(
-                RenderLayer::getGuiTextured,
+                RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 Identifier.of(namespace, path),
                 this.x, this.y,
                 this.getWidth(), this.getHeight()

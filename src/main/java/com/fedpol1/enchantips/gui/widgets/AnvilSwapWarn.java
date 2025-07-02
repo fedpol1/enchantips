@@ -1,9 +1,9 @@
 package com.fedpol1.enchantips.gui.widgets;
 
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 public class AnvilSwapWarn implements Drawable, Element {
@@ -25,7 +25,7 @@ public class AnvilSwapWarn implements Drawable, Element {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawGuiTexture(RenderLayer::getGuiTextured, this.texture, this.x, this.y, this.width, this.height);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, this.texture, this.x, this.y, this.width, this.height);
     }
 
     @Override

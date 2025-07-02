@@ -18,7 +18,7 @@ public class EnchantmentInfoScreen extends BaseScreen {
 
     public EnchantmentInfoScreen(@Nullable Screen parent) {
         super(Text.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), parent);
-        this.lines = new ScrollableInfoLineContainer(0x404040, 6);
+        this.lines = new ScrollableInfoLineContainer(0xff404040, 6);
 
         ClientWorld world = MinecraftClient.getInstance().world;
         if(world == null) { return; }

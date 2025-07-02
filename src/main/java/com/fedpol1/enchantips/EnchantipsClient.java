@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips;
 
 import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
-import com.fedpol1.enchantips.gui.screen.ConfigScreen;
 import com.fedpol1.enchantips.gui.screen.EnchantmentInfoScreen;
 import com.fedpol1.enchantips.resources.SymbolReloadListener;
 import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
@@ -17,7 +16,6 @@ import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;

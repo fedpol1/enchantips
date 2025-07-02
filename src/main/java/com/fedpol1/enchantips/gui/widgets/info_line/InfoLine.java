@@ -57,7 +57,7 @@ public class InfoLine implements Drawable, Element {
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
         int textWidth = renderer.getWidth(this.text);
         int scrollRange = textWidth + InfoLine.INDENTATION;
-        boolean drawExtra = this.width < textWidth;
+        boolean drawExtra = this.width < textWidth + startOffset;
         double dynamicOffset = (24.0 * (double) Util.getMeasuringTimeMs() / 1000.0) % scrollRange;
 
         context.enableScissor(

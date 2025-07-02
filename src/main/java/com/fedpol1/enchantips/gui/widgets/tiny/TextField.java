@@ -3,11 +3,10 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Predicate;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.SelectionManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -79,7 +78,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
 
         if(this.focused) {
             context.drawGuiTexture(
-                    RenderLayer::getGuiTextured,
+                    RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     Identifier.of(EnchantipsClient.MODID, selectionPath),
                     this.x - 1 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
                     1 + Math.abs(sectionEndPos - sectionStartPos), 9
@@ -89,7 +88,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
                 MinecraftClient.getInstance().textRenderer,
                 Text.literal(this.text),
                 this.x + width - textWidth, this.y + 1,
-                0xffffff, false
+                0xffffffff, false
         );
     }
 
