@@ -3,9 +3,12 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 
@@ -137,9 +140,9 @@ public class InfoLine implements Drawable, Element {
         return this.focused;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         for(BaseSetter<?, ?> setter : this.setters) {
-            if(setter.mouseClicked(mouseX, mouseY, button)) {
+            if(setter.mouseClicked(click, doubled)) {
                 for (int i = 0; i < this.parent.lines.size(); i++) {
                     if (this.parent.lines.get(i) == this) {
                         this.refresh(i);
@@ -153,18 +156,18 @@ public class InfoLine implements Drawable, Element {
         return false;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         for(BaseSetter<?, ?> setter : this.setters) {
-            if(setter.keyPressed(keyCode, scanCode, modifiers)) {
+            if(setter.keyPressed(input)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         for(BaseSetter<?, ?> setter : this.setters) {
-            if(setter.charTyped(chr, modifiers)) {
+            if(setter.charTyped(input)) {
                 return true;
             }
         }

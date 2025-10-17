@@ -16,7 +16,7 @@ public abstract class MerchantScreenMixin {
     @Shadow
     protected abstract void renderFirstBuyItem(DrawContext context, ItemStack adjustedFirstBuyItem, ItemStack originalFirstBuyItem, int x, int y);
 
-    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/MerchantScreen;renderFirstBuyItem(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;II)V"))
+    @Redirect(method = "renderMain(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/MerchantScreen;renderFirstBuyItem(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;II)V"))
     private void enchantips$highlightFirstbuyItem(MerchantScreen instance, DrawContext context, ItemStack adjustedFirstBuyItem, ItemStack originalFirstBuyItem, int x, int y) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, adjustedFirstBuyItem, x, y, ModOption.HIGHLIGHTS_ALPHA_TRADING.getValue());
@@ -24,7 +24,7 @@ public abstract class MerchantScreenMixin {
         ((MerchantScreenMixin) (Object) instance).renderFirstBuyItem(context, adjustedFirstBuyItem, originalFirstBuyItem, x, y);
     }
 
-    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemWithoutEntity(Lnet/minecraft/item/ItemStack;II)V"))
+    @Redirect(method = "renderMain (Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItemWithoutEntity(Lnet/minecraft/item/ItemStack;II)V"))
     private void enchantips$highlightOtherTradeItems(DrawContext context, ItemStack stack, int x, int y) {
         if(ModOption.HIGHLIGHTS_SWITCH.getValue()) {
             SlotHighlight.highlightSingleSlot(context, stack, x, y, ModOption.HIGHLIGHTS_ALPHA_TRADING.getValue());

@@ -2,6 +2,7 @@
   {
     "values": [
       "minecraft:leather_boots",
+      "minecraft:copper_boots",
       "minecraft:golden_boots",
       "minecraft:chainmail_boots",
       "minecraft:iron_boots",
@@ -13,6 +14,7 @@
   {
     "values": [
       "minecraft:leather_leggings",
+      "minecraft:copper_leggings",
       "minecraft:golden_leggings",
       "minecraft:chainmail_leggings",
       "minecraft:iron_leggings",
@@ -24,6 +26,7 @@
   {
     "values": [
       "minecraft:leather_chestplate",
+      "minecraft:copper_chestplate",
       "minecraft:golden_chestplate",
       "minecraft:chainmail_chestplate",
       "minecraft:iron_chestplate",
@@ -35,6 +38,7 @@
   {
     "values": [
       "minecraft:leather_helmet",
+      "minecraft:copper_helmet",
       "minecraft:golden_helmet",
       "minecraft:chainmail_helmet",
       "minecraft:iron_helmet",
@@ -72,6 +76,7 @@
     "values": [
       "minecraft:wooden_sword",
       "minecraft:stone_sword",
+      "minecraft:copper_sword",
       "minecraft:iron_sword",
       "minecraft:golden_sword",
       "minecraft:diamond_sword",
@@ -83,6 +88,7 @@
     "values": [
       "minecraft:wooden_axe",
       "minecraft:stone_axe",
+      "minecraft:copper_axe",
       "minecraft:iron_axe",
       "minecraft:golden_axe",
       "minecraft:diamond_axe",
@@ -94,6 +100,7 @@
     "values": [
       "minecraft:wooden_pickaxe",
       "minecraft:stone_pickaxe",
+      "minecraft:copper_pickaxe",
       "minecraft:iron_pickaxe",
       "minecraft:golden_pickaxe",
       "minecraft:diamond_pickaxe",
@@ -105,6 +112,7 @@
     "values": [
       "minecraft:wooden_shovel",
       "minecraft:stone_shovel",
+      "minecraft:copper_shovel",
       "minecraft:iron_shovel",
       "minecraft:golden_shovel",
       "minecraft:diamond_shovel",
@@ -116,6 +124,7 @@
     "values": [
       "minecraft:wooden_hoe",
       "minecraft:stone_hoe",
+      "minecraft:copper_hoe",
       "minecraft:iron_hoe",
       "minecraft:golden_hoe",
       "minecraft:diamond_hoe",

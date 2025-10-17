@@ -1,9 +1,12 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 
 public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Drawable, Element {
@@ -73,24 +76,24 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
         return true;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(!this.isCollapsed() && this.lines.mouseClicked(mouseX, mouseY, button)) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        if(!this.isCollapsed() && this.lines.mouseClicked(click, doubled)) {
             return true;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(!this.isCollapsed() && this.lines.keyPressed(keyCode, scanCode, modifiers)) {
+    public boolean keyPressed(KeyInput input) {
+        if(!this.isCollapsed() && this.lines.keyPressed(input)) {
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(input);
     }
 
-    public boolean charTyped(char chr, int modifiers) {
-        if(!this.isCollapsed() && this.lines.charTyped(chr, modifiers)) {
+    public boolean charTyped(CharInput input) {
+        if(!this.isCollapsed() && this.lines.charTyped(input)) {
             return true;
         }
-        return super.charTyped(chr, modifiers);
+        return super.charTyped(input);
     }
 }

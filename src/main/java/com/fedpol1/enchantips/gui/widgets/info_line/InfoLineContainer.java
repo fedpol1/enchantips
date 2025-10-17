@@ -1,7 +1,10 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -123,26 +126,26 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         return this.focused;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         boolean ret = false;
         for(InfoLine line : lines) {
-            ret = ret || line.mouseClicked(mouseX, mouseY, button);
+            ret = ret || line.mouseClicked(click, doubled);
         }
         return ret;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         boolean ret = false;
         for(InfoLine line : lines) {
-            ret = ret || line.keyPressed(keyCode, scanCode, modifiers);
+            ret = ret || line.keyPressed(input);
         }
         return ret;
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         boolean ret = false;
         for(InfoLine line : lines) {
-            ret = ret || line.charTyped(chr, modifiers);
+            ret = ret || line.charTyped(input);
         }
         return ret;
     }

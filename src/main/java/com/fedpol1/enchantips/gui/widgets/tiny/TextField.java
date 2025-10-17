@@ -6,7 +6,10 @@ import com.google.common.base.CharMatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.SelectionManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -92,22 +95,22 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         );
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         return false;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.handleSpecialKey(keyCode)) {
+        if(this.selectionManager.handleSpecialKey(input)) {
             this.shiftText();
             return true;
         }
         return false;
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.insert(Character.toUpperCase(chr))) {
+        if(this.selectionManager.insert(input)) {
             this.shiftText();
             return true;
         }

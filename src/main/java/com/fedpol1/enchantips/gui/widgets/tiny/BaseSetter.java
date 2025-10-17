@@ -3,7 +3,10 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -75,18 +78,18 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         );
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         return false;
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         return false;
     }
 
-    public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
+    public abstract boolean mouseClicked(Click click, boolean doubled);
 
-    protected boolean mouseClicked(double mouseX, double mouseY, int button, ButtonAction action) {
-        if(this.isWithin(mouseX, mouseY) && this.canTrigger() && button == 0) {
+    protected boolean mouseClicked(Click click, boolean doubled, ButtonAction action) {
+        if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == 0) {
             action.execute();
             MinecraftClient
                     .getInstance()

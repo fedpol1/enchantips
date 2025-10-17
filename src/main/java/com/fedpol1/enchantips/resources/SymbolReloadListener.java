@@ -1,49 +1,35 @@
 package com.fedpol1.enchantips.resources;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import com.google.gson.*;
-import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.resource.*;
+import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
 
-import java.io.BufferedReader;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class SymbolReloadListener implements SimpleSynchronousResourceReloadListener {
+public class SymbolReloadListener extends JsonDataLoader<Text> {
 
-    @Override
-    public Identifier getFabricId() {
-        return Identifier.of(EnchantipsClient.MODID, "symbol");
+    public static final String DIRECTORY = "symbols";
+    private static final ResourceFinder FINDER = ResourceFinder.json(DIRECTORY);
+    private Map<RegistryKey<Text>, Text> symbols = Map.of();
+
+    public SymbolReloadListener() {
+        super(TextCodecs.CODEC, FINDER);
     }
 
-    @Override
-    public void reload(ResourceManager manager) {
-        Symbols.SYMBOLS = new HashMap<>();
-
-        Map<Identifier, Resource> resources = manager.findResources(
-                "symbols",
-                path -> path.toString().endsWith(".json")
+    protected void apply(Map<Identifier, Text> map, ResourceManager resourceManager, Profiler profiler) {
+        this.symbols = map.entrySet().stream().collect(
+                Collectors.toUnmodifiableMap(
+                        entry -> RegistryKey.of(Symbols.REGISTRY, entry.getKey()), Map.Entry::getValue
+                )
         );
+    }
 
-        for(Map.Entry<Identifier, Resource> entry : resources.entrySet()) {
-            try(BufferedReader reader = entry.getValue().getReader()) {
-                Optional<String> contents = reader.lines().reduce((a, b) -> a + b);
-                Gson gson = new Gson();
-                if(contents.isEmpty()) continue;
-                Symbols.SYMBOLS.put(
-                        entry.getKey(),
-                        TextCodecs.CODEC
-                                .decode(JsonOps.INSTANCE, gson.fromJson(contents.get(), JsonElement.class))
-                                .getOrThrow().getFirst()
-                );
-            } catch(Exception e) {
-                EnchantipsClient.LOGGER.error("Error occurred while loading resource json {}", entry.getKey().toString(), e);
-            }
-        }
+    public Text get(RegistryKey<Text> key) {
+        return this.symbols.get(key);
     }
 }

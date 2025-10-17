@@ -1,12 +1,20 @@
 package com.fedpol1.enchantips.resources;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.mojang.serialization.Codec;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
 
 public class SymbolSet {
+
+    public static final SymbolSet DEFAULT = new SymbolSet(List.of());
+    public static RegistryKey<? extends Registry<SymbolSet>> REGISTRY = RegistryKey.ofRegistry(
+            Identifier.of(EnchantipsClient.MODID, SymbolSetReloadListener.DIRECTORY)
+    );
 
     public static final Codec<SymbolSet> CODEC = SymbolSetEntry.CODEC.listOf().xmap(
             SymbolSet::new,
@@ -23,8 +31,8 @@ public class SymbolSet {
         return this.entries;
     }
 
-    public List<Text> getApplicableSymbols(List<Identifier> ids, Text miscSymbol) {
-        ArrayList<Text> applied = new ArrayList<>();
+    public List<RegistryKey<Text>> getApplicableSymbols(List<Identifier> ids, RegistryKey<Text> miscSymbol) {
+        ArrayList<RegistryKey<Text>> applied = new ArrayList<>();
         Set<Identifier> miscValues = new HashSet<>(ids);
         for(SymbolSetEntry entry : this.entries) {
             List<Identifier> applicable = entry.applicable(ids);
@@ -39,5 +47,9 @@ public class SymbolSet {
             applied.add(miscSymbol);
         }
         return applied;
+    }
+
+    public static RegistryKey<SymbolSet> of(String id) {
+        return RegistryKey.of(REGISTRY, Identifier.of(EnchantipsClient.MODID, id));
     }
 }

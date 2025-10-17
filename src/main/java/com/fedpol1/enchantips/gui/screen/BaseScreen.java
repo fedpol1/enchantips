@@ -4,8 +4,11 @@ import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -74,23 +77,23 @@ public abstract class BaseScreen extends Screen {
         return false;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return this.lines.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        return this.lines.mouseClicked(click, doubled);
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return this.lines.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+        return this.lines.mouseDragged(click, offsetX, offsetY);
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(super.keyPressed(keyCode, scanCode, modifiers)) {
+    public boolean keyPressed(KeyInput input) {
+        if(super.keyPressed(input)) {
             return true;
         }
-        return this.lines.keyPressed(keyCode, scanCode, modifiers);
+        return this.lines.keyPressed(input);
     }
 
-    public boolean charTyped(char chr, int modifiers) {
-        return this.lines.charTyped(chr, modifiers);
+    public boolean charTyped(CharInput input) {
+        return this.lines.charTyped(input);
     }
 
     @Override

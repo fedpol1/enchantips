@@ -1,6 +1,9 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
+import net.minecraft.client.gui.Click;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 
 public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
 
@@ -26,25 +29,25 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
         );
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean isWithinBounds = super.mouseClicked(mouseX, mouseY, button, () -> this.textField.selectionManager.selectAll());
+    public boolean mouseClicked(Click click, boolean doubled) {
+        boolean isWithinBounds = super.mouseClicked(click, doubled, () -> this.textField.selectionManager.selectAll());
         this.focused = isWithinBounds;
         this.textField.focused = isWithinBounds;
         return isWithinBounds;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         if(!this.focused) { return false; }
-        if(this.textField.keyPressed(keyCode, scanCode, modifiers)) {
+        if(this.textField.keyPressed(input)) {
             this.readStringValue(this.textField.text);
             return true;
         }
         return false;
     }
 
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         if(!this.focused) { return false; }
-        if(this.textField.charTyped(chr, modifiers)) {
+        if(this.textField.charTyped(input)) {
             this.readStringValue(this.textField.text);
             return true;
         }

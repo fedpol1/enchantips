@@ -9,13 +9,14 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -24,12 +25,14 @@ public class EnchantipsClient implements ClientModInitializer {
 
     public static final String MODID = "enchantips";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static SymbolReloadListener symbolReloadListener = new SymbolReloadListener();
+    public static SymbolSetReloadListener symbolSetReloadListener = new SymbolSetReloadListener();
 
     private static final KeyBinding ENCHANTMENT_INFO_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.enchantips.enchantment_info",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_UNKNOWN, // unbound by default
-            "key.categories.misc"
+            KeyBinding.Category.MISC
     ));
 
     @Override
@@ -49,7 +52,17 @@ public class EnchantipsClient implements ClientModInitializer {
             }
         });
 
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SymbolReloadListener());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SymbolSetReloadListener());
+        Identifier symbolReloader = Identifier.of(EnchantipsClient.MODID, SymbolReloadListener.DIRECTORY);
+        Identifier symbolSetReloader = Identifier.of(EnchantipsClient.MODID, SymbolSetReloadListener.DIRECTORY);
+
+        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(
+                symbolReloader, symbolReloadListener
+        );
+        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(
+                symbolSetReloader, symbolSetReloadListener
+        );
+        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(
+                symbolReloader, symbolSetReloader
+        );
     }
 }

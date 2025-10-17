@@ -5,7 +5,10 @@ import net.minecraft.client.gui.screen.Screen;
 
 public class EnchantmentScreenEvents {
 
-    public static void onScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        ScrollableTooltipSection.getActiveSection().scroll((int) -verticalAmount);
+    public static boolean onScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount, boolean consumed) {
+        if(!consumed) {
+            ScrollableTooltipSection.getActiveSection().scroll((int) -verticalAmount);
+        }
+        return true;
     }
 }

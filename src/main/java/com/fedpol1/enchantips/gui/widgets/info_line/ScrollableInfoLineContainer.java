@@ -1,9 +1,12 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.util.Identifier;
 
 public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Drawable, Element {
@@ -109,28 +112,28 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
                 mouseY >= this.scrollbarY && mouseY < this.scrollbarY + this.scrollbarHeight;
     }
 
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        this.scrolling = button == 0 && this.isWithinScrollbar(mouseX, mouseY);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        this.scrolling = click.button() == 0 && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
-            this.scrollTo((int) mouseY);
+            this.scrollTo((int) click.y());
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
         if(this.scrolling) {
-            this.scrollTo((int) mouseY);
+            this.scrollTo((int) click.y());
             return true;
         }
         return false;
     }
 
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return super.keyPressed(keyCode, scanCode, modifiers);
+    public boolean keyPressed(KeyInput input) {
+        return super.keyPressed(input);
     }
 
-    public boolean charTyped(char chr, int modifiers) {
-        return super.charTyped(chr, modifiers);
+    public boolean charTyped(CharInput input) {
+        return super.charTyped(input);
     }
 }

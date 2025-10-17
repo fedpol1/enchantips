@@ -2,6 +2,7 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.CollapsibleInfoLine;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
@@ -29,7 +30,7 @@ public class CollapsibleButton extends BaseSetter<CollapsibleInfoLine, Object> {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button, () -> this.collapsed = !this.collapsed);
+    public boolean mouseClicked(Click click, boolean doubled) {
+        return super.mouseClicked(click, doubled, () -> this.collapsed = !this.collapsed);
     }
 }
