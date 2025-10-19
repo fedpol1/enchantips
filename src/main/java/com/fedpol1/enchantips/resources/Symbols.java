@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 public class Symbols {
 
     public static RegistryKey<? extends Registry<Text>> REGISTRY = RegistryKey.ofRegistry(
-            Identifier.of(EnchantipsClient.MODID, SymbolReloadListener.DIRECTORY)
+            EnchantipsClient.id(SymbolReloadListener.DIRECTORY)
     );
 
     public static Text get(String namespace, String id) {
@@ -29,6 +29,6 @@ public class Symbols {
     }
 
     public static RegistryKey<Text> symbolRegistryKey(String s) {
-        return RegistryKey.of(Symbols.REGISTRY, Identifier.of(EnchantipsClient.MODID, s));
+        return RegistryKey.of(Symbols.REGISTRY, EnchantipsClient.id(s));
     }
 }

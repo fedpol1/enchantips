@@ -23,7 +23,7 @@ public class SaveButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/save"));
+        super.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/save"));
         List<Text> tooltipText = this.line.getSaveButtonTooltip();
         if(tooltipText != null && this.isWithin(mouseX, mouseY)) {
             context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltipText, mouseX, mouseY);

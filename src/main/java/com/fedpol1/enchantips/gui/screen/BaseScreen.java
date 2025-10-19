@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseScreen extends Screen {
 
-    protected static final Identifier FRAME_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/frame");
-    protected static final Identifier BACKGROUND_TEXTURE = Identifier.of(EnchantipsClient.MODID, "enchantment_info/background");
+    protected static final Identifier FRAME_TEXTURE = EnchantipsClient.id("enchantment_info/frame");
+    protected static final Identifier BACKGROUND_TEXTURE = EnchantipsClient.id("enchantment_info/background");
 
     protected int windowX;
     protected int windowY;

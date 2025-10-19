@@ -52,8 +52,8 @@ public class EnchantipsClient implements ClientModInitializer {
             }
         });
 
-        Identifier symbolReloader = Identifier.of(EnchantipsClient.MODID, SymbolReloadListener.DIRECTORY);
-        Identifier symbolSetReloader = Identifier.of(EnchantipsClient.MODID, SymbolSetReloadListener.DIRECTORY);
+        Identifier symbolReloader = EnchantipsClient.id(SymbolReloadListener.DIRECTORY);
+        Identifier symbolSetReloader = EnchantipsClient.id(SymbolSetReloadListener.DIRECTORY);
 
         ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(
                 symbolReloader, symbolReloadListener
@@ -64,5 +64,9 @@ public class EnchantipsClient implements ClientModInitializer {
         ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(
                 symbolReloader, symbolSetReloader
         );
+    }
+
+    public static Identifier id(String s) {
+        return Identifier.of(EnchantipsClient.MODID, s);
     }
 }

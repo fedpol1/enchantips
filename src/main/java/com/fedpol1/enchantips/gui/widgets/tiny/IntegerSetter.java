@@ -51,7 +51,7 @@ public class IntegerSetter extends TextSetter<Integer> {
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/integer_setter"));
+        this.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/integer_setter"));
         this.textField.render(context, mouseX, mouseY, delta);
     }
 }

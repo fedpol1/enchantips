@@ -82,7 +82,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         if(this.focused) {
             context.drawGuiTexture(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
-                    Identifier.of(EnchantipsClient.MODID, selectionPath),
+                    EnchantipsClient.id(selectionPath),
                     this.x - 1 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
                     1 + Math.abs(sectionEndPos - sectionStartPos), 9
             );

@@ -19,7 +19,7 @@ public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, "config/reset"));
+        super.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/reset"));
     }
 
     @Override

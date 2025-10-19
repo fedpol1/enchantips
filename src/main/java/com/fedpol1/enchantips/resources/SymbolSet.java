@@ -13,7 +13,7 @@ public class SymbolSet {
 
     public static final SymbolSet DEFAULT = new SymbolSet(List.of());
     public static RegistryKey<? extends Registry<SymbolSet>> REGISTRY = RegistryKey.ofRegistry(
-            Identifier.of(EnchantipsClient.MODID, SymbolSetReloadListener.DIRECTORY)
+            EnchantipsClient.id(SymbolSetReloadListener.DIRECTORY)
     );
 
     public static final Codec<SymbolSet> CODEC = SymbolSetEntry.CODEC.listOf().xmap(
@@ -50,6 +50,6 @@ public class SymbolSet {
     }
 
     public static RegistryKey<SymbolSet> of(String id) {
-        return RegistryKey.of(REGISTRY, Identifier.of(EnchantipsClient.MODID, id));
+        return RegistryKey.of(REGISTRY, EnchantipsClient.id(id));
     }
 }

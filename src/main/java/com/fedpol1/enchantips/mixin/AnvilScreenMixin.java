@@ -65,13 +65,13 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
         ENCHANTIPS_ANVIL_WARNING_SMALL_WIDGET = new AnvilSwapWarn(
                 this.x + 152, this.y + 33,
                 16, 16,
-                Identifier.of(EnchantipsClient.MODID, "widget/anvil_warning_small")
+                EnchantipsClient.id("widget/anvil_warning_small")
         );
 
         ENCHANTIPS_ANVIL_WARNING_LARGE_WIDGET = new AnvilSwapWarn(
                 this.x + 152, this.y + 39,
                 16, 32,
-                Identifier.of(EnchantipsClient.MODID, "widget/anvil_warning_large")
+                EnchantipsClient.id("widget/anvil_warning_large")
         );
         if(!ModOption.ANVIL_SWAP_BUTTON_SWITCH.getValue()) { return; }
         this.addDrawableChild(

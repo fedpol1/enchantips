@@ -22,7 +22,7 @@ public class BooleanButton extends BaseSetter<ConfigInfoLine<Boolean>, Boolean> 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         String path = this.value ? "config/true" : "config/false";
-        super.render(context, mouseX, mouseY, delta, Identifier.of(EnchantipsClient.MODID, path));
+        super.render(context, mouseX, mouseY, delta, EnchantipsClient.id(path));
     }
 
     @Override
