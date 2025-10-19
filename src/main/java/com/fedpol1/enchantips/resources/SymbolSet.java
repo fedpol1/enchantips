@@ -4,7 +4,6 @@ import com.fedpol1.enchantips.EnchantipsClient;
 import com.mojang.serialization.Codec;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
@@ -31,8 +30,8 @@ public class SymbolSet {
         return this.entries;
     }
 
-    public List<RegistryKey<Text>> getApplicableSymbols(List<Identifier> ids, RegistryKey<Text> miscSymbol) {
-        ArrayList<RegistryKey<Text>> applied = new ArrayList<>();
+    public List<Identifier> getApplicableSymbols(List<Identifier> ids, Identifier miscSymbol) {
+        ArrayList<Identifier> applied = new ArrayList<>();
         Set<Identifier> miscValues = new HashSet<>(ids);
         for(SymbolSetEntry entry : this.entries) {
             List<Identifier> applicable = entry.applicable(ids);

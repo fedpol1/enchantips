@@ -2,7 +2,6 @@ package com.fedpol1.enchantips;
 
 import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
 import com.fedpol1.enchantips.gui.screen.EnchantmentInfoScreen;
-import com.fedpol1.enchantips.resources.SymbolReloadListener;
 import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -25,7 +24,6 @@ public class EnchantipsClient implements ClientModInitializer {
 
     public static final String MODID = "enchantips";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static SymbolReloadListener symbolReloadListener = new SymbolReloadListener();
     public static SymbolSetReloadListener symbolSetReloadListener = new SymbolSetReloadListener();
 
     private static final KeyBinding ENCHANTMENT_INFO_KEY = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -52,17 +50,10 @@ public class EnchantipsClient implements ClientModInitializer {
             }
         });
 
-        Identifier symbolReloader = EnchantipsClient.id(SymbolReloadListener.DIRECTORY);
         Identifier symbolSetReloader = EnchantipsClient.id(SymbolSetReloadListener.DIRECTORY);
 
         ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(
-                symbolReloader, symbolReloadListener
-        );
-        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(
                 symbolSetReloader, symbolSetReloadListener
-        );
-        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).addReloaderOrdering(
-                symbolReloader, symbolSetReloader
         );
     }
 

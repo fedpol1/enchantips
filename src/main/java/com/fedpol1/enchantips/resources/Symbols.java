@@ -1,23 +1,26 @@
 package com.fedpol1.enchantips.resources;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.text.Style;
+import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
+import net.minecraft.text.object.AtlasTextObjectContents;
 import net.minecraft.util.Identifier;
 
 public class Symbols {
 
-    public static RegistryKey<? extends Registry<Text>> REGISTRY = RegistryKey.ofRegistry(
-            EnchantipsClient.id(SymbolReloadListener.DIRECTORY)
+    public static final String DIRECTORY = "symbols";
+    public static Text SPACE = Text.literal(" ").setStyle(
+            Style.EMPTY.withFont(new StyleSpriteSource.Font(EnchantipsClient.id("symbols")))
     );
 
-    public static Text get(String namespace, String id) {
-        return EnchantipsClient.symbolReloadListener.get(RegistryKey.of(Symbols.REGISTRY, Identifier.of(namespace, id)));
-    }
-
-    public static Text get(String id) {
-        return Symbols.get(EnchantipsClient.MODID, id);
+    public static Text get(Identifier id) {
+        return Text.object(
+                new AtlasTextObjectContents(
+                        Identifier.of("gui"), Identifier.of(id.getNamespace(), DIRECTORY + "/" + id.getPath())
+                )
+        );
     }
 
     public static SymbolSet getSet(String namespace, String id) {
@@ -26,9 +29,5 @@ public class Symbols {
 
     public static SymbolSet getSet(String id) {
         return Symbols.getSet(EnchantipsClient.MODID, id);
-    }
-
-    public static RegistryKey<Text> symbolRegistryKey(String s) {
-        return RegistryKey.of(Symbols.REGISTRY, EnchantipsClient.id(s));
     }
 }

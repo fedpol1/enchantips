@@ -18,6 +18,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -66,7 +67,8 @@ public class EnchantmentAppearanceHelper {
         }
 
         if(ModOption.SWATCHES_SWITCH.getValue()) {
-            finalText.append(Symbols.get("swatch").copy().withColor(colorFinal)).append(" ");
+            finalText.append(Symbols.get(EnchantipsClient.id("swatch")).copy()
+                    .withColor(enchLevel.getColor().getRGB())).append(" ");
         }
         if(ModOption.ANVIL_COST_SWITCH.getValue()) {
             finalText.append(TooltipHelper.buildAnvilCost(r, colorFinal)).append(" ");
@@ -89,31 +91,34 @@ public class EnchantmentAppearanceHelper {
     }
 
     public static MutableText getEnchantmentTagSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
-        List<RegistryKey<Text>> tagSymbols;
+        List<Identifier> finalSymbols;
         Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = registryManager
                 .getOrThrow(RegistryKeys.ENCHANTMENT)
                 .getEntry(key.getValue());
         if(enchantmentReference.isPresent()) {
-            tagSymbols = Symbols.getSet("tags").getApplicableSymbols(
+            finalSymbols = Symbols.getSet("tags").getApplicableSymbols(
                     enchantmentReference.get().streamTags().map(TagKey::id).toList(),
-                    Symbols.symbolRegistryKey("miscellaneous_tag")
+                    EnchantipsClient.id("miscellaneous_tag")
             );
         }
         else {
-            tagSymbols = List.of(Symbols.symbolRegistryKey("unknown_tag"));
+            finalSymbols = List.of(EnchantipsClient.id("unknown_tag"));
         }
 
-        if(tagSymbols.size() > ModOption.ENCHANTMENT_TAGS_LIMIT.getValue()) {
-            tagSymbols = List.of(Symbols.symbolRegistryKey("all_tag"));
+        if(finalSymbols.size() > ModOption.ENCHANTMENT_TAGS_LIMIT.getValue()) {
+            finalSymbols = List.of(EnchantipsClient.id("all_tag"));
         }
 
-        if(tagSymbols.isEmpty()) {
-            tagSymbols = List.of(Symbols.symbolRegistryKey("no_tag"));
+        if(finalSymbols.isEmpty()) {
+            finalSymbols = List.of(EnchantipsClient.id("no_tag"));
         }
 
-        MutableText finalSymbols = Text.empty();
-        tagSymbols.forEach(ts -> finalSymbols.append(EnchantipsClient.symbolReloadListener.get(ts)));
-        return finalSymbols;
+        MutableText finalText = Text.empty();
+        finalText.append(Symbols.get(finalSymbols.getFirst()));
+        finalSymbols
+                .subList(1, finalSymbols.size())
+                .forEach(fs -> finalText.append(Symbols.SPACE).append(Symbols.get(fs)));
+        return finalText;
     }
 
     public static MutableText getEnchantmentTargetSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
@@ -135,33 +140,36 @@ public class EnchantmentAppearanceHelper {
                 secondaryItems.stream().filter(e -> !filteredPrimaryItems.contains(e)).toList()
         );
 
-        List<RegistryKey<Text>> primarySymbols = Symbols.getSet("items").getApplicableSymbols(
+        List<Identifier> primarySymbols = Symbols.getSet("items").getApplicableSymbols(
                 filteredPrimaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
-                Symbols.symbolRegistryKey("miscellaneous_item")
+                EnchantipsClient.id("miscellaneous_item")
         );
-        List<RegistryKey<Text>> secondarySymbols = Symbols.getSet("items").getApplicableSymbols(
+        List<Identifier> secondarySymbols = Symbols.getSet("items").getApplicableSymbols(
                 filteredSecondaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
-                Symbols.symbolRegistryKey("miscellaneous_item")
+                EnchantipsClient.id("miscellaneous_item")
         );
 
         if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            primarySymbols = new ArrayList<>(Collections.singleton(Symbols.symbolRegistryKey("all_item")));
+            primarySymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("all_item")));
         }
         if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            secondarySymbols = new ArrayList<>(Collections.singleton(Symbols.symbolRegistryKey("all_item")));
+            secondarySymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("all_item")));
         }
 
-        ArrayList<RegistryKey<Text>> finalSymbols = new ArrayList<>();
+        ArrayList<Identifier> finalSymbols = new ArrayList<>();
         finalSymbols.addAll(primarySymbols);
-        if(!secondarySymbols.isEmpty()) { finalSymbols.add(Symbols.symbolRegistryKey("anvil")); }
+        if(!secondarySymbols.isEmpty()) { finalSymbols.add(EnchantipsClient.id("anvil")); }
         finalSymbols.addAll(secondarySymbols);
 
         if(finalSymbols.isEmpty()) {
-            finalSymbols = new ArrayList<>(Collections.singleton(Symbols.symbolRegistryKey("no_item")));
+            finalSymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("no_item")));
         }
 
         MutableText finalText = Text.empty();
-        finalSymbols.forEach(t -> finalText.append(EnchantipsClient.symbolReloadListener.get(t)));
+        finalText.append(Symbols.get(finalSymbols.getFirst()));
+        finalSymbols
+                .subList(1, finalSymbols.size())
+                .forEach(fs -> finalText.append(Symbols.SPACE).append(Symbols.get(fs)));
         return finalText;
     }
 
