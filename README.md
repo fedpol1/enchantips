@@ -2,13 +2,13 @@
 Mod that enhances tooltips related to enchanting or enchantments.
 
 ## Dependencies
-+ Minecraft 1.21.4
-+ Fabric Loader 0.16.7 or greater
-+ Fabric API 0.116.0 or greater
++ Minecraft 1.21.9/10
++ Fabric Loader 0.17.2 or greater
++ Fabric API 0.134.0 or greater
 
 **For Configuration:**
-+ Mod Menu 13.0.0 or greater
-+ YetAnotherConfigLib 3.6.2 or greater
++ Mod Menu 16.0.0 or greater
++ YetAnotherConfigLib 3.8.0 or greater (optional - not required if compact configuration is enabled)
 
 ## Features
 
