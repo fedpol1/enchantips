@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.util;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.accessor.EnchantmentAccess;
 import com.fedpol1.enchantips.config.ModOption;
+import com.fedpol1.enchantips.resources.SymbolSet;
 import com.fedpol1.enchantips.resources.Symbols;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
@@ -91,37 +92,33 @@ public class EnchantmentAppearanceHelper {
     }
 
     public static MutableText getEnchantmentTagSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
+        SymbolSet symbolSet = Symbols.getSet("tags");
         List<Identifier> finalSymbols;
         Optional<RegistryEntry.Reference<Enchantment>> enchantmentReference = registryManager
                 .getOrThrow(RegistryKeys.ENCHANTMENT)
                 .getEntry(key.getValue());
         if(enchantmentReference.isPresent()) {
-            finalSymbols = Symbols.getSet("tags").getApplicableSymbols(
+            finalSymbols = symbolSet.getApplicableSymbols(
                     enchantmentReference.get().streamTags().map(TagKey::id).toList(),
-                    EnchantipsClient.id("miscellaneous_tag")
+                    symbolSet.miscSymbol
             );
-        }
-        else {
-            finalSymbols = List.of(EnchantipsClient.id("unknown_tag"));
+        } else {
+            finalSymbols = symbolSet.unknownSymbol.isEmpty() ? List.of() : List.of(symbolSet.unknownSymbol.get());
         }
 
         if(finalSymbols.size() > ModOption.ENCHANTMENT_TAGS_LIMIT.getValue()) {
-            finalSymbols = List.of(EnchantipsClient.id("all_tag"));
+            finalSymbols =  symbolSet.allSymbol.isEmpty() ? List.of() : List.of(symbolSet.allSymbol.get());
         }
 
         if(finalSymbols.isEmpty()) {
-            finalSymbols = List.of(EnchantipsClient.id("no_tag"));
+            finalSymbols = symbolSet.noneSymbol.isEmpty() ? List.of() : List.of(symbolSet.noneSymbol.get());
         }
 
-        MutableText finalText = Text.empty();
-        finalText.append(Symbols.get(finalSymbols.getFirst()));
-        finalSymbols
-                .subList(1, finalSymbols.size())
-                .forEach(fs -> finalText.append(Symbols.SPACE).append(Symbols.get(fs)));
-        return finalText;
+        return beautifySymbolList(finalSymbols);
     }
 
     public static MutableText getEnchantmentTargetSymbolText(RegistryKey<Enchantment> key, DynamicRegistryManager registryManager) {
+        SymbolSet symbolSet = Symbols.getSet("items");
         Enchantment ench = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(key).value();
 
         // primary items must be a subset of secondary items
@@ -140,20 +137,20 @@ public class EnchantmentAppearanceHelper {
                 secondaryItems.stream().filter(e -> !filteredPrimaryItems.contains(e)).toList()
         );
 
-        List<Identifier> primarySymbols = Symbols.getSet("items").getApplicableSymbols(
+        List<Identifier> primarySymbols = symbolSet.getApplicableSymbols(
                 filteredPrimaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
-                EnchantipsClient.id("miscellaneous_item")
+                symbolSet.miscSymbol
         );
-        List<Identifier> secondarySymbols = Symbols.getSet("items").getApplicableSymbols(
+        List<Identifier> secondarySymbols = symbolSet.getApplicableSymbols(
                 filteredSecondaryItems.stream().map(i -> i.getKey().get().getValue()).toList(),
-                EnchantipsClient.id("miscellaneous_item")
+                symbolSet.miscSymbol
         );
 
         if(primarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            primarySymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("all_item")));
+            primarySymbols = symbolSet.allSymbol.isEmpty() ? List.of() : List.of(symbolSet.allSymbol.get());
         }
         if(secondarySymbols.size() > ModOption.ENCHANTMENT_TARGETS_LIMIT.getValue()) {
-            secondarySymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("all_item")));
+            secondarySymbols = symbolSet.allSymbol.isEmpty() ? List.of() : List.of(symbolSet.allSymbol.get());
         }
 
         ArrayList<Identifier> finalSymbols = new ArrayList<>();
@@ -162,15 +159,10 @@ public class EnchantmentAppearanceHelper {
         finalSymbols.addAll(secondarySymbols);
 
         if(finalSymbols.isEmpty()) {
-            finalSymbols = new ArrayList<>(Collections.singleton(EnchantipsClient.id("no_item")));
+            finalSymbols = symbolSet.noneSymbol.isEmpty() ? new ArrayList<>() : new ArrayList<>(List.of(symbolSet.noneSymbol.get()));
         }
 
-        MutableText finalText = Text.empty();
-        finalText.append(Symbols.get(finalSymbols.getFirst()));
-        finalSymbols
-                .subList(1, finalSymbols.size())
-                .forEach(fs -> finalText.append(Symbols.SPACE).append(Symbols.get(fs)));
-        return finalText;
+        return beautifySymbolList(finalSymbols);
     }
 
     public static boolean canBePrimaryItem(Item item, RegistryKey<Enchantment> key, RegistryEntryList<Item> primaryItems) {
@@ -187,5 +179,16 @@ public class EnchantmentAppearanceHelper {
 
         String itemId = Registries.ITEM.getEntry(item).getIdAsString();
         return primaryItems.stream().map(RegistryEntry::getIdAsString).anyMatch(c -> c.equals(itemId));
+    }
+
+    public static MutableText beautifySymbolList(List<Identifier> symbols) {
+        if(symbols == null || symbols.isEmpty()) { return Text.empty(); }
+
+        MutableText finalText = Text.empty();
+        finalText.append(Symbols.get(symbols.getFirst()));
+        symbols
+                .subList(1, symbols.size())
+                .forEach(fs -> finalText.append(Symbols.SPACE).append(Symbols.get(fs)));
+        return finalText;
     }
 }

@@ -1,40 +1,35 @@
-[
-  {
-    "values": [
-      "minecraft:curse"
-    ],
-    "symbol": "enchantips:tag/curse"
-  },
-  {
-    "values": [
-      {
-        "id": "minecraft:in_enchanting_table",
-        "expected": false
+{
+  "all": "enchantips:all_tag",
+  "none": "enchantips:no_tag",
+  "unknown": "enchantips:unknown_tag",
+  "entries": [
+    {
+      "values": {
+        "minecraft:curse": true
       },
-      {
-        "id": "minecraft:curse",
-        "expected": false
-      }
-    ],
-    "minimum_matches": 2,
-    "symbol": "enchantips:tag/treasure"
-  },
-  {
-    "values": [
-      {
-        "id": "minecraft:tradeable",
-        "expected": false
-      }
-    ],
-    "symbol": "enchantips:tag/non_tradeable"
-  },
-  {
-    "values": [
-      "minecraft:double_trade_price",
-      "minecraft:tradeable"
-    ],
-    "minimum_matches": 2,
-    "symbol": "enchantips:tag/double"
-  }
-]
-
+      "symbol": "enchantips:tag/curse"
+    },
+    {
+      "values": {
+        "minecraft:in_enchanting_table": false,
+        "minecraft:curse": false
+      },
+      "minimum_matches": 2,
+      "symbol": "enchantips:tag/treasure"
+    },
+    {
+      "values": {
+        "minecraft:tradeable": false
+      },
+      "symbol": "enchantips:tag/non_tradeable"
+    },
+    {
+      "values": {
+        "minecraft:double_trade_price": true,
+        "minecraft:tradeable": true
+      },
+      "minimum_matches": 2,
+      "symbol": "enchantips:tag/double"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.resources;
 
-import com.fedpol1.enchantips.EnchantipsClient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.resource.*;
 import net.minecraft.util.Identifier;

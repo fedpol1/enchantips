@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.util;
 
-import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.EnchantableComponent;
 import net.minecraft.item.ItemStack;

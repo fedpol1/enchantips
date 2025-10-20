@@ -1,203 +1,208 @@
-[
-  {
-    "values": [
-      "minecraft:leather_boots",
-      "minecraft:copper_boots",
-      "minecraft:golden_boots",
-      "minecraft:chainmail_boots",
-      "minecraft:iron_boots",
-      "minecraft:diamond_boots",
-      "minecraft:netherite_boots"
-    ],
-    "symbol": "enchantips:item/boots"
-  },
-  {
-    "values": [
-      "minecraft:leather_leggings",
-      "minecraft:copper_leggings",
-      "minecraft:golden_leggings",
-      "minecraft:chainmail_leggings",
-      "minecraft:iron_leggings",
-      "minecraft:diamond_leggings",
-      "minecraft:netherite_leggings"
-    ],
-    "symbol": "enchantips:item/leggings"
-  },
-  {
-    "values": [
-      "minecraft:leather_chestplate",
-      "minecraft:copper_chestplate",
-      "minecraft:golden_chestplate",
-      "minecraft:chainmail_chestplate",
-      "minecraft:iron_chestplate",
-      "minecraft:diamond_chestplate",
-      "minecraft:netherite_chestplate"
-    ],
-    "symbol": "enchantips:item/chestplate"
-  },
-  {
-    "values": [
-      "minecraft:leather_helmet",
-      "minecraft:copper_helmet",
-      "minecraft:golden_helmet",
-      "minecraft:chainmail_helmet",
-      "minecraft:iron_helmet",
-      "minecraft:diamond_helmet",
-      "minecraft:netherite_helmet",
-      "minecraft:turtle_helmet"
-    ],
-    "symbol": "enchantips:item/helmet"
-  },
-  {
-    "values": [
-      "minecraft:wither_skeleton_skull",
-      "minecraft:skeleton_skull",
-      "minecraft:creeper_head",
-      "minecraft:dragon_head",
-      "minecraft:piglin_head",
-      "minecraft:player_head",
-      "minecraft:zombie_head"
-    ],
-    "symbol": "enchantips:item/skull"
-  },
-  {
-    "values": [
-      "minecraft:carved_pumpkin"
-    ],
-    "symbol": "enchantips:item/pumpkin"
-  },
-  {
-    "values": [
-      "minecraft:elytra"
-    ],
-    "symbol": "enchantips:item/elytra"
-  },
-  {
-    "values": [
-      "minecraft:wooden_sword",
-      "minecraft:stone_sword",
-      "minecraft:copper_sword",
-      "minecraft:iron_sword",
-      "minecraft:golden_sword",
-      "minecraft:diamond_sword",
-      "minecraft:netherite_sword"
-    ],
-    "symbol": "enchantips:item/sword"
-  },
-  {
-    "values": [
-      "minecraft:wooden_axe",
-      "minecraft:stone_axe",
-      "minecraft:copper_axe",
-      "minecraft:iron_axe",
-      "minecraft:golden_axe",
-      "minecraft:diamond_axe",
-      "minecraft:netherite_axe"
-    ],
-    "symbol": "enchantips:item/axe"
-  },
-  {
-    "values": [
-      "minecraft:wooden_pickaxe",
-      "minecraft:stone_pickaxe",
-      "minecraft:copper_pickaxe",
-      "minecraft:iron_pickaxe",
-      "minecraft:golden_pickaxe",
-      "minecraft:diamond_pickaxe",
-      "minecraft:netherite_pickaxe"
-    ],
-    "symbol": "enchantips:item/pickaxe"
-  },
-  {
-    "values": [
-      "minecraft:wooden_shovel",
-      "minecraft:stone_shovel",
-      "minecraft:copper_shovel",
-      "minecraft:iron_shovel",
-      "minecraft:golden_shovel",
-      "minecraft:diamond_shovel",
-      "minecraft:netherite_shovel"
-    ],
-    "symbol": "enchantips:item/shovel"
-  },
-  {
-    "values": [
-      "minecraft:wooden_hoe",
-      "minecraft:stone_hoe",
-      "minecraft:copper_hoe",
-      "minecraft:iron_hoe",
-      "minecraft:golden_hoe",
-      "minecraft:diamond_hoe",
-      "minecraft:netherite_hoe"
-    ],
-    "symbol": "enchantips:item/hoe"
-  },
-  {
-    "values": [
-      "minecraft:shears"
-    ],
-    "symbol": "enchantips:item/shears"
-  },
-  {
-    "values": [
-      "minecraft:trident"
-    ],
-    "symbol": "enchantips:item/trident"
-  },
-  {
-    "values": [
-      "minecraft:mace"
-    ],
-    "symbol": "enchantips:item/mace"
-  },
-  {
-    "values": [
-      "minecraft:shield"
-    ],
-    "symbol": "enchantips:item/shield"
-  },
-  {
-    "values": [
-      "minecraft:bow"
-    ],
-    "symbol": "enchantips:item/bow"
-  },
-  {
-    "values": [
-      "minecraft:crossbow"
-    ],
-    "symbol": "enchantips:item/crossbow"
-  },
-  {
-    "values": [
-      "minecraft:fishing_rod"
-    ],
-    "symbol": "enchantips:item/fishing_rod"
-  },
-  {
-    "values": [
-      "minecraft:carrot_on_a_stick",
-      "minecraft:warped_fungus_on_a_stick"
-    ],
-    "symbol": "enchantips:item/baited_rod"
-  },
-  {
-    "values": [
-      "minecraft:brush"
-    ],
-    "symbol": "enchantips:item/brush"
-  },
-  {
-    "values": [
-      "minecraft:flint_and_steel"
-    ],
-    "symbol": "enchantips:item/flint_and_steel"
-  },
-  {
-    "values": [
-      "minecraft:compass"
-    ],
-    "symbol": "enchantips:item/compass"
-  }
-]
-
+{
+  "all": "enchantips:all_item",
+  "none": "enchantips:no_item",
+  "miscellaneous": "enchantips:miscellaneous_item",
+  "unknown": "enchantips:unknown_item",
+  "entries": [
+    {
+      "values": {
+        "minecraft:leather_boots": true,
+        "minecraft:copper_boots": true,
+        "minecraft:golden_boots": true,
+        "minecraft:chainmail_boots": true,
+        "minecraft:iron_boots": true,
+        "minecraft:diamond_boots": true,
+        "minecraft:netherite_boots": true
+      },
+      "symbol": "enchantips:item/boots"
+    },
+    {
+      "values": {
+        "minecraft:leather_leggings": true,
+        "minecraft:copper_leggings": true,
+        "minecraft:golden_leggings": true,
+        "minecraft:chainmail_leggings": true,
+        "minecraft:iron_leggings": true,
+        "minecraft:diamond_leggings": true,
+        "minecraft:netherite_leggings": true
+      },
+      "symbol": "enchantips:item/leggings"
+    },
+    {
+      "values": {
+        "minecraft:leather_chestplate": true,
+        "minecraft:copper_chestplate": true,
+        "minecraft:golden_chestplate": true,
+        "minecraft:chainmail_chestplate": true,
+        "minecraft:iron_chestplate": true,
+        "minecraft:diamond_chestplate": true,
+        "minecraft:netherite_chestplate": true
+      },
+      "symbol": "enchantips:item/chestplate"
+    },
+    {
+      "values": {
+        "minecraft:leather_helmet": true,
+        "minecraft:copper_helmet": true,
+        "minecraft:golden_helmet": true,
+        "minecraft:chainmail_helmet": true,
+        "minecraft:iron_helmet": true,
+        "minecraft:diamond_helmet": true,
+        "minecraft:netherite_helmet": true,
+        "minecraft:turtle_helmet": true
+      },
+      "symbol": "enchantips:item/helmet"
+    },
+    {
+      "values": {
+        "minecraft:wither_skeleton_skull": true,
+        "minecraft:skeleton_skull": true,
+        "minecraft:creeper_head": true,
+        "minecraft:dragon_head": true,
+        "minecraft:piglin_head": true,
+        "minecraft:player_head": true,
+        "minecraft:zombie_head": true
+      },
+      "symbol": "enchantips:item/skull"
+    },
+    {
+      "values": {
+        "minecraft:carved_pumpkin": true
+      },
+      "symbol": "enchantips:item/pumpkin"
+    },
+    {
+      "values": {
+        "minecraft:elytra": true
+      },
+      "symbol": "enchantips:item/elytra"
+    },
+    {
+      "values": {
+        "minecraft:wooden_sword": true,
+        "minecraft:stone_sword": true,
+        "minecraft:copper_sword": true,
+        "minecraft:iron_sword": true,
+        "minecraft:golden_sword": true,
+        "minecraft:diamond_sword": true,
+        "minecraft:netherite_sword": true
+      },
+      "symbol": "enchantips:item/sword"
+    },
+    {
+      "values": {
+        "minecraft:wooden_axe": true,
+        "minecraft:stone_axe": true,
+        "minecraft:copper_axe": true,
+        "minecraft:iron_axe": true,
+        "minecraft:golden_axe": true,
+        "minecraft:diamond_axe": true,
+        "minecraft:netherite_axe": true
+      },
+      "symbol": "enchantips:item/axe"
+    },
+    {
+      "values": {
+        "minecraft:wooden_pickaxe": true,
+        "minecraft:stone_pickaxe": true,
+        "minecraft:copper_pickaxe": true,
+        "minecraft:iron_pickaxe": true,
+        "minecraft:golden_pickaxe": true,
+        "minecraft:diamond_pickaxe": true,
+        "minecraft:netherite_pickaxe": true
+      },
+      "symbol": "enchantips:item/pickaxe"
+    },
+    {
+      "values": {
+        "minecraft:wooden_shovel": true,
+        "minecraft:stone_shovel": true,
+        "minecraft:copper_shovel": true,
+        "minecraft:iron_shovel": true,
+        "minecraft:golden_shovel": true,
+        "minecraft:diamond_shovel": true,
+        "minecraft:netherite_shovel": true
+      },
+      "symbol": "enchantips:item/shovel"
+    },
+    {
+      "values": {
+        "minecraft:wooden_hoe": true,
+        "minecraft:stone_hoe": true,
+        "minecraft:copper_hoe": true,
+        "minecraft:iron_hoe": true,
+        "minecraft:golden_hoe": true,
+        "minecraft:diamond_hoe": true,
+        "minecraft:netherite_hoe": true
+      },
+      "symbol": "enchantips:item/hoe"
+    },
+    {
+      "values": {
+        "minecraft:shears": true
+      },
+      "symbol": "enchantips:item/shears"
+    },
+    {
+      "values": {
+        "minecraft:trident": true
+      },
+      "symbol": "enchantips:item/trident"
+    },
+    {
+      "values": {
+        "minecraft:mace": true
+      },
+      "symbol": "enchantips:item/mace"
+    },
+    {
+      "values": {
+        "minecraft:shield": true
+      },
+      "symbol": "enchantips:item/shield"
+    },
+    {
+      "values": {
+        "minecraft:bow": true
+      },
+      "symbol": "enchantips:item/bow"
+    },
+    {
+      "values": {
+        "minecraft:crossbow": true
+      },
+      "symbol": "enchantips:item/crossbow"
+    },
+    {
+      "values": {
+        "minecraft:fishing_rod": true
+      },
+      "symbol": "enchantips:item/fishing_rod"
+    },
+    {
+      "values": {
+        "minecraft:carrot_on_a_stick": true,
+        "minecraft:warped_fungus_on_a_stick": true
+      },
+      "symbol": "enchantips:item/baited_rod"
+    },
+    {
+      "values": {
+        "minecraft:brush": true
+      },
+      "symbol": "enchantips:item/brush"
+    },
+    {
+      "values": {
+        "minecraft:flint_and_steel": true
+      },
+      "symbol": "enchantips:item/flint_and_steel"
+    },
+    {
+      "values": {
+        "minecraft:compass": true
+      },
+      "symbol": "enchantips:item/compass"
+    }
+  ]
+}
