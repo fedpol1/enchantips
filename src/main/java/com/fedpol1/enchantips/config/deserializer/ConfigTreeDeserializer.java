@@ -6,6 +6,7 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
 
@@ -30,7 +31,8 @@ public class ConfigTreeDeserializer implements JsonDeserializer<ConfigTree> {
 
     private static void deserializeEnchantments(JsonElement json, Node node) {
         if(node != ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode()) { throw new IllegalStateException("Found enchantment outside of individual_enchantments."); }
-        for(Map.Entry<String, JsonElement> current : json.getAsJsonObject().asMap().entrySet()) {
+        TreeMap<String, JsonElement> enchantments = new TreeMap<>(json.getAsJsonObject().asMap());
+        for(Map.Entry<String, JsonElement> current : enchantments.entrySet()) {
             EnchantmentGroupNode group = ((CategoryNode) node).addEnchantmentGroup(current.getKey());
             ConfigTreeDeserializer.deserializeImpl(current.getValue(), group);
         }
