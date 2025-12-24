@@ -1,19 +1,19 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
-public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Drawable, Element {
+public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable, GuiEventListener {
 
     //
-    private static final Identifier SCROLLER_TEXTURE = Identifier.ofVanilla("widget/scroller");
-    private static final Identifier SCROLLER_BACKGROUND_TEXTURE = Identifier.ofVanilla("widget/scroller_background");
+    private static final Identifier SCROLLER_TEXTURE = Identifier.withDefaultNamespace("widget/scroller");
+    private static final Identifier SCROLLER_BACKGROUND_TEXTURE = Identifier.withDefaultNamespace("widget/scroller_background");
     private static final int SCROLLER_WIDTH = 6;
 
     protected int childColor;
@@ -61,12 +61,12 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         if(this.scrollerVisible()) {
-            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
-            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
+            context.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
+            context.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
         }
     }
 
@@ -112,7 +112,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
                 mouseY >= this.scrollbarY && mouseY < this.scrollbarY + this.scrollbarHeight;
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.scrolling = click.button() == 0 && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
             this.scrollTo((int) click.y());
@@ -121,7 +121,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         return super.mouseClicked(click, doubled);
     }
 
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         if(this.scrolling) {
             this.scrollTo((int) click.y());
             return true;
@@ -129,11 +129,11 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         return false;
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         return super.keyPressed(input);
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         return super.charTyped(input);
     }
 }

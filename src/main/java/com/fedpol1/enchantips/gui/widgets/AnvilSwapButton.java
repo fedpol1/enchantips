@@ -1,18 +1,18 @@
 package com.fedpol1.enchantips.gui.widgets;
 
 import com.fedpol1.enchantips.EnchantipsClient;
-import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
-public class AnvilSwapButton extends TexturedButtonWidget {
+public class AnvilSwapButton extends ImageButton {
 
-    public AnvilSwapButton(int x, int y, PressAction onPress) {
+    public AnvilSwapButton(int x, int y, OnPress onPress) {
         super(x, y, 16, 16,
-                new ButtonTextures(Icon.DEFAULT.texture, Icon.HOVER.texture),
+                new WidgetSprites(Icon.DEFAULT.texture, Icon.HOVER.texture),
                 onPress,
-                Text.translatable("narrator.button.enchantips.anvil_swap"));
+                Component.translatable("narrator.button.enchantips.anvil_swap"));
     }
 
     enum Icon {

@@ -1,27 +1,27 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 
-public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Drawable, Element {
+public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Renderable, GuiEventListener {
 
     protected final InfoLineContainer lines;
     protected final CollapsibleButton expandButton;
 
-    public CollapsibleInfoLine(Text text) {
+    public CollapsibleInfoLine(Component text) {
         super(text);
         this.lines = new InfoLineContainer(this);
         this.expandButton = new CollapsibleButton(this.x, this.y, this,true);
         this.setters.add(this.expandButton);
     }
 
-    public void addLine(Text line) {
+    public void addLine(Component line) {
         this.addLine(new InfoLine(line));
     }
 
@@ -62,7 +62,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         if(!this.isCollapsed()) {
             this.lines.render(context, mouseX, mouseY, delta);
@@ -70,27 +70,27 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Draw
     }
 
     @Override
-    public boolean shouldRender(DrawContext context, int mouseX, int mouseY, float delta) {
+    public boolean shouldRender(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if(this.y < this.nearestScrollableParent.y) { return false; }
         if(this.y + InfoLine.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
         return true;
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if(!this.isCollapsed() && this.lines.mouseClicked(click, doubled)) {
             return true;
         }
         return super.mouseClicked(click, doubled);
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(!this.isCollapsed() && this.lines.keyPressed(input)) {
             return true;
         }
         return super.keyPressed(input);
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         if(!this.isCollapsed() && this.lines.charTyped(input)) {
             return true;
         }

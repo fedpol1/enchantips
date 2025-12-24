@@ -7,19 +7,18 @@ import com.fedpol1.enchantips.config.data.ColorOption;
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.data.IntegerOption;
 import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.*;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 import java.awt.*;
 
 public class EnchantmentGroupNode extends GroupNode {
 
     private boolean known;
     private final String identifier;
-    private Text description;
+    private Component description;
     private final OptionNode<Color> minColor;
     private final OptionNode<Color> maxColor;
     private final OptionNode<Color> overmaxColor;
@@ -32,7 +31,7 @@ public class EnchantmentGroupNode extends GroupNode {
 
         this.known = false;
         this.identifier = ench;
-        this.description = Text.translatable("enchantment.enchantips.unknown").setStyle(Style.EMPTY).formatted(Formatting.ITALIC);
+        this.description = Component.translatable("enchantment.enchantips.unknown").setStyle(Style.EMPTY).withStyle(ChatFormatting.ITALIC);
         this.minColor = this.addOption(new ColorOption(0x9f7f7f),  ModConfigData.MIN_COLOR_KEY, 0);
         this.maxColor = this.addOption(new ColorOption(0xffdfdf),  ModConfigData.MAX_COLOR_KEY, 0);
         this.overmaxColor = this.addOption(new ColorOption(0xffdf3f),  ModConfigData.OVERMAX_COLOR_KEY, 0);
@@ -40,8 +39,8 @@ public class EnchantmentGroupNode extends GroupNode {
         this.highlight = this.addOption(new BooleanOption(true),  ModConfigData.HIGHLIGHT_KEY, 1);
     }
 
-    protected EnchantmentGroupNode(RegistryKey<Enchantment> key, Node parent) {
-        this(key.getValue().toString(), parent);
+    protected EnchantmentGroupNode(ResourceKey<Enchantment> key, Node parent) {
+        this(key.identifier().toString(), parent);
     }
 
     private <T> OptionNode<T> addOption(Data<T> data, String key, int tooltipLines) {
@@ -54,11 +53,11 @@ public class EnchantmentGroupNode extends GroupNode {
         return this.identifier;
     }
 
-    public Text getDescription() {
+    public Component getDescription() {
         return this.description;
     }
 
-    public void setDescription(Text description) {
+    public void setDescription(Component description) {
         this.known = true;
         this.description = description;
     }

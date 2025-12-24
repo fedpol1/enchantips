@@ -1,15 +1,15 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
 
 public abstract class BaseSetter<T extends InfoLine, U> {
 
@@ -59,9 +59,9 @@ public abstract class BaseSetter<T extends InfoLine, U> {
 
     public abstract boolean canTrigger();
 
-    public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
+    public abstract void render(GuiGraphics context, int mouseX, int mouseY, float delta);
 
-    protected void render(DrawContext context, int mouseX, int mouseY, float delta, Identifier texture) {
+    protected void render(GuiGraphics context, int mouseX, int mouseY, float delta, Identifier texture) {
         String namespace = texture.getNamespace();
         String path = texture.getPath();
         if(!this.canTrigger()) {
@@ -70,31 +70,31 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         if(this.isWithin(mouseX, mouseY)) {
             path = path + "_hover";
         }
-        context.drawGuiTexture(
+        context.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
-                Identifier.of(namespace, path),
+                Identifier.fromNamespaceAndPath(namespace, path),
                 this.x, this.y,
                 this.getWidth(), this.getHeight()
         );
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         return false;
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         return false;
     }
 
-    public abstract boolean mouseClicked(Click click, boolean doubled);
+    public abstract boolean mouseClicked(MouseButtonEvent click, boolean doubled);
 
-    protected boolean mouseClicked(Click click, boolean doubled, ButtonAction action) {
+    protected boolean mouseClicked(MouseButtonEvent click, boolean doubled, ButtonAction action) {
         if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == 0) {
             action.execute();
-            MinecraftClient
+            Minecraft
                     .getInstance()
                     .getSoundManager()
-                    .play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             return true;
         }
         return false;

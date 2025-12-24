@@ -4,48 +4,47 @@ import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.OptionNode;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.world.World;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Optional;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
 
 public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
 
-    private final RegistryKey<Enchantment> key;
+    private final ResourceKey<Enchantment> key;
     private final int level;
 
-    private EnchantmentLevel(RegistryKey<Enchantment> e, int l) {
+    private EnchantmentLevel(ResourceKey<Enchantment> e, int l) {
         this.key = e;
         this.level = l;
     }
 
     public static EnchantmentLevel of(Enchantment e, int l) throws IllegalStateException {
-        World w = MinecraftClient.getInstance().world;
+        Level w = Minecraft.getInstance().level;
         if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: world is null."); }
-        Optional<RegistryKey<Enchantment>> optional = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getKey(e);
+        Optional<ResourceKey<Enchantment>> optional = w.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getResourceKey(e);
         if(optional.isEmpty()) {
-            IntegratedServer s = MinecraftClient.getInstance().getServer();
+            IntegratedServer s = Minecraft.getInstance().getSingleplayerServer();
             if(s == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & no integrated server exists."); }
-            w = s.getWorld(w.getRegistryKey());
+            w = s.getLevel(w.dimension());
             if(w == null) { throw new IllegalStateException("Could not construct EnchantmentLevel: client enchantment optional is empty & server world is null."); }
-            optional = w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getKey(e);
+            optional = w.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getResourceKey(e);
             if(optional.isEmpty()) { throw new IllegalStateException("Could not construct EnchantmentLevel: client & server enchantment optionals are both empty."); }
         }
         return new EnchantmentLevel(optional.get(), l);
     }
 
-    public static ArrayList<EnchantmentLevel> ofList(ItemEnchantmentsComponent component) {
+    public static ArrayList<EnchantmentLevel> ofList(ItemEnchantments component) {
         ArrayList<EnchantmentLevel> enchantments = new ArrayList<>();
         if(component == null) { return enchantments; }
-        for(RegistryEntry<Enchantment> entry : component.getEnchantments()) {
+        for(Holder<Enchantment> entry : component.keySet()) {
             Enchantment enchantment = entry.value();
             if(enchantment == null) { continue; }
             enchantments.add(EnchantmentLevel.of(enchantment, component.getLevel(entry)));
@@ -53,14 +52,14 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
         return enchantments;
     }
 
-    public RegistryKey<Enchantment> getKey() {
+    public ResourceKey<Enchantment> getKey() {
         return this.key;
     }
 
     public Enchantment getEnchantment() {
-        World w = MinecraftClient.getInstance().world;
+        Level w = Minecraft.getInstance().level;
         if(w == null) { return null; }
-        return w.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(this.key);
+        return w.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(this.key);
     }
 
     public int getLevel() {
@@ -99,14 +98,14 @@ public class EnchantmentLevel implements Comparable<EnchantmentLevel> {
     }
 
     public int getLowestModifiedLevel() {
-        return this.getEnchantment().getMinPower(this.getLevel());
+        return this.getEnchantment().getMinCost(this.getLevel());
     }
 
     public int getHighestModifiedLevel() {
         if(this.getEnchantment().getMaxLevel() > this.getLevel()) {
-            return Math.min(this.getEnchantment().getMaxPower(this.getLevel()), this.getEnchantment().getMinPower(this.getLevel() + 1) - 1);
+            return Math.min(this.getEnchantment().getMaxCost(this.getLevel()), this.getEnchantment().getMinCost(this.getLevel() + 1) - 1);
         }
-        return this.getEnchantment().getMaxPower(this.getLevel());
+        return this.getEnchantment().getMaxCost(this.getLevel());
     }
 
     public boolean isOvermax() {

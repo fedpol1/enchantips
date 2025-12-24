@@ -7,20 +7,6 @@ import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.EnchantmentTags;
-import net.minecraft.screen.EnchantmentScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.IndexedIterable;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,9 +16,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.IdMap;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.EnchantmentMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 
-@Mixin(ScreenHandler.class)
-public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreenHandlerAccess {
+@Mixin(AbstractContainerMenu.class)
+public abstract class AbstractContainerMenuMixin implements EnchantmentScreenHandlerAccess {
 
     @Unique
     ScrollableTooltipSection[] enchantips$scrollableSections = new ScrollableTooltipSection[3];
@@ -42,32 +42,32 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
         return this.enchantips$scrollableSections[i];
     }
 
-    @Inject(method = "setProperty(II)V", at = @At(value = "RETURN"))
+    @Inject(method = "setData(II)V", at = @At(value = "RETURN"))
     public void enchantips$setProperty(int id, int value, CallbackInfo ci) throws IllegalStateException {
         //noinspection ConstantValue
-        if (!((Object)this instanceof EnchantmentScreenHandler handler) ||
+        if (!((Object)this instanceof EnchantmentMenu handler) ||
             !ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
         ) { return; }
 
-        World w = MinecraftClient.getInstance().world;
+        Level w = Minecraft.getInstance().level;
         if(w == null) { return; }
-        DynamicRegistryManager registryManager = w.getRegistryManager();
-        IndexedIterable<RegistryEntry<Enchantment>> indexedIterable = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getIndexedEntries();
+        RegistryAccess registryManager = w.registryAccess();
+        IdMap<Holder<Enchantment>> indexedIterable = registryManager.lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
 
-        ItemStack stack = handler.getSlot(0).getStack();
+        ItemStack stack = handler.getSlot(0).getItem();
         for (int i = 0; i < 3; i++) {
-            RegistryEntry<Enchantment> givenEnchantment = indexedIterable.get(handler.enchantmentId[i]);
+            Holder<Enchantment> givenEnchantment = indexedIterable.byId(handler.enchantClue[i]);
             if (givenEnchantment == null) { continue; }
-            EnchantmentLevel enchLevel = EnchantmentLevel.of(givenEnchantment.value(), handler.enchantmentLevel[i]);
+            EnchantmentLevel enchLevel = EnchantmentLevel.of(givenEnchantment.value(), handler.levelClue[i]);
 
-            int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchLevel, stack, handler.enchantmentPower[i]);
-            int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchLevel, stack, handler.enchantmentPower[i]);
+            int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchLevel, stack, handler.costs[i]);
+            int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchLevel, stack, handler.costs[i]);
 
             List<EnchantmentLevel> levels = new ArrayList<>();
-            for (RegistryEntry<Enchantment> current : indexedIterable) {
-                if ((!(stack.isIn(current.value().getApplicableItems()) && current.value().isPrimaryItem(stack)) && !stack.isOf(Items.BOOK)) ||
-                    !Enchantment.canBeCombined(givenEnchantment, current) ||
-                    (!current.isIn(EnchantmentTags.IN_ENCHANTING_TABLE))
+            for (Holder<Enchantment> current : indexedIterable) {
+                if ((!(stack.is(current.value().getSupportedItems()) && current.value().isPrimaryItem(stack)) && !stack.is(Items.BOOK)) ||
+                    !Enchantment.areCompatible(givenEnchantment, current) ||
+                    (!current.is(EnchantmentTags.IN_ENCHANTING_TABLE))
                 ) { continue; }
 
                 for (int z = current.value().getMinLevel(); z <= current.value().getMaxLevel(); z++) {
@@ -81,9 +81,9 @@ public abstract class EnchantmentScreenHandlerMixin implements EnchantmentScreen
                 }
             }
             Collections.sort(levels);
-            List<Text> extra = new ArrayList<>();
+            List<Component> extra = new ArrayList<>();
             for(EnchantmentLevel levelData : levels) {
-                MutableText text = (MutableText) EnchantmentAppearanceHelper.getName(levelData);
+                MutableComponent text = (MutableComponent) EnchantmentAppearanceHelper.getName(levelData);
                 if (ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
                     text.append(" ").append(
                         TooltipHelper.buildModifiedLevelForEnchantment(

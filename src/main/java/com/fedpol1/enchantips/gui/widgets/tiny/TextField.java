@@ -3,21 +3,20 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.google.common.base.CharMatcher;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.SelectionManager;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
 
 public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
 
     protected String text;
-    protected SelectionManager selectionManager;
+    protected TextFieldHelper selectionManager;
     protected int maximumLength;
     protected String allowedCharacters;
     protected boolean focused;
@@ -31,11 +30,11 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     ) {
         super(x, y, line);
         this.text = "";
-        this.selectionManager = new SelectionManager(
+        this.selectionManager = new TextFieldHelper(
                 this::getText,
                 this::setText,
-                SelectionManager.makeClipboardGetter(MinecraftClient.getInstance()),
-                SelectionManager.makeClipboardSetter(MinecraftClient.getInstance()),
+                TextFieldHelper.createClipboardGetter(Minecraft.getInstance()),
+                TextFieldHelper.createClipboardSetter(Minecraft.getInstance()),
                 s -> CharMatcher.anyOf(this.allowedCharacters).matchesAllOf(s)
         );
         this.maximumLength = maximumLength;
@@ -44,10 +43,10 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     }
 
     public int getWidth() {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        Font textRenderer = Minecraft.getInstance().font;
         int maxWidth = 0;
         for(int c : this.allowedCharacters.toCharArray()) {
-            maxWidth = Math.max(maxWidth, textRenderer.getWidth(Text.literal(Character.toString(c))));
+            maxWidth = Math.max(maxWidth, textRenderer.width(Component.literal(Character.toString(c))));
         }
         return maxWidth * this.maximumLength + 1;
     }
@@ -69,48 +68,48 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.text = s;
     }
 
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        Font textRenderer = Minecraft.getInstance().font;
 
-        int textWidth = textRenderer.getWidth(Text.literal(this.text));
+        int textWidth = textRenderer.width(Component.literal(this.text));
         // positions measured from right edge
-        int sectionStartPos = textRenderer.getWidth(Text.literal(this.text.substring(this.selectionManager.getSelectionStart())));
-        int sectionEndPos = textRenderer.getWidth(Text.literal(this.text.substring(this.selectionManager.getSelectionEnd())));
+        int sectionStartPos = textRenderer.width(Component.literal(this.text.substring(this.selectionManager.getCursorPos())));
+        int sectionEndPos = textRenderer.width(Component.literal(this.text.substring(this.selectionManager.getSelectionPos())));
         String selectionPath = sectionStartPos < sectionEndPos ? "selection" : "selection_alt";
         int width = this.getWidth();
 
         if(this.focused) {
-            context.drawGuiTexture(
+            context.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     EnchantipsClient.id(selectionPath),
                     this.x - 1 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
                     1 + Math.abs(sectionEndPos - sectionStartPos), 9
             );
         }
-        context.drawText(
-                MinecraftClient.getInstance().textRenderer,
-                Text.literal(this.text),
+        context.drawString(
+                Minecraft.getInstance().font,
+                Component.literal(this.text),
                 this.x + width - textWidth, this.y + 1,
                 0xffffffff, false
         );
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return false;
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.handleSpecialKey(input)) {
+        if(this.selectionManager.keyPressed(input)) {
             this.shiftText();
             return true;
         }
         return false;
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         if(!this.focused) { return false; }
-        if(this.selectionManager.insert(input)) {
+        if(this.selectionManager.charTyped(input)) {
             this.shiftText();
             return true;
         }
@@ -120,8 +119,8 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     private void shiftText() {
         int deletePosition = 0;
         int deleteLength = Math.max(0, this.text.length() - this.maximumLength);
-        if(this.selectionManager.getSelectionStart() < this.text.length()) {
-            deletePosition = this.selectionManager.getSelectionStart();
+        if(this.selectionManager.getCursorPos() < this.text.length()) {
+            deletePosition = this.selectionManager.getCursorPos();
         }
         int deleteLengthAtStart = Math.max(0, deletePosition + deleteLength - this.text.length());
         deleteLength -= deleteLengthAtStart;
@@ -129,9 +128,9 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         if(this.text.length() > this.maximumLength) {
             this.text = this.text.substring(deleteLengthAtStart, deletePosition) +
                     this.text.substring(deletePosition + deleteLength);
-            this.selectionManager.setSelection(
-                    Math.min(this.text.length(), this.selectionManager.getSelectionStart()),
-                    Math.min(this.text.length(), this.selectionManager.getSelectionEnd())
+            this.selectionManager.setSelectionRange(
+                    Math.min(this.text.length(), this.selectionManager.getCursorPos()),
+                    Math.min(this.text.length(), this.selectionManager.getSelectionPos())
             );
         }
     }

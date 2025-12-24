@@ -3,14 +3,14 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseScreen extends Screen {
@@ -25,7 +25,7 @@ public abstract class BaseScreen extends Screen {
     protected ScrollableInfoLineContainer lines;
     protected final Screen parent;
 
-    public BaseScreen(Text title, @Nullable Screen parent) {
+    public BaseScreen(Component title, @Nullable Screen parent) {
         super(title);
         this.parent = parent;
         this.calculateDimensions();
@@ -42,25 +42,25 @@ public abstract class BaseScreen extends Screen {
         this.windowHeight -= extra;
     }
 
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         this.drawWindow(context);
         this.lines.render(context, mouseX, mouseY, delta);
     }
 
-    public void drawWindow(DrawContext context) {
+    public void drawWindow(GuiGraphics context) {
         this.calculateDimensions();
-        context.drawGuiTexture(
+        context.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.BACKGROUND_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.drawGuiTexture(
+        context.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.FRAME_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.drawText(this.textRenderer, this.title, this.windowX + 8, this.windowY + 6, 0xff404040, false);
+        context.drawString(this.font, this.title, this.windowX + 8, this.windowY + 6, 0xff404040, false);
     }
 
     @Override
@@ -77,28 +77,28 @@ public abstract class BaseScreen extends Screen {
         return false;
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return this.lines.mouseClicked(click, doubled);
     }
 
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         return this.lines.mouseDragged(click, offsetX, offsetY);
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(super.keyPressed(input)) {
             return true;
         }
         return this.lines.keyPressed(input);
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         return this.lines.charTyped(input);
     }
 
     @Override
-    public void close() {
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+    public void onClose() {
+        assert this.minecraft != null;
+        this.minecraft.setScreen(this.parent);
     }
 }

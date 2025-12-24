@@ -1,9 +1,9 @@
 package com.fedpol1.enchantips.accessor;
 
-import net.minecraft.item.Item;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.core.HolderSet;
+import net.minecraft.world.item.Item;
 
 public interface EnchantmentAccess {
-    RegistryEntryList<Item> enchantips$getPrimaryItems();
-    RegistryEntryList<Item> enchantips$getSecondaryItems();
+    HolderSet<Item> enchantips$getPrimaryItems();
+    HolderSet<Item> enchantips$getSecondaryItems();
 }

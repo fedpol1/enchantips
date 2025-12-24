@@ -1,14 +1,14 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public class EnchantmentConfigInfoLine extends CollapsibleInfoLine {
 
     private EnchantmentGroupNode node;
 
     public EnchantmentConfigInfoLine(EnchantmentGroupNode node) {
-        super(Text.literal(node.getIdentifier()));
+        super(Component.literal(node.getIdentifier()));
         this.node = node;
     }
 

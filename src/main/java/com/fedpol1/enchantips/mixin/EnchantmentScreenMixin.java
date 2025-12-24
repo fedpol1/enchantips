@@ -8,13 +8,6 @@ import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentFilterer;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.EnchantmentScreenHandler;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,23 +18,30 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.EnchantmentMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 @Mixin(EnchantmentScreen.class)
 public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
 
-    @Inject(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
-            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/EnchantmentScreen;isPointWithinBounds(IIIIDD)Z")),
+    @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+            slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EnchantmentScreen;isHovering(IIIIDD)Z")),
             at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    public void enchantips$renderExtraEnchantments(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<RegistryEntry.Reference<Enchantment>> optional, int l, int m, List<Text> list)
+    public void enchantips$renderExtraEnchantments(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<Holder.Reference<Enchantment>> optional, int l, int m, List<Component> list)
     throws IllegalStateException {
         if(optional.isEmpty()) { return; }
         Enchantment enchantment = optional.get().value();
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
-        EnchantmentScreenHandler handler = t.getScreenHandler();
+        EnchantmentMenu handler = t.getMenu();
         EnchantmentLevel enchLevel = EnchantmentLevel.of(enchantment, l);
-        int tableLevel = handler.enchantmentPower[j];
-        ItemStack itemStack = handler.getSlot(0).getStack();
+        int tableLevel = handler.costs[j];
+        ItemStack itemStack = handler.getSlot(0).getItem();
         int absoluteLowerBound = EnchantmentFilterer.getLowerBound(enchLevel, itemStack, tableLevel);
         int absoluteUpperBound = EnchantmentFilterer.getUpperBound(enchLevel, itemStack, tableLevel);
         if(ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
@@ -54,8 +54,8 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         }
     }
 
-    @Redirect(method = "render(Lnet/minecraft/client/gui/DrawContext;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;getName(Lnet/minecraft/registry/entry/RegistryEntry;I)Lnet/minecraft/text/Text;"))
-    private Text enchantips$modifyClueName(RegistryEntry<Enchantment> enchantment, int level) {
+    @Redirect(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;"))
+    private Component enchantips$modifyClueName(Holder<Enchantment> enchantment, int level) {
         return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(enchantment.value(), level));
     }
 }

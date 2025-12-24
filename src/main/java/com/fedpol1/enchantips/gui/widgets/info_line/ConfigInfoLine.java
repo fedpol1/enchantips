@@ -4,22 +4,21 @@ import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import com.fedpol1.enchantips.gui.widgets.tiny.ResetButton;
 import com.fedpol1.enchantips.gui.widgets.tiny.SaveButton;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.text.Text;
-
 import java.util.List;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.network.chat.Component;
 
-public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements Drawable, Element {
+public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements Renderable, GuiEventListener {
 
     protected final Data<T> data;
     protected final ResetButton resetButton;
     protected final SaveButton saveButton;
     protected BaseSetter<ConfigInfoLine<T>, T> setter;
 
-    public ConfigInfoLine(Text text, List<Text> tooltip, Data<T> data) {
+    public ConfigInfoLine(Component text, List<Component> tooltip, Data<T> data) {
         super(text);
-        for(Text tooltipLine : tooltip) {
+        for(Component tooltipLine : tooltip) {
             this.lines.addLine(tooltipLine);
         }
         this.data = data;
@@ -47,7 +46,7 @@ public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements D
         }
     }
 
-    public List<Text> getSaveButtonTooltip() {
+    public List<Component> getSaveButtonTooltip() {
         return this.data.getSaveTooltip(this.setter.getValue());
     }
 }

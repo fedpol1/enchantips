@@ -2,13 +2,12 @@ package com.fedpol1.enchantips.gui;
 
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.contents.PlainTextContents;
 
 public class ScrollableTooltipSection {
 
@@ -16,11 +15,11 @@ public class ScrollableTooltipSection {
     private static ScrollableTooltipSection previousNonEmpty;
     public static final ScrollableTooltipSection EMPTY = new ScrollableTooltipSection(new ArrayList<>(), 1);
 
-    private final List<Text> text;
+    private final List<Component> text;
     private final int lineLimit;
     private int position;
 
-    public ScrollableTooltipSection(List<Text> text, int limit) {
+    public ScrollableTooltipSection(List<Component> text, int limit) {
         this.text = text;
         this.position = 0;
         this.lineLimit = limit;
@@ -47,25 +46,25 @@ public class ScrollableTooltipSection {
         this.position = Math.min(Math.max(0, this.text.size() - this.lineLimit), Math.max(0, this.position + step));
     }
 
-    public List<Text> getShownText() {
+    public List<Component> getShownText() {
         return this.text.subList(this.position, Math.min(this.text.size(), this.position + this.lineLimit));
     }
 
-    public List<Text> getShownTextAll() {
-        List<Text> ret = new ArrayList<>();
+    public List<Component> getShownTextAll() {
+        List<Component> ret = new ArrayList<>();
         if(this.text.size() > this.lineLimit) { ret.add(this.startLine()); }
         ret.addAll(this.getShownText());
         if(this.text.size() > this.lineLimit) { ret.add(this.endLine()); }
         return ret;
     }
 
-    private Text startLine() {
-        MutableText valueText = MutableText.of(new PlainTextContent.Literal(Integer.toString(this.position)));
-        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_START, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
+    private Component startLine() {
+        MutableComponent valueText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(this.position)));
+        return Component.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_START, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
     }
 
-    private Text endLine() {
-        MutableText valueText = MutableText.of(new PlainTextContent.Literal(Integer.toString(Math.max(0, this.text.size() - this.lineLimit - this.position))));
-        return Text.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_END, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
+    private Component endLine() {
+        MutableComponent valueText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(Math.max(0, this.text.size() - this.lineLimit - this.position))));
+        return Component.translatable(TooltipHelper.SCROLLABLE_TOOLTIP_END, valueText).setStyle(Style.EMPTY.withColor(ModOption.DECORATION.getValue().getRGB()));
     }
 }

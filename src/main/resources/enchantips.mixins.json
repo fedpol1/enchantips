@@ -6,17 +6,17 @@
   "mixins": [],
   "client": [
     "AnvilScreenMixin",
-    "BundleTooltipComponentMixin",
-    "ClientPlayNetworkHandlerMixin",
+    "ClientBundleTooltipMixin",
+    "ClientPacketListenerMixin",
     "EnchantmentMixin",
-    "EnchantmentScreenHandlerMixin",
+    "AbstractContainerMenuMixin",
     "EnchantmentScreenMixin",
-    "HandledScreenMixin",
-    "InGameHudMixin",
-    "ItemEnchantmentsComponentMixin",
+    "AbstractContainerScreenMixin",
+    "GuiMixin",
+    "ItemEnchantmentsMixin",
     "ItemStackMixin",
     "MerchantScreenMixin",
-    "RegistriesMixin"
+    "BuiltInRegistriesMixin"
   ],
   "server": [],
   "injectors": {

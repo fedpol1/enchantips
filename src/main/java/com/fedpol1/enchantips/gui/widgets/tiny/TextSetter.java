@@ -1,9 +1,9 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
 
@@ -23,20 +23,20 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
     public void setValue(T c) {
         this.value = c;
         this.textField.setText(this.getStringValue());
-        this.textField.selectionManager.setSelection(
-                this.textField.selectionManager.getSelectionStart(),
-                this.textField.selectionManager.getSelectionEnd()
+        this.textField.selectionManager.setSelectionRange(
+                this.textField.selectionManager.getCursorPos(),
+                this.textField.selectionManager.getSelectionPos()
         );
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         boolean isWithinBounds = super.mouseClicked(click, doubled, () -> this.textField.selectionManager.selectAll());
         this.focused = isWithinBounds;
         this.textField.focused = isWithinBounds;
         return isWithinBounds;
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(!this.focused) { return false; }
         if(this.textField.keyPressed(input)) {
             this.readStringValue(this.textField.text);
@@ -45,7 +45,7 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
         return false;
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         if(!this.focused) { return false; }
         if(this.textField.charTyped(input)) {
             this.readStringValue(this.textField.text);

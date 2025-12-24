@@ -2,7 +2,11 @@ package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModOption;
-import net.minecraft.text.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.contents.PlainTextContents;
 
 public abstract class TooltipHelper {
 
@@ -15,17 +19,17 @@ public abstract class TooltipHelper {
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
 
-    public static MutableText buildAnvilCost(int rarity, int numberColor) {
-        MutableText anvilCostText = MutableText.of(new PlainTextContent.Literal(Integer.toString(rarity)));
+    public static MutableComponent buildAnvilCost(int rarity, int numberColor) {
+        MutableComponent anvilCostText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(rarity)));
         Style style = Style.EMPTY.withColor(numberColor);
         if(ModOption.SWATCHES_SWITCH.getValue()) {
             style = Style.EMPTY.withColor(ModOption.SWATCHES_FALLBACK_COLOR.getValue().getRGB());
         }
         anvilCostText.setStyle(style);
-        return Text.translatable(RARITY_TOOLTIP, anvilCostText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
+        return Component.translatable(RARITY_TOOLTIP, anvilCostText).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.DECORATION.getValue().getRGB())));
     }
 
-    public static MutableText buildModifiedLevel(int lower, int upper) {
+    public static MutableComponent buildModifiedLevel(int lower, int upper) {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
@@ -35,7 +39,7 @@ public abstract class TooltipHelper {
     }
 
     // is only responsible for generating the modified level interval prefix
-    public static MutableText buildModifiedLevelForEnchantment(int lower, int upper) {
+    public static MutableComponent buildModifiedLevelForEnchantment(int lower, int upper) {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
@@ -45,30 +49,30 @@ public abstract class TooltipHelper {
         );
     }
 
-    private static MutableText buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
-        MutableText lowerText = MutableText.of(new PlainTextContent.Literal(Integer.toString(lower)));
-        MutableText upperText = MutableText.of(new PlainTextContent.Literal(Integer.toString(upper)));
+    private static MutableComponent buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
+        MutableComponent lowerText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(lower)));
+        MutableComponent upperText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(upper)));
         lowerText.setStyle(Style.EMPTY.withColor(valueColor));
         upperText.setStyle(Style.EMPTY.withColor(valueColor));
-        return Text.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
+        return Component.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
 
     }
 
-    public static MutableText buildForcedGlint(boolean b) {
-        return Text.translatable(FORCED_GLINT_TOOLTIP + "." + b)
+    public static MutableComponent buildForcedGlint(boolean b) {
+        return Component.translatable(FORCED_GLINT_TOOLTIP + "." + b)
                 .setStyle(Style.EMPTY.withColor(ModOption.GLINT_OVERRIDE_COLOR.getValue().getRGB()));
     }
 
-    public static MutableText buildEnchantability(int ench) {
-        MutableText enchText = MutableText.of(new PlainTextContent.Literal(Integer.toString(ench)));
+    public static MutableComponent buildEnchantability(int ench) {
+        MutableComponent enchText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(ench)));
         enchText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_VALUE_COLOR.getValue().getRGB())));
-        return Text.translatable(ENCHANTABILITY_TOOLTIP, enchText)
+        return Component.translatable(ENCHANTABILITY_TOOLTIP, enchText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_COLOR.getValue().getRGB())));
     }
-    public static MutableText buildRepairCost(int cost) {
-        MutableText costText = MutableText.of(new PlainTextContent.Literal(Integer.toString(cost)));
+    public static MutableComponent buildRepairCost(int cost) {
+        MutableComponent costText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(cost)));
         costText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIR_COST_VALUE_COLOR.getValue().getRGB())));
-        return Text.translatable(REPAIR_COST_TOOLTIP, costText)
+        return Component.translatable(REPAIR_COST_TOOLTIP, costText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIR_COST_COLOR.getValue().getRGB())));
     }
 }

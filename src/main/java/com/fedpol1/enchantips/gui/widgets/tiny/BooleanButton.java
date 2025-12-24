@@ -3,9 +3,8 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class BooleanButton extends BaseSetter<ConfigInfoLine<Boolean>, Boolean> {
 
@@ -20,13 +19,13 @@ public class BooleanButton extends BaseSetter<ConfigInfoLine<Boolean>, Boolean> 
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         String path = this.value ? "config/true" : "config/false";
         super.render(context, mouseX, mouseY, delta, EnchantipsClient.id(path));
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return super.mouseClicked(click, doubled, () -> this.value = !this.value);
     }
 }

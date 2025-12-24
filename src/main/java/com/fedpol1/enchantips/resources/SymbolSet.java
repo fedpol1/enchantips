@@ -3,11 +3,10 @@ package com.fedpol1.enchantips.resources;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-
 import java.util.*;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 
 public class SymbolSet {
 
@@ -18,7 +17,7 @@ public class SymbolSet {
             Optional.empty(),
             List.of()
     );
-    public static RegistryKey<? extends Registry<SymbolSet>> REGISTRY = RegistryKey.ofRegistry(
+    public static ResourceKey<? extends Registry<SymbolSet>> REGISTRY = ResourceKey.createRegistryKey(
             EnchantipsClient.id(SymbolSetReloadListener.DIRECTORY)
     );
 
@@ -72,7 +71,7 @@ public class SymbolSet {
         return applied;
     }
 
-    public static RegistryKey<SymbolSet> of(String id) {
-        return RegistryKey.of(REGISTRY, EnchantipsClient.id(id));
+    public static ResourceKey<SymbolSet> of(String id) {
+        return ResourceKey.create(REGISTRY, EnchantipsClient.id(id));
     }
 }

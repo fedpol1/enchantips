@@ -2,13 +2,11 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 
 public class SaveButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
@@ -22,16 +20,16 @@ public class SaveButton extends BaseSetter<ConfigInfoLine<?>, Object> {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/save"));
-        List<Text> tooltipText = this.line.getSaveButtonTooltip();
+        List<Component> tooltipText = this.line.getSaveButtonTooltip();
         if(tooltipText != null && this.isWithin(mouseX, mouseY)) {
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, tooltipText, mouseX, mouseY);
+            context.setComponentTooltipForNextFrame(Minecraft.getInstance().font, tooltipText, mouseX, mouseY);
         }
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return super.mouseClicked(click, doubled, this.line::save);
     }
 }

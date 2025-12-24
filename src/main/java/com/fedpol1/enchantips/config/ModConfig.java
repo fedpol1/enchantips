@@ -11,10 +11,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.*;
-
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,22 +37,22 @@ public class ModConfig {
         ModConfig.writeConfig();
     }
 
-    public static void registerPerEnchantmentConfig(DynamicRegistryManager registryManager) {
-        Optional<Registry<Enchantment>> optionalWrapper = registryManager.getOptional(RegistryKeys.ENCHANTMENT);
+    public static void registerPerEnchantmentConfig(RegistryAccess registryManager) {
+        Optional<Registry<Enchantment>> optionalWrapper = registryManager.lookup(Registries.ENCHANTMENT);
         if(optionalWrapper.isEmpty()) { return; }
-        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+        HolderLookup.RegistryLookup<Enchantment> wrapper = optionalWrapper.get();
         int existingEnchantments = 0;
         int newEnchantments = 0;
 
-        for(RegistryKey<Enchantment> key : wrapper.streamKeys().toList()) {
-            EnchantmentGroupNode group = (EnchantmentGroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(key.getValue().toString());
+        for(ResourceKey<Enchantment> key : wrapper.listElementIds().toList()) {
+            EnchantmentGroupNode group = (EnchantmentGroupNode) ModCategory.INDIVIDUAL_ENCHANTMENTS.getNode().getChild(key.identifier().toString());
             if(group == null) {
                 group = ModCategory.INDIVIDUAL_ENCHANTMENTS.addEnchantmentGroup(key);
                 newEnchantments++;
             } else {
                 existingEnchantments++;
             }
-            Enchantment enchantment = registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
+            Enchantment enchantment = registryManager.lookupOrThrow(Registries.ENCHANTMENT).getValue(key);
             if(enchantment == null) { continue; }
             group.setDescription(enchantment.description());
         }

@@ -2,8 +2,8 @@ package com.fedpol1.enchantips.config.tree;
 
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.config.tree.visitor.TreeVisitor;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class CategoryNode extends Node implements GroupParent, OptionParent {
 
@@ -15,7 +15,7 @@ public class CategoryNode extends Node implements GroupParent, OptionParent {
         return new GroupNode(name, this);
     }
 
-    public EnchantmentGroupNode addEnchantmentGroup(RegistryKey<Enchantment> ench) {
+    public EnchantmentGroupNode addEnchantmentGroup(ResourceKey<Enchantment> ench) {
         return new EnchantmentGroupNode(ench, this);
     }
 

@@ -4,10 +4,9 @@ import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.gui.YACLScreen;
-import net.minecraft.text.Text;
-
 import java.util.List;
 import java.util.function.BiConsumer;
+import net.minecraft.network.chat.Component;
 
 public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> {
 
@@ -44,10 +43,10 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
 
     public void run (YACLScreen screen, ButtonOption button) {
         this.action.accept(screen, button);
-        screen.close();
+        screen.onClose();
     }
 
-    public List<Text> getSaveTooltip(BiConsumer<YACLScreen, ButtonOption> v) {
+    public List<Component> getSaveTooltip(BiConsumer<YACLScreen, ButtonOption> v) {
         return null;
     }
 

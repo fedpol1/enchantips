@@ -2,8 +2,8 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.config.data.Data;
 import com.fedpol1.enchantips.config.tree.*;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public enum ModCategory {
 
@@ -43,7 +43,7 @@ public enum ModCategory {
         return ((CategoryNode)this.node).addGroup(name);
     }
 
-    public EnchantmentGroupNode addEnchantmentGroup(RegistryKey<Enchantment> ench) {
+    public EnchantmentGroupNode addEnchantmentGroup(ResourceKey<Enchantment> ench) {
         if(!(this.node instanceof GroupParent)) {
             throw new UnsupportedOperationException(this.node.getClass().getName() + " does not support groups.");
         }

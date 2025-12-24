@@ -2,27 +2,27 @@ package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.util.EnchantmentAppearanceHelper;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.item.Item;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Consumer;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
-@Mixin(ItemEnchantmentsComponent.class)
-public class ItemEnchantmentsComponentMixin {
+@Mixin(ItemEnchantments.class)
+public class ItemEnchantmentsMixin {
 
     /**
      * @author fedpol1
      * @reason sort enchantments in tooltip
      */
     @Overwrite
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-        ArrayList<EnchantmentLevel> enchantmentLevels = EnchantmentLevel.ofList((ItemEnchantmentsComponent)(Object) this);
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
+        ArrayList<EnchantmentLevel> enchantmentLevels = EnchantmentLevel.ofList((ItemEnchantments)(Object) this);
         Collections.sort(enchantmentLevels);
         for(EnchantmentLevel el : enchantmentLevels) {
             textConsumer.accept(EnchantmentAppearanceHelper.getName(el));

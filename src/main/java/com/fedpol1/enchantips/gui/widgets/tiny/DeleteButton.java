@@ -5,11 +5,9 @@ import com.fedpol1.enchantips.config.ModCategory;
 import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.Node;
 import com.fedpol1.enchantips.gui.widgets.info_line.*;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
-
 import java.util.Map;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 
 public class DeleteButton extends BaseSetter<DeleteInfoLine, Object> {
 
@@ -23,12 +21,12 @@ public class DeleteButton extends BaseSetter<DeleteInfoLine, Object> {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/delete"));
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return super.mouseClicked(click, doubled, () -> {
             EnchantmentConfigInfoLine parent = (EnchantmentConfigInfoLine) this.line.getParent().getParent();
             InfoLineContainer grandparent = parent.getParent();

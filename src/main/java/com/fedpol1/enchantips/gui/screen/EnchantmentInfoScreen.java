@@ -3,12 +3,15 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.EnchantmentInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.*;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -17,17 +20,17 @@ import java.util.Optional;
 public class EnchantmentInfoScreen extends BaseScreen {
 
     public EnchantmentInfoScreen(@Nullable Screen parent) {
-        super(Text.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), parent);
+        super(Component.translatable(EnchantipsClient.MODID + ".gui.enchantment_info"), parent);
         this.lines = new ScrollableInfoLineContainer(0xff404040, 6);
 
-        ClientWorld world = MinecraftClient.getInstance().world;
+        ClientLevel world = Minecraft.getInstance().level;
         if(world == null) { return; }
-        Optional<Registry<Enchantment>> optionalWrapper = world.getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT);
+        Optional<Registry<Enchantment>> optionalWrapper = world.registryAccess().lookup(Registries.ENCHANTMENT);
         if(optionalWrapper.isEmpty()) { return; }
-        RegistryWrapper.Impl<Enchantment> wrapper = optionalWrapper.get();
+        HolderLookup.RegistryLookup<Enchantment> wrapper = optionalWrapper.get();
 
-        for(RegistryKey<Enchantment> key : wrapper.streamKeys().sorted(Comparator.comparing(RegistryKey::toString)).toList()) {
-            Enchantment enchantment = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(key);
+        for(ResourceKey<Enchantment> key : wrapper.listElementIds().sorted(Comparator.comparing(ResourceKey::toString)).toList()) {
+            Enchantment enchantment = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getValue(key);
             if(enchantment == null) { continue; }
             EnchantmentInfoLine enchMeta = new EnchantmentInfoLine(key);
             this.lines.addLine(enchMeta);

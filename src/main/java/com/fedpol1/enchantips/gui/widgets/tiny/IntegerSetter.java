@@ -2,8 +2,7 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class IntegerSetter extends TextSetter<Integer> {
 
@@ -50,7 +49,7 @@ public class IntegerSetter extends TextSetter<Integer> {
         return true;
     }
 
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         this.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/integer_setter"));
         this.textField.render(context, mouseX, mouseY, delta);
     }

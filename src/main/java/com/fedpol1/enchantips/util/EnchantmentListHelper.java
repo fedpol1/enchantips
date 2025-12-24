@@ -1,15 +1,15 @@
 package com.fedpol1.enchantips.util;
 
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 public abstract class EnchantmentListHelper {
 
-    public static int compareEnchantments(RegistryEntry<Enchantment> a, int aLevel, RegistryEntry<Enchantment> b, int bLevel, boolean compareLevels) {
+    public static int compareEnchantments(Holder<Enchantment> a, int aLevel, Holder<Enchantment> b, int bLevel, boolean compareLevels) {
         // compare enchantment IDs
-        String enchA = a.getIdAsString();
-        String enchB = b.getIdAsString();
+        String enchA = a.getRegisteredName();
+        String enchB = b.getRegisteredName();
         int score = enchA.compareTo(enchB);
         if(score != 0 || !compareLevels) { return score; }
 
@@ -17,21 +17,21 @@ public abstract class EnchantmentListHelper {
         return aLevel - bLevel;
     }
 
-    public static int countMatches(ItemEnchantmentsComponent a, ItemEnchantmentsComponent b, boolean compareLevels) {
+    public static int countMatches(ItemEnchantments a, ItemEnchantments b, boolean compareLevels) {
         int matches = 0;
-        for(RegistryEntry<Enchantment> aEntry : a.getEnchantments()) {
-            for(RegistryEntry<Enchantment> bEntry : b.getEnchantments()) {
+        for(Holder<Enchantment> aEntry : a.keySet()) {
+            for(Holder<Enchantment> bEntry : b.keySet()) {
                 if(EnchantmentListHelper.compareEnchantments(aEntry, a.getLevel(aEntry), bEntry, b.getLevel(bEntry), compareLevels) == 0) {
                     matches++;
-                    if(matches == a.getEnchantments().size() || matches == b.getEnchantments().size()) { return matches; }
+                    if(matches == a.keySet().size() || matches == b.keySet().size()) { return matches; }
                 }
             }
         }
         return matches;
     }
 
-    public static boolean sameEnchantments(ItemEnchantmentsComponent a, ItemEnchantmentsComponent b, boolean compareLevels) {
-        if (a.getEnchantments().size() != b.getEnchantments().size()) { return false; }
-        return countMatches(a, b, compareLevels) == a.getEnchantments().size();
+    public static boolean sameEnchantments(ItemEnchantments a, ItemEnchantments b, boolean compareLevels) {
+        if (a.keySet().size() != b.keySet().size()) { return false; }
+        return countMatches(a, b, compareLevels) == a.keySet().size();
     }
 }

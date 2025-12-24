@@ -4,31 +4,31 @@ import com.fedpol1.enchantips.accessor.ItemStackAccess;
 import com.fedpol1.enchantips.config.ModConfigData;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.EnchantmentLevel;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 import java.awt.Color;
 import java.util.*;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 public abstract class SlotHighlight {
 
-    public static void drawEnchantedItemSlotHighlights(DrawContext context, ScreenHandler handler, int alpha) {
+    public static void drawEnchantedItemSlotHighlights(GuiGraphics context, AbstractContainerMenu handler, int alpha) {
         Slot slot;
         for (int i = 0; i < handler.slots.size(); i++) {
             slot = handler.slots.get(i);
-            highlightSingleSlot(context, slot.getStack(), slot.x, slot.y, alpha);
+            highlightSingleSlot(context, slot.getItem(), slot.x, slot.y, alpha);
         }
     }
 
-    public static void highlightSingleSlot(DrawContext context, ItemStack stack, int x, int y, int alpha) {
+    public static void highlightSingleSlot(GuiGraphics context, ItemStack stack, int x, int y, int alpha) {
         if(stack.getCount() == 0) { return; }
 
-        ComponentType<ItemEnchantmentsComponent> componentType = stack.isOf(Items.ENCHANTED_BOOK) ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS;
+        DataComponentType<ItemEnchantments> componentType = stack.is(Items.ENCHANTED_BOOK) ? DataComponents.STORED_ENCHANTMENTS : DataComponents.ENCHANTMENTS;
         ArrayList<EnchantmentLevel> arrayOfEnchLevel = EnchantmentLevel.ofList(stack.get(componentType));
         Collections.sort(arrayOfEnchLevel);
 
@@ -47,7 +47,7 @@ public abstract class SlotHighlight {
         drawEnchantments(context, arrayOfColor, x, y, alpha);
     }
 
-    public static void drawEnchantments(DrawContext context, ArrayList<Color> arrayOfColor, int x, int y, int alpha) {
+    public static void drawEnchantments(GuiGraphics context, ArrayList<Color> arrayOfColor, int x, int y, int alpha) {
         int limit = Math.min(arrayOfColor.size(), ModOption.HIGHLIGHTS_LIMIT.getValue());
         float frac = 16.0f / limit;
         for(int i = 0; i < limit; i++) {

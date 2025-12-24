@@ -4,10 +4,9 @@ import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
-import net.minecraft.text.Text;
-
 import java.util.List;
 import java.util.Stack;
+import net.minecraft.network.chat.Component;
 
 public interface Data<T> {
 
@@ -27,24 +26,24 @@ public interface Data<T> {
         OptionDescription.Builder desc = OptionDescription.createBuilder();
         for(int i = 0; i < option.getNumTooltipLines(); i++) {
             desc = desc
-                    .text(Text.translatable(option.getFullName() + ".option_tooltip." + i))
-                    .text(Text.literal(""));
+                    .text(Component.translatable(option.getFullName() + ".option_tooltip." + i))
+                    .text(Component.literal(""));
         }
         return desc.build();
     }
 
-    default Text getOptionTitle(OptionNode<T> optionNode) {
-        return Text.translatable(optionNode.getFullName() + ".option_title");
+    default Component getOptionTitle(OptionNode<T> optionNode) {
+        return Component.translatable(optionNode.getFullName() + ".option_title");
     }
 
-    List<Text> getSaveTooltip(T v);
+    List<Component> getSaveTooltip(T v);
 
     ConfigInfoLine<T> getConfigLine(OptionNode<T> optionNode);
 
-    default List<Text> getOptionTooltip(OptionNode<T> option) {
-        Stack<Text> lines = new Stack<>();
+    default List<Component> getOptionTooltip(OptionNode<T> option) {
+        Stack<Component> lines = new Stack<>();
         for(int i = 0; i < option.getNumTooltipLines(); i++) {
-            lines.push(Text.translatable(option.getFullName() + ".option_tooltip." + i));
+            lines.push(Component.translatable(option.getFullName() + ".option_tooltip." + i));
         }
         return lines;
     }

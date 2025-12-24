@@ -1,16 +1,16 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.input.CharInput;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 
-public class InfoLineContainer implements InfoMultiLine, Drawable {
+public class InfoLineContainer implements InfoMultiLine, Renderable {
 
     protected int x;
     protected int y;
@@ -31,7 +31,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         this.lines = new ArrayList<>();
     }
 
-    public void addLine(Text t) {
+    public void addLine(Component t) {
         this.addLine(new InfoLine(t));
     }
 
@@ -112,7 +112,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         for(InfoLine info : lines) {
             info.render(context, mouseX, mouseY, delta);
         }
@@ -126,7 +126,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         return this.focused;
     }
 
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         boolean ret = false;
         for(InfoLine line : lines) {
             ret = ret || line.mouseClicked(click, doubled);
@@ -134,7 +134,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         return ret;
     }
 
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         boolean ret = false;
         for(InfoLine line : lines) {
             ret = ret || line.keyPressed(input);
@@ -142,7 +142,7 @@ public class InfoLineContainer implements InfoMultiLine, Drawable {
         return ret;
     }
 
-    public boolean charTyped(CharInput input) {
+    public boolean charTyped(CharacterEvent input) {
         boolean ret = false;
         for(InfoLine line : lines) {
             ret = ret || line.charTyped(input);
