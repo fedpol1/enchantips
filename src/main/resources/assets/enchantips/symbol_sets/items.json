@@ -91,6 +91,18 @@
     },
     {
       "values": {
+        "minecraft:wooden_spear": true,
+        "minecraft:stone_spear": true,
+        "minecraft:copper_spear": true,
+        "minecraft:iron_spear": true,
+        "minecraft:golden_spear": true,
+        "minecraft:diamond_spear": true,
+        "minecraft:netherite_spear": true
+      },
+      "symbol": "enchantips:item/spear"
+    },
+    {
+      "values": {
         "minecraft:wooden_axe": true,
         "minecraft:stone_axe": true,
         "minecraft:copper_axe": true,

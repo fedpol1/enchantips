@@ -51,7 +51,7 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         }
 
         Integer cost = t.get(DataComponents.REPAIR_COST);
-        if(!(t.is(Items.ENCHANTED_BOOK)) && cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
+        if(cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
             list.add(TooltipHelper.buildRepairCost(cost));
         }
     }
