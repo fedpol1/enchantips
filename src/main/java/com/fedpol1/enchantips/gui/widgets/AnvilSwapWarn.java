@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -24,8 +24,8 @@ public class AnvilSwapWarn implements Renderable, GuiEventListener {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        context.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, this.texture, this.x, this.y, this.width, this.height);
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        extractor.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, this.texture, this.x, this.y, this.width, this.height);
     }
 
     @Override

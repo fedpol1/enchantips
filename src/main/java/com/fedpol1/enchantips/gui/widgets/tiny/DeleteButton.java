@@ -6,7 +6,7 @@ import com.fedpol1.enchantips.config.tree.EnchantmentGroupNode;
 import com.fedpol1.enchantips.config.tree.Node;
 import com.fedpol1.enchantips.gui.widgets.info_line.*;
 import java.util.Map;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 
 public class DeleteButton extends BaseSetter<DeleteInfoLine, Object> {
@@ -21,8 +21,8 @@ public class DeleteButton extends BaseSetter<DeleteInfoLine, Object> {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/delete"));
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/delete"));
     }
 
     @Override

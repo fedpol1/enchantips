@@ -6,7 +6,7 @@ import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -26,7 +26,7 @@ public class EnchantipsClient implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static SymbolSetReloadListener symbolSetReloadListener = new SymbolSetReloadListener();
 
-    private static final KeyMapping ENCHANTMENT_INFO_KEY = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+    private static final KeyMapping ENCHANTMENT_INFO_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.enchantips.enchantment_info",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_UNKNOWN, // unbound by default
@@ -42,9 +42,9 @@ public class EnchantipsClient implements ClientModInitializer {
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            Screen current = Minecraft.getInstance().screen;
+            Screen current = Minecraft.getInstance().gui.screen();
             if(ENCHANTMENT_INFO_KEY.consumeClick() && !(current instanceof EnchantmentInfoScreen)) {
-                Minecraft.getInstance().setScreen(
+                Minecraft.getInstance().setScreenAndShow(
                         new EnchantmentInfoScreen(current)
                 );
             }
@@ -52,7 +52,7 @@ public class EnchantipsClient implements ClientModInitializer {
 
         Identifier symbolSetReloader = EnchantipsClient.id(SymbolSetReloadListener.DIRECTORY);
 
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(
                 symbolSetReloader, symbolSetReloadListener
         );
     }

@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.CollapsibleInfoLine;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 
 public class CollapsibleButton extends BaseSetter<CollapsibleInfoLine, Object> {
@@ -23,9 +23,9 @@ public class CollapsibleButton extends BaseSetter<CollapsibleInfoLine, Object> {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         String path = this.collapsed ? "enchantment_info/expand" : "enchantment_info/collapse";
-        super.render(context, mouseX, mouseY, delta, EnchantipsClient.id(path));
+        super.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id(path));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
@@ -61,12 +61,12 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(extractor, mouseX, mouseY, delta);
 
         if(this.scrollerVisible()) {
-            context.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
-            context.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
+            extractor.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_BACKGROUND_TEXTURE, this.scrollbarX, this.scrollbarY, 6, this.scrollbarHeight);
+            extractor.blitSprite(RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA, SCROLLER_TEXTURE, this.scrollbarX, this.scrollerY, 6, this.scrollerHeight);
         }
     }
 

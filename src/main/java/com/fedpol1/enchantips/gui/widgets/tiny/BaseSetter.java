@@ -2,7 +2,7 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -59,9 +59,9 @@ public abstract class BaseSetter<T extends InfoLine, U> {
 
     public abstract boolean canTrigger();
 
-    public abstract void render(GuiGraphics context, int mouseX, int mouseY, float delta);
+    public abstract void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta);
 
-    protected void render(GuiGraphics context, int mouseX, int mouseY, float delta, Identifier texture) {
+    protected void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta, Identifier texture) {
         String namespace = texture.getNamespace();
         String path = texture.getPath();
         if(!this.canTrigger()) {
@@ -70,7 +70,7 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         if(this.isWithin(mouseX, mouseY)) {
             path = path + "_hover";
         }
-        context.blitSprite(
+        extractor.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 Identifier.fromNamespaceAndPath(namespace, path),
                 this.x, this.y,

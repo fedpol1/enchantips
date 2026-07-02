@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -112,9 +112,9 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         for(InfoLine info : lines) {
-            info.render(context, mouseX, mouseY, delta);
+            info.extractRenderState(extractor, mouseX, mouseY, delta);
         }
     }
 
@@ -128,7 +128,8 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         boolean ret = false;
-        for(InfoLine line : lines) {
+        ArrayList<InfoLine> linesCopy = (ArrayList<InfoLine>) lines.clone(); // avoid concurrent modification
+        for(InfoLine line : linesCopy) {
             ret = ret || line.mouseClicked(click, doubled);
         }
         return ret;

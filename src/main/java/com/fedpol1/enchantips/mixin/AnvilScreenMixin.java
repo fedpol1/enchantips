@@ -16,7 +16,7 @@ import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
@@ -89,7 +89,7 @@ public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
                                     this.menu.getStateId(),
                                     i,
                                     (byte) 0,
-                                    ClickType.PICKUP,
+                                    ContainerInput.PICKUP,
                                     new Int2ObjectOpenHashMap<>(),
                                     HashedStack.create(this.menu.getCarried(), Minecraft.getInstance().getConnection().decoratedHashOpsGenenerator())
                                 );

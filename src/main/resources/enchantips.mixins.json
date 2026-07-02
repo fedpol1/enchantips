@@ -12,7 +12,7 @@
     "AbstractContainerMenuMixin",
     "EnchantmentScreenMixin",
     "AbstractContainerScreenMixin",
-    "GuiMixin",
+    "HudMixin",
     "ItemEnchantmentsMixin",
     "ItemStackMixin",
     "MerchantScreenMixin",

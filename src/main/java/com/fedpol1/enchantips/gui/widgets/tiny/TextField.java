@@ -5,7 +5,7 @@ import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.google.common.base.CharMatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -68,7 +68,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.text = s;
     }
 
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         Font textRenderer = Minecraft.getInstance().font;
 
         int textWidth = textRenderer.width(Component.literal(this.text));
@@ -79,14 +79,14 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         int width = this.getWidth();
 
         if(this.focused) {
-            context.blitSprite(
+            extractor.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     EnchantipsClient.id(selectionPath),
                     this.x - 1 + width - Math.max(sectionStartPos, sectionEndPos), this.y,
                     1 + Math.abs(sectionEndPos - sectionStartPos), 9
             );
         }
-        context.drawString(
+        extractor.text(
                 Minecraft.getInstance().font,
                 Component.literal(this.text),
                 this.x + width - textWidth, this.y + 1,

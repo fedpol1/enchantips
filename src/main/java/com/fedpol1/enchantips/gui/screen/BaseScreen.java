@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -42,25 +42,25 @@ public abstract class BaseScreen extends Screen {
         this.windowHeight -= extra;
     }
 
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        this.drawWindow(context);
-        this.lines.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(extractor, mouseX, mouseY, delta);
+        this.extractWindow(extractor);
+        this.lines.extractRenderState(extractor, mouseX, mouseY, delta);
     }
 
-    public void drawWindow(GuiGraphics context) {
+    public void extractWindow(GuiGraphicsExtractor extractor) {
         this.calculateDimensions();
-        context.blitSprite(
+        extractor.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.BACKGROUND_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.blitSprite(
+        extractor.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                 BaseScreen.FRAME_TEXTURE,
                 this.windowX, this.windowY, this.windowWidth, this.windowHeight
         );
-        context.drawString(this.font, this.title, this.windowX + 8, this.windowY + 6, 0xff404040, false);
+        extractor.text(this.font, this.title, this.windowX + 8, this.windowY + 6, 0xff404040, false);
     }
 
     @Override
@@ -99,6 +99,6 @@ public abstract class BaseScreen extends Screen {
     @Override
     public void onClose() {
         assert this.minecraft != null;
-        this.minecraft.setScreen(this.parent);
+        this.minecraft.setScreenAndShow(this.parent);
     }
 }

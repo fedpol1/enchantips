@@ -1,7 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
@@ -62,15 +62,15 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(extractor, mouseX, mouseY, delta);
         if(!this.isCollapsed()) {
-            this.lines.render(context, mouseX, mouseY, delta);
+            this.lines.extractRenderState(extractor, mouseX, mouseY, delta);
         }
     }
 
     @Override
-    public boolean shouldRender(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public boolean shouldRender(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         if(this.y < this.nearestScrollableParent.y) { return false; }
         if(this.y + InfoLine.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
         return true;

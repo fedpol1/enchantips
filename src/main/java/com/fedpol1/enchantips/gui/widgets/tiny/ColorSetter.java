@@ -4,7 +4,7 @@ import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.ColorConfigInfoLine;
 import java.awt.*;
 import java.util.Locale;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ColorSetter extends TextSetter<Color> {
 
@@ -47,11 +47,11 @@ public class ColorSetter extends TextSetter<Color> {
         return true;
     }
 
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        this.render(context, mouseX, mouseY, delta, EnchantipsClient.id("config/color_setter"));
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        this.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/color_setter"));
         if(this.value != null) {
-            context.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.value.getRGB() & 0xffffff | 0xff000000);
+            extractor.fill(this.x + 1, this.y + 1, this.x + 8, this.y + 8, this.value.getRGB() & 0xffffff | 0xff000000);
         }
-        this.textField.render(context, mouseX, mouseY, delta);
+        this.textField.extractRenderState(extractor, mouseX, mouseY, delta);
     }
 }

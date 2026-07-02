@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
@@ -56,20 +56,20 @@ public class InfoLine implements Renderable, GuiEventListener {
         return mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.getHeight();
     }
 
-    public void renderText(GuiGraphics context, int startOffset, int mouseX, int mouseY, float delta) {
+    public void renderText(GuiGraphicsExtractor extractor, int startOffset, int mouseX, int mouseY, float delta) {
         Font renderer = Minecraft.getInstance().font;
         int textWidth = renderer.width(this.text);
         int scrollRange = textWidth + InfoLine.INDENTATION;
         boolean drawExtra = this.width < textWidth + startOffset;
         double dynamicOffset = (24.0 * (double) Util.getMillis() / 1000.0) % scrollRange;
 
-        context.enableScissor(
+        extractor.enableScissor(
                 this.x + startOffset,
                 this.y,
                 this.x + this.width,
                 this.y + height
         );
-        context.drawString(
+        extractor.text(
                 renderer,
                 this.text,
                 this.x + startOffset - (drawExtra ? (int) dynamicOffset : 0),
@@ -78,7 +78,7 @@ public class InfoLine implements Renderable, GuiEventListener {
                 false
         );
         if(drawExtra) {
-            context.drawString(
+            extractor.text(
                     renderer,
                     this.text,
                     this.x + startOffset - (int) dynamicOffset + InfoLine.INDENTATION + renderer.width(this.text),
@@ -87,22 +87,22 @@ public class InfoLine implements Renderable, GuiEventListener {
                     false
             );
         }
-        context.disableScissor();
+        extractor.disableScissor();
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        if(!this.shouldRender(context, mouseX, mouseY, delta)) { return; }
+    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        if(!this.shouldRender(extractor, mouseX, mouseY, delta)) { return; }
 
         int offset = 0;
         for(BaseSetter<?, ?> setter : this.setters) {
-            setter.render(context, mouseX, mouseY, delta);
+            setter.extractRenderState(extractor, mouseX, mouseY, delta);
             offset += setter.getWidth() + 1;
         }
-        this.renderText(context, offset, mouseX, mouseY, delta);
+        this.renderText(extractor, offset, mouseX, mouseY, delta);
     }
 
-    public boolean shouldRender(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public boolean shouldRender(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         if(this.y < this.nearestScrollableParent.y) { return false; }
         if(this.y + this.height > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
         return true;

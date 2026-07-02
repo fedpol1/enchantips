@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 import java.util.Optional;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -29,11 +29,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 @Mixin(EnchantmentScreen.class)
 public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
 
-    @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+    @Inject(method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EnchantmentScreen;isHovering(IIIIDD)Z")),
             at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    public void enchantips$renderExtraEnchantments(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<Holder.Reference<Enchantment>> optional, int l, int m, List<Component> list)
+    public void enchantips$renderExtraEnchantments(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci, float f, boolean bl, int i, int j, int k, Optional<Holder.Reference<Enchantment>> optional, int l, int m, List<Component> list)
     throws IllegalStateException {
         if(optional.isEmpty()) { return; }
         Enchantment enchantment = optional.get().value();
@@ -54,7 +54,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         }
     }
 
-    @Redirect(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;"))
+    @Redirect(method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;"))
     private Component enchantips$modifyClueName(Holder<Enchantment> enchantment, int level) {
         return EnchantmentAppearanceHelper.getName(EnchantmentLevel.of(enchantment.value(), level));
     }
