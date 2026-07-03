@@ -11,9 +11,8 @@ import net.minecraft.resources.ResourceKey;
 public class Symbols {
 
     public static final String DIRECTORY = "symbols";
-    public static Component SPACE = Component.literal(" ").setStyle(
-            Style.EMPTY.withFont(new FontDescription.Resource(EnchantipsClient.id("symbols")))
-    );
+    public static final FontDescription FONT = new FontDescription.Resource(EnchantipsClient.id("symbols"));
+    public static Component SPACE = Component.literal(" ").setStyle(Style.EMPTY.withFont(FONT));
 
     public static Component get(Identifier id) {
         return Component.object(

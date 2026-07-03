@@ -33,7 +33,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
     }
 
     public int getHeight(int index) {
-        return InfoLine.LINE_HEIGHT + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
+        return super.getHeight(index) + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
     }
 
     public int getHeight() {

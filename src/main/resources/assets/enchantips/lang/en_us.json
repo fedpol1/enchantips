@@ -15,6 +15,8 @@
   "enchantips.gui.enchantment_info.tags": "Tags",
 
   "enchantips.gui.config": "Enchantips Configuration",
+  "enchantips.gui.resetter.restore.default": "Restore default value (+SHIFT to save)",
+  "enchantips.gui.resetter.restore.value": "Restore saved value",
   "enchantips.gui.setter.boolean.error.invalid": "Value must be a boolean",
   "enchantips.gui.setter.color.error.invalid": "Value must be a color",
   "enchantips.gui.setter.integer.error.invalid": "Value must be an integer",

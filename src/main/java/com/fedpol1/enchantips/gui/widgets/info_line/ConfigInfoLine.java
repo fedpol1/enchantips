@@ -32,6 +32,10 @@ public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements R
         this.setter.setValue(this.data.getDefaultValue());
     }
 
+    public void undo() {
+        this.setter.setValue(this.data.getValue());
+    }
+
     public boolean isDefault() {
         return this.data.getDefaultValue().equals(this.setter.getValue());
     }
