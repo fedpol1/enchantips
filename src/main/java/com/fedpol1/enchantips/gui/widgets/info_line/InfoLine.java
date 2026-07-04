@@ -150,7 +150,6 @@ public class InfoLine implements Renderable, GuiEventListener {
                         return true;
                     }
                 }
-                break; // probably redundant
             }
         }
         return false;

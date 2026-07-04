@@ -41,7 +41,11 @@ public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements R
     }
 
     public boolean canSave() {
-        return this.data.canSet(this.setter.getValue()) && !this.data.getValue().equals(this.setter.getValue());
+        return this.data.canSet(this.setter.getValue()) && !this.isSaved();
+    }
+
+    public boolean isSaved() {
+        return this.data.getValue().equals(this.setter.getValue());
     }
 
     public void save() {

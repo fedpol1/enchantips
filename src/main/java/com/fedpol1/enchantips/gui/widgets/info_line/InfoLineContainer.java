@@ -128,9 +128,10 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         boolean ret = false;
-        ArrayList<InfoLine> linesCopy = (ArrayList<InfoLine>) lines.clone(); // avoid concurrent modification
+        @SuppressWarnings("unchecked")
+        ArrayList<InfoLine> linesCopy = (ArrayList<InfoLine>) (lines.clone()); // avoid concurrent modification
         for(InfoLine line : linesCopy) {
-            ret = ret || line.mouseClicked(click, doubled);
+            ret = line.mouseClicked(click, doubled) || ret; // avoid short circuit
         }
         return ret;
     }

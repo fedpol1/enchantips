@@ -17,16 +17,16 @@ public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
 
     @Override
     public boolean canTrigger() {
-        return !this.line.isDefault() || this.line.canSave();
+        return !(this.line.isDefault() && this.line.isSaved());
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/reset"));
         List<Component> tooltipText = List.of(
-                Component.translatable("enchantips.gui.resetter.restore." + (this.line.canSave() ? "value" : "default"))
+                Component.translatable("enchantips.gui.resetter.restore." + (this.line.isSaved() ? "default" : "value"))
         );
-        if(this.isWithin(mouseX, mouseY)) {
+        if(this.isWithin(mouseX, mouseY) && this.canTrigger()) {
             extractor.setComponentTooltipForNextFrame(Minecraft.getInstance().font, tooltipText, mouseX, mouseY);
         }
     }
@@ -34,7 +34,7 @@ public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
     @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return super.mouseClicked(click, doubled, () -> {
-            if(this.line.canSave()) {
+            if(!this.line.isSaved()) {
                 this.line.undo();
             } else {
                 this.line.reset();
