@@ -90,6 +90,7 @@ public abstract class BaseSetter<T extends InfoLine, U> {
 
     protected boolean mouseClicked(MouseButtonEvent click, boolean doubled, ButtonAction action) {
         if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == 0) {
+            this.line.takeFocus();
             action.execute();
             Minecraft
                     .getInstance()

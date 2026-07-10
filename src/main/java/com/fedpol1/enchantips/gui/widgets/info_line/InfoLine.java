@@ -1,21 +1,26 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.tiny.BaseSetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoLine implements Renderable, GuiEventListener {
+public class InfoLine implements Renderable, GuiEventListener, NarratableEntry {
 
     public static final int LINE_HEIGHT = 10;
     public static final int INDENTATION = 16;
@@ -90,6 +95,18 @@ public class InfoLine implements Renderable, GuiEventListener {
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         if(!this.shouldRender(extractor, mouseX, mouseY, delta)) { return; }
+        if(this.parent != null && this.parent.getParent() != null &&
+                this.parent.getParent().isCollapsed()
+        ) { return; }
+
+        if(this.focused) {
+            extractor.blitSprite(
+                    RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
+                    Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, "config/focused"),
+                    this.x - 10, this.y,
+                    9, 9
+            );
+        }
 
         int offset = 0;
         for(BaseSetter<?, ?> setter : this.setters) {
@@ -130,6 +147,10 @@ public class InfoLine implements Renderable, GuiEventListener {
         this.nearestScrollableParent = container;
     }
 
+    public void takeFocus() {
+        this.nearestScrollableParent.setLastFocused(this);
+    }
+
     @Override
     public void setFocused(boolean focused) {
         this.focused = focused;
@@ -141,35 +162,49 @@ public class InfoLine implements Renderable, GuiEventListener {
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
+        boolean ret = false;
         for(BaseSetter<?, ?> setter : this.setters) {
             if(setter.mouseClicked(click, doubled)) {
                 for (int i = 0; i < this.parent.lines.size(); i++) {
                     if (this.parent.lines.get(i) == this) {
                         this.refresh(i);
                         this.nearestScrollableParent.refresh(0);
-                        return true;
+                        ret = true;
+                        break;
                     }
                 }
             }
         }
-        return false;
+        return ret;
     }
 
     public boolean keyPressed(KeyEvent input) {
+        boolean ret = false;
         for(BaseSetter<?, ?> setter : this.setters) {
             if(setter.keyPressed(input)) {
-                return true;
+                ret = true;
             }
         }
-        return false;
+        return ret;
     }
 
     public boolean charTyped(CharacterEvent input) {
+        boolean ret = false;
         for(BaseSetter<?, ?> setter : this.setters) {
             if(setter.charTyped(input)) {
-                return true;
+                ret = true;
             }
         }
-        return false;
+        return ret;
+    }
+
+    @Override
+    public NarrationPriority narrationPriority() {
+        return NarrationPriority.FOCUSED;
+    }
+
+    @Override
+    public void updateNarration(NarrationElementOutput output) {
+        return;
     }
 }

@@ -25,6 +25,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     private int scrollerY;
     private int scrollerHeight;
     private boolean scrolling;
+    private InfoLine lastFocused;
 
     public ScrollableInfoLineContainer(int childColor, int padding) {
         super(null);
@@ -33,6 +34,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         this.scrollHeight = 0;
         this.scrolling = false;
         this.nearestScrollableParent = this;
+        this.lastFocused = null;
     }
 
     public void setPosition(int x, int y) {
@@ -112,13 +114,24 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
                 mouseY >= this.scrollbarY && mouseY < this.scrollbarY + this.scrollbarHeight;
     }
 
+    public void setLastFocused(InfoLine line) {
+        if(this.lastFocused != null) { this.lastFocused.setFocused(false); }
+        this.lastFocused = line;
+        if(this.lastFocused != null) { this.lastFocused.setFocused(true); }
+    }
+
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.scrolling = click.button() == 0 && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
+            this.setLastFocused(null);
             this.scrollTo((int) click.y());
         }
 
-        return super.mouseClicked(click, doubled);
+        if(!super.mouseClicked(click, doubled)) {
+            this.setLastFocused(null);
+            return false;
+        }
+        return true;
     }
 
     public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {

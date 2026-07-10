@@ -77,23 +77,17 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        if(!this.isCollapsed() && this.lines.mouseClicked(click, doubled)) {
-            return true;
-        }
-        return super.mouseClicked(click, doubled);
+        boolean ret = !this.isCollapsed() && this.lines.mouseClicked(click, doubled);
+        return super.mouseClicked(click, doubled) || ret;
     }
 
     public boolean keyPressed(KeyEvent input) {
-        if(!this.isCollapsed() && this.lines.keyPressed(input)) {
-            return true;
-        }
-        return super.keyPressed(input);
+        boolean ret = !this.isCollapsed() && this.lines.keyPressed(input);
+        return super.keyPressed(input) || ret;
     }
 
     public boolean charTyped(CharacterEvent input) {
-        if(!this.isCollapsed() && this.lines.charTyped(input)) {
-            return true;
-        }
-        return super.charTyped(input);
+        boolean ret = !this.isCollapsed() && this.lines.charTyped(input);
+        return super.charTyped(input) || ret;
     }
 }

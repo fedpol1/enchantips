@@ -3,6 +3,7 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.input.CharacterEvent;
@@ -35,8 +36,10 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
         this.addLine(new InfoLine(t));
     }
 
-    public void addLine(InfoLine line) {
-        if(line == null) { return; }
+    public void addLine(InfoLine line) throws NullPointerException {
+        if(line == null) {
+            throw new NullPointerException("Tried to add null InfoLine to InfoLineContainer");
+        }
         line.parent = this;
         line.setNearestScrollableParent(this.nearestScrollableParent);
         this.lines.add(line);
@@ -94,10 +97,11 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
     }
 
     public void refresh(int index) {
-        this.x = this.parent.parent.x + InfoLine.INDENTATION;
-        this.y = this.parent.parent.y + this.parent.parent.getHeight(index) + InfoLine.LINE_HEIGHT;
-        if(this.parent.parent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
-        this.width = this.parent.parent.getWidth() - InfoLine.INDENTATION;
+        InfoLineContainer grandparent = this.parent.parent;
+        this.x = grandparent.x + InfoLine.INDENTATION;
+        this.y = grandparent.y + grandparent.getHeight(index) + InfoLine.LINE_HEIGHT * this.parent.lineSplits.size();
+        if(grandparent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
+        this.width = grandparent.getWidth() - InfoLine.INDENTATION;
         this.height = this.getHeight();
         for (int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);
