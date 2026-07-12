@@ -21,7 +21,6 @@ public abstract class BaseSetter<T extends InfoLine, U> {
     protected T line;
     protected U value;
     protected ButtonAction action;
-    protected boolean focused;
 
     public static void playSound() {
         Minecraft
@@ -34,7 +33,6 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         this.x = x;
         this.y = y;
         this.line = line;
-        this.focused = false;
     }
 
     public int getX() {
@@ -80,13 +78,13 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         if(!this.canTrigger()) {
             path = path + "_disabled";
         }
-        if(this.isWithin(mouseX, mouseY) || this.focused) {
+        if(this.isWithin(mouseX, mouseY) || this.isFocused()) {
             path = path + "_hover";
         }
         List<Component> tooltipText = this.getTooltip();
-        if(tooltipText != null && (this.isWithin(mouseX, mouseY) || this.focused)) {
-            int tooltipX = this.focused ? this.x : mouseX;
-            int tooltipY = this.focused ? this.y : mouseY;
+        if(tooltipText != null && (this.isWithin(mouseX, mouseY) || this.isFocused())) {
+            int tooltipX = this.isFocused() ? this.x : mouseX;
+            int tooltipY = this.isFocused() ? this.y : mouseY;
             extractor.setComponentTooltipForNextFrame(Minecraft.getInstance().font, tooltipText, tooltipX, tooltipY);
         }
         extractor.blitSprite(
@@ -105,13 +103,11 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         this.line.setFocusedSetter(this);
     }
 
-    public void setFocused(boolean focused) {
-        this.focused = focused;
+    public boolean isFocused() {
+        return this.line.compareFocusedSetter(this) && this.line.isFocused();
     }
 
-    public boolean isFocused() {
-        return this.focused;
-    }
+    public void onUnfocus() {}
 
     public void execute() {
         this.action.execute();

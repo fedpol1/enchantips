@@ -30,10 +30,6 @@ public class IntegerSetter extends TextSetter<Integer> {
         return this.textField.getWidth() + 2;
     }
 
-    public int getHeight() {
-        return 9;
-    }
-
     public void setValue(int i) {
         this.value = i;
         this.textField.setText(this.getStringValue());

@@ -11,8 +11,7 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
     public TextSetter(int x, int y, ConfigInfoLine<T> line, T value) {
         super(x, y, line);
         this.value = value;
-        this.focused = false;
-        this.action = () -> this.textField.setFocused(!this.textField.isFocused());
+        this.action = () -> this.textField.setEditing(!this.textField.editing);
     }
 
     public abstract void readStringValue(String s);
@@ -33,15 +32,12 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
         return true;
     }
 
-    public void setFocused(boolean focused) {
-        if(!focused && this.focused) {
-            this.textField.setFocused(false);
-        }
-        this.focused = focused;
+    public void onUnfocus() {
+        this.textField.setEditing(false);
     }
 
     public boolean keyPressed(KeyEvent input) {
-        if(!this.focused) { return false; }
+        if(!this.isFocused()) { return false; }
         if(this.textField.keyPressed(input)) {
             this.readStringValue(this.textField.text);
             return true;
@@ -50,7 +46,7 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
     }
 
     public boolean charTyped(CharacterEvent input) {
-        if(!this.focused) { return false; }
+        if(!this.isFocused()) { return false; }
         if(this.textField.charTyped(input)) {
             this.readStringValue(this.textField.text);
             return true;

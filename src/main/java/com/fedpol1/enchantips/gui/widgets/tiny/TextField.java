@@ -19,6 +19,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     protected TextFieldHelper selectionManager;
     protected int maximumLength;
     protected String allowedCharacters;
+    protected boolean editing;
 
     public TextField(
             int x,
@@ -38,7 +39,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         );
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
-        this.focused = false;
+        this.editing = false;
         this.action = () -> {};
     }
 
@@ -78,7 +79,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         String selectionPath = sectionStartPos < sectionEndPos ? "selection" : "selection_alt";
         int width = this.getWidth();
 
-        if(this.focused) {
+        if(this.editing) {
             extractor.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     EnchantipsClient.id(selectionPath),
@@ -94,11 +95,11 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         );
     }
 
-    public void setFocused(boolean focused) {
-        if(focused && !this.focused) {
+    public void setEditing(boolean editing) {
+        if(editing && !this.editing) {
             this.selectionManager.selectAll();
         }
-        super.setFocused(focused);
+        this.editing = editing;
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
@@ -106,7 +107,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     }
 
     public boolean keyPressed(KeyEvent input) {
-        if(!this.focused) { return false; }
+        if(!this.editing) { return false; }
         if(this.selectionManager.keyPressed(input)) {
             this.shiftText();
             return true;
@@ -115,7 +116,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     }
 
     public boolean charTyped(CharacterEvent input) {
-        if(!this.focused) { return false; }
+        if(!this.editing) { return false; }
         if(this.selectionManager.charTyped(input)) {
             this.shiftText();
             return true;

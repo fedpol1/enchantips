@@ -24,7 +24,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     private int scrollerY;
     private int scrollerHeight;
     private boolean scrolling;
-    private InfoLine lastFocused;
+    private InfoLine focusedLine;
 
     public ScrollableInfoLineContainer(int childColor, int padding) {
         super(null);
@@ -33,7 +33,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         this.scrollHeight = 0;
         this.scrolling = false;
         this.nearestScrollableParent = this;
-        this.lastFocused = null;
+        this.focusedLine = null;
     }
 
     public void setPosition(int x, int y) {
@@ -113,32 +113,35 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
                 mouseY >= this.scrollbarY && mouseY < this.scrollbarY + this.scrollbarHeight;
     }
 
-    public void setLastFocused(InfoLine line) {
-        if(this.lastFocused != null) {
-            this.lastFocused.setters.forEach(setter -> setter.setFocused(false));
-            this.lastFocused.setFocused(false);
+    public void setFocusedLine(InfoLine line) {
+        if(this.focusedLine != null && this.focusedLine != line) {
+            this.focusedLine.onUnfocus();
         }
-        this.lastFocused = line;
-        if(this.lastFocused == null) { return; }
-        this.lastFocused.setFocused(true);
+        this.focusedLine = line;
+        if(this.focusedLine == null) { return; }
 
-        if(this.lastFocused.y < this.y) {
-            this.scroll((this.y - this.lastFocused.y) / InfoLine.LINE_HEIGHT);
+        // scroll should move such that focused line is in view
+        if(this.focusedLine.y < this.y) {
+            this.scroll((this.y - this.focusedLine.y) / InfoLine.LINE_HEIGHT);
         }
-        if(this.lastFocused.y >= this.y + this.height) {
-            this.scroll((this.y + this.height - this.lastFocused.y) / InfoLine.LINE_HEIGHT - 1);
+        if(this.focusedLine.y >= this.y + this.height) {
+            this.scroll((this.y + this.height - this.focusedLine.y) / InfoLine.LINE_HEIGHT - 1);
         }
+    }
+
+    public boolean compareFocusedLine(InfoLine line) {
+        return this.focusedLine == line;
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.scrolling = click.button() == 0 && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
-            this.setLastFocused(null);
+            this.setFocusedLine(null);
             this.scrollTo((int) click.y());
         }
 
         if(!super.mouseClicked(click, doubled)) {
-            this.setLastFocused(null);
+            this.setFocusedLine(null);
             return false;
         }
         return true;
@@ -153,8 +156,9 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public boolean keyPressed(KeyEvent input) {
-        if(this.lastFocused == null && !this.lines.isEmpty() && InfoLine.navigationDirection(input) != null) {
+        if(this.focusedLine == null && !this.lines.isEmpty() && InfoLine.navigationDirection(input) != null) {
             this.lines.getFirst().takeFocus();
+            this.lines.getFirst().focusSetterAt(0);
             return true;
         }
         return super.keyPressed(input);

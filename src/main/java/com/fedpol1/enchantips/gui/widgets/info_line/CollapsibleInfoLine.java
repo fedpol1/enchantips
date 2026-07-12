@@ -55,7 +55,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         }
     }
 
-    public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
+    protected void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         super.setNearestScrollableParent(container);
         this.lines.setNearestScrollableParent(container);
     }

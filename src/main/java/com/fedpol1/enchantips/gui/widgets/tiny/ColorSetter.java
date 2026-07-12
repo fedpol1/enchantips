@@ -33,10 +33,6 @@ public class ColorSetter extends TextSetter<Color> {
         return this.textField.getWidth() + 10;
     }
 
-    public int getHeight() {
-        return 9;
-    }
-
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         this.textField.setPosition(x + 9, y);

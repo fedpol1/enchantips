@@ -32,9 +32,8 @@ public class InfoLine implements Renderable, NarratableEntry {
     protected int width;
     protected int height;
     protected int offset; // indentation caused by setters
-    protected boolean focused = false;
-    protected InfoLineContainer parent;
     protected ScrollableInfoLineContainer nearestScrollableParent;
+    protected InfoLineContainer parent;
     protected final ArrayList<BaseSetter<?, ?>> setters;
     protected BaseSetter<?, ?> focusedSetter;
     protected List<FormattedCharSequence> lineSplits;
@@ -98,7 +97,7 @@ public class InfoLine implements Renderable, NarratableEntry {
                 this.parent.getParent().isCollapsed()
         ) { return; }
 
-        if(this.focused) {
+        if(this.isFocused()) {
             extractor.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, "config/focused"),
@@ -140,39 +139,26 @@ public class InfoLine implements Renderable, NarratableEntry {
         return this.parent;
     }
 
-    public void setNearestScrollableParent(ScrollableInfoLineContainer container) {
+    protected void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         this.nearestScrollableParent = container;
     }
 
     public void takeFocus() {
-        this.nearestScrollableParent.setLastFocused(this);
-        this.focusSetterAt(0);
+        this.nearestScrollableParent.setFocusedLine(this);
     }
 
-    protected void setFocused(boolean focused) {
-        this.focused = focused;
-        this.focusedSetter = focused && !this.setters.isEmpty() ? this.setters.getFirst() : null;
+    public boolean isFocused() {
+        return this.nearestScrollableParent.compareFocusedLine(this);
     }
 
-    protected boolean isFocused() {
-        return this.focused;
-    }
-
-    public void setFocusedSetter(BaseSetter<?, ?> setter) {
-        if(setter != null && !this.setters.contains(setter)) {
-            throw new IllegalArgumentException("Setter not in setters");
+    public void onUnfocus() {
+        for(BaseSetter<?, ?> setter : this.setters) {
+            setter.onUnfocus();
         }
-        if(this.focusedSetter != null) { this.focusedSetter.setFocused(false); }
-        this.focusedSetter = setter;
-        if(this.focusedSetter != null) { this.focusedSetter.setFocused(true); }
-    }
-
-    public BaseSetter<?, ?> getFocusedSetter() {
-        return this.focusedSetter;
     }
 
     protected void focusSetterRelative(int offset) {
-        int i = this.setters.indexOf(this.getFocusedSetter());
+        int i = this.setters.indexOf(this.focusedSetter);
         if(this.setters.isEmpty()) {
             return;
         }
@@ -185,8 +171,18 @@ public class InfoLine implements Renderable, NarratableEntry {
         this.setters.get(Math.clamp(index, 0, this.setters.size() - 1)).takeFocus();
     }
 
+    public void setFocusedSetter(BaseSetter<?, ?> focusedSetter) {
+        if(this.focusedSetter != null && this.focusedSetter != focusedSetter) {
+            this.focusedSetter.onUnfocus();
+        }
+        this.focusedSetter = focusedSetter;
+    }
+
+    public boolean compareFocusedSetter(BaseSetter<?, ?> setter) {
+        return this.focusedSetter == setter;
+    }
+
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        this.setFocusedSetter(null);
         for(BaseSetter<?, ?> setter : this.setters) {
             if(setter.mouseClicked(click, doubled)) {
                 this.refresh(this.parent.lines.indexOf(this));
@@ -254,9 +250,8 @@ public class InfoLine implements Renderable, NarratableEntry {
     private void handleNavigation(NavigationAction dir) {
         switch(dir) {
             case ACCEPT -> {
-                BaseSetter<?, ?> setter = this.focusedSetter;
-                if(setter.canTrigger()) {
-                    setter.execute();
+                if(this.focusedSetter.canTrigger()) {
+                    this.focusedSetter.execute();
                     this.refresh(this.parent.lines.indexOf(this));
                     this.nearestScrollableParent.refresh(0);
                     BaseSetter.playSound();
@@ -290,7 +285,7 @@ public class InfoLine implements Renderable, NarratableEntry {
             }
         }
         NavigationAction nav = InfoLine.navigationDirection(input);
-        if(nav != null && this.focused) {
+        if(nav != null && this.isFocused()) {
             this.handleNavigation(nav);
             return true;
         }
