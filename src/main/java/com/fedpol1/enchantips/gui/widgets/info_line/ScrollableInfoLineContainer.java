@@ -2,14 +2,13 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
-public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable, GuiEventListener {
+public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable {
 
     //
     private static final Identifier SCROLLER_TEXTURE = Identifier.withDefaultNamespace("widget/scroller");
@@ -115,9 +114,20 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public void setLastFocused(InfoLine line) {
-        if(this.lastFocused != null) { this.lastFocused.setFocused(false); }
+        if(this.lastFocused != null) {
+            this.lastFocused.setters.forEach(setter -> setter.setFocused(false));
+            this.lastFocused.setFocused(false);
+        }
         this.lastFocused = line;
-        if(this.lastFocused != null) { this.lastFocused.setFocused(true); }
+        if(this.lastFocused == null) { return; }
+        this.lastFocused.setFocused(true);
+
+        if(this.lastFocused.y < this.y) {
+            this.scroll((this.y - this.lastFocused.y) / InfoLine.LINE_HEIGHT);
+        }
+        if(this.lastFocused.y >= this.y + this.height) {
+            this.scroll((this.y + this.height - this.lastFocused.y) / InfoLine.LINE_HEIGHT - 1);
+        }
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
@@ -143,6 +153,10 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public boolean keyPressed(KeyEvent input) {
+        if(this.lastFocused == null && !this.lines.isEmpty() && InfoLine.navigationDirection(input) != null) {
+            this.lines.getFirst().takeFocus();
+            return true;
+        }
         return super.keyPressed(input);
     }
 

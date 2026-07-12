@@ -8,8 +8,11 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+
+import java.util.List;
 
 public abstract class BaseSetter<T extends InfoLine, U> {
 
@@ -17,11 +20,21 @@ public abstract class BaseSetter<T extends InfoLine, U> {
     protected int y;
     protected T line;
     protected U value;
+    protected ButtonAction action;
+    protected boolean focused;
+
+    public static void playSound() {
+        Minecraft
+                .getInstance()
+                .getSoundManager()
+                .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+    }
 
     public BaseSetter(int x, int y, T line) {
         this.x = x;
         this.y = y;
         this.line = line;
+        this.focused = false;
     }
 
     public int getX() {
@@ -67,8 +80,14 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         if(!this.canTrigger()) {
             path = path + "_disabled";
         }
-        if(this.isWithin(mouseX, mouseY)) {
+        if(this.isWithin(mouseX, mouseY) || this.focused) {
             path = path + "_hover";
+        }
+        List<Component> tooltipText = this.getTooltip();
+        if(tooltipText != null && (this.isWithin(mouseX, mouseY) || this.focused)) {
+            int tooltipX = this.focused ? this.x : mouseX;
+            int tooltipY = this.focused ? this.y : mouseY;
+            extractor.setComponentTooltipForNextFrame(Minecraft.getInstance().font, tooltipText, tooltipX, tooltipY);
         }
         extractor.blitSprite(
                 RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
@@ -76,6 +95,26 @@ public abstract class BaseSetter<T extends InfoLine, U> {
                 this.x, this.y,
                 this.getWidth(), this.getHeight()
         );
+    }
+
+    protected List<Component> getTooltip() {
+        return null;
+    }
+
+    public void takeFocus() {
+        this.line.setFocusedSetter(this);
+    }
+
+    public void setFocused(boolean focused) {
+        this.focused = focused;
+    }
+
+    public boolean isFocused() {
+        return this.focused;
+    }
+
+    public void execute() {
+        this.action.execute();
     }
 
     public boolean keyPressed(KeyEvent input) {
@@ -86,16 +125,12 @@ public abstract class BaseSetter<T extends InfoLine, U> {
         return false;
     }
 
-    public abstract boolean mouseClicked(MouseButtonEvent click, boolean doubled);
-
-    protected boolean mouseClicked(MouseButtonEvent click, boolean doubled, ButtonAction action) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == 0) {
             this.line.takeFocus();
-            action.execute();
-            Minecraft
-                    .getInstance()
-                    .getSoundManager()
-                    .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            this.takeFocus();
+            this.action.execute();
+            BaseSetter.playSound();
             return true;
         }
         return false;

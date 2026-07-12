@@ -3,17 +3,16 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 
 public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
 
-    protected boolean focused;
     protected TextField textField;
 
     public TextSetter(int x, int y, ConfigInfoLine<T> line, T value) {
         super(x, y, line);
         this.value = value;
         this.focused = false;
+        this.action = () -> this.textField.setFocused(!this.textField.isFocused());
     }
 
     public abstract void readStringValue(String s);
@@ -29,11 +28,16 @@ public abstract class TextSetter<T> extends BaseSetter<ConfigInfoLine<T>, T> {
         );
     }
 
-    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        boolean isWithinBounds = super.mouseClicked(click, doubled, () -> this.textField.selectionManager.selectAll());
-        this.focused = isWithinBounds;
-        this.textField.focused = isWithinBounds;
-        return isWithinBounds;
+    @Override
+    public boolean canTrigger() {
+        return true;
+    }
+
+    public void setFocused(boolean focused) {
+        if(!focused && this.focused) {
+            this.textField.setFocused(false);
+        }
+        this.focused = focused;
     }
 
     public boolean keyPressed(KeyEvent input) {

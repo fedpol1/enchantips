@@ -6,10 +6,9 @@ import com.fedpol1.enchantips.gui.widgets.tiny.ResetButton;
 import com.fedpol1.enchantips.gui.widgets.tiny.SaveButton;
 import java.util.List;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 
-public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements Renderable, GuiEventListener {
+public abstract class ConfigInfoLine<T> extends CollapsibleInfoLine implements Renderable {
 
     protected final Data<T> data;
     protected final ResetButton resetButton;

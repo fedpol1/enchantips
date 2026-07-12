@@ -42,11 +42,6 @@ public class ColorSetter extends TextSetter<Color> {
         this.textField.setPosition(x + 9, y);
     }
 
-    @Override
-    public boolean canTrigger() {
-        return true;
-    }
-
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         this.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/color_setter"));
         if(this.value != null) {

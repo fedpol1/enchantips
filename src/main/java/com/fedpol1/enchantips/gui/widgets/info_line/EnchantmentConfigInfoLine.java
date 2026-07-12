@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 
 public class EnchantmentConfigInfoLine extends CollapsibleInfoLine {
 
-    private EnchantmentGroupNode node;
+    private final EnchantmentGroupNode node;
 
     public EnchantmentConfigInfoLine(EnchantmentGroupNode node) {
         super(Component.literal(node.getIdentifier()));

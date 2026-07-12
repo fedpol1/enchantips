@@ -2,10 +2,9 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 
 import com.fedpol1.enchantips.gui.widgets.tiny.DeleteButton;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 
-public class DeleteInfoLine extends CollapsibleInfoLine implements Renderable, GuiEventListener {
+public class DeleteInfoLine extends CollapsibleInfoLine implements Renderable {
 
     protected final DeleteButton deleteButton;
 

@@ -3,13 +3,12 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import com.fedpol1.enchantips.gui.widgets.tiny.CollapsibleButton;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
-public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Renderable, GuiEventListener {
+public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Renderable {
 
     protected final InfoLineContainer lines;
     protected final CollapsibleButton expandButton;
@@ -37,7 +36,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
     }
 
     public int getHeight() {
-        return this.getHeight(this.lines.lines.size());
+        return this.getHeight(this.numChildren());
     }
 
     public boolean isCollapsed() {
@@ -69,25 +68,15 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         }
     }
 
-    @Override
-    public boolean shouldRender(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
-        if(this.y < this.nearestScrollableParent.y) { return false; }
-        if(this.y + InfoLine.LINE_HEIGHT > this.nearestScrollableParent.y + this.nearestScrollableParent.height) { return false; }
-        return true;
-    }
-
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        boolean ret = !this.isCollapsed() && this.lines.mouseClicked(click, doubled);
-        return super.mouseClicked(click, doubled) || ret;
+        return (!this.isCollapsed() && this.lines.mouseClicked(click, doubled)) || super.mouseClicked(click, doubled);
     }
 
     public boolean keyPressed(KeyEvent input) {
-        boolean ret = !this.isCollapsed() && this.lines.keyPressed(input);
-        return super.keyPressed(input) || ret;
+        return (!this.isCollapsed() && this.lines.keyPressed(input)) || super.keyPressed(input);
     }
 
     public boolean charTyped(CharacterEvent input) {
-        boolean ret = !this.isCollapsed() && this.lines.charTyped(input);
-        return super.charTyped(input) || ret;
+        return (!this.isCollapsed() && this.lines.charTyped(input)) || super.charTyped(input);
     }
 }

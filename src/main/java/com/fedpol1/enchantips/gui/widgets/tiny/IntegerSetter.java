@@ -44,11 +44,6 @@ public class IntegerSetter extends TextSetter<Integer> {
         this.textField.setPosition(x + 1, y);
     }
 
-    @Override
-    public boolean canTrigger() {
-        return true;
-    }
-
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         this.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/integer_setter"));
         this.textField.extractRenderState(extractor, mouseX, mouseY, delta);

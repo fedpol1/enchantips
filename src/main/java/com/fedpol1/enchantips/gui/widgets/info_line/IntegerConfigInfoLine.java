@@ -5,10 +5,9 @@ import com.fedpol1.enchantips.config.data.IntegerOption;
 import com.fedpol1.enchantips.gui.widgets.tiny.IntegerSetter;
 import java.util.List;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 
-public class IntegerConfigInfoLine extends ConfigInfoLine<Integer> implements Renderable, GuiEventListener {
+public class IntegerConfigInfoLine extends ConfigInfoLine<Integer> implements Renderable {
 
     public IntegerConfigInfoLine(Component text, List<Component> tooltip, Data<Integer> data, Integer value) {
         super(text, tooltip, data);

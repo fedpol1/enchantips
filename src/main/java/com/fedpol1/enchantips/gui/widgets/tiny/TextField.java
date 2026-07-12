@@ -19,7 +19,6 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     protected TextFieldHelper selectionManager;
     protected int maximumLength;
     protected String allowedCharacters;
-    protected boolean focused;
 
     public TextField(
             int x,
@@ -40,6 +39,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.maximumLength = maximumLength;
         this.allowedCharacters = allowedCharacters;
         this.focused = false;
+        this.action = () -> {};
     }
 
     public int getWidth() {
@@ -92,6 +92,13 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
                 this.x + width - textWidth, this.y + 1,
                 0xffffffff, false
         );
+    }
+
+    public void setFocused(boolean focused) {
+        if(focused && !this.focused) {
+            this.selectionManager.selectAll();
+        }
+        super.setFocused(focused);
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {

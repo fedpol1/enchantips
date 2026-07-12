@@ -5,10 +5,9 @@ import com.fedpol1.enchantips.gui.widgets.tiny.ColorSetter;
 import java.awt.*;
 import java.util.List;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 
-public class ColorConfigInfoLine extends ConfigInfoLine<Color> implements Renderable, GuiEventListener {
+public class ColorConfigInfoLine extends ConfigInfoLine<Color> implements Renderable {
 
     public ColorConfigInfoLine(Component text, List<Component> tooltip, Data<Color> data, Color value) {
         super(text, tooltip, data);
