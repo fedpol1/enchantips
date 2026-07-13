@@ -97,10 +97,12 @@ public class InfoLine implements Renderable, NarratableEntry {
                 this.parent.getParent().isCollapsed()
         ) { return; }
 
-        if(this.isFocused()) {
+        boolean isWithinSetter = this.setters.stream().anyMatch(setter -> setter.isWithin(mouseX, mouseY));
+        if(this.isFocused() || isWithinSetter) {
+            String path = this.isFocused() ? "enchantment_info/focused_hover" : "enchantment_info/focused";
             extractor.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
-                    Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, "config/focused"),
+                    Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, path),
                     this.x - 10, this.y,
                     9, 9
             );

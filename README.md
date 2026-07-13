@@ -2,13 +2,13 @@
 Mod that enhances tooltips related to enchanting or enchantments.
 
 ## Dependencies
-+ Minecraft 1.21.9/10
-+ Fabric Loader 0.17.2 or greater
-+ Fabric API 0.134.0 or greater
++ Minecraft 26.2 or greater
++ Fabric Loader 0.19 or greater
++ Fabric API 0.154.0 or greater
 
 **For Configuration:**
-+ Mod Menu 16.0.0 or greater
-+ YetAnotherConfigLib 3.8.0 or greater (optional - not required if compact configuration is enabled)
++ Mod Menu 20.0.0 or greater
++ YetAnotherConfigLib 3.9.4 or greater (optional - not required if compact configuration is enabled)
 
 ## Features
 
@@ -44,4 +44,4 @@ You can also configure the order in which enchantments are highlighted. As an ex
 
 Nearly every feature is configurable, however not all features are enabled by default. Enchantments in item tooltips are always sorted, there is no way to disable this.
 
-For per-enchantment configuration, you will need to enter a world to initialize the configuration. This is because enchantments are now defined per-world. On later game sessions, before entering a world, any previously saved per-enchantment configurations will have an _Enchantips: Unknown_ title; this is also due to enchantments being defined per-world. There is no guarantee of enchantment names staying consistent since the server's/world's enchantment definition (which includes the name) may change any time.
+For per-enchantment configuration, you will need to enter a world to initialize the configuration. This is because enchantments are defined per-world. On later game sessions, before entering a world, any previously saved per-enchantment configurations will have an _Enchantips: Unknown_ title; this is also due to enchantments being defined per-world. There is no guarantee of enchantment names staying consistent since the enchantment definition may change between worlds.

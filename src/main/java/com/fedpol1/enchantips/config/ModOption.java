@@ -54,7 +54,7 @@ public class ModOption<T> {
                 ModConfig.writeConfig();
             }
     ), "prune_enchantments", 1);
-    public static final ModOption<Color> ACTION_COLOR = ModCategory.BULK_UPDATE.addOption(new ColorOption(0x000000), "action_color", 1);
+    public static final ModOption<Color> ACTION_COLOR = ModCategory.BULK_UPDATE.addOption(new ColorOption(0x000000), "action_color", 2);
     public static final ModOption<BiConsumer<YACLScreen, ButtonOption>> SET_MIN_COLORS = ModCategory.BULK_UPDATE.addOption(new ActionOption(
             (yaclScreen, buttonOption) -> {
                 yaclScreen.config.saveFunction();

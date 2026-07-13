@@ -30,10 +30,10 @@ public class EnchantmentInfoLine extends CollapsibleInfoLine {
         for(int i = 1; i < enchantment.getMaxLevel() + 1; i++) {
             powers.addLine(Component.translatable(
                     "enchantips.gui.enchantment_info.per_power",
-                    Component.translatable("enchantment.level." + i),
                     enchantment.getMinCost(i),
-                    enchantment.getMaxCost(i)
-            ));
+                    enchantment.getMaxCost(i),
+                    Component.translatable("enchantment.level." + i)
+                    ));
         }
         lines.addLine(powers);
     }

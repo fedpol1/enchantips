@@ -8,7 +8,7 @@
   "enchantips.gui.enchantment_info.weight": "Weight: %s",
   "enchantips.gui.enchantment_info.anvil_cost": "Anvil Cost: %s",
   "enchantips.gui.enchantment_info.power": "Enchanting Power",
-  "enchantips.gui.enchantment_info.per_power": "%s: %s-%s",
+  "enchantips.gui.enchantment_info.per_power": "%s-%s (%s)",
   "enchantips.gui.enchantment_info.exclusive_set": "Exclusive Set",
   "enchantips.gui.enchantment_info.primary_items": "Primary Items",
   "enchantips.gui.enchantment_info.secondary_items": "Secondary Items",
@@ -141,6 +141,7 @@
   "enchantips.config.user_interface.miscellaneous.global_name_modification.option_tooltip.1": "May cause mods to misbehave; disable for improved compatibility.",
   "enchantips.config.user_interface.bulk_update.prune_enchantments.option_tooltip.0": "Removes an enchantment's settings from the config if it was not loaded in the current session.",
   "enchantips.config.user_interface.bulk_update.action_color.option_tooltip.0": "This setting is used for certain actions.",
+  "enchantips.config.user_interface.bulk_update.action_color.option_tooltip.1": "Compact Configuration must be disabled to use this.",
   "enchantips.config.user_interface.bulk_update.set_min_colors.option_tooltip.0": "Set all enchantment minimum colors to the action color.",
   "enchantips.config.user_interface.bulk_update.set_max_colors.option_tooltip.0": "Set all enchantment maximum colors to the action color.",
   "enchantips.config.user_interface.bulk_update.set_overmax_colors.option_tooltip.0": "Set all enchantment over maximum colors to the action color.",
@@ -162,8 +163,8 @@
   "enchantips.tooltip.anvil_cost": "[×%s]",
   "enchantips.tooltip.glint_override.true": "Glint Overridden On",
   "enchantips.tooltip.glint_override.false": "Glint Overridden Off",
-  "enchantips.tooltip.repair_cost": "Repair Cost: %s",
-  "enchantips.tooltip.enchantability": "Enchantability: %s",
+  "enchantips.tooltip.repair_cost": "%s Repair Cost",
+  "enchantips.tooltip.enchantability": "%s Enchantability",
   "enchantips.tooltip.modified_level": "Enchanting Power: %s-%s",
   "enchantips.tooltip.modified_level.for_enchantment": "%s-%s"
 }
