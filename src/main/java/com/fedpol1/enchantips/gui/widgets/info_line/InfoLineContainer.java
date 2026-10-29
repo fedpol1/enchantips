@@ -3,6 +3,8 @@ package com.fedpol1.enchantips.gui.widgets.info_line;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
@@ -10,8 +12,9 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
-public class InfoLineContainer implements InfoMultiLine, Renderable {
+public class InfoLineContainer implements InfoMultiLine, Renderable, Iterable<InfoLine> {
 
     protected int x;
     protected int y;
@@ -56,6 +59,10 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
         }
     }
 
+    public @NonNull Iterator<InfoLine> iterator() {
+        return new InfoLineIterator(this);
+    }
+
     public int getWidth() {
         return this.width;
     }
@@ -75,6 +82,10 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
 
     public void setHeight() {
         this.height = InfoLine.LINE_HEIGHT;
+    }
+
+    public boolean rightAligned() {
+        return this.nearestScrollableParent.rightAligned();
     }
 
     public boolean isWithin(double mouseX, double mouseY) {
@@ -98,7 +109,7 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
 
     public void refresh(int index) {
         InfoLineContainer grandparent = this.parent.parent;
-        this.x = grandparent.x + InfoLine.INDENTATION;
+        this.x = this.rightAligned() ? grandparent.x : grandparent.x + InfoLine.INDENTATION;
         this.y = grandparent.y + grandparent.getHeight(index) + InfoLine.LINE_HEIGHT * this.parent.lineSplits.size();
         if(grandparent == this.nearestScrollableParent) { this.y += this.nearestScrollableParent.scrollHeight; }
         this.width = grandparent.getWidth() - InfoLine.INDENTATION;
@@ -154,5 +165,57 @@ public class InfoLineContainer implements InfoMultiLine, Renderable {
             ret = ret || line.charTyped(input);
         }
         return ret;
+    }
+
+    public static class InfoLineIterator implements Iterator<InfoLine> {
+
+        private InfoLine current;
+        private final InfoLineContainer root;
+        private final boolean empty;
+
+        public InfoLineIterator(InfoLineContainer scrollable) {
+            this.empty = scrollable.lines.isEmpty();
+            this.root = scrollable;
+            this.current = null;
+        }
+
+        private boolean isLast(InfoLine child, InfoLineContainer parent) {
+            return parent.lines.indexOf(child) == parent.lines.size() - 1 &&
+                    (parent == this.root || this.isLast(parent.parent, parent.parent.parent));
+        }
+
+        private InfoLine nextIfLast(InfoLine child, InfoLineContainer parent) {
+            int childIndex = parent.lines.indexOf(child);
+            if(childIndex == parent.lines.size() - 1) {
+                return this.nextIfLast(parent.parent, parent.parent.parent);
+            }
+            return parent.lines.get(childIndex + 1);
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(this.empty) { return false; }
+            if(this.current == null) { return true; }
+            if(this.current instanceof CollapsibleInfoLine collapsible && !collapsible.lines.lines.isEmpty()) {
+                return true;
+            }
+            return !this.isLast(this.current, this.current.parent);
+        }
+
+        @Override
+        public InfoLine next() throws NoSuchElementException {
+            if(!this.hasNext()) { throw new NoSuchElementException(); }
+            if(this.current == null) {
+                this.current = this.root.lines.getFirst();
+                return this.current;
+            }
+            if(this.current instanceof CollapsibleInfoLine collapsible && !collapsible.lines.lines.isEmpty()) {
+                this.current = collapsible.lines.lines.getFirst();
+                return this.current;
+            }
+
+            this.current = this.nextIfLast(this.current, this.current.parent);
+            return this.current;
+        }
     }
 }

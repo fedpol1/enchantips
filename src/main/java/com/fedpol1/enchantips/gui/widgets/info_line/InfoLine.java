@@ -52,6 +52,10 @@ public class InfoLine implements Renderable, NarratableEntry {
         this.lineSplits = new ArrayList<>();
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
     public int getHeight(int index) {
         return InfoLine.LINE_HEIGHT * this.lineSplits.size();
     }
@@ -62,6 +66,10 @@ public class InfoLine implements Renderable, NarratableEntry {
 
     public boolean isWithin(double mouseX, double mouseY) {
         return mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.getHeight();
+    }
+
+    public boolean rightAligned() {
+        return this.nearestScrollableParent.rightAligned();
     }
 
     public void renderText(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
@@ -81,7 +89,9 @@ public class InfoLine implements Renderable, NarratableEntry {
             extractor.text(
                     renderer,
                     this.lineSplits.get(i),
-                    this.x + this.offset,
+                    this.rightAligned() ?
+                            this.x + this.width - this.offset - Minecraft.getInstance().font.width(this.lineSplits.get(i)) + 1 :
+                            this.x + this.offset,
                     this.y + 1 + InfoLine.LINE_HEIGHT * i,
                     this.nearestScrollableParent.childColor,
                     false
@@ -99,11 +109,11 @@ public class InfoLine implements Renderable, NarratableEntry {
 
         boolean isWithinSetter = this.setters.stream().anyMatch(setter -> setter.isWithin(mouseX, mouseY));
         if(this.isFocused() || isWithinSetter) {
-            String path = this.isFocused() ? "enchantment_info/focused_hover" : "enchantment_info/focused";
+            String path = "enchantment_info/focused" + (this.rightAligned() ? "_alt" : "") + (this.isFocused() ? "_hover" : "");
             extractor.blitSprite(
                     RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
                     Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, path),
-                    this.x - 10, this.y,
+                    this.rightAligned() ? this.x + this.width + 1 : this.x - 10, this.y,
                     9, 9
             );
         }
@@ -127,7 +137,10 @@ public class InfoLine implements Renderable, NarratableEntry {
 
         this.offset = 0;
         for(BaseSetter<?, ?> setter : this.setters) {
-            setter.setPosition(this.x + offset, this.y);
+            setter.setPosition(
+                    this.rightAligned() ? this.x + this.width - this.offset - setter.getWidth() : this.x + this.offset,
+                    this.y
+            );
             this.offset += setter.getWidth() + 1;
         }
 
@@ -252,29 +265,31 @@ public class InfoLine implements Renderable, NarratableEntry {
     private void handleNavigation(NavigationAction dir) {
         switch(dir) {
             case ACCEPT -> {
-                if(this.focusedSetter.canTrigger()) {
+                if(this.focusedSetter != null && this.focusedSetter.canTrigger()) {
                     this.focusedSetter.execute();
                     this.refresh(this.parent.lines.indexOf(this));
                     this.nearestScrollableParent.refresh(0);
                     BaseSetter.playSound();
                 }
             }
-            case LEFT -> this.focusSetterRelative(-1);
-            case RIGHT -> this.focusSetterRelative(1);
+            case LEFT -> this.focusSetterRelative(this.rightAligned() ? 1 : -1);
+            case RIGHT -> this.focusSetterRelative(this.rightAligned() ? -1 : 1);
             case UP -> this.handleNavigationUp(this.setters.indexOf(this.focusedSetter));
             case DOWN -> this.handleNavigationDown(this.setters.indexOf(this.focusedSetter));
             case NEXT -> {
-                if(this.setters.indexOf(this.focusedSetter) == this.setters.size() - 1) {
-                    this.handleNavigationDown(0);
+                if(this.setters.isEmpty() ||
+                        this.setters.indexOf(this.focusedSetter) == (this.rightAligned() ? 0 : this.setters.size() - 1)) {
+                    this.handleNavigationDown(this.rightAligned() ? Integer.MAX_VALUE : 0);
                 } else {
-                    this.focusSetterRelative(1);
+                    this.focusSetterRelative(this.rightAligned() ? -1 : 1);
                 }
             }
             case PREVIOUS -> {
-                if(this.setters.indexOf(this.focusedSetter) == 0) {
-                    this.handleNavigationUp(Integer.MAX_VALUE);
+                if(this.setters.isEmpty() ||
+                        this.setters.indexOf(this.focusedSetter) == (this.rightAligned() ? this.setters.size() - 1 : 0)) {
+                    this.handleNavigationUp(this.rightAligned() ? 0 : Integer.MAX_VALUE);
                 } else {
-                    this.focusSetterRelative(-1);
+                    this.focusSetterRelative(this.rightAligned() ? 1 : -1);
                 }
             }
         }

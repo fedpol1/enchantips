@@ -3,7 +3,6 @@ package com.fedpol1.enchantips.gui.widgets.tiny;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
@@ -18,8 +17,7 @@ public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
                 this.line.undo();
             } else {
                 this.line.reset();
-                if(InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), InputConstants.KEY_LSHIFT) ||
-                        InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), InputConstants.KEY_RSHIFT)) {
+                if(InputConstants.isKeyDown(InputConstants.KEY_LSHIFT) || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)) {
                     this.line.save();
                 }
             }

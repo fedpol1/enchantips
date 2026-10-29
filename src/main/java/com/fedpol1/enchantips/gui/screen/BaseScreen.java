@@ -69,6 +69,7 @@ public abstract class BaseScreen extends Screen {
         this.lines.setPosition(this.windowX + 15, this.windowY + 24);
         this.lines.setDimensions(this.windowWidth - 30, this.windowHeight - 39);
         this.lines.refresh(0);
+        this.lines.refresh(0);
     }
 
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
@@ -89,7 +90,8 @@ public abstract class BaseScreen extends Screen {
         if(super.keyPressed(input)) {
             return true;
         }
-        return this.lines.keyPressed(input);
+        this.lines.keyPressed(input);
+        return true;
     }
 
     public boolean charTyped(CharacterEvent input) {
@@ -98,7 +100,6 @@ public abstract class BaseScreen extends Screen {
 
     @Override
     public void onClose() {
-        assert this.minecraft != null;
         this.minecraft.setScreenAndShow(this.parent);
     }
 }

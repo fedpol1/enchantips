@@ -34,7 +34,6 @@ public class EnchantmentAppearanceHelper {
         if(ench == null) { return Component.empty(); }
 
         int level = enchLevel.getLevel();
-        int r = ench.getAnvilCost();
 
         MutableComponent enchantmentText = MutableComponent.create(ench.description().getContents());
         MutableComponent finalText = Component.literal("");
@@ -71,7 +70,16 @@ public class EnchantmentAppearanceHelper {
                     .withColor(enchLevel.getColor().getRGB())).append(" ");
         }
         if(ModOption.ANVIL_COST_SWITCH.getValue()) {
-            finalText.append(TooltipHelper.buildAnvilCost(r, colorFinal)).append(" ");
+            finalText.append(TooltipHelper.buildSymbolledNumber(
+                    TooltipHelper.ANVIL_COST_SYMBOL,
+                    ench.getAnvilCost(), colorFinal
+            )).append(" ");
+        }
+        if(ModOption.WEIGHT_SWITCH.getValue()) {
+            finalText.append(TooltipHelper.buildSymbolledNumber(
+                    TooltipHelper.WEIGHT_SYMBOL,
+                    ench.getWeight(), colorFinal
+            )).append(" ");
         }
         if(ModOption.ENCHANTMENT_TAGS_SWITCH.getValue() && world != null) {
             MutableComponent symbolText = EnchantmentAppearanceHelper

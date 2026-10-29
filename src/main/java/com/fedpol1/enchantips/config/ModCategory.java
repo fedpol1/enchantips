@@ -13,6 +13,7 @@ public enum ModCategory {
     TOOLTIPS_REPAIR_COST(TOOLTIPS.addGroup("repair_cost")),
     TOOLTIPS_ENCHANTABILITY(TOOLTIPS.addGroup("enchantability")),
     TOOLTIPS_ANVIL_COST(TOOLTIPS.addGroup("anvil_cost")),
+    TOOLTIPS_WEIGHT(TOOLTIPS.addGroup("weight")),
     TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL(TOOLTIPS.addGroup("maximum_enchantment_level")),
     TOOLTIPS_ENCHANTMENT_TARGETS(TOOLTIPS.addGroup("enchantment_targets")),
     TOOLTIPS_ENCHANTMENT_TAGS(TOOLTIPS.addGroup("enchantment_tags")),

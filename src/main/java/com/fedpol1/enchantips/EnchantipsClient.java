@@ -18,7 +18,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 public class EnchantipsClient implements ClientModInitializer {
 
@@ -28,8 +27,8 @@ public class EnchantipsClient implements ClientModInitializer {
 
     private static final KeyMapping ENCHANTMENT_INFO_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.enchantips.enchantment_info",
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_UNKNOWN, // unbound by default
+            InputConstants.Type.KEYBOARD,
+            InputConstants.UNKNOWN.getValue(), // unbound by default
             KeyMapping.Category.MISC
     ));
 

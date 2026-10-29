@@ -74,7 +74,8 @@ public abstract class AbstractContainerMenuMixin implements EnchantmentScreenHan
                     EnchantmentLevel level = EnchantmentLevel.of(current.value(), z);
 
                     if (level.getHighestModifiedLevel() >= absoluteLowerBound &&
-                        level.getLowestModifiedLevel() <= absoluteUpperBound
+                        level.getLowestModifiedLevel() <= absoluteUpperBound &&
+                        level.getLowestModifiedLevel() <= level.getHighestModifiedLevel()
                     ) {
                         levels.add(EnchantmentLevel.of(current.value(), z));
                     }

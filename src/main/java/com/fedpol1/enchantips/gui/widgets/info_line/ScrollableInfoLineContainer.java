@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.gui.widgets.info_line;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.input.CharacterEvent;
@@ -8,9 +9,8 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
-public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable {
+public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable, Iterable<InfoLine> {
 
-    //
     private static final Identifier SCROLLER_TEXTURE = Identifier.withDefaultNamespace("widget/scroller");
     private static final Identifier SCROLLER_BACKGROUND_TEXTURE = Identifier.withDefaultNamespace("widget/scroller_background");
     private static final int SCROLLER_WIDTH = 6;
@@ -25,6 +25,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     private int scrollerHeight;
     private boolean scrolling;
     private InfoLine focusedLine;
+    private boolean rightAligned;
 
     public ScrollableInfoLineContainer(int childColor, int padding) {
         super(null);
@@ -34,6 +35,12 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         this.scrolling = false;
         this.nearestScrollableParent = this;
         this.focusedLine = null;
+        this.rightAligned = false;
+    }
+
+    public ScrollableInfoLineContainer(int childColor, int padding, boolean rightAligned) {
+        this(childColor, padding);
+        this.rightAligned = true;
     }
 
     public void setPosition(int x, int y) {
@@ -50,11 +57,15 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public int getWidth() {
-        return super.getWidth() -  SCROLLER_WIDTH / 2;
+        return super.getWidth();
     }
 
     public int getHeight() {
         return this.height;
+    }
+
+    public boolean rightAligned() {
+        return this.rightAligned;
     }
 
     public boolean scrollerVisible() {
@@ -77,7 +88,9 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         }
 
         this.scrollbarHeight = this.getHeight() + 2 * this.padding;
-        this.scrollbarX = this.x + this.width + this.padding - SCROLLER_WIDTH;
+        this.scrollbarX = this.rightAligned() ?
+                this.x - this.padding :
+                this.x + this.width + this.padding - SCROLLER_WIDTH;
         this.scrollbarY = this.y - this.padding;
         this.scrollerHeight = (int) Math.clamp(
                 (float) this.scrollbarHeight * this.getHeight() / super.getHeight(),
@@ -134,7 +147,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        this.scrolling = click.button() == 0 && this.isWithinScrollbar(click.x(), click.y());
+        this.scrolling = click.button() == InputConstants.MOUSE_BUTTON_LEFT && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
             this.setFocusedLine(null);
             this.scrollTo((int) click.y());

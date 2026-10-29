@@ -22,6 +22,7 @@ public class ModOption<T> {
     public static final ModOption<Color> ENCHANTABILITY_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xbf007f), "color", 0);
     public static final ModOption<Color> ENCHANTABILITY_VALUE_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xff1f9f), "color.value", 0);
     public static final ModOption<Boolean> ANVIL_COST_SWITCH = ModCategory.TOOLTIPS_ANVIL_COST.addOption(new BooleanOption(false), "switch", 3);
+    public static final ModOption<Boolean> WEIGHT_SWITCH = ModCategory.TOOLTIPS_WEIGHT.addOption(new BooleanOption(false), "switch", 1);
     public static final ModOption<Boolean> MAXIMUM_ENCHANTMENT_LEVEL_SWITCH = ModCategory.TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL.addOption(new BooleanOption(false), "switch", 1);
     public static final ModOption<Boolean> MAXIMUM_ENCHANTMENT_LEVEL_SWITCH_AT_MAX = ModCategory.TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL.addOption(new BooleanOption(true), "switch.at_max", 0);
     public static final ModOption<Boolean> MAXIMUM_ENCHANTMENT_LEVEL_SWITCH_OVER_MAX = ModCategory.TOOLTIPS_MAXIMUM_ENCHANTMENT_LEVEL.addOption(new BooleanOption(true), "switch.over_max", 0);

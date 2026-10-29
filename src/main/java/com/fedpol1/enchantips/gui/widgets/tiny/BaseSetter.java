@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.gui.widgets.tiny;
 
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.CharacterEvent;
@@ -122,7 +123,7 @@ public abstract class BaseSetter<T extends InfoLine, U> {
     }
 
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
-        if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == 0) {
+        if(this.isWithin(click.x(), click.y()) && this.canTrigger() && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             this.line.takeFocus();
             this.takeFocus();
             this.action.execute();

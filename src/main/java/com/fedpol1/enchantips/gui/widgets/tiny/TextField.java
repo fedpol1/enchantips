@@ -98,6 +98,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
     public void setEditing(boolean editing) {
         if(editing && !this.editing) {
             this.selectionManager.selectAll();
+            Minecraft.getInstance().textInputManager().onTextInputFocusChange(this, true);
         }
         this.editing = editing;
     }
