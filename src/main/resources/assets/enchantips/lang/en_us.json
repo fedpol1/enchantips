@@ -39,6 +39,7 @@
   "enchantips.config.tooltips.enchantability": "Enchantability",
   "enchantips.config.tooltips.enchantability.switch.option_title": "Switch",
   "enchantips.config.tooltips.enchantability.switch.when_enchanted.option_title": "Switch When Enchanted",
+  "enchantips.config.tooltips.enchantability.division.option_title": "Divide by 4",
   "enchantips.config.tooltips.enchantability.color.option_title": "Color",
   "enchantips.config.tooltips.enchantability.color.value.option_title": "Value Color",
   "enchantips.config.tooltips.anvil_cost": "Anvil Cost Multiplier",
@@ -57,6 +58,7 @@
   "enchantips.config.tooltips.enchantment_tags.limit.option_title": "Limit",
   "enchantips.config.tooltips.modified_enchanting_power": "Enchanting Power",
   "enchantips.config.tooltips.modified_enchanting_power.switch.option_title": "Switch",
+  "enchantips.config.tooltips.modified_enchanting_power.switch.context.option_title": "Hold Context (Advanced)",
   "enchantips.config.tooltips.modified_enchanting_power.color.option_title": "Color",
   "enchantips.config.tooltips.modified_enchanting_power.color.value.option_title": "Value Color",
   "enchantips.config.tooltips.extra_enchantments": "Extra Enchanting Info",
@@ -110,6 +112,7 @@
   "enchantips.config.tooltips.repair_cost.switch.option_tooltip.1": "Only shown when not 0.",
   "enchantips.config.tooltips.enchantability.switch.option_tooltip.0": "Indicates the bias an item has for getting good enchantments.",
   "enchantips.config.tooltips.enchantability.switch.when_enchanted.option_tooltip.0": "Indicates enchantability even when the item is already enchanted.",
+  "enchantips.config.tooltips.enchantability.division.option_tooltip.0": "Displays the enchantability value divided by 4, which is what is actually used in enchantment calculations.",
   "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.0": "Indicates how expensive an enchantment is to combine in an anvil.",
   "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.1": "Multiply by the enchantment's level to get the final cost.",
   "enchantips.config.tooltips.anvil_cost.switch.option_tooltip.2": "On enchanted books, also multiply by 0.5 and round down (minimum of ×1).",
@@ -122,6 +125,8 @@
   "enchantips.config.tooltips.enchantment_tags.switch.option_tooltip.0": "Indicates which tags an enchantment is in.",
   "enchantips.config.tooltips.enchantment_tags.limit.option_tooltip.0": "Shows a unique icon when the enchantment is in too many tags.",
   "enchantips.config.tooltips.modified_enchanting_power.switch.option_tooltip.0": "Shows a possible modified enchanting power range when enchanting.",
+  "enchantips.config.tooltips.modified_enchanting_power.switch.context.option_tooltip.0": "Attempts to narrow the modified enchanting power range using offers from other items with the same enchantability.",
+  "enchantips.config.tooltips.modified_enchanting_power.switch.context.option_tooltip.1": "Context is flushed upon joining a world or enchanting an item.",
   "enchantips.config.tooltips.extra_enchantments.switch.option_tooltip.0": "Shows other possible enchantments with a given enchanting offer.",
   "enchantips.config.tooltips.extra_enchantments.switch.option_tooltip.1": "If Modified Enchanting Power is enabled, each enchantment will show its applicable modified power range.",
   "enchantips.config.tooltips.extra_enchantments.limit.option_tooltip.0": "The number of enchantments shown before needing to scroll the list.",
@@ -171,5 +176,7 @@
   "enchantips.tooltip.repair_cost": "%s Repair Cost",
   "enchantips.tooltip.enchantability": "%s Enchantability",
   "enchantips.tooltip.modified_level": "Enchanting Power: %s-%s",
-  "enchantips.tooltip.modified_level.for_enchantment": "%s-%s"
+  "enchantips.tooltip.modified_level.single": "Enchanting Power: %s",
+  "enchantips.tooltip.modified_level.for_enchantment": "%s-%s",
+  "enchantips.tooltip.modified_level.for_enchantment.single": "%s"
 }

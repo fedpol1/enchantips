@@ -1,6 +1,5 @@
 package com.fedpol1.enchantips.mixin;
 
-import com.fedpol1.enchantips.accessor.InGameHudAccess;
 import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.gui.SlotHighlight;
 import net.minecraft.client.DeltaTracker;
@@ -14,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Hud.class)
-public abstract class HudMixin implements InGameHudAccess {
-
+public abstract class HudMixin {
 
     @Inject(method = "extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IILnet/minecraft/client/DeltaTracker;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getPopTime()I", ordinal = 0))
     private void enchantips$renderHighlightsInHotbar(GuiGraphicsExtractor context, int x, int y, DeltaTracker tickCounter, Player player, ItemStack itemStack, int seed, CallbackInfo ci) {

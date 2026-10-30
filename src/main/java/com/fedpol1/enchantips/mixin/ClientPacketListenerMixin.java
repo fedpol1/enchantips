@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.mixin;
 
 import com.fedpol1.enchantips.config.ModConfig;
+import com.fedpol1.enchantips.util.EnchantmentFilterContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
@@ -25,5 +26,6 @@ public abstract class ClientPacketListenerMixin {
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void enchantips$registerPerEnchantmentConfig(Minecraft client, Connection clientConnection, CommonListenerCookie clientConnectionState, CallbackInfo ci) {
         ModConfig.registerPerEnchantmentConfig(this.registryAccess);
+        EnchantmentFilterContext.reset();
     }
 }

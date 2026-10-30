@@ -19,6 +19,7 @@ public class ModOption<T> {
     public static final ModOption<Color> REPAIR_COST_VALUE_COLOR = ModCategory.TOOLTIPS_REPAIR_COST.addOption(new ColorOption(0xdf1f1f), "color.value", 0);
     public static final ModOption<Boolean> ENCHANTABILITY_SWITCH = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(true), "switch", 1);
     public static final ModOption<Boolean> ENCHANTABILITY_SWITCH_WHEN_ENCHANTED = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(false), "switch.when_enchanted", 1);
+    public static final ModOption<Boolean> ENCHANTABILITY_DIVISION = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new BooleanOption(false), "division", 1);
     public static final ModOption<Color> ENCHANTABILITY_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xbf007f), "color", 0);
     public static final ModOption<Color> ENCHANTABILITY_VALUE_COLOR = ModCategory.TOOLTIPS_ENCHANTABILITY.addOption(new ColorOption(0xff1f9f), "color.value", 0);
     public static final ModOption<Boolean> ANVIL_COST_SWITCH = ModCategory.TOOLTIPS_ANVIL_COST.addOption(new BooleanOption(false), "switch", 3);
@@ -31,6 +32,7 @@ public class ModOption<T> {
     public static final ModOption<Boolean> ENCHANTMENT_TAGS_SWITCH = ModCategory.TOOLTIPS_ENCHANTMENT_TAGS.addOption(new BooleanOption(false), "switch", 1);
     public static final ModOption<Integer> ENCHANTMENT_TAGS_LIMIT = ModCategory.TOOLTIPS_ENCHANTMENT_TAGS.addOption(new IntegerOption(5, 1, 256, 0), "limit", 1);
     public static final ModOption<Boolean> MODIFIED_ENCHANTING_POWER_SWITCH = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new BooleanOption(true), "switch", 1);
+    public static final ModOption<Boolean> MODIFIED_ENCHANTING_POWER_CONTEXT_SWITCH = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new BooleanOption(false), "switch.context", 2);
     public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf9f3f), "color", 0);
     public static final ModOption<Color> MODIFIED_ENCHANTING_POWER_VALUE_COLOR = ModCategory.TOOLTIPS_MODIFIED_ENCHANTING_POWER.addOption(new ColorOption(0xdf7f3f), "color.value", 0);
     public static final ModOption<Boolean> EXTRA_ENCHANTMENTS_SWITCH = ModCategory.TOOLTIPS_EXTRA_ENCHANTMENTS.addOption(new BooleanOption(true), "switch", 2);

@@ -17,14 +17,15 @@ public abstract class TooltipHelper {
     public static final String REPAIR_COST_TOOLTIP = EnchantipsClient.MODID + ".tooltip.repair_cost";
     public static final String ENCHANTABILITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantability";
     public static final String MODIFIED_LEVEL_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level";
+    public static final String MODIFIED_LEVEL_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.single";
     public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment";
+    public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment.single";
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
     public static final Identifier ANVIL_COST_SYMBOL = Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, Symbols.DIRECTORY + "/tooltip/anvil_cost");
     public static final Identifier WEIGHT_SYMBOL = Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, Symbols.DIRECTORY + "/tooltip/weight");
 
     public static MutableComponent buildSymbolledNumber(Identifier symbol, int value, int numberColor) {
-        MutableComponent text = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(value)));
         Style style = Style.EMPTY.withColor(numberColor);
         if(ModOption.SWATCHES_SWITCH.getValue()) {
             style = Style.EMPTY.withColor(ModOption.SWATCHES_FALLBACK_COLOR.getValue().getRGB());
@@ -35,25 +36,28 @@ public abstract class TooltipHelper {
     }
 
     public static MutableComponent buildModifiedLevel(int lower, int upper) {
+        String translation = lower == upper ? MODIFIED_LEVEL_SINGLE_TOOLTIP : MODIFIED_LEVEL_TOOLTIP;
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
                 TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_COLOR.getValue().getRGB()),
                 TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
-                MODIFIED_LEVEL_TOOLTIP);
+                translation);
     }
 
-    // is only responsible for generating the modified level interval prefix
+    // is only responsible for generating the modified level interval suffix
     public static MutableComponent buildModifiedLevelForEnchantment(int lower, int upper) {
+        String translation = lower == upper ? MODIFIED_LEVEL_FOR_ENCHANTMENT_SINGLE_TOOLTIP : MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP;
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
                 TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_COLOR.getValue().getRGB()),
                 TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
-                MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP
+                translation
         );
     }
 
+    // surprisingly, works even with translations with only one placeholder
     private static MutableComponent buildModifiedLevelGeneric(int lower, int upper, TextColor tooltipColor, TextColor valueColor, String translation) {
         MutableComponent lowerText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(lower)));
         MutableComponent upperText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(upper)));
@@ -69,7 +73,9 @@ public abstract class TooltipHelper {
     }
 
     public static MutableComponent buildEnchantability(int ench) {
-        MutableComponent enchText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(ench)));
+        MutableComponent enchText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(
+                ModOption.ENCHANTABILITY_DIVISION.getValue() ? ench / 4 : ench
+        )));
         enchText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_VALUE_COLOR.getValue().getRGB())));
         return Component.translatable(ENCHANTABILITY_TOOLTIP, enchText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_COLOR.getValue().getRGB())));
