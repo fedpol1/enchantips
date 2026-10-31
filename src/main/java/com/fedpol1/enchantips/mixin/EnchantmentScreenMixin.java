@@ -35,9 +35,9 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentMenu handler = t.getMenu();
         if(ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
-            IntPair bounds = ((EnchantmentMenuAccess)handler).enchantips$getPowerBounds(j);
+            IntBounds bounds = ((EnchantmentMenuAccess)handler).enchantips$getPowerBounds(j);
             if(bounds != null) {
-                list.add(TooltipHelper.buildModifiedLevel(bounds.first(), bounds.second()));
+                list.add(TooltipHelper.buildModifiedLevel(bounds.lower(), bounds.upper()));
             }
         }
         if(ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {

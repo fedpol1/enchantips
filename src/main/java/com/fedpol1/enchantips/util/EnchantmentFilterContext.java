@@ -4,26 +4,29 @@ import java.util.HashMap;
 
 public abstract class EnchantmentFilterContext {
 
-    private static HashMap<IntPair, IntPair> context = new HashMap<>();
+    private static HashMap<FilterContextKey, IntBounds> context = new HashMap<>();
 
-    public static void put(int offerLevel, int enchantability, int lowerBound, int upperBound) {
-        IntPair key = new IntPair(offerLevel, enchantability / 4);
+    public static void put(int offerLevel, int enchantability, int slot, int lowerBound, int upperBound) {
+        FilterContextKey key = new FilterContextKey(offerLevel, enchantability / 4, slot);
         if(!EnchantmentFilterContext.context.containsKey(key)) {
-            EnchantmentFilterContext.context.put(key, new IntPair(lowerBound, upperBound));
+            EnchantmentFilterContext.context.put(key, new IntBounds(lowerBound, upperBound));
             return;
         }
-        IntPair bounds = EnchantmentFilterContext.getBounds(offerLevel, enchantability);
-        EnchantmentFilterContext.context.put(key, new IntPair(
-                Math.max(bounds.first(), lowerBound),
-                Math.min(bounds.second(), upperBound)
+        IntBounds bounds = EnchantmentFilterContext.getBounds(offerLevel, enchantability, slot);
+        EnchantmentFilterContext.context.put(key, new IntBounds(
+                Math.max(bounds.lower(), lowerBound),
+                Math.min(bounds.upper(), upperBound)
         ));
     }
 
-    public static IntPair getBounds(int offerLevel, int enchantability) {
-        return EnchantmentFilterContext.context.get(new IntPair(offerLevel, enchantability / 4));
+    public static IntBounds getBounds(int offerLevel, int enchantability, int slot) {
+        return EnchantmentFilterContext.context.get(new FilterContextKey(offerLevel, enchantability / 4, slot));
     }
 
     public static void reset() {
         EnchantmentFilterContext.context = new HashMap<>();
+    }
+
+    public record FilterContextKey(int offerLevel, int enchantability, int slot) {
     }
 }

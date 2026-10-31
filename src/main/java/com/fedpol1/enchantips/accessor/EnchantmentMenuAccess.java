@@ -1,11 +1,11 @@
 package com.fedpol1.enchantips.accessor;
 
 import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
-import com.fedpol1.enchantips.util.IntPair;
+import com.fedpol1.enchantips.util.IntBounds;
 
 public interface EnchantmentMenuAccess {
 
-    IntPair enchantips$getPowerBounds(int i);
+    IntBounds enchantips$getPowerBounds(int i);
     ScrollableTooltipSection enchantips$getEnchantmentHint(int i);
     void enchantips$updateContext(int dataSlotIndex);
 }
