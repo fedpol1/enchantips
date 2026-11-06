@@ -2,7 +2,6 @@ package com.fedpol1.enchantips.config;
 
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.deserializer.ConfigTreeDeserializer;
-import com.fedpol1.enchantips.config.deserializer.OldConfigTreeDeserializer;
 import com.fedpol1.enchantips.config.serializer.ConfigTreeSerializer;
 import com.fedpol1.enchantips.config.tree.*;
 import com.fedpol1.enchantips.config.tree.visitor.*;
@@ -15,7 +14,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -93,11 +91,7 @@ public class ModConfig {
                         .fromJson(fileContents.toString(), ConfigTree.class);
             }
             catch (Exception e) {
-                EnchantipsClient.LOGGER.info("Falling back on old config format.");
-                new GsonBuilder()
-                        .registerTypeAdapter(ConfigTree.class, new OldConfigTreeDeserializer())
-                        .create()
-                        .fromJson(fileContents.toString(), ConfigTree.class);
+                EnchantipsClient.LOGGER.info("Failed to read configuration file.");
             }
         }
         catch (IOException | JsonSyntaxException e) {

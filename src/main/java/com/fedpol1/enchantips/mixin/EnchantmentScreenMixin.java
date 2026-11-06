@@ -34,7 +34,10 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         if(optional.isEmpty()) { return; }
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentMenu handler = t.getMenu();
-        if(ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
+        if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue()) {
+            list.add(TooltipHelper.buildEnchantmentSeed(handler.getEnchantmentSeed()));
+        }
+        if(ModOption.ENCHANTING_POWER_SWITCH.getValue()) {
             IntBounds bounds = ((EnchantmentMenuAccess)handler).enchantips$getPowerBounds(j);
             if(bounds != null) {
                 list.add(TooltipHelper.buildModifiedLevel(bounds.lower(), bounds.upper()));

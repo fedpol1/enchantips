@@ -20,6 +20,7 @@ public abstract class TooltipHelper {
     public static final String MODIFIED_LEVEL_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.single";
     public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment";
     public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment.single";
+    public static final String ENCHANTMENT_SEED_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantment_seed";
     public static final String SCROLLABLE_TOOLTIP_END = EnchantipsClient.MODID + ".tooltip.scrollable.end";
     public static final String SCROLLABLE_TOOLTIP_START = EnchantipsClient.MODID + ".tooltip.scrollable.start";
     public static final Identifier ANVIL_COST_SYMBOL = Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, Symbols.DIRECTORY + "/tooltip/anvil_cost");
@@ -40,8 +41,8 @@ public abstract class TooltipHelper {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
-                TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_COLOR.getValue().getRGB()),
-                TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
+                TextColor.fromRgb(ModOption.ENCHANTING_POWER_COLOR.getValue().getRGB()),
+                TextColor.fromRgb(ModOption.ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
                 translation);
     }
 
@@ -51,8 +52,8 @@ public abstract class TooltipHelper {
         return buildModifiedLevelGeneric(
                 lower,
                 upper,
-                TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_COLOR.getValue().getRGB()),
-                TextColor.fromRgb(ModOption.MODIFIED_ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
+                TextColor.fromRgb(ModOption.ENCHANTING_POWER_COLOR.getValue().getRGB()),
+                TextColor.fromRgb(ModOption.ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()),
                 translation
         );
     }
@@ -65,6 +66,16 @@ public abstract class TooltipHelper {
         upperText.setStyle(Style.EMPTY.withColor(valueColor));
         return Component.translatable(translation, lowerText, upperText).setStyle(Style.EMPTY.withColor(tooltipColor));
 
+    }
+
+    public static MutableComponent buildEnchantmentSeed(int signedSeed) {
+        int unsignedSeed = Short.toUnsignedInt((short) signedSeed);
+        MutableComponent seedText = MutableComponent.create(
+                new PlainTextContents.LiteralContents(Integer.toString(unsignedSeed))
+        );
+        seedText.setStyle(Style.EMPTY.withColor(ModOption.ENCHANTING_POWER_VALUE_COLOR.getValue().getRGB()));
+        return Component.translatable(ENCHANTMENT_SEED_TOOLTIP, seedText)
+                .setStyle(Style.EMPTY.withColor(ModOption.ENCHANTING_POWER_COLOR.getValue().getRGB()));
     }
 
     public static MutableComponent buildForcedGlint(boolean b) {

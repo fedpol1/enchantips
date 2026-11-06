@@ -18,10 +18,10 @@ public class IntegerConfigInfoLine extends ConfigInfoLine<Integer> implements Re
     public int getMaximumDigits() {
         int lowerBound = ((IntegerOption) this.data).getMin();
         int upperBound = ((IntegerOption) this.data).getMax();
-        lowerBound = lowerBound == 0 ? 1 : Math.abs(lowerBound);
-        upperBound = upperBound == 0 ? 1 : Math.abs(upperBound);
-        int lowerDigits = (int) Math.floor(Math.log10(lowerBound)) + (lowerBound < 0 ? 2 : 1);
-        int upperDigits = (int) Math.floor(Math.log10(upperBound)) + (upperBound < 0 ? 2 : 1);
+        lowerBound += (lowerBound == 0 || lowerBound == Integer.MIN_VALUE) ? 1 : 0;
+        upperBound += (upperBound == 0 || upperBound == Integer.MIN_VALUE) ? 1 : 0;
+        int lowerDigits = (int) Math.floor(Math.log10(Math.abs(lowerBound))) + (lowerBound < 0 ? 2 : 1);
+        int upperDigits = (int) Math.floor(Math.log10(Math.abs(upperBound))) + (upperBound < 0 ? 2 : 1);
         return Math.max(lowerDigits, upperDigits);
     }
 }

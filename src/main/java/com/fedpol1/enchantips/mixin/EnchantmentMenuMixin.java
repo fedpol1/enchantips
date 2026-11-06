@@ -111,7 +111,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
                 EnchantmentFilterer.getLowerBound(enchLevel, itemStack, t.costs[slotIndex]),
                 EnchantmentFilterer.getUpperBound(enchLevel, itemStack, t.costs[slotIndex])
         );
-        if(ModOption.MODIFIED_ENCHANTING_POWER_CONTEXT_SWITCH.getValue()) {
+        if(ModOption.ENCHANTING_POWER_CONTEXT_SWITCH.getValue()) {
             Enchantable enchComponent = itemStack.get(DataComponents.ENCHANTABLE);
             int enchantability = enchComponent == null ? 0 : enchComponent.value();
             EnchantmentFilterContext.put(this.costs[slotIndex], enchantability, slotIndex, bounds.lower(), bounds.upper());
@@ -141,7 +141,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         List<Component> extra = new ArrayList<>();
         for(EnchantmentLevel levelData : levels) {
             MutableComponent text = (MutableComponent) EnchantmentAppearanceHelper.getName(levelData);
-            if (ModOption.MODIFIED_ENCHANTING_POWER_SWITCH.getValue()) {
+            if (ModOption.ENCHANTING_POWER_SWITCH.getValue()) {
                 text.append(" ").append(
                         TooltipHelper.buildModifiedLevelForEnchantment(
                                 levelData.getLowestModifiedLevel(),
