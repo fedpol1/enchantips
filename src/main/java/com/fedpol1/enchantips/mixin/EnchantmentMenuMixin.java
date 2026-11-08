@@ -23,7 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,9 +48,9 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
     @Final
     public int[] costs;
 
-    @Shadow
-    @Final
-    public int[] levelClue;
+    @Unique
+    public boolean enchantips$stale;
+
     @Unique
     private final ScrollableTooltipSection[] enchantips$extraHints = new ScrollableTooltipSection[3];
 
@@ -68,6 +70,79 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
     }
 
     @Unique
+    public boolean enchantips$isStale() {
+        return this.enchantips$stale;
+    }
+
+    @Unique
+    public void enchantips$setStale(boolean stale) {
+        this.enchantips$stale = stale;
+    }
+
+    @Unique
+    public void enchantips$updateFullEnchantmentHint(int slot) {
+        Level world = Minecraft.getInstance().level;
+        if(world == null) { return; }
+        if(EnchantmentSeedSearcher.getLatestCandidates().size() != 1) { return; }
+        IdMap<Holder<Enchantment>> enchantmentMap = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
+        Holder<Enchantment> hintHolder = enchantmentMap.byId(((EnchantmentMenu)(Object)this).enchantClue[slot]);
+        if(hintHolder == null) { return; }
+        int seed = EnchantmentSeedSearcher.getLatestCandidates().getFirst();
+        ItemStack stack = this.enchantSlots.getItem(0);
+        Enchantable component = stack.get(DataComponents.ENCHANTABLE);
+        List<EnchantmentInstance> enchantmentInstances = EnchantmentSeedSearcher.getEnchantments(
+                new LegacyRandomSource((long)seed + slot),
+                stack.getItem(),
+                component == null ? 0 : component.value(),
+                this.costs[slot]
+        );
+        List<Component> hint = enchantmentInstances.stream()
+                .map((instance) -> EnchantmentLevel.of(instance.enchantment().value(), instance.level()))
+                .filter((el) -> el.getEnchantment() != hintHolder.value())
+                .map(EnchantmentAppearanceHelper::getName).toList();
+
+        this.enchantips$extraHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
+    }
+
+    @Unique
+    public void enchantips$updatePartialEnchantmentHint(int slot, IdMap<Holder<Enchantment>> enchantmentMap, Holder<Enchantment> hintHolder) {
+        Level world = Minecraft.getInstance().level;
+        if(world == null) { return; }
+        if(hintHolder == null) { return; }
+        ItemStack stack = this.enchantSlots.getItem(0);
+        List<EnchantmentLevel> levels = new ArrayList<>();
+        for (Holder<Enchantment> current : enchantmentMap) {
+            if ((!(stack.is(current.value().getSupportedItems()) && current.value().isPrimaryItem(stack)) && !stack.is(Items.BOOK)) ||
+                    !Enchantment.areCompatible(hintHolder, current) ||
+                    (!current.is(EnchantmentTags.IN_ENCHANTING_TABLE))
+            ) { continue; }
+
+            for (int z = current.value().getMinLevel(); z <= current.value().getMaxLevel(); z++) {
+                EnchantmentLevel level = EnchantmentLevel.of(current.value(), z);
+
+                if (level.getHighestModifiedLevel() >= this.enchantips$powerBounds[slot].lower() &&
+                        level.getLowestModifiedLevel() <= this.enchantips$powerBounds[slot].upper() &&
+                        level.getLowestModifiedLevel() <= level.getHighestModifiedLevel()
+                ) {
+                    levels.add(EnchantmentLevel.of(current.value(), z));
+                }
+            }
+        }
+        Collections.sort(levels);
+        List<Component> hint = new ArrayList<>();
+        for(EnchantmentLevel levelData : levels) {
+            MutableComponent text = (MutableComponent) EnchantmentAppearanceHelper.getName(levelData);
+            if (ModOption.ENCHANTING_POWER_SWITCH.getValue()) {
+                text.append(" ").append(TooltipHelper.buildModifiedLevelForEnchantment(
+                        levelData.getLowestModifiedLevel(), levelData.getHighestModifiedLevel()
+                ));
+            }
+            hint.add(text);
+        }
+        this.enchantips$extraHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
+    }
+
+    @Unique
     public IntBounds enchantips$getPowerBounds(int i) {
         return this.enchantips$powerBounds[i];
     }
@@ -82,15 +157,13 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         ClientLevel lev = Minecraft.getInstance().level;
         EnchantmentMenu t = (EnchantmentMenu)(Object)this;
         if(lev != null && lev.isClientSide() && t.costs[buttonId] > 0) {
-            EnchantmentFilterContext.reset();
+            EnchantmentBoundsContext.reset();
+            EnchantmentSeedContext.reset();
         }
     }
 
-    // only update context for data slots corresponding to levelCost, otherwise weird desynced state can occur when
-    //   hotkeying items to and from the enchanting slot
-    public void enchantips$updateContext(int updatedDataSlot) {
-        if(updatedDataSlot < this.enchantips$finalDataSlot - 2 || updatedDataSlot > this.enchantips$finalDataSlot) { return; }
-        int slotIndex = updatedDataSlot - (this.enchantips$finalDataSlot - 2);
+    @Unique
+    public void enchantips$updateContext(int slotIndex) {
         EnchantmentMenu t = (EnchantmentMenu)(Object)this;
         Level world = Minecraft.getInstance().level;
         if(world == null) { return; }
@@ -102,55 +175,30 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         }
 
         IdMap<Holder<Enchantment>> enchantmentMap = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
-        Holder<Enchantment> enchantmentHolder = enchantmentMap.byId(t.enchantClue[slotIndex]);
-        if(enchantmentHolder == null || t.levelClue[slotIndex] < 0 || t.costs[slotIndex] < 0) { return; }
+        Holder<Enchantment> hintHolder = enchantmentMap.byId(t.enchantClue[slotIndex]);
+        if(hintHolder == null || t.levelClue[slotIndex] < 0 || t.costs[slotIndex] < 0) { return; }
 
-        Enchantment givenEnchantment = enchantmentHolder.value();
-        EnchantmentLevel enchLevel = EnchantmentLevel.of(givenEnchantment, t.levelClue[slotIndex]);
+        Enchantment hintEnchantment = hintHolder.value();
+        EnchantmentLevel enchLevel = EnchantmentLevel.of(hintEnchantment, t.levelClue[slotIndex]);
         IntBounds bounds = new IntBounds(
                 EnchantmentFilterer.getLowerBound(enchLevel, itemStack, t.costs[slotIndex]),
                 EnchantmentFilterer.getUpperBound(enchLevel, itemStack, t.costs[slotIndex])
         );
-        if(ModOption.ENCHANTING_POWER_CONTEXT_SWITCH.getValue()) {
-            Enchantable enchComponent = itemStack.get(DataComponents.ENCHANTABLE);
-            int enchantability = enchComponent == null ? 0 : enchComponent.value();
-            EnchantmentFilterContext.put(this.costs[slotIndex], enchantability, slotIndex, bounds.lower(), bounds.upper());
-            bounds = EnchantmentFilterContext.getBounds(this.costs[slotIndex], enchantability, slotIndex);
+        Enchantable enchComponent = itemStack.get(DataComponents.ENCHANTABLE);
+        int enchantability = enchComponent == null ? 0 : enchComponent.value();
+        if(ModOption.ENCHANTING_CONTEXT_SWITCH.getValue()) {
+            EnchantmentBoundsContext.put(this.costs[slotIndex], enchantability, slotIndex, bounds.lower(), bounds.upper());
+            bounds = EnchantmentBoundsContext.getBounds(this.costs[slotIndex], enchantability, slotIndex);
+            if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue() && EnchantmentSeedSearcher.shouldSearch()) {
+                EnchantmentSeedContext.put(this.costs[slotIndex], itemStack, slotIndex, hintEnchantment, t.levelClue[slotIndex]);
+                EnchantmentSeedSearcher.startSearch(t.getEnchantmentSeed());
+            }
         }
         this.enchantips$powerBounds[slotIndex] = bounds;
-
-        List<EnchantmentLevel> levels = new ArrayList<>();
-        for (Holder<Enchantment> current : enchantmentMap) {
-            if ((!(itemStack.is(current.value().getSupportedItems()) && current.value().isPrimaryItem(itemStack)) && !itemStack.is(Items.BOOK)) ||
-                    !Enchantment.areCompatible(enchantmentHolder, current) ||
-                    (!current.is(EnchantmentTags.IN_ENCHANTING_TABLE))
-            ) { continue; }
-
-            for (int z = current.value().getMinLevel(); z <= current.value().getMaxLevel(); z++) {
-                EnchantmentLevel level = EnchantmentLevel.of(current.value(), z);
-
-                if (level.getHighestModifiedLevel() >= this.enchantips$powerBounds[slotIndex].lower() &&
-                        level.getLowestModifiedLevel() <= this.enchantips$powerBounds[slotIndex].upper() &&
-                        level.getLowestModifiedLevel() <= level.getHighestModifiedLevel()
-                ) {
-                    levels.add(EnchantmentLevel.of(current.value(), z));
-                }
-            }
+        if(EnchantmentSeedSearcher.getLatestCandidates().size() == 1) {
+            this.enchantips$updateFullEnchantmentHint(slotIndex);
+        } else {
+            this.enchantips$updatePartialEnchantmentHint(slotIndex, enchantmentMap, hintHolder);
         }
-        Collections.sort(levels);
-        List<Component> extra = new ArrayList<>();
-        for(EnchantmentLevel levelData : levels) {
-            MutableComponent text = (MutableComponent) EnchantmentAppearanceHelper.getName(levelData);
-            if (ModOption.ENCHANTING_POWER_SWITCH.getValue()) {
-                text.append(" ").append(
-                        TooltipHelper.buildModifiedLevelForEnchantment(
-                                levelData.getLowestModifiedLevel(),
-                                levelData.getHighestModifiedLevel()
-                        )
-                );
-            }
-            extra.add(text);
-        }
-        this.enchantips$extraHints[slotIndex] = new ScrollableTooltipSection(extra, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
     }
 }

@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,6 +26,17 @@ import net.minecraft.world.item.enchantment.Enchantment;
 @Mixin(EnchantmentScreen.class)
 public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
 
+    @Inject(method = "containerTick()V", at = @At(value = "RETURN"))
+    private void enchantips$updateMenu(CallbackInfo ci) {
+        EnchantmentMenuAccess menuAccess = (EnchantmentMenuAccess)((EnchantmentScreen)(Object)this).getMenu();
+        if(!menuAccess.enchantips$isStale()) {
+            menuAccess.enchantips$updateContext(0);
+            menuAccess.enchantips$updateContext(1);
+            menuAccess.enchantips$updateContext(2);
+            menuAccess.enchantips$setStale(true);
+        }
+    }
+
     @Inject(method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
             slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EnchantmentScreen;isHovering(IIIIDD)Z")),
             at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.AFTER),
@@ -34,16 +46,36 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         if(optional.isEmpty()) { return; }
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentMenu handler = t.getMenu();
-        if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue()) {
-            list.add(TooltipHelper.buildEnchantmentSeed(handler.getEnchantmentSeed()));
+        ArrayList<Integer> candidates = EnchantmentSeedSearcher.getLatestCandidates();
+        boolean fullHint = EnchantmentSeedSearcher.getLatestCandidates().size() == 1 && ModOption.ENCHANTMENT_SEED_SWITCH.getValue();
+        if(fullHint && ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
+            ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getEnchantmentHint(j);
+            if(section != null) {
+                ScrollableTooltipSection.setActiveSection(section);
+                list.addAll(section.getShownTextAll());
+            }
         }
-        if(ModOption.ENCHANTING_POWER_SWITCH.getValue()) {
+        if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue()) {
+            if(!ModOption.ENCHANTING_CONTEXT_SWITCH.getValue() || !fullHint) {
+                list.add(TooltipHelper.buildSingleTranslatedInteger(
+                        Short.toUnsignedInt((short) handler.getEnchantmentSeed()),
+                        TooltipHelper.ENCHANTMENT_SEED_PARTIAL_TOOLTIP
+                ));
+            }
+            if(ModOption.ENCHANTING_CONTEXT_SWITCH.getValue()) {
+                list.add(fullHint ?
+                        TooltipHelper.buildSingleTranslatedInteger(candidates.getFirst(), TooltipHelper.ENCHANTMENT_SEED_FULL_TOOLTIP) :
+                        TooltipHelper.buildSingleTranslatedInteger(candidates.size(), TooltipHelper.ENCHANTMENT_SEED_CANDIDATES_TOOLTIP)
+                );
+            }
+        }
+        if(ModOption.ENCHANTING_POWER_SWITCH.getValue() && !fullHint) {
             IntBounds bounds = ((EnchantmentMenuAccess)handler).enchantips$getPowerBounds(j);
             if(bounds != null) {
                 list.add(TooltipHelper.buildModifiedLevel(bounds.lower(), bounds.upper()));
             }
         }
-        if(ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
+        if(!fullHint && ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
             ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getEnchantmentHint(j);
             if(section != null) {
                 ScrollableTooltipSection.setActiveSection(section);

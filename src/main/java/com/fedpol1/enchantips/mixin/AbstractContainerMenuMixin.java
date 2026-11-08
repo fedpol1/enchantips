@@ -34,7 +34,7 @@ public abstract class AbstractContainerMenuMixin implements AbstractContainerMen
         if (((Object)this instanceof EnchantmentMenu handler) &&
                 ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
         ) {
-            ((EnchantmentMenuAccess)handler).enchantips$updateContext(id);
+            ((EnchantmentMenuAccess)handler).enchantips$setStale(false);
         }
     }
 }
