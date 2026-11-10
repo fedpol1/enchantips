@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,12 +320,12 @@ public class InfoLine implements Renderable, NarratableEntry {
     }
 
     @Override
-    public NarrationPriority narrationPriority() {
+    public @NonNull NarrationPriority narrationPriority() {
         return NarrationPriority.FOCUSED;
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput output) {
+    public void updateNarration(@NonNull NarrationElementOutput output) {
         return;
     }
 }

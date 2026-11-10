@@ -35,10 +35,12 @@ public class InfoLineContainer implements InfoMultiLine, Renderable, Iterable<In
         this.lines = new ArrayList<>();
     }
 
+    @Override
     public void addLine(Component t) {
         this.addLine(new InfoLine(t));
     }
 
+    @Override
     public void addLine(InfoLine line) throws NullPointerException {
         if(line == null) {
             throw new NullPointerException("Tried to add null InfoLine to InfoLineContainer");
@@ -59,6 +61,7 @@ public class InfoLineContainer implements InfoMultiLine, Renderable, Iterable<In
         }
     }
 
+    @Override
     public @NonNull Iterator<InfoLine> iterator() {
         return new InfoLineIterator(this);
     }
@@ -127,7 +130,7 @@ public class InfoLineContainer implements InfoMultiLine, Renderable, Iterable<In
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         for(InfoLine info : lines) {
             info.extractRenderState(extractor, mouseX, mouseY, delta);
         }

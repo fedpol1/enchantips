@@ -2,13 +2,12 @@
 Mod that enhances tooltips related to enchanting or enchantments.
 
 ## Dependencies
-+ Minecraft 26.2 or greater
-+ Fabric Loader 0.19 or greater
-+ Fabric API 0.154.0 or greater
++ Minecraft 26.3 or greater
++ Fabric Loader 0.19.5 or greater
++ Fabric API 0.162.0 or greater
 
 **For Configuration:**
-+ Mod Menu 20.0.0 or greater
-+ YetAnotherConfigLib 3.9.4 or greater (optional - not required if compact configuration is enabled)
++ Mod Menu 21.0.0 or greater
 
 ## Features
 
@@ -18,11 +17,15 @@ Mod that enhances tooltips related to enchanting or enchantments.
 
 **Enchantment Anvil Cost:** This is a per-enchantment value that indicates how much it costs to add via an anvil; this can be made visible.
 
+**Enchantment Weight:** This is a per-enchantment value that indicates how often it appears in the enchantment table; this can be made visible.
+
 **Enchantment Targets:** The set of items that the enchantment can go on, either through an enchanting table or through an anvil. This can be made visible as a series of icons next to the enchantment name. By default, only items which are applicable to vanilla survival are listed, but more may be added via resource packs.
 
 **Enchantment Tags:** The set of tags an enchantment is a member of. This can be made visible as a series of icons next to the enchantment name. By default, only tags that are applicable to vanilla survival are listed (curse, tradeable, etc.) but more may be added via resource packs.
 
-**Enchanting Power:** when enchanting an item, the game modifies the given level offer (e.g. level 30 enchantment) and uses that modified value to determine which enchantments you get. Enchantips gives a range of possible values that this value could be and displays it.
+**Enchanting Power:** When enchanting an item, the game modifies the given level offer (e.g. level 30 enchantment) and uses that modified value to determine which enchantments you get. Enchantips gives a range of possible values that this value could be and displays it.
+
+**Enchantment Seed:** Enchantment offers are generated from a single number. Enchantips attempts to make this number visible, and if successful, can show the real list of enchantments on every table offer.
 
 **Anvil Optimizer:** Sometimes, swapping the two input items in an anvil reduces the cost of the operation without influencing the output enchantments. Enchantips adds an indicator that displays when an operation could be optimized like this and also a button that swaps the items for you with one click. _Note that using the button could flag anticheats on servers._
 

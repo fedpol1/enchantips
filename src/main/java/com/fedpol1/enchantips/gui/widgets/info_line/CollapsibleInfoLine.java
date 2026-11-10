@@ -20,10 +20,12 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         this.setters.add(this.expandButton);
     }
 
+    @Override
     public void addLine(Component line) {
         this.addLine(new InfoLine(line));
     }
 
+    @Override
     public void addLine(InfoLine line) {
         if(line == null) { return; }
         line.parent = this.lines;
@@ -31,10 +33,12 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         this.lines.addLine(line);
     }
 
+    @Override
     public int getHeight(int index) {
         return super.getHeight(index) + (this.isCollapsed() ? 0 : this.lines.getHeight(index));
     }
 
+    @Override
     public int getHeight() {
         return this.getHeight(this.numChildren());
     }
@@ -55,6 +59,7 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         }
     }
 
+    @Override
     protected void setNearestScrollableParent(ScrollableInfoLineContainer container) {
         super.setNearestScrollableParent(container);
         this.lines.setNearestScrollableParent(container);
@@ -68,14 +73,17 @@ public class CollapsibleInfoLine extends InfoLine implements InfoMultiLine, Rend
         }
     }
 
+    @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return (!this.isCollapsed() && this.lines.mouseClicked(click, doubled)) || super.mouseClicked(click, doubled);
     }
 
+    @Override
     public boolean keyPressed(KeyEvent input) {
         return (!this.isCollapsed() && this.lines.keyPressed(input)) || super.keyPressed(input);
     }
 
+    @Override
     public boolean charTyped(CharacterEvent input) {
         return (!this.isCollapsed() && this.lines.charTyped(input)) || super.charTyped(input);
     }

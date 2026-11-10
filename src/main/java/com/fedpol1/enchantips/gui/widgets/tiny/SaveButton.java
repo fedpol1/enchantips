@@ -23,6 +23,7 @@ public class SaveButton extends BaseSetter<ConfigInfoLine<?>, Object> {
         super.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/save"));
     }
 
+    @Override
     protected List<Component> getTooltip() {
         return this.line.getSaveButtonTooltip();
     }

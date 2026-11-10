@@ -12,6 +12,7 @@ public class IntegerSetter extends TextSetter<Integer> {
         this.textField.setText(this.getStringValue());
     }
 
+    @Override
     public void readStringValue(String s) {
         try {
             this.value = Integer.parseInt(s);
@@ -21,11 +22,13 @@ public class IntegerSetter extends TextSetter<Integer> {
 
     }
 
+    @Override
     public String getStringValue() {
         if(this.value == null) { return ""; }
         return Integer.toString(this.value);
     }
 
+    @Override
     public int getWidth() {
         return this.textField.getWidth() + 2;
     }
@@ -35,11 +38,13 @@ public class IntegerSetter extends TextSetter<Integer> {
         this.textField.setText(this.getStringValue());
     }
 
+    @Override
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         this.textField.setPosition(x + 1, y);
     }
 
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         this.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/integer_setter"));
         this.textField.extractRenderState(extractor, mouseX, mouseY, delta);

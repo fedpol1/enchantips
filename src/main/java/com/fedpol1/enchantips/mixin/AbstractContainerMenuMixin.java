@@ -28,9 +28,9 @@ public abstract class AbstractContainerMenuMixin implements AbstractContainerMen
         return this.dataSlots;
     }
 
+    @SuppressWarnings("ConstantValue")
     @Inject(method = "setData(II)V", at = @At(value = "RETURN"))
     public void enchantips$setProperty(int id, int value, CallbackInfo ci) throws IllegalStateException {
-        //noinspection ConstantValue
         if (((Object)this instanceof EnchantmentMenu handler) &&
                 ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
         ) {

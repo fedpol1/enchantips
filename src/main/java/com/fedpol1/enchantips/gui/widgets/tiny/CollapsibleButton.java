@@ -18,6 +18,7 @@ public class CollapsibleButton extends BaseSetter<CollapsibleInfoLine, Object> {
         return this.collapsed;
     }
 
+    @Override
     public boolean canTrigger() {
         return this.line.numChildren() != 0;
     }

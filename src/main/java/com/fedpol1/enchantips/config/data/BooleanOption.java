@@ -3,8 +3,6 @@ package com.fedpol1.enchantips.config.data;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.gui.widgets.info_line.BooleanConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 
@@ -56,14 +54,5 @@ public class BooleanOption implements Data<Boolean> {
                 this,
                 this.value
         );
-    }
-
-    public Option<Boolean> getYaclOption(OptionNode<Boolean> optionNode) {
-        return Option.<Boolean>createBuilder()
-                .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                .controller(TickBoxControllerBuilder::create)
-                .name(this.getOptionTitle(optionNode))
-                .description(this.getOptionDescription(optionNode))
-                .build();
     }
 }

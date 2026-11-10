@@ -1,22 +1,21 @@
 package com.fedpol1.enchantips.config.data;
 
 import com.fedpol1.enchantips.config.tree.OptionNode;
+import com.fedpol1.enchantips.gui.widgets.info_line.ActionConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
-import dev.isxander.yacl3.api.ButtonOption;
-import dev.isxander.yacl3.gui.YACLScreen;
 import java.util.List;
-import java.util.function.BiConsumer;
+
 import net.minecraft.network.chat.Component;
 
-public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> {
+public class ActionOption implements Data<Runnable> {
 
-    private BiConsumer<YACLScreen, ButtonOption> action;
+    private Runnable action;
 
-    public ActionOption(BiConsumer<YACLScreen, ButtonOption> action) {
+    public ActionOption(Runnable action) {
         this.action = action;
     }
 
-    public BiConsumer<YACLScreen, ButtonOption> getValue() {
+    public Runnable getValue() {
         return this.getDefaultValue();
     }
 
@@ -24,16 +23,16 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
         return "";
     }
 
-    public BiConsumer<YACLScreen, ButtonOption> getDefaultValue() {
+    public Runnable getDefaultValue() {
         // this should never be null
         return this.action;
     }
 
-    public void setValue(BiConsumer<YACLScreen, ButtonOption> action) {
+    public void setValue(Runnable action) {
         this.action = action;
     }
 
-    public boolean canSet(BiConsumer<YACLScreen, ButtonOption> action) {
+    public boolean canSet(Runnable action) {
         return false;
     }
 
@@ -41,24 +40,16 @@ public class ActionOption implements Data<BiConsumer<YACLScreen, ButtonOption>> 
         // empty
     }
 
-    public void run (YACLScreen screen, ButtonOption button) {
-        this.action.accept(screen, button);
-        screen.onClose();
-    }
-
-    public List<Component> getSaveTooltip(BiConsumer<YACLScreen, ButtonOption> v) {
+    public List<Component> getSaveTooltip(Runnable v) {
         return null;
     }
 
-    public ConfigInfoLine<BiConsumer<YACLScreen, ButtonOption>> getConfigLine(OptionNode<BiConsumer<YACLScreen, ButtonOption>> optionNode) {
-        return null;
-    }
-
-    public ButtonOption getYaclOption(OptionNode<BiConsumer<YACLScreen, ButtonOption>> optionNode) {
-        return ButtonOption.createBuilder()
-                .action(this::run)
-                .name(this.getOptionTitle(optionNode))
-                .description(this.getOptionDescription(optionNode))
-                .build();
+    public ConfigInfoLine<Runnable> getConfigLine(OptionNode<Runnable> optionNode) {
+        return new ActionConfigInfoLine(
+                this.getOptionTitle(optionNode),
+                this.getOptionTooltip(optionNode),
+                this,
+                this.action
+        );
     }
 }

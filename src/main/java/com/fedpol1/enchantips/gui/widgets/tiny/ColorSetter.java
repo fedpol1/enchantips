@@ -15,6 +15,7 @@ public class ColorSetter extends TextSetter<Color> {
         this.textField.setText(this.getStringValue());
     }
 
+    @Override
     public void readStringValue(String s) {
         try {
             this.value = new Color(Integer.parseInt(s, 16));
@@ -24,20 +25,24 @@ public class ColorSetter extends TextSetter<Color> {
 
     }
 
+    @Override
     public String getStringValue() {
         if(this.value == null) { return ""; }
         return String.format(Locale.ROOT, "%06X", this.value.getRGB() & 0xffffff);
     }
 
+    @Override
     public int getWidth() {
         return this.textField.getWidth() + 10;
     }
 
+    @Override
     public void setPosition(int x, int y) {
         super.setPosition(x, y);
         this.textField.setPosition(x + 9, y);
     }
 
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         this.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/color_setter"));
         if(this.value != null) {

@@ -93,7 +93,7 @@ public class EnchantmentSeedSearcher implements Runnable{
         return list;
     }
 
-    private boolean checkSeed(long seed, EnchantmentSeedContext.FilterContextKey key) {
+    private boolean checkSeed(int seed, EnchantmentSeedContext.FilterContextKey key) {
         LegacyRandomSource random = new LegacyRandomSource(seed + key.slot());
         List<EnchantmentInstance> list = EnchantmentSeedSearcher.getEnchantments(random, key.item(), key.enchantability(), key.offerLevel());
 

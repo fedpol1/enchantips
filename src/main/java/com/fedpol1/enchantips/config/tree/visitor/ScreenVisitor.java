@@ -1,15 +1,13 @@
 package com.fedpol1.enchantips.config.tree.visitor;
 
-import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.*;
-import dev.isxander.yacl3.api.*;
+import com.fedpol1.enchantips.gui.widgets.info_line.*;
 import java.util.Map;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -18,78 +16,71 @@ import net.minecraft.world.level.Level;
 public class ScreenVisitor implements TreeVisitor {
 
     public Object visit(ConfigTree n, Object data) {
-        YetAnotherConfigLib.Builder yaclBuilder = YetAnotherConfigLib.createBuilder()
-                .title(Component.translatable(n.getFullName()))
-                .save(ModConfig::writeConfig);
+        ScrollableInfoLineContainer lines = new ScrollableInfoLineContainer(0xff404040, 6);
         for(Map.Entry<String, Node> current : n.getChildren()) {
-            yaclBuilder = (YetAnotherConfigLib.Builder) current.getValue().accept(this, yaclBuilder);
+            current.getValue().accept(this, lines);
         }
-        return yaclBuilder.build();
+        return lines;
     }
 
     public Object visit(CategoryNode n, Object data) {
-        ConfigCategory.Builder categoryBuilder = ConfigCategory.createBuilder()
-                .name(Component.translatable(n.getFullName()));
-        Object child;
+        CollapsibleInfoLine collapsible = new CollapsibleInfoLine(Component.translatable(n.getFullName()));
+        ((InfoMultiLine) data).addLine(collapsible);
+
         for(Map.Entry<String, Node> current : n.getChildren()) {
-            child = current.getValue().accept(this, categoryBuilder);
-            if(child instanceof Option<?> childOpt) { categoryBuilder = categoryBuilder.option(childOpt); }
-            if(child instanceof OptionGroup childOptGroup) { categoryBuilder = categoryBuilder.group(childOptGroup); }
+            current.getValue().accept(this, collapsible);
         }
-        return ((YetAnotherConfigLib.Builder)data).category(categoryBuilder.build());
+        return collapsible;
     }
 
     public Object visit(GroupNode n, Object data) {
-        OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(Component.translatable(n.getFullName()))
-                .description(OptionDescription.createBuilder()
-                        .text(Component.literal(""))
-                        .build())
-                .collapsed(true);
+        CollapsibleInfoLine collapsible = new CollapsibleInfoLine(Component.translatable(n.getFullName()));
+        ((InfoMultiLine) data).addLine(collapsible);
+
         for(Map.Entry<String, Node> current : n.getChildren()) {
-            groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));
+            current.getValue().accept(this, collapsible);
         }
-        return ((ConfigCategory.Builder)data).group(groupBuilder.build());
+        return collapsible;
     }
 
     public Object visit(EnchantmentGroupNode n, Object data) {
-        OptionDescription.Builder description = OptionDescription.createBuilder()
-                .text(Component.translatable(n.getIdentifier()))
-                .text(Component.literal(""))
-                .text(Component.translatable("enchantips.config.individual_enchantments.option_tooltip.0"));
-        Level world = Minecraft.getInstance().level;
+        EnchantmentConfigInfoLine collapsible = new EnchantmentConfigInfoLine(n);
+        ((InfoMultiLine) data).addLine(collapsible);
 
-        boolean tagsKnown = world != null;
-        if(tagsKnown) {
+        Level world = Minecraft.getInstance().level;
+        if(world != null) {
             Optional<Holder.Reference<Enchantment>> enchantmentReference = world
                     .registryAccess()
                     .lookupOrThrow(Registries.ENCHANTMENT)
                     .get(Identifier.parse(n.getIdentifier()));
             if(enchantmentReference.isPresent()) {
+                collapsible.addLine(n.getDescription());
+                CollapsibleInfoLine tagLine = new CollapsibleInfoLine(
+                        Component.translatable("enchantips.config.individual_enchantments.option_tooltip.0")
+                );
+                collapsible.addLine(tagLine);
                 for (TagKey<Enchantment> tag : enchantmentReference.get().tags().toList()) {
-                    description.text(Component.literal("#").append(Component.literal(tag.location().toString())));
+                    tagLine.addLine(Component.literal("#").append(Component.literal(tag.location().toString())));
                 }
+            } else {
+                collapsible.addLine(
+                        new DeleteInfoLine(Component.translatable("enchantips.config.individual_enchantments.delete.option_title"))
+                );
             }
-            else { tagsKnown = false; }
-        }
-        if(!tagsKnown) {
-            description.text(Component
-                    .translatable("enchantips.config.individual_enchantments.option_tooltip.1")
-                    .setStyle(Style.EMPTY.withItalic(true))
+        } else {
+            collapsible.addLine(
+                    new DeleteInfoLine(Component.translatable("enchantips.config.individual_enchantments.delete.option_title"))
             );
         }
 
-        OptionGroup.Builder groupBuilder = OptionGroup.createBuilder()
-                .name(n.getDescription())
-                .description(description.build())
-                .collapsed(true);
         for(Map.Entry<String, Node> current : n.getChildren()) {
-            groupBuilder = groupBuilder.option((Option<?>) current.getValue().accept(this, groupBuilder));
+            current.getValue().accept(this, collapsible);
         }
-        return ((ConfigCategory.Builder)data).group(groupBuilder.build());
+        return collapsible;
     }
 
     public Object visit(OptionNode<?> n, Object data) {
-        return n.getYaclOption();
+        ((InfoMultiLine) data).addLine(n.getConfigLine());
+        return n.getConfigLine();
     }
 }

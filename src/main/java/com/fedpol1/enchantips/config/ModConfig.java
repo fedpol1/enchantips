@@ -8,7 +8,6 @@ import com.fedpol1.enchantips.config.tree.visitor.*;
 import com.fedpol1.enchantips.gui.screen.ConfigScreen;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.HolderLookup;
@@ -117,9 +116,6 @@ public class ModConfig {
     }
 
     public static Screen createGui(Screen parent) {
-        if(ModOption.COMPACT_CONFIGURATION.getValue()) {
-            return new ConfigScreen(parent);
-        }
-        return ((YetAnotherConfigLib) ConfigTree.root.accept(new ScreenVisitor(), null)).generateScreen(parent);
+        return new ConfigScreen(parent);
     }
 }

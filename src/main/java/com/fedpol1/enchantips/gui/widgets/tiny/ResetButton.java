@@ -34,6 +34,7 @@ public class ResetButton extends BaseSetter<ConfigInfoLine<?>, Object> {
         super.extractRenderState(extractor, mouseX, mouseY, delta, EnchantipsClient.id("config/reset"));
     }
 
+    @Override
     protected List<Component> getTooltip() {
         if(!this.canTrigger()) { return null; }
         return List.of(

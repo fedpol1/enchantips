@@ -30,11 +30,6 @@ dependencies {
 		exclude(module: "fabric-api-deprecated")
 	}
 
-	//implementation("dev.isxander:yet-another-config-lib:${project.yacl_version}-fabric") {
-	//	exclude(group: "com.twelvemonkeys.common")
-	//	exclude(group: "com.twelvemonkeys.imageio")
-	//}
-	implementation files("build/deps/yet_another_config_lib_v3-3.9.5+26.2-fabric.jar")
 	api "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 

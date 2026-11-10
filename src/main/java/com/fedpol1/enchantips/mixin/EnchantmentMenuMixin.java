@@ -91,7 +91,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         ItemStack stack = this.enchantSlots.getItem(0);
         Enchantable component = stack.get(DataComponents.ENCHANTABLE);
         List<EnchantmentInstance> enchantmentInstances = EnchantmentSeedSearcher.getEnchantments(
-                new LegacyRandomSource((long)seed + slot),
+                new LegacyRandomSource(seed + slot),
                 stack.getItem(),
                 component == null ? 0 : component.value(),
                 this.costs[slot]

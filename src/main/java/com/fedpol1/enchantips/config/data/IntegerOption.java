@@ -3,9 +3,6 @@ package com.fedpol1.enchantips.config.data;
 import com.fedpol1.enchantips.config.tree.OptionNode;
 import com.fedpol1.enchantips.gui.widgets.info_line.ConfigInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.IntegerConfigInfoLine;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
-import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 
@@ -15,14 +12,12 @@ public class IntegerOption implements Data<Integer> {
     private final int defaultValue;
     private final int min;
     private final int max;
-    private final int step;
 
-    public IntegerOption(int defaultValue, int min, int max, int step) {
+    public IntegerOption(int defaultValue, int min, int max) {
         this.value = defaultValue;
         this.defaultValue = defaultValue;
         this.min = min;
         this.max = max;
-        this.step = step;
     }
 
     public int getMin() {
@@ -73,22 +68,6 @@ public class IntegerOption implements Data<Integer> {
                 this.getOptionTooltip(optionNode),
                 this,
                 this.value
-                );
-    }
-
-    public Option<Integer> getYaclOption(OptionNode<Integer> optionNode) {
-        return Option.<Integer>createBuilder()
-                .binding(this.getDefaultValue(), this::getValue, this::setValue)
-                .controller(o -> this.step == 0 ?
-                        IntegerFieldControllerBuilder.create(o)
-                                .min(this.min)
-                                .max(this.max) :
-                        IntegerSliderControllerBuilder.create(o)
-                                .range(this.min, this.max)
-                                .step(this.step)
-                )
-                .name(this.getOptionTitle(optionNode))
-                .description(this.getOptionDescription(optionNode))
-                .build();
+        );
     }
 }

@@ -43,6 +43,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.action = () -> {};
     }
 
+    @Override
     public int getWidth() {
         Font textRenderer = Minecraft.getInstance().font;
         int maxWidth = 0;
@@ -52,6 +53,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         return maxWidth * this.maximumLength + 1;
     }
 
+    @Override
     public int getHeight() {
         return 9;
     }
@@ -69,6 +71,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.text = s;
     }
 
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         Font textRenderer = Minecraft.getInstance().font;
 
@@ -103,10 +106,12 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         this.editing = editing;
     }
 
+    @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return false;
     }
 
+    @Override
     public boolean keyPressed(KeyEvent input) {
         if(!this.editing) { return false; }
         if(this.selectionManager.keyPressed(input)) {
@@ -116,6 +121,7 @@ public class TextField extends BaseSetter<ConfigInfoLine<?>, String> {
         return false;
     }
 
+    @Override
     public boolean charTyped(CharacterEvent input) {
         if(!this.editing) { return false; }
         if(this.selectionManager.charTyped(input)) {

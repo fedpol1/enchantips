@@ -3,7 +3,7 @@ package com.fedpol1.enchantips.gui.screen;
 import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.config.ModConfig;
 import com.fedpol1.enchantips.config.tree.ConfigTree;
-import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor2;
+import com.fedpol1.enchantips.config.tree.visitor.ScreenVisitor;
 import com.fedpol1.enchantips.gui.widgets.info_line.InfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.SaveAllInfoLine;
 import com.fedpol1.enchantips.gui.widgets.info_line.ScrollableInfoLineContainer;
@@ -22,7 +22,7 @@ public class ConfigScreen extends BaseScreen {
 
     public ConfigScreen(@Nullable Screen parent) {
         super(Component.translatable(EnchantipsClient.MODID + ".gui.config"), parent);
-        this.lines = (ScrollableInfoLineContainer) ConfigTree.root.accept(new ScreenVisitor2(), null);
+        this.lines = (ScrollableInfoLineContainer) ConfigTree.root.accept(new ScreenVisitor(), null);
         this.saveAllLineContainer = new ScrollableInfoLineContainer(0xff404040, 0, true);
         this.saveAllLine = new SaveAllInfoLine(Component.translatable("enchantips.gui.save_all"), this.lines);
         this.saveAllLineContainer.addLine(this.saveAllLine);

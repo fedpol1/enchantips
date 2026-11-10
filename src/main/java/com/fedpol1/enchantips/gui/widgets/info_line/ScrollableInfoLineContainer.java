@@ -8,6 +8,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
 public class ScrollableInfoLineContainer extends InfoLineContainer implements InfoMultiLine, Renderable, Iterable<InfoLine> {
 
@@ -40,7 +41,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
 
     public ScrollableInfoLineContainer(int childColor, int padding, boolean rightAligned) {
         this(childColor, padding);
-        this.rightAligned = true;
+        this.rightAligned = rightAligned;
     }
 
     public void setPosition(int x, int y) {
@@ -56,14 +57,17 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         }
     }
 
+    @Override
     public int getWidth() {
         return super.getWidth();
     }
 
+    @Override
     public int getHeight() {
         return this.height;
     }
 
+    @Override
     public boolean rightAligned() {
         return this.rightAligned;
     }
@@ -73,7 +77,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(extractor, mouseX, mouseY, delta);
 
         if(this.scrollerVisible()) {
@@ -82,6 +86,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         }
     }
 
+    @Override
     public void refresh(int index) {
         for(int i = 0; i < this.lines.size(); i++) {
             this.lines.get(i).refresh(i);
@@ -146,6 +151,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         return this.focusedLine == line;
     }
 
+    @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.scrolling = click.button() == InputConstants.MOUSE_BUTTON_LEFT && this.isWithinScrollbar(click.x(), click.y());
         if(this.scrolling) {
@@ -168,6 +174,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         return false;
     }
 
+    @Override
     public boolean keyPressed(KeyEvent input) {
         if(this.focusedLine == null && !this.lines.isEmpty() && InfoLine.navigationDirection(input) != null) {
             this.lines.getFirst().takeFocus();
@@ -177,6 +184,7 @@ public class ScrollableInfoLineContainer extends InfoLineContainer implements In
         return super.keyPressed(input);
     }
 
+    @Override
     public boolean charTyped(CharacterEvent input) {
         return super.charTyped(input);
     }
