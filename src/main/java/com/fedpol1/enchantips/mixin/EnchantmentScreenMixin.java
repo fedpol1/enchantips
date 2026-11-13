@@ -47,7 +47,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentMenu handler = t.getMenu();
         ArrayList<Integer> candidates = EnchantmentSeedSearcher.getLatestCandidates();
-        boolean fullHint = EnchantmentSeedSearcher.getLatestCandidates().size() == 1 && ModOption.ENCHANTMENT_SEED_SWITCH.getValue();
+        boolean fullHint = EnchantmentSeedSearcher.foundSeed() && ModOption.ENCHANTMENT_SEED_SWITCH.getValue();
         if(fullHint && ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
             ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getEnchantmentHint(j);
             if(section != null) {

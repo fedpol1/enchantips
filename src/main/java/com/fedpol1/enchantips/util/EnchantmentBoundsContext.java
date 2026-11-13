@@ -1,6 +1,7 @@
 package com.fedpol1.enchantips.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class EnchantmentBoundsContext {
 
@@ -21,6 +22,19 @@ public abstract class EnchantmentBoundsContext {
 
     public static IntBounds getBounds(int offerLevel, int enchantability, int slot) {
         return EnchantmentBoundsContext.context.get(new FilterContextKeySimple(offerLevel, enchantability / 4, slot));
+    }
+
+    protected static HashMap<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> copy() {
+        HashMap<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> newContext = new HashMap<>();
+        for(Map.Entry<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> entry : EnchantmentBoundsContext.context.entrySet()) {
+            EnchantmentBoundsContext.FilterContextKeySimple key = entry.getKey();
+            IntBounds value = entry.getValue();
+            newContext.put(
+                    new EnchantmentBoundsContext.FilterContextKeySimple(key.offerLevel, key.enchantability, key.slot),
+                    new IntBounds(value.lower(), value.upper())
+            );
+        }
+        return newContext;
     }
 
     public static void reset() {

@@ -3,6 +3,9 @@ package com.fedpol1.enchantips;
 import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
 import com.fedpol1.enchantips.gui.screen.EnchantmentInfoScreen;
 import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
+import com.fedpol1.enchantips.util.EnchantmentBoundsContext;
+import com.fedpol1.enchantips.util.EnchantmentSeedContext;
+import com.fedpol1.enchantips.util.EnchantmentSeedSearcher;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -58,5 +61,11 @@ public class EnchantipsClient implements ClientModInitializer {
 
     public static Identifier id(String s) {
         return Identifier.fromNamespaceAndPath(EnchantipsClient.MODID, s);
+    }
+
+    public static void resetContexts() {
+        EnchantmentBoundsContext.reset();
+        EnchantmentSeedContext.reset();
+        EnchantmentSeedSearcher.reset();
     }
 }

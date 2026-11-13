@@ -1,5 +1,6 @@
 package com.fedpol1.enchantips.mixin;
 
+import com.fedpol1.enchantips.EnchantipsClient;
 import com.fedpol1.enchantips.accessor.AbstractContainerMenuAccess;
 import com.fedpol1.enchantips.accessor.EnchantmentMenuAccess;
 import com.fedpol1.enchantips.config.ModOption;
@@ -83,7 +84,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
     public void enchantips$updateFullEnchantmentHint(int slot) {
         Level world = Minecraft.getInstance().level;
         if(world == null) { return; }
-        if(EnchantmentSeedSearcher.getLatestCandidates().size() != 1) { return; }
+        if(!EnchantmentSeedSearcher.foundSeed()) { return; }
         IdMap<Holder<Enchantment>> enchantmentMap = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
         Holder<Enchantment> hintHolder = enchantmentMap.byId(((EnchantmentMenu)(Object)this).enchantClue[slot]);
         if(hintHolder == null) { return; }
@@ -157,8 +158,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         ClientLevel lev = Minecraft.getInstance().level;
         EnchantmentMenu t = (EnchantmentMenu)(Object)this;
         if(lev != null && lev.isClientSide() && t.costs[buttonId] > 0) {
-            EnchantmentBoundsContext.reset();
-            EnchantmentSeedContext.reset();
+            EnchantipsClient.resetContexts();
         }
     }
 
@@ -189,13 +189,13 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         if(ModOption.ENCHANTING_CONTEXT_SWITCH.getValue()) {
             EnchantmentBoundsContext.put(this.costs[slotIndex], enchantability, slotIndex, bounds.lower(), bounds.upper());
             bounds = EnchantmentBoundsContext.getBounds(this.costs[slotIndex], enchantability, slotIndex);
-            if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue() && EnchantmentSeedSearcher.shouldSearch()) {
+            if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue()) {
                 EnchantmentSeedContext.put(this.costs[slotIndex], itemStack, slotIndex, hintEnchantment, t.levelClue[slotIndex]);
                 EnchantmentSeedSearcher.startSearch(t.getEnchantmentSeed());
             }
         }
         this.enchantips$powerBounds[slotIndex] = bounds;
-        if(EnchantmentSeedSearcher.getLatestCandidates().size() == 1) {
+        if(EnchantmentSeedSearcher.foundSeed()) {
             this.enchantips$updateFullEnchantmentHint(slotIndex);
         } else {
             this.enchantips$updatePartialEnchantmentHint(slotIndex, enchantmentMap, hintHolder);
