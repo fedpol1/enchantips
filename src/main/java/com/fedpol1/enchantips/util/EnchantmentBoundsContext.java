@@ -24,19 +24,6 @@ public abstract class EnchantmentBoundsContext {
         return EnchantmentBoundsContext.context.get(new FilterContextKeySimple(offerLevel, enchantability / 4, slot));
     }
 
-    protected static HashMap<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> copy() {
-        HashMap<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> newContext = new HashMap<>();
-        for(Map.Entry<EnchantmentBoundsContext.FilterContextKeySimple, IntBounds> entry : EnchantmentBoundsContext.context.entrySet()) {
-            EnchantmentBoundsContext.FilterContextKeySimple key = entry.getKey();
-            IntBounds value = entry.getValue();
-            newContext.put(
-                    new EnchantmentBoundsContext.FilterContextKeySimple(key.offerLevel, key.enchantability, key.slot),
-                    new IntBounds(value.lower(), value.upper())
-            );
-        }
-        return newContext;
-    }
-
     public static void reset() {
         EnchantmentBoundsContext.context = new HashMap<>();
     }

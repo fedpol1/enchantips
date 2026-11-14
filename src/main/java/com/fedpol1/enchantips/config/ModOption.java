@@ -40,7 +40,7 @@ public class ModOption<T> {
     public static final ModOption<Boolean> ENCHANTING_CONTEXT_SWITCH = ModCategory.ENCHANTING_HELPERS.addOption(new BooleanOption(false), "enchanting_context.switch", 2);
     public static final ModOption<Runnable> ENCHANTING_CONTEXT_RESET = ModCategory.ENCHANTING_HELPERS.addOption(new ActionOption(EnchantipsClient::resetContexts), "enchanting_context.reset", 0);
     public static final ModOption<Boolean> ENCHANTMENT_SEED_SWITCH = ModCategory.ENCHANTING_HELPERS.addOption(new BooleanOption(false), "enchantment_seed.switch", 3);
-    public static final ModOption<Boolean> ENCHANTMENT_SEED_STRICT = ModCategory.ENCHANTING_HELPERS.addOption(new BooleanOption(false), "enchantment_seed.strict", 2);
+    //public static final ModOption<Boolean> ENCHANTMENT_SEED_STRICT = ModCategory.ENCHANTING_HELPERS.addOption(new BooleanOption(false), "enchantment_seed.strict", 2);
     public static final ModOption<Boolean> EXTRA_ENCHANTMENTS_SWITCH = ModCategory.ENCHANTING_HELPERS.addOption(new BooleanOption(true), "extra_enchantments.switch", 3);
     public static final ModOption<Integer> EXTRA_ENCHANTMENTS_LIMIT = ModCategory.ENCHANTING_HELPERS.addOption(new IntegerOption(7, 1, 256), "extra_enchantments.limit", 1);
     public static final ModOption<Color> DECORATION = ModCategory.MISCELLANEOUS.addOption(new ColorOption(0x4f4f47), "decoration", 1);

@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.util;
 
 import com.fedpol1.enchantips.accessor.EnchantmentMenuAccess;
-import com.fedpol1.enchantips.config.ModOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 // DO NOT MODIFY contexts from here. this is threaded.
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -29,21 +29,21 @@ public class EnchantmentSeedSearcher implements Runnable{
     private static EnchantmentSeedSearcher LATEST = null;
     private HashMap<EnchantmentSeedContext.FilterContextKey, EnchantmentLevel> context;
     private final int partialSeed;
-    private int delimiter; // last value that will be searched
-    private int current; // current value so searches may be paused
+    private boolean renarrow;
     private final Optional<HolderSet.Named<Enchantment>> possibleEnchantments;
     private ArrayList<Integer> candidates;
     private final boolean strict;
+    private boolean finishedInit;
     private boolean finished;
 
     private EnchantmentSeedSearcher(int partialSeed) {
         this.context = EnchantmentSeedContext.copy();
         this.partialSeed = Short.toUnsignedInt((short) partialSeed);
-        this.delimiter = Integer.MAX_VALUE;
-        this.current = this.delimiter + 1;
+        this.renarrow = true;
         this.candidates = new ArrayList<>();
         this.possibleEnchantments = EnchantmentSeedSearcher.getPossibleEnchantments();
-        this.strict = ModOption.ENCHANTMENT_SEED_STRICT.getValue();
+        this.strict = false; // ModOption.ENCHANTMENT_SEED_STRICT.getValue();
+        this.finishedInit = false;
         this.finished = false;
     }
 
@@ -51,13 +51,12 @@ public class EnchantmentSeedSearcher implements Runnable{
         if(EnchantmentSeedSearcher.LATEST != null) { // if a searcher exists, it is searching, so do not interrupt
             // even if there is only one candidate, try to eliminate it.
             EnchantmentSeedSearcher latest = EnchantmentSeedSearcher.LATEST;
+            latest.renarrow = true;
             if(latest.finished) {
                 latest.finished = false;
-                latest.current = latest.delimiter + 1;
-                latest.narrowCandidates();
-                latest.finished = true;
-            } else {
-                latest.delimiter = latest.current - 1;
+                Thread thread = new Thread(latest);
+                thread.setDaemon(true);
+                thread.start();
             }
             return;
         }
@@ -69,7 +68,7 @@ public class EnchantmentSeedSearcher implements Runnable{
     }
 
     public static boolean foundSeed() {
-        return EnchantmentSeedSearcher.getLatestCandidates().size() == 1 && EnchantmentSeedSearcher.LATEST.finished;
+        return EnchantmentSeedSearcher.getLatestCandidates().size() == 1 && EnchantmentSeedSearcher.LATEST.finishedInit;
     }
 
     public static ArrayList<Integer> getLatestCandidates() {
@@ -111,7 +110,7 @@ public class EnchantmentSeedSearcher implements Runnable{
     private boolean checkSeed(int seed, EnchantmentSeedContext.FilterContextKey key) {
         // small optimization: check enchantment power bounds before generating enchantment lists
         LegacyRandomSource random = new LegacyRandomSource(seed + key.slot());
-        IntBounds bounds = EnchantmentBoundsContext.getBounds(key.offerLevel(), key.enchantability()/4, key.slot());
+        IntBounds bounds = EnchantmentBoundsContext.getBounds(key.offerLevel(), key.enchantability(), key.slot());
         if(bounds != null) {
             int modifiedEnchantability = key.enchantability()/4 + 1;
             int power = key.offerLevel() + 1 + random.nextInt(modifiedEnchantability) + random.nextInt(modifiedEnchantability);
@@ -128,88 +127,85 @@ public class EnchantmentSeedSearcher implements Runnable{
         return actual.enchantment().value() == desired.getEnchantment() && actual.level() == desired.getLevel();
     }
 
-    private void initCandidates() {
-        int realSeed;
-        for(int i = 0; i < 65536; i++) {
-            if(this.finished) { return; }
-            if(EnchantmentSeedContext.searcherUpdate) {
-                this.context = EnchantmentSeedContext.copy();
-                EnchantmentSeedContext.searcherUpdate = false;
-            }
-            realSeed = Integer.MIN_VALUE + this.partialSeed + 65536 * i;
-            boolean add = true;
-            for(Map.Entry<EnchantmentSeedContext.FilterContextKey, EnchantmentLevel> entry : this.context.entrySet()) {
-                add = this.checkSeed(realSeed, entry.getKey());
-                if(!add) { break; }
-            }
-            if(add) { this.candidates.add(realSeed); }
-        }
-    }
-
     private void initCandidatesStrict() {
-        for(long i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++) {
-            if(this.finished) { return; }
+        this.initCandidates(Stream.iterate(
+                (long) Integer.MIN_VALUE,
+                (i) -> i <= Integer.MAX_VALUE && !this.finished,
+                (i) -> i+1
+        ));
+    }
+
+    private void initCandidatesSeeded() {
+        this.initCandidates(Stream.iterate(
+                (long) Integer.MIN_VALUE + this.partialSeed,
+                (i) -> i <= Integer.MAX_VALUE && !this.finished,
+                (i) -> i+65536
+        ));
+    }
+
+    private void initCandidates(Stream<Long> stream) {
+        stream.forEach((l) -> {
+            int i = (int)(long)l;
             if(EnchantmentSeedContext.searcherUpdate) {
                 this.context = EnchantmentSeedContext.copy();
                 EnchantmentSeedContext.searcherUpdate = false;
             }
             boolean add = true;
             for(Map.Entry<EnchantmentSeedContext.FilterContextKey, EnchantmentLevel> entry : this.context.entrySet()) {
-                add = this.checkSeed((int) i, entry.getKey());
+                add = this.checkSeed(i, entry.getKey());
                 if(!add) { break; }
             }
-            if(add) { this.candidates.add((int) i); }
-        }
+            if(add) { this.candidates.add(i); }
+        });
     }
 
-    @SuppressWarnings("ConditionalBreakInInfiniteLoop")
     private void narrowCandidates() {
         if(this.candidates.isEmpty()) { return; }
         ArrayList<Integer> newCandidates = new ArrayList<>();
-        int nextSeed = this.candidates.getFirst();
-        int currentIndex = 0;
 
-        while(true) {
+        for(int i : this.candidates) {
             if(this.finished) { return; }
             if(EnchantmentSeedContext.searcherUpdate) {
                 this.context = EnchantmentSeedContext.copy();
                 EnchantmentSeedContext.searcherUpdate = false;
             }
-            this.current = nextSeed;
 
             boolean add = true;
             for(Map.Entry<EnchantmentSeedContext.FilterContextKey, EnchantmentLevel> entry : this.context.entrySet()) {
-                add = add && this.checkSeed(this.current, entry.getKey());
+                add = this.checkSeed(i, entry.getKey());
+                if(!add) { break; }
             }
-            if(add) { newCandidates.add(this.current); }
-
-            currentIndex = (currentIndex + 1) % this.candidates.size();
-            nextSeed = this.candidates.get(currentIndex);
-            if(nextSeed > this.delimiter || nextSeed <= this.current) { break; }
+            if(add) { newCandidates.add(i); }
         }
         this.candidates = newCandidates;
     }
 
+    public void broadcastChanges() {
+        Screen screen = Minecraft.getInstance().gui.screen();
+        if(screen instanceof EnchantmentScreen enchScreen) {
+            EnchantmentMenuAccess menuAccess = (EnchantmentMenuAccess)enchScreen.getMenu();
+            menuAccess.enchantips$updateFullEnchantmentHint(0);
+            menuAccess.enchantips$updateFullEnchantmentHint(1);
+            menuAccess.enchantips$updateFullEnchantmentHint(2);
+        }
+    }
+
     @Override
     public void run() {
-        if(this.finished) { return; }
-        if(EnchantmentSeedSearcher.getLatestCandidates().isEmpty()) {
+        if(this.finished) {
+            this.broadcastChanges();
+            return;
+        }
+        if(this.candidates.isEmpty() && !this.finishedInit) {
             if(this.strict) { this.initCandidatesStrict(); }
-            else { this.initCandidates(); }
-        } else {
-            this.candidates = EnchantmentSeedSearcher.getLatestCandidates();
+            else { this.initCandidatesSeeded(); }
+            this.finishedInit = true;
         }
-        this.narrowCandidates();
-        this.finished = true;
-        if(EnchantmentSeedSearcher.LATEST == null || EnchantmentSeedSearcher.LATEST.candidates.size() > this.candidates.size()) {
-            Screen screen = Minecraft.getInstance().gui.screen();
-            if(screen instanceof EnchantmentScreen enchScreen) {
-                EnchantmentMenuAccess menuAccess = (EnchantmentMenuAccess)enchScreen.getMenu();
-                menuAccess.enchantips$updateFullEnchantmentHint(0);
-                menuAccess.enchantips$updateFullEnchantmentHint(1);
-                menuAccess.enchantips$updateFullEnchantmentHint(2);
-            }
+        while(this.renarrow && !this.finished) {
+            this.renarrow = false;
+            this.narrowCandidates();
         }
         this.finished = true;
+        this.broadcastChanges();
     }
 }
