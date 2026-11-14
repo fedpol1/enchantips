@@ -1,7 +1,6 @@
 package com.fedpol1.enchantips.util;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class EnchantmentBoundsContext {
 

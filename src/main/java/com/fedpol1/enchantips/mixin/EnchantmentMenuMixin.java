@@ -8,6 +8,7 @@ import com.fedpol1.enchantips.gui.ScrollableTooltipSection;
 import com.fedpol1.enchantips.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.IdMap;
 import net.minecraft.core.component.DataComponents;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,34 +42,36 @@ import java.util.List;
 @Mixin(EnchantmentMenu.class)
 public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
 
-    @Mutable
-    @Shadow
-    @Final
-    private final Container enchantSlots;
+    @Mutable @Shadow @Final private final Container enchantSlots;
+    @Shadow @Final public int[] costs;
+    @Mutable @Shadow @Final private final ContainerLevelAccess access;
 
-    @Shadow
-    @Final
-    public int[] costs;
-
-    @Unique
-    public boolean enchantips$stale;
-
-    @Unique
-    private final ScrollableTooltipSection[] enchantips$extraHints = new ScrollableTooltipSection[3];
-
-    @Unique
-    private final IntBounds[] enchantips$powerBounds = new IntBounds[3];
-
-    @Unique
-    private int enchantips$finalDataSlot;
+    @Unique public boolean enchantips$stale;
+    @Unique private final ScrollableTooltipSection[] enchantips$enchantmentHints = new ScrollableTooltipSection[3];
+    @Unique private final ScrollableTooltipSection[] enchantips$seededHints = new ScrollableTooltipSection[3];
+    @Unique private boolean enchantips$seeded = false;
+    @Unique private final IntBounds[] enchantips$powerBounds = new IntBounds[3];
+    @Unique private int enchantips$finalDataSlot;
 
     protected EnchantmentMenuMixin(Container enchantSlots) {
         this.enchantSlots = enchantSlots;
+        this.access = ContainerLevelAccess.NULL;
     }
 
-    @Unique
-    public ScrollableTooltipSection enchantips$getEnchantmentHint(int i) {
-        return this.enchantips$extraHints[i];
+    @Unique public ScrollableTooltipSection enchantips$getEnchantmentHint(int i) {
+        return this.enchantips$enchantmentHints[i];
+    }
+
+    @Unique public ScrollableTooltipSection enchantips$getHint(int i) {
+        return this.enchantips$seeded ? this.enchantips$seededHints[i] : this.enchantips$enchantmentHints[i];
+    }
+
+    @Unique public boolean enchantips$isSeeded() {
+        return this.enchantips$seeded;
+    }
+
+    @Unique public void enchantips$setSeeded(boolean seeded) {
+        this.enchantips$seeded = seeded;
     }
 
     @Unique
@@ -80,15 +84,11 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         this.enchantips$stale = stale;
     }
 
-    @Unique
-    public void enchantips$updateFullEnchantmentHint(int slot) {
+    @Unique public void enchantips$updateSeededHint(int slot, int seed) {
         Level world = Minecraft.getInstance().level;
         if(world == null) { return; }
-        if(!EnchantmentSeedSearcher.foundSeed()) { return; }
         IdMap<Holder<Enchantment>> enchantmentMap = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
         Holder<Enchantment> hintHolder = enchantmentMap.byId(((EnchantmentMenu)(Object)this).enchantClue[slot]);
-        if(hintHolder == null) { return; }
-        int seed = EnchantmentSeedSearcher.getLatestCandidates().getFirst();
         ItemStack stack = this.enchantSlots.getItem(0);
         Enchantable component = stack.get(DataComponents.ENCHANTABLE);
         List<EnchantmentInstance> enchantmentInstances = EnchantmentSeedSearcher.getEnchantments(
@@ -99,14 +99,13 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         );
         List<Component> hint = enchantmentInstances.stream()
                 .map((instance) -> EnchantmentLevel.of(instance.enchantment().value(), instance.level()))
-                .filter((el) -> el.getEnchantment() != hintHolder.value())
+                .filter((el) -> el.getEnchantment() != (hintHolder == null ? null : hintHolder.value()))
                 .map(EnchantmentAppearanceHelper::getName).toList();
 
-        this.enchantips$extraHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
+        this.enchantips$seededHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
     }
 
-    @Unique
-    public void enchantips$updatePartialEnchantmentHint(int slot, IdMap<Holder<Enchantment>> enchantmentMap, Holder<Enchantment> hintHolder) {
+    @Unique public void enchantips$updateEnchantmentHint(int slot, IdMap<Holder<Enchantment>> enchantmentMap, Holder<Enchantment> hintHolder) {
         Level world = Minecraft.getInstance().level;
         if(world == null) { return; }
         if(hintHolder == null) { return; }
@@ -140,12 +139,25 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
             }
             hint.add(text);
         }
-        this.enchantips$extraHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
+        this.enchantips$enchantmentHints[slot] = new ScrollableTooltipSection(hint, ModOption.EXTRA_ENCHANTMENTS_LIMIT.getValue());
     }
 
-    @Unique
-    public IntBounds enchantips$getPowerBounds(int i) {
+    @Unique public int enchantips$getBookshelfCount(Level world, BlockPos blockPos) {
+        int bookshelves = 0;
+        for (BlockPos offset : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+            if (EnchantingTableBlock.isValidBookShelf(world, blockPos, offset)) {
+                bookshelves++;
+            }
+        }
+        return Math.min(15, bookshelves);
+    }
+
+    @Unique public IntBounds enchantips$getPowerBounds(int i) {
         return this.enchantips$powerBounds[i];
+    }
+
+    @Unique public ContainerLevelAccess enchantips$getLevelAccess() {
+        return this.access;
     }
 
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "RETURN"))
@@ -159,6 +171,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         EnchantmentMenu t = (EnchantmentMenu)(Object)this;
         if(lev != null && lev.isClientSide() && t.costs[buttonId] > 0) {
             EnchantipsClient.resetContexts();
+            this.enchantips$setSeeded(false);
         }
     }
 
@@ -169,7 +182,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         if(world == null) { return; }
         ItemStack itemStack = this.enchantSlots.getItem(0);
         if (itemStack.isEmpty() || !itemStack.isEnchantable()) {
-            this.enchantips$extraHints[slotIndex] = null;
+            this.enchantips$enchantmentHints[slotIndex] = null;
             this.enchantips$powerBounds[slotIndex] = null;
             return;
         }
@@ -191,14 +204,14 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
             bounds = EnchantmentBoundsContext.getBounds(this.costs[slotIndex], enchantability, slotIndex);
             if(ModOption.ENCHANTMENT_SEED_SWITCH.getValue()) {
                 EnchantmentSeedContext.put(this.costs[slotIndex], itemStack, slotIndex, hintEnchantment, t.levelClue[slotIndex]);
+                this.access.execute((level, blockPos) -> {
+                    int bookshelves = this.enchantips$getBookshelfCount(level, blockPos);
+                    EnchantmentBookshelfContext.put(Math.min(bookshelves, 15), itemStack, this.costs);
+                });
                 EnchantmentSeedSearcher.startSearch(t.getEnchantmentSeed());
             }
         }
         this.enchantips$powerBounds[slotIndex] = bounds;
-        if(EnchantmentSeedSearcher.foundSeed()) {
-            this.enchantips$updateFullEnchantmentHint(slotIndex);
-        } else {
-            this.enchantips$updatePartialEnchantmentHint(slotIndex, enchantmentMap, hintHolder);
-        }
+        this.enchantips$updateEnchantmentHint(slotIndex, enchantmentMap, hintHolder);
     }
 }

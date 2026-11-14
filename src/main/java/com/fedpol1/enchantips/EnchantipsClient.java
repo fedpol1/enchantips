@@ -3,6 +3,7 @@ package com.fedpol1.enchantips;
 import com.fedpol1.enchantips.event.EnchantmentScreenEvents;
 import com.fedpol1.enchantips.gui.screen.EnchantmentInfoScreen;
 import com.fedpol1.enchantips.resources.SymbolSetReloadListener;
+import com.fedpol1.enchantips.util.EnchantmentBookshelfContext;
 import com.fedpol1.enchantips.util.EnchantmentBoundsContext;
 import com.fedpol1.enchantips.util.EnchantmentSeedContext;
 import com.fedpol1.enchantips.util.EnchantmentSeedSearcher;
@@ -66,6 +67,7 @@ public class EnchantipsClient implements ClientModInitializer {
     public static void resetContexts() {
         EnchantmentBoundsContext.reset();
         EnchantmentSeedContext.reset();
+        EnchantmentBookshelfContext.reset();
         EnchantmentSeedSearcher.reset();
     }
 }

@@ -108,6 +108,25 @@ public class EnchantmentSeedSearcher implements Runnable{
     }
 
     private boolean checkSeed(int seed, EnchantmentSeedContext.FilterContextKey key) {
+        // consider bookshelves
+        LegacyRandomSource bookshelfRandom = new LegacyRandomSource((long) seed);
+        if(Minecraft.getInstance().gui.screen() instanceof EnchantmentScreen enchScreen) {
+            EnchantmentMenuAccess menu = (EnchantmentMenuAccess)enchScreen.getMenu();
+            Optional<Boolean> offersMatch = menu.enchantips$getLevelAccess().evaluate((world, blockPos) -> {
+                int bookshelves = menu.enchantips$getBookshelfCount(world, blockPos);
+                int[] offersDesired = EnchantmentBookshelfContext.get(bookshelves);
+                ItemStack stack = new ItemStack(key.item(), 1);
+                stack.set(DataComponents.ENCHANTABLE, new Enchantable(key.enchantability()));
+                for(int i = 0; i < 3; ++i) {
+                    if(offersDesired[i] != EnchantmentHelper.getEnchantmentCost(bookshelfRandom, i, bookshelves, stack)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            if(offersMatch.isPresent() && !offersMatch.get()) { return false; }
+        }
+
         // small optimization: check enchantment power bounds before generating enchantment lists
         LegacyRandomSource random = new LegacyRandomSource(seed + key.slot());
         IntBounds bounds = EnchantmentBoundsContext.getBounds(key.offerLevel(), key.enchantability(), key.slot());
@@ -180,13 +199,21 @@ public class EnchantmentSeedSearcher implements Runnable{
         this.candidates = newCandidates;
     }
 
-    public void broadcastChanges() {
+    private void broadcastChanges() {
         Screen screen = Minecraft.getInstance().gui.screen();
         if(screen instanceof EnchantmentScreen enchScreen) {
             EnchantmentMenuAccess menuAccess = (EnchantmentMenuAccess)enchScreen.getMenu();
-            menuAccess.enchantips$updateFullEnchantmentHint(0);
-            menuAccess.enchantips$updateFullEnchantmentHint(1);
-            menuAccess.enchantips$updateFullEnchantmentHint(2);
+            if(EnchantmentSeedSearcher.getLatestCandidates().isEmpty()) {
+                menuAccess.enchantips$setSeeded(false);
+                return;
+            }
+            if(!EnchantmentSeedSearcher.foundSeed()) { return; }
+            int seed = EnchantmentSeedSearcher.getLatestCandidates().getFirst();
+            menuAccess.enchantips$updateSeededHint(0, seed);
+            menuAccess.enchantips$updateSeededHint(1, seed);
+            menuAccess.enchantips$updateSeededHint(2, seed);
+            menuAccess.enchantips$setSeeded(true);
+            menuAccess.enchantips$setStale(true);
         }
     }
 

@@ -46,10 +46,9 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
         if(optional.isEmpty()) { return; }
         EnchantmentScreen t = (EnchantmentScreen) (Object)this;
         EnchantmentMenu handler = t.getMenu();
-        ArrayList<Integer> candidates = EnchantmentSeedSearcher.getLatestCandidates();
-        boolean fullHint = EnchantmentSeedSearcher.foundSeed() && ModOption.ENCHANTMENT_SEED_SWITCH.getValue();
+        boolean fullHint = ((EnchantmentMenuAccess)handler).enchantips$isSeeded() && ModOption.ENCHANTMENT_SEED_SWITCH.getValue();
         if(fullHint && ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
-            ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getEnchantmentHint(j);
+            ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getHint(j);
             if(section != null) {
                 ScrollableTooltipSection.setActiveSection(section);
                 list.addAll(section.getShownTextAll());
@@ -63,7 +62,8 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
                 ));
             }
             if(ModOption.ENCHANTING_CONTEXT_SWITCH.getValue()) {
-                list.add(fullHint ?
+                ArrayList<Integer> candidates = EnchantmentSeedSearcher.getLatestCandidates();
+                list.add(fullHint && !candidates.isEmpty() ?
                         TooltipHelper.buildSingleTranslatedInteger(candidates.getFirst(), TooltipHelper.ENCHANTMENT_SEED_FULL_TOOLTIP) :
                         TooltipHelper.buildSingleTranslatedInteger(candidates.size(), TooltipHelper.ENCHANTMENT_SEED_CANDIDATES_TOOLTIP)
                 );
@@ -76,7 +76,7 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
             }
         }
         if(!fullHint && ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()) {
-            ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getEnchantmentHint(j);
+            ScrollableTooltipSection section = ((EnchantmentMenuAccess)handler).enchantips$getHint(j);
             if(section != null) {
                 ScrollableTooltipSection.setActiveSection(section);
                 list.addAll(section.getShownTextAll());

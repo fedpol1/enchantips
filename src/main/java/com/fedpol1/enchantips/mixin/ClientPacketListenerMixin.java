@@ -18,10 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPacketListenerMixin {
 
-    @Mutable
-    @Final
-    @Shadow
-    private RegistryAccess.Frozen registryAccess;
+    @Mutable @Final @Shadow private RegistryAccess.Frozen registryAccess;
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
     private void enchantips$registerPerEnchantmentConfig(Minecraft client, Connection clientConnection, CommonListenerCookie clientConnectionState, CallbackInfo ci) {
