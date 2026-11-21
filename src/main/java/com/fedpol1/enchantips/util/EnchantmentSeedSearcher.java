@@ -213,7 +213,7 @@ public class EnchantmentSeedSearcher implements Runnable{
             menuAccess.enchantips$updateSeededHint(1, seed);
             menuAccess.enchantips$updateSeededHint(2, seed);
             menuAccess.enchantips$setSeeded(true);
-            menuAccess.enchantips$setStale(true);
+            menuAccess.enchantips$setStale(false);
         }
     }
 

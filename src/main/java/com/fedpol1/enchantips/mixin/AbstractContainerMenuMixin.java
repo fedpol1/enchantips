@@ -32,9 +32,9 @@ public abstract class AbstractContainerMenuMixin implements AbstractContainerMen
     @Inject(method = "setData(II)V", at = @At(value = "RETURN"))
     public void enchantips$setProperty(int id, int value, CallbackInfo ci) throws IllegalStateException {
         if (((Object)this instanceof EnchantmentMenu handler) &&
-                ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue()
+                (ModOption.EXTRA_ENCHANTMENTS_SWITCH.getValue() || ModOption.ENCHANTMENT_SEED_SWITCH.getValue())
         ) {
-            ((EnchantmentMenuAccess)handler).enchantips$setStale(false);
+            ((EnchantmentMenuAccess)handler).enchantips$setStale(true);
         }
     }
 }

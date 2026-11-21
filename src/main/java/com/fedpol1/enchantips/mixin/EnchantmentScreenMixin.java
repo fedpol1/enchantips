@@ -29,11 +29,11 @@ public abstract class EnchantmentScreenMixin implements EnchantmentAccess {
     @Inject(method = "containerTick()V", at = @At(value = "RETURN"))
     private void enchantips$updateMenu(CallbackInfo ci) {
         EnchantmentMenuAccess menuAccess = (EnchantmentMenuAccess)((EnchantmentScreen)(Object)this).getMenu();
-        if(!menuAccess.enchantips$isStale()) {
+        if(menuAccess.enchantips$isStale()) {
             menuAccess.enchantips$updateContext(0);
             menuAccess.enchantips$updateContext(1);
             menuAccess.enchantips$updateContext(2);
-            menuAccess.enchantips$setStale(true);
+            menuAccess.enchantips$setStale(false);
         }
     }
 

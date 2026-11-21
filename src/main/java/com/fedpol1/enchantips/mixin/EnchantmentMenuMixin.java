@@ -46,10 +46,10 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
     @Shadow @Final public int[] costs;
     @Mutable @Shadow @Final private final ContainerLevelAccess access;
 
-    @Unique public boolean enchantips$stale;
+    @Unique public boolean enchantips$stale; // true if scrollable tooltips need updates
     @Unique private final ScrollableTooltipSection[] enchantips$enchantmentHints = new ScrollableTooltipSection[3];
     @Unique private final ScrollableTooltipSection[] enchantips$seededHints = new ScrollableTooltipSection[3];
-    @Unique private boolean enchantips$seeded = false;
+    @Unique private boolean enchantips$seeded = false; // whether the enchantment seed is found
     @Unique private final IntBounds[] enchantips$powerBounds = new IntBounds[3];
     @Unique private int enchantips$finalDataSlot;
 
@@ -163,6 +163,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "RETURN"))
     private void enchantips$findLastDataSlot(int containerId, Inventory inventory, ContainerLevelAccess access, CallbackInfo ci) {
         this.enchantips$finalDataSlot = ((AbstractContainerMenuAccess)this).enchantips$getDataSlots().size() - 1;
+        this.enchantips$stale = false; // no updates needed on screen init
     }
 
     @Inject(method = "clickMenuButton(Lnet/minecraft/world/entity/player/Player;I)Z", at = @At(value = "HEAD", ordinal = 0))
@@ -172,6 +173,7 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
         if(lev != null && lev.isClientSide() && t.costs[buttonId] > 0) {
             EnchantipsClient.resetContexts();
             this.enchantips$setSeeded(false);
+            // no setStale call
         }
     }
 
@@ -189,7 +191,11 @@ public abstract class EnchantmentMenuMixin implements EnchantmentMenuAccess {
 
         IdMap<Holder<Enchantment>> enchantmentMap = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).asHolderIdMap();
         Holder<Enchantment> hintHolder = enchantmentMap.byId(t.enchantClue[slotIndex]);
-        if(hintHolder == null || t.levelClue[slotIndex] < 0 || t.costs[slotIndex] < 0) { return; }
+        if(hintHolder == null || t.levelClue[slotIndex] < 0 || t.costs[slotIndex] < 0) {
+            this.enchantips$enchantmentHints[slotIndex] = null;
+            this.enchantips$powerBounds[slotIndex] = null;
+            return;
+        }
 
         Enchantment hintEnchantment = hintHolder.value();
         EnchantmentLevel enchLevel = EnchantmentLevel.of(hintEnchantment, t.levelClue[slotIndex]);

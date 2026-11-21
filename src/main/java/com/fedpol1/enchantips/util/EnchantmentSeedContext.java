@@ -8,7 +8,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class EnchantmentSeedContext {
 
@@ -19,8 +18,12 @@ public abstract class EnchantmentSeedContext {
         Enchantable component = stack.get(DataComponents.ENCHANTABLE);
         if(component == null || !stack.isEnchantable()) { return; }
         FilterContextKey key = new FilterContextKey(offerLevel, stack.getItem(), component.value(), slot);
-        if(!EnchantmentSeedContext.context.containsKey(key)) {
-            EnchantmentSeedContext.context.put(key, EnchantmentLevel.of(enchantment, enchLevel));
+        // avoid time of reference time of use pitfall; NOTE: removing entries is not possible
+        HashMap<FilterContextKey, EnchantmentLevel> localContext = EnchantmentSeedContext.context;
+        if(!localContext.containsKey(key)) {
+            synchronized(localContext) {
+                localContext.put(key, EnchantmentLevel.of(enchantment, enchLevel));
+            }
             EnchantmentSeedContext.searcherUpdate = true;
         }
     }
@@ -35,24 +38,23 @@ public abstract class EnchantmentSeedContext {
         return EnchantmentSeedContext.context.get(new FilterContextKey(offerLevel, item, enchantability, slot));
     }
 
-    protected static Set<Map.Entry<FilterContextKey, EnchantmentLevel>> entries() {
-        return EnchantmentSeedContext.context.entrySet();
-    }
-
     public static void reset() {
         EnchantmentSeedContext.context = new HashMap<>();
         EnchantmentSeedSearcher.reset();
     }
 
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     protected static HashMap<FilterContextKey, EnchantmentLevel> copy() {
         HashMap<FilterContextKey, EnchantmentLevel> newContext = new HashMap<>();
-        for(Map.Entry<FilterContextKey, EnchantmentLevel> entry : EnchantmentSeedContext.context.entrySet()) {
-            FilterContextKey key = entry.getKey();
-            EnchantmentLevel value = entry.getValue();
-            newContext.put(
-                    new FilterContextKey(key.offerLevel, key.item, key.enchantability, key.slot),
-                    EnchantmentLevel.of(value.getEnchantment(), value.getLevel())
-            );
+        synchronized(EnchantmentSeedContext.context) {
+            for (Map.Entry<FilterContextKey, EnchantmentLevel> entry : EnchantmentSeedContext.context.entrySet()) {
+                FilterContextKey key = entry.getKey();
+                EnchantmentLevel value = entry.getValue();
+                newContext.put(
+                        new FilterContextKey(key.offerLevel, key.item, key.enchantability, key.slot),
+                        EnchantmentLevel.of(value.getEnchantment(), value.getLevel())
+                );
+            }
         }
         return newContext;
     }

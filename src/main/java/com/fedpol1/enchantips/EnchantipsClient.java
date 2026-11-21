@@ -36,6 +36,13 @@ public class EnchantipsClient implements ClientModInitializer {
             KeyMapping.Category.MISC
     ));
 
+    private static final KeyMapping CONTEXT_RESET_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+            "key.enchantips.context.reset",
+            InputConstants.Type.KEYBOARD,
+            InputConstants.UNKNOWN.getValue(), // unbound by default
+            KeyMapping.Category.MISC
+    ));
+
     @Override
     public void onInitializeClient() {
         ScreenEvents.BEFORE_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
@@ -50,6 +57,9 @@ public class EnchantipsClient implements ClientModInitializer {
                 Minecraft.getInstance().setScreenAndShow(
                         new EnchantmentInfoScreen(current)
                 );
+            }
+            if(CONTEXT_RESET_KEY.consumeClick()) {
+                EnchantipsClient.resetContexts();
             }
         });
 
