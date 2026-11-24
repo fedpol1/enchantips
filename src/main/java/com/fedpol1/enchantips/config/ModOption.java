@@ -20,6 +20,9 @@ public class ModOption<T> {
     public static final ModOption<Boolean> ENCHANTABILITY_DIVISION = ModCategory.PER_ITEMSTACK_ENCHANTABILITY.addOption(new BooleanOption(false), "division", 1);
     public static final ModOption<Color> ENCHANTABILITY_COLOR = ModCategory.PER_ITEMSTACK_ENCHANTABILITY.addOption(new ColorOption(0xbf007f), "color", 0);
     public static final ModOption<Color> ENCHANTABILITY_VALUE_COLOR = ModCategory.PER_ITEMSTACK_ENCHANTABILITY.addOption(new ColorOption(0xff1f9f), "color.value", 0);
+    public static final ModOption<Boolean> GRINDING_EXPERIENCE_SWITCH = ModCategory.PER_ITEMSTACK_GRINDING_EXPERIENCE.addOption(new BooleanOption(false), "switch", 1);
+    public static final ModOption<Color> GRINDING_EXPERIENCE_COLOR = ModCategory.PER_ITEMSTACK_GRINDING_EXPERIENCE.addOption(new ColorOption(0xafa79f), "color", 0);
+    public static final ModOption<Color> GRINDING_EXPERIENCE_VALUE_COLOR = ModCategory.PER_ITEMSTACK_GRINDING_EXPERIENCE.addOption(new ColorOption(0xc7bbaf), "color.value", 0);
     public static final ModOption<Boolean> HIGHLIGHTS_SWITCH = ModCategory.PER_ITEMSTACK_HIGHLIGHTS.addOption(new BooleanOption(false), "switch", 1);
     public static final ModOption<Boolean> HIGHLIGHTS_SWITCH_OVERRIDE = ModCategory.PER_ITEMSTACK_HIGHLIGHTS.addOption(new BooleanOption(false), "switch.override", 1);
     public static final ModOption<Integer> HIGHLIGHTS_LIMIT = ModCategory.PER_ITEMSTACK_HIGHLIGHTS.addOption(new IntegerOption(4, 0, 16), "limit", 1);

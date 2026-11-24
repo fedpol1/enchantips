@@ -5,6 +5,11 @@ import com.fedpol1.enchantips.config.ModOption;
 import com.fedpol1.enchantips.util.TooltipHelper;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.core.Holder;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,6 +58,19 @@ public abstract class ItemStackMixin implements ItemStackAccess {
         Integer cost = t.get(DataComponents.REPAIR_COST);
         if(cost != null && cost != 0 && ModOption.REPAIR_COST_SWITCH.getValue()) {
             list.add(TooltipHelper.buildRepairCost(cost));
+        }
+
+        ItemEnchantments enchantments = t.get(EnchantmentHelper.getComponentType(t));
+        if(enchantments != null && enchantments != ItemEnchantments.EMPTY && ModOption.GRINDING_EXPERIENCE_SWITCH.getValue()) {
+            int experience = 0;
+            for(Object2IntMap.Entry<Holder<Enchantment>> entry : enchantments.entrySet()) {
+                Holder<Enchantment> enchantment = entry.getKey();
+                int level = entry.getIntValue();
+                if (!enchantment.is(EnchantmentTags.CURSE)) {
+                    experience += (enchantment.value()).getMinCost(level);
+                }
+            }
+            list.add(TooltipHelper.buildGrindingExperience(experience));
         }
     }
 

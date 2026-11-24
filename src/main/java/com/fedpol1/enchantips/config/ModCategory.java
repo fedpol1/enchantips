@@ -18,6 +18,7 @@ public enum ModCategory {
     PER_ITEMSTACK_GLINT_OVERRIDE(PER_ITEMSTACK.addGroup("glint_override")),
     PER_ITEMSTACK_REPAIR_COST(PER_ITEMSTACK.addGroup("repair_cost")),
     PER_ITEMSTACK_ENCHANTABILITY(PER_ITEMSTACK.addGroup("enchantability")),
+    PER_ITEMSTACK_GRINDING_EXPERIENCE(PER_ITEMSTACK.addGroup("grinding_experience")),
     PER_ITEMSTACK_HIGHLIGHTS(PER_ITEMSTACK.addGroup("highlights")),
     ENCHANTING_HELPERS(ConfigTree.root.addCategory("enchanting_helpers")),
     MISCELLANEOUS(ConfigTree.root.addCategory("miscellaneous")),

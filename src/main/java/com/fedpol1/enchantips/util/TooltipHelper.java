@@ -16,6 +16,8 @@ public abstract class TooltipHelper {
     public static final String FORCED_GLINT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.glint_override";
     public static final String REPAIR_COST_TOOLTIP = EnchantipsClient.MODID + ".tooltip.repair_cost";
     public static final String ENCHANTABILITY_TOOLTIP = EnchantipsClient.MODID + ".tooltip.enchantability";
+    public static final String GRINDING_EXPERIENCE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.grinding_experience";
+    public static final String GRINDING_EXPERIENCE_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.grinding_experience.single";
     public static final String MODIFIED_LEVEL_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level";
     public static final String MODIFIED_LEVEL_SINGLE_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.single";
     public static final String MODIFIED_LEVEL_FOR_ENCHANTMENT_TOOLTIP = EnchantipsClient.MODID + ".tooltip.modified_level.for_enchantment";
@@ -92,10 +94,23 @@ public abstract class TooltipHelper {
         return Component.translatable(ENCHANTABILITY_TOOLTIP, enchText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.ENCHANTABILITY_COLOR.getValue().getRGB())));
     }
+
     public static MutableComponent buildRepairCost(int cost) {
         MutableComponent costText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(cost)));
         costText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIR_COST_VALUE_COLOR.getValue().getRGB())));
         return Component.translatable(REPAIR_COST_TOOLTIP, costText)
                 .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.REPAIR_COST_COLOR.getValue().getRGB())));
+    }
+
+    public static MutableComponent buildGrindingExperience(int powerSum) {
+        int lowerBound = (int) Math.ceil((double) powerSum / 2.0);
+        int upperBound = lowerBound * 2 - 1;
+        String key = lowerBound == upperBound ? TooltipHelper.GRINDING_EXPERIENCE_SINGLE_TOOLTIP : TooltipHelper.GRINDING_EXPERIENCE_TOOLTIP;
+        MutableComponent lowerText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(lowerBound)));
+        MutableComponent upperText = MutableComponent.create(new PlainTextContents.LiteralContents(Integer.toString(upperBound)));
+        lowerText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.GRINDING_EXPERIENCE_VALUE_COLOR.getValue().getRGB())));
+        upperText.setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.GRINDING_EXPERIENCE_VALUE_COLOR.getValue().getRGB())));
+        return Component.translatable(key, lowerText, upperText)
+                .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(ModOption.GRINDING_EXPERIENCE_COLOR.getValue().getRGB())));
     }
 }
